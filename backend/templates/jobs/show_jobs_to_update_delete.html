@@ -26,18 +26,17 @@
 					</tr>
 				</thead>
 				<tbody>
-					{% for job in jobs %}
-						<tr>
-							<th scope="row">{{loop.index}}</th>
-							<td>{{job.title}}</td>
-							<td>{{job.company}}</td>
-							<td>{{job.company_url}}</td>
-							<td>{{job.location}}</td>
-							<td><button class="btn btn-danger btn-sm" onclick="delete_job({{job.id}})">Delete</button>
-								<a href="/updatejob/{{job.id}}" class="btn btn-primary">Edit</a>
-							</td>
-						</tr>
-					{% endfor %}
+					{% set a = jobs[0:20] %}
+					{% set b = [0] %}
+						{% for job in jobs if not len(b) == 21%}
+							{% for i in range(20) %}
+								{{b}}
+								{% block b[i] = 20 %}
+								{% endblock %}
+							{{i}}
+							
+							{% endfor %}	
+						{% endfor %}
 				</tbody>
 			</table>
 		</div>

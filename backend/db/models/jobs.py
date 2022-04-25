@@ -14,3 +14,13 @@ class Job(Base):
     is_active = Column(Boolean, default=True)
     owner_id = Column(Integer, ForeignKey("user.id"))
     owner = relationship("User", back_populates="jobs")
+
+class People(Base):
+    no = Column(Integer, primary_key=True)
+    codesys = Column(String(20))
+    rdcode = Column(String(20))
+    name = Column(String(20))
+    age = Column(String(20))
+    height = Column(String(20))
+    sex= Column(String(20))
+    

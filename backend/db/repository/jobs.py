@@ -2,6 +2,7 @@ from fastapi.encoders import jsonable_encoder
 from sqlalchemy.orm import Session
 from schemas.jobs import JobCreate
 from db.models.jobs import Job
+from db.models.jobs import People
 
 
 def create_new_job(job: JobCreate, db: Session, owner_id: int):
@@ -20,6 +21,11 @@ def retrieve_job(id: int, db: Session):
 def list_jobs(db: Session):
     jobs = db.query(Job).filter(Job.is_active == True).all()
     return jobs
+
+
+def list_models(db: Session):
+    models = db.query(People).all()
+    return models
 
 
 def update_job_by_id(id: int, job: JobCreate, db: Session, owner_id: int):

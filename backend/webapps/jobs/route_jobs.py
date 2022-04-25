@@ -1,10 +1,12 @@
+from pyexpat import model
 from fastapi import APIRouter, Depends
 from fastapi import Request, status, responses
 from fastapi.security.utils import get_authorization_scheme_param
 from fastapi.responses import HTMLResponse
 from fastapi.templating import Jinja2Templates
-from db.repository.jobs import list_jobs, search_job
+from db.repository.jobs import list_jobs, search_job, list_models
 from db.repository.jobs import retrieve_job, create_new_job
+from sqlalchemy import true
 from sqlalchemy.orm import Session
 from db.session import get_db
 from db.models.users import User
@@ -46,7 +48,8 @@ async def create_job(request: Request, db: Session = Depends(get_db)):
         try:
             token = request.cookies.get("access_token")
             scheme, param = get_authorization_scheme_param(token)
-            current_user: User = get_current_user_from_token(token=param, db=db)
+            current_user: User = get_current_user_from_token(
+                token=param, db=db)
             job = JobCreate(**form.__dict__)
             job = create_new_job(job=job, db=db, owner_id=current_user.id)
             return responses.RedirectResponse(
@@ -62,16 +65,31 @@ async def create_job(request: Request, db: Session = Depends(get_db)):
 
 
 @router.get("/update-delete-job")
-def show_jobs_to_delete(request: Request, db: Session = Depends(get_db)):
-    jobs = list_jobs(db=db)
+def show_jobs_to_delete(request: Request, db: Session = Depends(get_db),):
+    models = list_models(db=db)
+    print(models)
+    print('데이터 개수: ', models[0])
+    # a = []
+    # for i in range(20):
+    #     a.append(models[i])
+    # print(a)
     return templates.TemplateResponse(
-        "jobs/show_jobs_to_update_delete.html", {"request": request, "jobs": jobs}
+        "jobs/show_jobs_to_update_delete.html", {
+            "request": request, "jobs": models, "token": True, "var": 0}
     )
+# @router.get("/update-delete-job")
+# def show_jobs_to_delete(request: Request, db: Session = Depends(get_db)):
+#     jobs = list_jobs(db=db)
+#     return templates.TemplateResponse(
+#         "jobs/show_jobs_to_update_delete.html", {"request": request, "jobs": jobs}
+#     )
 
 
 @router.get("/updatejob/{id}")
 def updatejob(id: int, request: Request, db: Session = Depends(get_db)):
     job = retrieve_job(id=id, db=db)
+    print(job)
+    print('데이터 개수: ', len(job))
     return templates.TemplateResponse(
         "jobs/update_job.html", {"request": request, "job": job}
     )
@@ -80,6 +98,8 @@ def updatejob(id: int, request: Request, db: Session = Depends(get_db)):
 @router.get("/search/")
 def search(query: Optional[str], request: Request, db: Session = Depends(get_db)):
     jobs = search_job(query, db=db)
+    print(jobs)
+    print('데이터 개수: ', len(jobs))
     return templates.TemplateResponse(
         "jobs/homepage.html", {"request": request, "jobs": jobs}
     )

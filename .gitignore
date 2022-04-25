@@ -1,7 +1,7 @@
 # exclude __pycache__ (bytecode .pyc or .pyo) folder and files
 __pycache__
 # exclude env (virtual environment) folder
-env
+.env
 # exclude database file (if we use sqlite)
 *.db
 # exclude swap files, created by vim/nano editor

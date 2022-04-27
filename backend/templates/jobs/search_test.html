@@ -32,7 +32,7 @@
 					</tr>
 				</thead>
 				<tbody>
-						{% for job in jobs %}
+						{% for job in jobss %}
 							{% if loop.index <= 40 %}
 								<tr>
 									<th scope="row">{{loop.index}}</th>
@@ -64,7 +64,6 @@
 			end_date = document.querySelector("#date2").value
 			date = start_date + '&' + end_date
 
-			
 			$.ajax({
 				url: "/chu2022/" + date,
 				method: "get",

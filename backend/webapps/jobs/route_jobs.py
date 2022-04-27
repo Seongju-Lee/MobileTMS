@@ -1,12 +1,13 @@
 from pyexpat import model
+from time import time
 from fastapi import APIRouter, Depends
-from fastapi import Request, status, responses
+from fastapi import Request, status, responses, Response
 from fastapi.security.utils import get_authorization_scheme_param
 from fastapi.responses import HTMLResponse
 from fastapi.templating import Jinja2Templates
-from db.repository.jobs import list_jobs, search_job, list_models
+from db.repository.jobs import list_jobs, search_job, list_models, chu_30
 from db.repository.jobs import retrieve_job, create_new_job
-from sqlalchemy import true
+from sqlalchemy import String, true
 from sqlalchemy.orm import Session
 from db.session import get_db
 from db.models.users import User
@@ -14,6 +15,7 @@ from apis.version1.route_login import get_current_user_from_token
 from webapps.jobs.forms import JobCreateForm
 from schemas.jobs import JobCreate
 from typing import Optional
+from fastapi.encoders import jsonable_encoder
 
 templates = Jinja2Templates(directory="templates")
 router = APIRouter()
@@ -65,18 +67,50 @@ async def create_job(request: Request, db: Session = Depends(get_db)):
 
 
 @router.get("/update-delete-job")
-def show_jobs_to_delete(request: Request, db: Session = Depends(get_db),):
-    models = list_models(db=db)
-    print(models)
-    print('데이터 개수: ', models[0])
-    # a = []
-    # for i in range(20):
-    #     a.append(models[i])
-    # print(a)
+def show_jobs_to_delete(request: Request, db: Session = Depends(get_db)):
+    model_ = chu_30(db=db)
+    chu_models = jsonable_encoder(model_[:])
+    model_list = []
+    mcodes = []
+    i = 0
+    print('데이터 개수: ', len(jsonable_encoder(model_[:])))
+
+    for model in chu_models:
+
+        if len(model_list) == 0:
+            model_list.append({'mcode': model['Chu19']['mcode'], 'name': model['People']['name'],
+                               'gubun': model['Chu19']['gubun'], 'jum': model['Chu19']['jum']})
+            mcodes.append(model_list[i]['mcode'])
+
+        elif model['Chu19']['mcode'] in mcodes:
+            for i in range(len(model_list)):
+                if model_list[i]['mcode'] == model['Chu19']['mcode']:
+                    model_list[i]['jum'] += model['Chu19']['jum']
+
+        else:
+            model_list.append({'mcode': model['Chu19']['mcode'], 'name': model['People']['name'],
+                               'gubun': model['Chu19']['gubun'], 'jum': model['Chu19']['jum']})
+            mcodes.append(model_list[len(model_list) - 1]['mcode'])
+
+        i += 1
+
     return templates.TemplateResponse(
         "jobs/show_jobs_to_update_delete.html", {
-            "request": request, "jobs": models, "token": True, "var": 0}
+            "request": request, "jobs": model_list, "token": True}
     )
+
+
+@ router.get("/chu2022/{date}")
+def recommend_2022(request: Request, date: str, db: Session = Depends(get_db),):
+    models = list_models(date=date, db=db)
+    print('models입니다. ', jsonable_encoder(models[0:20]))
+
+    return jsonable_encoder(models[:])
+    # return templates.TemplateResponse(
+    #     "jobs/show_jobs_to_update_delete.html", {
+    #         "request": request, "jobss": jsonable_encoder(models[0:20]), "token": True}
+    # )
+
 # @router.get("/update-delete-job")
 # def show_jobs_to_delete(request: Request, db: Session = Depends(get_db)):
 #     jobs = list_jobs(db=db)
@@ -85,7 +119,16 @@ def show_jobs_to_delete(request: Request, db: Session = Depends(get_db),):
 #     )
 
 
-@router.get("/updatejob/{id}")
+# @ router.get("/aa/{data}")
+# def recommend_2022(request: Request, data: str, db: Session = Depends(get_db),):
+#     # models = list_models(date=date, db=db)
+#     _date = JSON.stringify(data)
+#     print('models입니다. ', _date)
+
+    # return jsonable_encoder(models[:])
+
+
+@ router.get("/updatejob/{id}")
 def updatejob(id: int, request: Request, db: Session = Depends(get_db)):
     job = retrieve_job(id=id, db=db)
     print(job)
@@ -95,7 +138,7 @@ def updatejob(id: int, request: Request, db: Session = Depends(get_db)):
     )
 
 
-@router.get("/search/")
+@ router.get("/search/")
 def search(query: Optional[str], request: Request, db: Session = Depends(get_db)):
     jobs = search_job(query, db=db)
     print(jobs)

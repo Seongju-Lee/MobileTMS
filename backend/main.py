@@ -7,7 +7,6 @@ from webapps.base import api_router as webapp_router
 from fastapi.staticfiles import StaticFiles
 from fastapi_pagination import add_pagination
 
-
 # we can pass the metadata information for API
 # some fields are of type string and some are of type dictionary (example - contact)
 # https://fastapi.tiangolo.com/tutorial/metadata/
@@ -42,7 +41,8 @@ def start_application():
         title=settings.PROJECT_TITLE,
         version=settings.PROJECT_VERSION,
         description=description,
-        contact={"name": "Sumanshu Nankana", "email": "sumanshunankana@gmail.com"},
+        contact={"name": "Sumanshu Nankana",
+                 "email": "sumanshunankana@gmail.com"},
     )
     create_tables()
     include_router(app)

@@ -12,9 +12,30 @@
           <a class="nav-link active" aria-current="page" href="/">Home</a>
         </li>
         <li class="nav-item">
-          <a class="nav-link" href="/docs/">Docs</a>
-        </li>
-		<li class="nav-item">
+          <form method="GET" action="/filter">
+
+            검색 기간<br>
+            <input type='date' name='s_date' id='date1'/>
+			      <input type='date' name='e_date' id='date2'/><br>
+            성별<br>
+            <label><input type="checkbox" name="gender_m" value="man"> 남자</label>
+            <label><input type="checkbox" name="gender_w" value="woman"> 여자</label> <br>
+            연령<br>
+            <label><input type="checkbox" name="age1" value="10"> 10대</label>
+            <label><input type="checkbox" name="age2" value="20"> 20대</label>
+            <label><input type="checkbox" name="age3" value="30"> 30대</label>
+            <label><input type="checkbox" name="age4" value="40"> 40대</label>
+            <label><input type="checkbox" name="age5" value="50"> 50대 이상</label><br> 
+            추천<br>
+            <label><input type="checkbox" name="chu_img" value="img"> 이미지</label>
+            <label><input type="checkbox" name="chu_fav" value="fav"> 호감도</label>
+            <label><input type="checkbox" name="chu_act" value="act"> 연기력</label> <br>
+            정렬<br>
+            <label><input type="checkbox" name="sort_thrdays" value="thrdays"> 30일추천</label>
+            <label><input type="checkbox" name="sort_movchoi" value="movchoi"> 영상초이</label>
+            <label><input type="checkbox" name="sort_proc" value="proc"> 프로카운트</label> <br><br>
+        
+		<!-- <li class="nav-item">
 			<a class="nav-link" href="/redoc/">Redoc</a>
 		</li>
         <li class="nav-item dropdown">
@@ -35,11 +56,11 @@
 			<li><a class="dropdown-item" href="/update-delete-job">Update/Delete Job</a></li>
 		  </ul>
         </li>
-      </ul>
-      <form class="d-flex" action="/search/">
+      </ul> -->
         <input class="form-control me-2" id="autocomplete" name="query" type="search" placeholder="Search" aria-label="Search">
         <button class="btn btn-outline-success" type="submit">Search</button>
       </form>
+    </li>
     </div>
   </div>
 </nav>

@@ -13,10 +13,11 @@
 			<div id="result" class="text-danger text-bold lead"></div>
 		</div>
 
-		<input type='date' id='date1'/>
-		<input type='date' id='date2'/>
-		<input id='date_submit' type='submit' onclick="input_date()" value="확인" >
-
+		<form method="GET" action="/chu2022">
+			<input type='date' id='date1'/>
+			<input type='date' id='date2'/>
+			<input id='date_submit' type='submit' value="확인" >
+		</form>
 
 		<div class="row">
 			
@@ -55,31 +56,7 @@
 
 {% block script %}
 
-	<script>
-		function input_date() {
-			console.log(document.querySelector("#date1").value)
-			console.log(document.querySelector("#date2").value)
-			console.log('날짜 클릭');
-			start_date = document.querySelector("#date1").value
-			end_date = document.querySelector("#date2").value
-			date = start_date + '&' + end_date
-
-			
-			$.ajax({
-				url: "/chu2022/" + date,
-				method: "get",
-				dataType: "json",
-				async: false,
-				success: function (data) {
-
-					alert(data.length);
-					alert(JSON.stringify(data));
-				}
-			})
-			
-
-		}
-	</script>
+	
 	<script type="text/javascript">
 		$(document).ready( function ()
 		{

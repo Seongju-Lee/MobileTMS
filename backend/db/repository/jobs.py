@@ -26,6 +26,7 @@ def list_jobs(db: Session):
     return jobs
 
 
+# 모델(추천2022)_기간검색
 def list_models(date: str, db: Session):
 
     start_date = datetime.strptime(date[0:10], "%Y-%m-%d")
@@ -40,13 +41,14 @@ def list_models(date: str, db: Session):
 
 
 # 추천2022_30일추천
-def chu_30(db: Session):
+def chu_30(db: Session, chu_img, chu_fav, chu_act):
 
-    print(datetime.today() - relativedelta(months=1))
+    print(']]]]]]]]]]]]]]]]] ', chu_img, chu_fav, chu_act)
     chu = db.query(Chu19, People).join(
-        People, Chu19.mcode == People.codesys).where(Chu19.edit_time >= (datetime.today() - relativedelta(months=1)))
-    print('bb', chu)
+        People, Chu19.mcode == People.codesys).where(((Chu19.gubun == chu_fav) | (Chu19.gubun == chu_img) | (Chu19.gubun == chu_act)) & (Chu19.edit_time >= (datetime.today() - relativedelta(months=1))))
+    # print('bb', chu)
     # print('bb', jsonable_encoder(people))
+    print(chu)
     return chu
 
 

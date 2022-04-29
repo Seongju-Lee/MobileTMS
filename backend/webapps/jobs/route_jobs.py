@@ -106,7 +106,7 @@ def show_jobs_to_delete(request: Request, db: Session = Depends(get_db)):
     model_list = []
     mcodes = []
     i = 0
-    print('데이터 개수: ', len(jsonable_encoder(model_[:])))
+    print('데이터 개수: ', (jsonable_encoder(model_[:])))
 
     for model in chu_models:
 
@@ -150,84 +150,84 @@ def search_filter(req: Request, s_date: str = '', e_date: str = '', gender_m: st
             print(chu_img, chu_fav, chu_act)
 
             chu_models = jsonable_encoder(models[:])
-            # print('aaaa', chu_models)
-            img_mcode = []
-            fav_mcode = []
-            act_mcode = []
+            print('aaaa111qqq: ', chu_models)
+            # img_mcode = []
+            # fav_mcode = []
+            # act_mcode = []
 
-            # 모델 추천 항목별 리스트 생성.
-            img_list = []
-            fav_list = []
-            act_list = []
-            for model in chu_models:
+            # # 모델 추천 항목별 리스트 생성.
+            # img_list = []
+            # fav_list = []
+            # act_list = []
+            # for model in chu_models:
 
-                # 호감도 선택
-                if model['Chu19']['gubun'] == 'fav':
+            #     # 호감도 선택
+            #     if model['Chu19']['gubun'] == 'fav':
 
-                    if model['Chu19']['mcode'] in fav_mcode:
+            #         if model['Chu19']['mcode'] in fav_mcode:
 
-                        for i in range(len(fav_list)):
+            #             for i in range(len(fav_list)):
 
-                            if fav_list[i]['mcode'] == model['Chu19']['mcode']:
-                                fav_list[i]['jum'] += model['Chu19']['jum']
+            #                 if fav_list[i]['mcode'] == model['Chu19']['mcode']:
+            #                     fav_list[i]['jum'] += model['Chu19']['jum']
 
-                    else:
-                        fav_list.append(
-                            {'mcode': model['Chu19']['mcode'], 'jum': model['Chu19']['jum'], 'name': model['People']['name'], 'sex': model['People']['sex'], 'age': model['People']['age'], 'height': model['People']['height']})
+            #         else:
+            #             fav_list.append(
+            #                 {'mcode': model['Chu19']['mcode'], 'jum': model['Chu19']['jum'], 'name': model['People']['name'], 'sex': model['People']['sex'], 'age': model['People']['age'], 'height': model['People']['height']})
 
-                        fav_mcode.append(model['Chu19']['mcode'])
+            #             fav_mcode.append(model['Chu19']['mcode'])
 
-                # 이미지 선택
-                elif model['Chu19']['gubun'] == 'img':
+            #     # 이미지 선택
+            #     elif model['Chu19']['gubun'] == 'img':
 
-                    if model['Chu19']['mcode'] in img_mcode:
+            #         if model['Chu19']['mcode'] in img_mcode:
 
-                        for i in range(len(img_list)):
+            #             for i in range(len(img_list)):
 
-                            if img_list[i]['mcode'] == model['Chu19']['mcode']:
-                                img_list[i]['jum'] += model['Chu19']['jum']
+            #                 if img_list[i]['mcode'] == model['Chu19']['mcode']:
+            #                     img_list[i]['jum'] += model['Chu19']['jum']
 
-                    else:
-                        img_list.append(
-                            {'mcode': model['Chu19']['mcode'], 'jum': model['Chu19']['jum'], 'name': model['People']['name'], 'sex': model['People']['sex'], 'age': model['People']['age'], 'height': model['People']['height']})
+            #         else:
+            #             img_list.append(
+            #                 {'mcode': model['Chu19']['mcode'], 'jum': model['Chu19']['jum'], 'name': model['People']['name'], 'sex': model['People']['sex'], 'age': model['People']['age'], 'height': model['People']['height']})
 
-                        img_mcode.append(model['Chu19']['mcode'])
+            #             img_mcode.append(model['Chu19']['mcode'])
 
-                # 연기력 선택
-                elif model['Chu19']['gubun'] == 'act':
+            #     # 연기력 선택
+            #     elif model['Chu19']['gubun'] == 'act':
 
-                    if model['Chu19']['mcode'] in act_mcode:
+            #         if model['Chu19']['mcode'] in act_mcode:
 
-                        for i in range(len(act_list)):
+            #             for i in range(len(act_list)):
 
-                            if act_list[i]['mcode'] == model['Chu19']['mcode']:
-                                act_list[i]['jum'] += model['Chu19']['jum']
+            #                 if act_list[i]['mcode'] == model['Chu19']['mcode']:
+            #                     act_list[i]['jum'] += model['Chu19']['jum']
 
-                    else:
-                        act_list.append(
-                            {'mcode': model['Chu19']['mcode'], 'jum': model['Chu19']['jum'], 'name': model['People']['name'], 'sex': model['People']['sex'], 'age': model['People']['age'], 'height': model['People']['height']})
+            #         else:
+            #             act_list.append(
+            #                 {'mcode': model['Chu19']['mcode'], 'jum': model['Chu19']['jum'], 'name': model['People']['name'], 'sex': model['People']['sex'], 'age': model['People']['age'], 'height': model['People']['height']})
 
-                        act_mcode.append(model['Chu19']['mcode'])
+            #             act_mcode.append(model['Chu19']['mcode'])
 
-            print('fav: ', fav_list)
-            print('act: ', act_list)
-            print(img_list[1])
+            # print('fav: ', fav_list)
+            # print('act: ', act_list)
+            # print(img_list[1])
 
-            a = [chu_img, chu_fav, chu_act]
-            if not '' in a:  # 모두 다 선택
-                print('ALL')
+            # a = [chu_img, chu_fav, chu_act]
+            # if not '' in a:  # 모두 다 선택
+            #     print('ALL')
 
-                models = set(set(fav_mcode) | set(act_mcode) | set(img_mcode))
-                print(models)  # set해서 mcode다 뽑음. 비교하면 됨.
+            #     models = set(set(fav_mcode) | set(act_mcode) | set(img_mcode))
+            #     # print(models)  # set해서 mcode다 뽑음. 비교하면 됨.
 
-            else:
-                pos = [i for i in range(len(a)) if a[i] == '']
-                print('선택 항목: ', pos)
+            # else:
+            #     pos = [i for i in range(len(a)) if a[i] == '']
+            #     print('선택 항목: ', pos)
 
-            return templates.TemplateResponse(
-                "jobs/homepage.html", {"request": req,
-                                       "jobs": jsonable_encoder(fav_list[:20])}
-            )
+            # return templates.TemplateResponse(
+            #     "jobs/homepage.html", {"request": req,
+            #                            "jobs": jsonable_encoder(fav_list[:100])}
+            # )
 
 
 @ router.get("/chu2022")

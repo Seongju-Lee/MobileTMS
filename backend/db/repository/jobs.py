@@ -1,7 +1,9 @@
 from datetime import datetime
 import imp
 from fastapi.encoders import jsonable_encoder
-from sqlalchemy import between, desc, func
+from sqlalchemy import between, desc
+from sqlalchemy.sql.expression import func
+
 from sqlalchemy.orm import Session
 from schemas.jobs import JobCreate
 from db.models.jobs import Job
@@ -44,11 +46,11 @@ def list_models(date: str, db: Session):
 # 추천2022_30일추천
 def chu_30(db: Session, chu_img, chu_fav, chu_act):
 
-    print(']]]]]]]]]]]]]]]]] ', chu_img, chu_fav, chu_act)
-    chu = db.query((Chu19.mcode), Chu19.gubun, func.sum(Chu19.jum), People.name).join(
-        People, Chu19.mcode == People.codesys).group_by(Chu19.mcode, Chu19.gubun).order_by(Chu19.edit_time).where(((Chu19.gubun == chu_fav) | (Chu19.gubun == chu_img) | (Chu19.gubun == chu_act)) & (Chu19.edit_time >= (datetime.today() - relativedelta(months=1))))
+    chu = db.query((Chu19.mcode), Chu19.gubun, People.name, (Chu19.jum)).join(
+        People, Chu19.mcode == People.codesys).where((Chu19.edit_time >= (datetime.today() - relativedelta(months=1))))
+    # chu = db.query((Chu19.mcode), Chu19.gubun, People.name, (Chu19.jum)).join(
+    #     People, Chu19.mcode == People.codesys).where(((Chu19.gubun == chu_fav) | (Chu19.gubun == chu_img) | (Chu19.gubun == chu_act)) & (Chu19.edit_time >= (datetime.today() - relativedelta(months=1))))
 
-    print('qqqq: ', chu)
     return chu
 
 

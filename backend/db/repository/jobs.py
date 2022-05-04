@@ -1,13 +1,14 @@
-from datetime import datetime
+from datetime import datetime, timedelta
 import imp
+from mmap import mmap
 from fastapi.encoders import jsonable_encoder
-from sqlalchemy import between, desc
+from sqlalchemy import between, desc, not_
 from sqlalchemy.sql.expression import func
 
 from sqlalchemy.orm import Session
 from schemas.jobs import JobCreate
 from db.models.jobs import Job
-from db.models.jobs import People, Chu19
+from db.models.jobs import People, Chu19, Movsel, Mmeeting_proc, Yeon, SunokStar, SunokStarChu
 from dateutil.relativedelta import relativedelta
 
 
@@ -44,37 +45,81 @@ def list_models(date: str, db: Session):
 
 
 # 추천2022_30일추천
-def chu_30(db: Session, chu_img, chu_fav, chu_act):
+def chu_30(db: Session, chu_img, chu_fav, chu_act, gender_w, gender_m, s_age, e_age):
+
+    if gender_m:
+        gender_m = '남'
+    if gender_w:
+        gender_w = '여'
+    print(gender_w, gender_m)
+    print((e_age), (s_age))
 
     chu = db.query((Chu19.mcode), Chu19.gubun, People.name, (Chu19.jum)).join(
-        People, Chu19.mcode == People.codesys).where((Chu19.edit_time >= (datetime.today() - relativedelta(months=1))))
-    # chu = db.query((Chu19.mcode), Chu19.gubun, People.name, (Chu19.jum)).join(
-    #     People, Chu19.mcode == People.codesys).where(((Chu19.gubun == chu_fav) | (Chu19.gubun == chu_img) | (Chu19.gubun == chu_act)) & (Chu19.edit_time >= (datetime.today() - relativedelta(months=1))))
+        People, Chu19.mcode == People.codesys).filter((Chu19.edit_time >= (datetime.today() - relativedelta(months=1)))).filter((People.sex == gender_m) | (People.sex == gender_w)).filter(People.age >= e_age)
 
     return chu
 
 
-def update_job_by_id(id: int, job: JobCreate, db: Session, owner_id: int):
-    existing_job = db.query(Job).filter(Job.id == id)
-    if not existing_job.first():
-        return 0
+# 추천2022_영상초이
+def movchoi(db: Session, s_date, e_date):
 
-    # job.__dict__.update(owner_id=owner_id)
-    try:
-        existing_job.update(job.__dict__)
-        db.commit()
-    except Exception as e:
-        print(e)
-        return 1
+    e_date = datetime.strptime(e_date, "%Y-%m-%d")
+    e_date = e_date + timedelta(days=1)
+    print(s_date, e_date)
+    choi = db.query((Movsel.mcode),  People.name, Movsel.rno, Movsel.edit_time).join(
+        People, Movsel.mcode == People.codesys).where((Movsel.edit_time >= s_date) & (Movsel.edit_time <= e_date))
+
+    return choi
 
 
-def delete_job_by_id(id: int, db: Session, owner_id: int):
-    existing_job = db.query(Job).filter(Job.id == id)
-    if not existing_job.first():
-        return 0
-    existing_job.delete(synchronize_session=False)
-    db.commit()
-    return 1
+# 추천2022_프로카운트
+def proc(db: Session, s_date, e_date, gender_w, gender_m, s_age, e_age, model, celeb):
+
+    if gender_m:
+        gender_m = '남'
+    if gender_w:
+        gender_w = '여'
+
+    if (celeb) and (not model):
+        proc = db.query(Mmeeting_proc.mcode, People.name, Mmeeting_proc.edit_time, Mmeeting_proc.projcode).join(
+            People, Mmeeting_proc.mcode == People.codesys).filter((Mmeeting_proc.edit_time >= s_date) & (Mmeeting_proc.edit_time <= e_date)).filter((People.sex == gender_m) | (People.sex == gender_w)).filter(People.age >= e_age).filter(
+                People.rdcode.contains('TC')
+        )
+    elif (model) and (not celeb):
+        proc = db.query(Mmeeting_proc.mcode, People.name, Mmeeting_proc.edit_time, Mmeeting_proc.projcode).join(
+            People, Mmeeting_proc.mcode == People.codesys).filter((Mmeeting_proc.edit_time >= s_date) & (Mmeeting_proc.edit_time <= e_date)).filter((People.sex == gender_m) | (People.sex == gender_w)).filter(People.age >= e_age).filter(
+                not_(People.rdcode.contains('TC'))
+        )
+    else:
+        proc = db.query(Mmeeting_proc.mcode, People.name, Mmeeting_proc.edit_time, Mmeeting_proc.projcode).join(
+            People, Mmeeting_proc.mcode == People.codesys).filter((Mmeeting_proc.edit_time >= s_date) & (Mmeeting_proc.edit_time <= e_date)).filter((People.sex == gender_m) | (People.sex == gender_w)).filter(People.age >= e_age)
+    return proc
+
+
+# 순옥스타_최신등록순
+def order_register(db: Session, s_date, e_date, gender_w, gender_m, s_age, e_age, model, celeb):
+
+    if gender_m:
+        gender_m = '남'
+    if gender_w:
+        gender_w = '여'
+
+        register = db.query(SunokStar.mcode, Yeon.name, SunokStar.edit_time,  Yeon.sex, Yeon.age, Yeon.a_3, Yeon.a_6, Yeon.a_12).join(
+            Yeon, SunokStar.mcode == Yeon.codesys).order_by(desc(SunokStar.edit_time)).filter((SunokStar.edit_time >= s_date) & (SunokStar.edit_time <= e_date)).filter((Yeon.sex == gender_m) | (Yeon.sex == gender_w)).filter(Yeon.age >= e_age)
+    return register
+
+
+# 순옥스타_추천순
+def order_recommend(db: Session, gender_w, gender_m, s_age, e_age,):
+
+    if gender_m:
+        gender_m = '남'
+    if gender_w:
+        gender_w = '여'
+
+        register = db.query(SunokStarChu.edit_time, SunokStarChu.frcode, SunokStar.rcode, SunokStar.mcode, SunokStarChu.jum1, SunokStarChu.jum2, Yeon.sex, Yeon.name, Yeon.age, Yeon.a_3, Yeon.a_6, Yeon.a_12).order_by(desc(SunokStar.edit_time)).filter(
+            SunokStar.rcode == SunokStarChu.frcode).filter(SunokStar.mcode == Yeon.codesys).filter((Yeon.sex == gender_m) | (Yeon.sex == gender_w)).filter(Yeon.age >= e_age)
+    return register
 
 
 def search_job(query: str, db: Session):

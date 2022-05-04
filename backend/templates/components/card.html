@@ -1,8 +1,11 @@
-<div class="card" style="width: 9.5rem; height: 12rem;">
+<div class="card" style="width: 8rem; height: 12rem; padding-right: 15px; margin-right: auto; margin-left: auto;">
+
   <div class="card-body rounded border border-warning">
     <h5 class="card-title">{{ obj.name }}</h5>
-    <p class="card-text">추천점수 : {{ obj.jum }}</p>
-	<p class="card-text">Company URL : </p>
-    <a href="/detail/{{obj.id}}" class="btn btn-primary">Read More</a>
+    <p class="card-text">호감도 : {{ obj.fav_jum }}</p>
+    <p class="card-text">이미지 : {{ obj.img_jum }}</p>
+    <p class="card-text">연기 : {{ obj.count }}</p>
+	<p class="card-text">Company URL : {{obj.mcode}}</p>
+    <a href="/detail/{{obj.id}}" style="color: #ffffff; background-color: #e14eca;border-color: #e14eca; width: 15px;">Read More</a>
   </div>
 </div>

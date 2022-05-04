@@ -7,8 +7,6 @@ from db.repository.jobs import (
     create_new_job,
     retrieve_job,
     list_jobs,
-    update_job_by_id,
-    delete_job_by_id,
     search_job,
 )
 from typing import List, Optional
@@ -60,7 +58,8 @@ def update_job(
             detail=f"Job with id {id} does not exists",
         )
     if job.owner_id == current_user.id or current_user.is_superuser:
-        message = update_job_by_id(id=id, job=job, db=db, owner_id=job.owner_id)
+        message = update_job_by_id(
+            id=id, job=job, db=db, owner_id=job.owner_id)
     raise HTTPException(
         status_code=status.HTTP_401_UNAUTHORIZED, detail="You are not permitted"
     )

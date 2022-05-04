@@ -1,0 +1,40 @@
+{% extends "layouts/base.html" %}
+
+{% block title %} UI Icons {% endblock %} 
+
+<!-- Specific Page CSS goes HERE  -->
+{% block stylesheets %}{% endblock stylesheets %}
+
+{% block content %}
+
+<div class="row">
+  <div class="col-md-12">
+    <div class="card">
+      <div class="card-header">
+        <h5 class="title">모델 검색 결과</h5>
+      </div>
+      <div class="card-body all-icons">
+        <div class="row">
+          
+          {% for job in jobs %}
+				
+          <div class="">
+            {% with obj=job %}
+              {% include 'components/card.html' %}
+            {% endwith %}
+              </div>
+            {% else %}
+              </div></div><br><div class="row">
+          {% endfor %}
+
+         
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+{% endblock content %}
+
+<!-- Specific Page JS goes HERE  -->
+{% block javascripts %}{% endblock javascripts %}

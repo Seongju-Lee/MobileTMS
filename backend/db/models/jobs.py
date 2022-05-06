@@ -1,3 +1,4 @@
+from sre_compile import MAXCODE
 from psycopg2 import Timestamp
 from sqlalchemy import Column, Integer, String, Date, Boolean, ForeignKey, TIMESTAMP, desc
 from sqlalchemy.orm import relationship
@@ -37,6 +38,7 @@ class Movsel(Base):
 
     rno = Column(Integer, primary_key=True)
     edit_time = Column(TIMESTAMP)
+    mcode = Column(String(20), ForeignKey("people.codesys"))
 
 
 # 추천2022_프로카운트 테이블

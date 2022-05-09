@@ -49,6 +49,7 @@ class Mmeeting_proc(Base):
     edit_time = Column(TIMESTAMP)
     projcode = Column(String(20))
     mcode = Column(String(20), ForeignKey("people.codesys"))
+    s_mcode = Column(String(20), ForeignKey("yeon.codesys"))
 
 
 # K-모델 테이블
@@ -99,3 +100,20 @@ class SunokStarChu(Base):
     frcode = Column(String(20), ForeignKey("model_sunokstar.rcode"))
     jum1 = Column(Integer)  # 추천
     jum2 = Column(Integer)  # 비추천
+
+
+class SCount(Base):
+    __tablename__ = "model_scelebida"
+
+    rno = Column(Integer,  primary_key=True)
+    edit_time = Column(TIMESTAMP)
+    mcode = Column(String(20), ForeignKey("yeon.codesys"))
+
+
+class Read(Base):
+    __tablename__ = "rtqmodel"
+
+    rno = Column(Integer,  primary_key=True)
+    edit_time = Column(TIMESTAMP)
+    rdate = Column(String(20))
+    mcode = Column(String(20), ForeignKey("yeon.codesys"))

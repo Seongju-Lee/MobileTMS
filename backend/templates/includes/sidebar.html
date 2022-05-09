@@ -26,6 +26,13 @@
               <label><input type="checkbox" name="model" value="not_tc"> 모델</label>
               <label><input type="checkbox" name="celeb" value="tc"> 셀럽</label> <br><br>
 
+            
+              <label> 알파모델료</label><br>
+              <input type="text" name="alpha_s_fee" value = 0 style="width:40px"> ~ <input type="text" name="alpha_e_fee" value = 600 style="width:40px"><br><br>
+              <label> 셀럽 모델료</label> <br>
+              <input type="text" name="s_fee" value = 0.0 style="width:40px"> ~ <input type="text" name="e_fee" value = 5 style="width:40px"><br>
+              <br><br>
+
               연령<br>
               <select name="s_age" id="s_age" value="s_age">
                 {% for year in years %}
@@ -51,8 +58,15 @@
               <label><input type="checkbox" name="sort_recommend" value="recommend"> 추천순</label>
               <label><input type="checkbox" name="sort_s_count" value="s_count"> S카운트순</label> <br><br>
      
-          <input class="form-control me-2" id="autocomplete" name="query" type="search" placeholder="Search" aria-label="Search">
-          <button class="btn btn-outline-success" type="submit">Search</button>
+              셀럽검색<br>
+              <label><input type="checkbox" name="sort_realtime" value="order_realtime"> 실베스타</label>
+              <label><input type="checkbox" name="sort_read" value="read"> 열람횟수</label> <br><br>
+
+              
+              <input class="form-control me-2" id="autocomplete" name="query" type="search" placeholder="Search" aria-label="Search">
+              <button class="btn btn-outline-success" type="submit">Search</button>
+
+              <br><br><br><br><br><br>
         </form>
            
         </ul>

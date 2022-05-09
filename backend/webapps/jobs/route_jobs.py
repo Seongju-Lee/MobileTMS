@@ -9,8 +9,8 @@ from fastapi import Request, status, responses, Response, requests
 from fastapi.security.utils import get_authorization_scheme_param
 from fastapi.responses import HTMLResponse
 from fastapi.templating import Jinja2Templates
-from db.repository.jobs import list_jobs, search_job, list_models, chu_30, movchoi, proc, order_register, order_recommend
-from db.repository.jobs import retrieve_job, create_new_job
+from db.repository.jobs import list_jobs, search_job, list_models, chu_30, movchoi, proc, order_register, order_recommend, order_s_count, order_read
+from db.repository.jobs import retrieve_job, create_new_job, order_realtime
 from sqlalchemy import String,  null
 from sqlalchemy.orm import Session
 from db.session import get_db
@@ -53,11 +53,13 @@ def job_detail(id: int, request: Request, db: Session = Depends(get_db)):
 def search_filter(req: Request, s_date: str = '', e_date: str = '', gender_m: str = '', gender_w: str = '',
                   s_img: str = '', e_img: str = '', s_fav: str = '', e_fav: str = '', s_act: str = '', e_act: str = '', s_age: str = '', e_age: str = '', model: str = '', celeb: str = '',
                   sort_thrdays: str = '', sort_movchoi: str = '', sort_proc: str = '', sort_register: str = '', sort_recommend: str = '', sort_s_count: str = '',
+                  sort_realtime: str = '', sort_read: str = '', alpha_s_fee: str = '', alpha_e_fee: str = '', s_fee: str = '', e_fee: str = '',
                   db: Session = Depends(get_db)):
 
     now_year = datetime.today().year
     years = [i for i in range(now_year-10, 1930, -1)]
-    if not (sort_thrdays or sort_movchoi or sort_proc or sort_register or sort_recommend):
+    if not (sort_thrdays or sort_movchoi or sort_proc or sort_register or sort_recommend or sort_s_count
+            or sort_read or sort_realtime):
         return templates.TemplateResponse(
             "ui-icons.html", {"request": req}
         )
@@ -162,7 +164,7 @@ def search_filter(req: Request, s_date: str = '', e_date: str = '', gender_m: st
     # 프로카운트
     elif sort_proc:
         models = proc(db=db, s_date=s_date, e_date=e_date,
-                      gender_w=gender_w, gender_m=gender_m, s_age=s_age, e_age=e_age, model=model, celeb=celeb)
+                      gender_w=gender_w, gender_m=gender_m, s_age=s_age, e_age=e_age, model=model, celeb=celeb, sort_realtime=sort_realtime)
 
         print('섹션 구분: ', model, celeb)
         count_models = jsonable_encoder(models[:])
@@ -228,3 +230,105 @@ def search_filter(req: Request, s_date: str = '', e_date: str = '', gender_m: st
             "ui-icons.html", {"request": req,
                               "jobs": jsonable_encoder(filter_models[:])}
         )
+
+    ###########################################
+    # 순옥스타_S카운트순
+    elif sort_s_count:
+        print('aaa')
+        models = order_s_count(db=db,
+                               gender_w=gender_w, gender_m=gender_m, s_age=s_age, e_age=e_age, s_date=s_date, e_date=e_date)
+
+        filter_models = []
+
+        count_models = jsonable_encoder(models[:])
+        print(count_models, 'aaa')
+
+        df = pd.DataFrame(count_models).groupby(
+            ['mcode', 'name',  'sex', 'age', 'a_3', 'a_6', 'a_12']).count().reset_index()
+
+        search_models = df.values.tolist()
+        print(df)
+
+        res = sorted(search_models, key=lambda x: x[7], reverse=True)
+
+        for model in res:
+            print(model)
+            filter_models.append(
+                {'mcode': model[0], 'name': model[1], 'gender': model[2], 'age': model[3], 'a_3': model[4], 'a_6': model[5], 'a_12': model[6]})
+
+        return templates.TemplateResponse(
+            "ui-icons.html", {"request": req,
+                              "jobs": jsonable_encoder(filter_models[:])}
+        )
+
+    ###########################################
+    # 셀럽검색_열람순
+    elif sort_read:
+        print('aaa')
+        models = order_read(db=db,
+                            gender_w=gender_w, gender_m=gender_m, s_age=s_age, e_age=e_age, s_date=s_date, e_date=e_date,
+                            e_fee=e_fee, s_fee=s_fee)
+
+        filter_models = []
+
+        count_models = jsonable_encoder(models[:])
+        print(count_models, 'aaa')
+
+        df = pd.DataFrame(count_models).groupby(
+            ['mcode', 'name',  'sex', 'age', 'a_3', 'a_6', 'a_12']).count().reset_index()
+
+        search_models = df.values.tolist()
+        print(df)
+
+        res = sorted(search_models, key=lambda x: x[7], reverse=True)
+
+        for model in res:
+            print(model)
+            filter_models.append(
+                {'mcode': model[0], 'name': model[1], 'gender': model[2], 'age': model[3], 'a_3': model[4], 'a_6': model[5], 'a_12': model[6]})
+
+        return templates.TemplateResponse(
+            "ui-icons.html", {"request": req,
+                              "jobs": jsonable_encoder(filter_models[:])}
+        )
+
+    ###########################################
+    # 셀럽검색_실베스타
+    elif sort_realtime:
+        print('aaa')
+        contracts, activites = order_realtime(db=db,
+                                              gender_w=gender_w, gender_m=gender_m, s_age=s_age, e_age=e_age,
+                                              e_fee=e_fee, s_fee=s_fee)
+
+        procount = proc(db=db, s_date=s_date, e_date=e_date,
+                        gender_w=gender_w, gender_m=gender_m, s_age=s_age, e_age=e_age, model=model, celeb=celeb, sort_realtime=sort_realtime)
+
+        filter_models = []
+
+        count_models = jsonable_encoder(procount[:])
+        # print(count_models, 'aaa')
+
+        for model in count_models:
+            print(model)
+        # df = pd.DataFrame(count_models).groupby(
+        #     ['mcode', 'name',  'sex', 'age', 'a_3', 'a_6', 'a_12']).count().reset_index()
+
+        # df = pd.DataFrame(count_models).groupby(
+        #     ['codesys']).count().reset_index()
+
+        # search_models = df.values.tolist()
+
+        # res = sorted(search_models, key=lambda x: x[3], reverse=True)
+        # print(res)
+
+        # res = sorted(search_models, key=lambda x: x[7], reverse=True)
+
+        # for model in res:
+        #     print(model)
+        #     filter_models.append(
+        #         {'mcode': model[0], 'name': model[1], 'gender': model[2], 'age': model[3], 'a_3': model[4], 'a_6': model[5], 'a_12': model[6]})
+
+        # return templates.TemplateResponse(
+        #     "ui-icons.html", {"request": req,
+        #                       "jobs": jsonable_encoder(filter_models[:])}
+        # )

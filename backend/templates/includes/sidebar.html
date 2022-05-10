@@ -19,8 +19,8 @@
               <input type='date' name='s_date' id='date1' value='2022-02-01'/>
               <input type='date' name='e_date' id='date2' value='2022-05-01'/><br><br>
               성별<br>
-              <label><input type="checkbox" name="gender_m" value="man"> 남자</label>
-              <label><input type="checkbox" name="gender_w" value="woman"> 여자</label> <br><br>
+              <label><input type="checkbox" name="gender_m" value="man" checked> 남자</label>
+              <label><input type="checkbox" name="gender_w" value="woman" checked> 여자</label> <br><br>
             
               구분<br>
               <label><input type="checkbox" name="model" value="not_tc"> 모델</label>
@@ -40,7 +40,9 @@
                 {% endfor%}
               </select> ~ <select name="e_age" id="e_age" value="e_age">
                 {% for year in years %}
+                  
                   <option value = "{{year}}"> {{now_year - year + 1}}세({{year}}년)</option>
+                  
                 {% endfor%}
               </select>
               <br> <br>

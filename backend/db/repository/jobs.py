@@ -99,8 +99,9 @@ def proc(db: Session, s_date, e_date, gender_w, gender_m, s_age, e_age, model, c
                 People, Mmeeting_proc.mcode == People.codesys).filter((Mmeeting_proc.edit_time >= s_date) & (Mmeeting_proc.edit_time <= e_date)).filter((People.sex == gender_m) | (People.sex == gender_w)).filter(People.age >= e_age)
 
     else:
-        proc = db.query(Mmeeting_proc.mcode, Yeon.name, Mmeeting_proc.edit_time, Mmeeting_proc.projcode).join(
-            Yeon, Mmeeting_proc.mcode == Yeon.codesys).filter((Mmeeting_proc.edit_time >= s_date) & (Mmeeting_proc.edit_time <= e_date)).filter((Yeon.sex == gender_m) | (Yeon.sex == gender_w)).filter(Yeon.age >= e_age)
+        proc = db.query(Mmeeting_proc.mcode.label('codesys'), Yeon.name, Yeon.sex, Yeon.age, Yeon.a_3, Yeon.a_6, Yeon.a_12, Mmeeting_proc.edit_time, Mmeeting_proc.projcode).join(
+            Yeon, Mmeeting_proc.mcode == Yeon.codesys).filter((Mmeeting_proc.edit_time >= s_date) & (Mmeeting_proc.edit_time <= e_date)).filter((Yeon.sex == gender_m) | (Yeon.sex == gender_w)).filter(Yeon.age >= e_age).filter(
+                Yeon.rdcode.contains('TC'))
 
     return proc
 
@@ -176,31 +177,30 @@ def order_realtime(db: Session, gender_w, gender_m, s_age, e_age, s_fee, e_fee):
     month = str(datetime.today().month)
     day = str(datetime.today().day)
 
-    if s_fee == 0:
-        s_fee = 'x'
-    if e_fee == 0:
-        e_fee = 'x'
-
     if len(month) == 1:
         month = '0' + str(datetime.today().month)
     if len(day) == 1:
         day = '0' + str(datetime.today().day)
     # 3개월 모델료 기준.
 
+    print((year) + '.' + month + '.' + day)
     # 셀럽 계약현황
-    contracts = db.query(RealTimeCF.edit_time, RealTimeCF.codesys, Yeon.sex, Yeon.name, Yeon.age, Yeon.a_3, Yeon.a_6, Yeon.a_12).join(
-        Yeon, RealTimeCF.codesys == Yeon.codesys).order_by(desc(RealTimeCF.edit_time)).filter((RealTimeCF.dend >= (year) + '.' + month + '.' + day)).filter(
-            (Yeon.a_3 >= s_fee) & (Yeon.a_3 <= e_fee)).filter((Yeon.sex == gender_m) | (Yeon.sex == gender_w)).filter(Yeon.age >= e_age)
+    real_time_cf = db.query(Yeon.codesys, Yeon.name, Yeon.sex, Yeon.age, Yeon.a_3, Yeon.a_6, Yeon.a_12, RealTimeCF.brand, RealTimeCF.dend.label('cf_dend')).join(
+        RealTimeCF, Yeon.codesys == RealTimeCF.codesys).filter(
+            (RealTimeCF.dend >= (year) + '.' + month + '.' + day)).filter((Yeon.a_3 >= s_fee) & (Yeon.a_3 <= e_fee)).filter((Yeon.sex == gender_m) | (Yeon.sex == gender_w)).filter(Yeon.age >= e_age)
 
-    # 셀럽 활동내역
-    activites = db.query(RealTimeDRAMA.edit_time, RealTimeDRAMA.codesys, Yeon.sex, Yeon.name, Yeon.age, Yeon.a_3, Yeon.a_6, Yeon.a_12).join(
-        Yeon, RealTimeDRAMA.codesys == Yeon.codesys).order_by(desc(RealTimeDRAMA.edit_time)).filter((RealTimeDRAMA.dend >= (year) + '.' + month + '.' + day)).filter(
-            (Yeon.a_3 >= s_fee) & (Yeon.a_3 <= e_fee)).filter((Yeon.sex == gender_m) | (Yeon.sex == gender_w)).filter(Yeon.age >= e_age)
+    # 활동내역
+    real_time_activity = db.query(Yeon.codesys, Yeon.name, Yeon.sex, Yeon.age, Yeon.a_3, Yeon.a_6, Yeon.a_12, RealTimeDRAMA.title, RealTimeDRAMA.dend.label('drama_dend')).join(
+        RealTimeDRAMA, Yeon.codesys == RealTimeDRAMA.codesys).filter(
+            (RealTimeDRAMA.dend >= (year) + '.' + month + '.' + day)).filter((Yeon.a_3 >= s_fee) & (Yeon.a_3 <= e_fee)).filter((Yeon.sex == gender_m) | (Yeon.sex == gender_w)).filter(Yeon.age >= e_age)
 
     # 셀럽 프로카운트는 mmeeting_proc 에서
-    return contracts, activites
+    return real_time_cf, real_time_activity
 
 
 def search_job(query: str, db: Session):
-    jobs = db.query(Job).filter(Job.title.contains(query))
-    return jobs
+    # celeb = db.query(Yeon.codesys, Yeon.name, Yeon.sex, Yeon.age, Yeon.a_3, Yeon.a_6, Yeon.a_12,).filter(Yeon.name.contains(query))
+
+    models = db.query(People.name, People.age, People.height,
+                      People.sex).filter(People.name.contains(query))
+    return models

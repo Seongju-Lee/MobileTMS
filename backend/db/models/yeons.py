@@ -10,6 +10,7 @@ class RealTimeCF(Base):
 
     rno = Column(Integer,  primary_key=True)
     edit_time = Column(TIMESTAMP)
+    brand = Column(String(20))
     rdate = Column(String(20))
     dend = Column(String(20))
     codesys = Column(String(20), ForeignKey("yeon.codesys"))
@@ -29,6 +30,7 @@ class RealTimeDRAMA(Base):
 
     rno = Column(Integer,  primary_key=True)
     edit_time = Column(TIMESTAMP)
+    title = Column(String(20))
     rdate = Column(String(20))
     dend = Column(String(20))
     codesys = Column(String(20), ForeignKey("yeon.codesys"))

@@ -63,6 +63,15 @@ class People(Base):
     age = Column(String(20))
     height = Column(String(20))
     sex = Column(String(20))
+    coname = Column(String(20))
+    dam = Column(String(20))
+    tel1 = Column(String(20))
+    dam2 = Column(String(20))
+    dam2tel = Column(String(20))
+    dam3 = Column(String(20))
+    dam3tel = Column(String(20))
+    sns2 = Column(String(20))
+    insta_flw_str = Column(String(20))
 
     # people = relationship("Chu19", back_populates="chu")
     # chu = Chu19

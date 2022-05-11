@@ -2,6 +2,7 @@ from ast import Str
 from datetime import datetime, timedelta
 import imp
 from mmap import mmap
+from ntpath import join
 from fastapi.encoders import jsonable_encoder
 from numpy import sort
 from sqlalchemy import between, desc, not_
@@ -99,7 +100,7 @@ def proc(db: Session, s_date, e_date, gender_w, gender_m, s_age, e_age, model, c
                 People, Mmeeting_proc.mcode == People.codesys).filter((Mmeeting_proc.edit_time >= s_date) & (Mmeeting_proc.edit_time <= e_date)).filter((People.sex == gender_m) | (People.sex == gender_w)).filter(People.age >= e_age)
 
     else:
-        proc = db.query(Mmeeting_proc.mcode.label('codesys'), Yeon.name, Yeon.sex, Yeon.age, Yeon.a_3, Yeon.a_6, Yeon.a_12, Mmeeting_proc.edit_time, Mmeeting_proc.projcode).join(
+        proc = db.query(Mmeeting_proc.mcode.label('codesys'), Yeon.rno, Yeon.name, Yeon.sex, Yeon.age, Yeon.a_3, Yeon.a_6, Yeon.a_12, Mmeeting_proc.edit_time, Mmeeting_proc.projcode).join(
             Yeon, Mmeeting_proc.mcode == Yeon.codesys).filter((Mmeeting_proc.edit_time >= s_date) & (Mmeeting_proc.edit_time <= e_date)).filter((Yeon.sex == gender_m) | (Yeon.sex == gender_w)).filter(Yeon.age >= e_age).filter(
                 Yeon.rdcode.contains('TC'))
 
@@ -185,12 +186,12 @@ def order_realtime(db: Session, gender_w, gender_m, s_age, e_age, s_fee, e_fee):
 
     print((year) + '.' + month + '.' + day)
     # 셀럽 계약현황
-    real_time_cf = db.query(Yeon.codesys, Yeon.name, Yeon.sex, Yeon.age, Yeon.a_3, Yeon.a_6, Yeon.a_12, RealTimeCF.brand, RealTimeCF.dend.label('cf_dend')).join(
+    real_time_cf = db.query(Yeon.codesys, Yeon.rno, Yeon.name, Yeon.sex, Yeon.age, Yeon.a_3, Yeon.a_6, Yeon.a_12, RealTimeCF.brand, RealTimeCF.dend.label('cf_dend')).join(
         RealTimeCF, Yeon.codesys == RealTimeCF.codesys).filter(
             (RealTimeCF.dend >= (year) + '.' + month + '.' + day)).filter((Yeon.a_3 >= s_fee) & (Yeon.a_3 <= e_fee)).filter((Yeon.sex == gender_m) | (Yeon.sex == gender_w)).filter(Yeon.age >= e_age)
 
     # 활동내역
-    real_time_activity = db.query(Yeon.codesys, Yeon.name, Yeon.sex, Yeon.age, Yeon.a_3, Yeon.a_6, Yeon.a_12, RealTimeDRAMA.title, RealTimeDRAMA.dend.label('drama_dend')).join(
+    real_time_activity = db.query(Yeon.codesys, Yeon.rno, Yeon.name, Yeon.sex, Yeon.age, Yeon.a_3, Yeon.a_6, Yeon.a_12, RealTimeDRAMA.title, RealTimeDRAMA.dend.label('drama_dend')).join(
         RealTimeDRAMA, Yeon.codesys == RealTimeDRAMA.codesys).filter(
             (RealTimeDRAMA.dend >= (year) + '.' + month + '.' + day)).filter((Yeon.a_3 >= s_fee) & (Yeon.a_3 <= e_fee)).filter((Yeon.sex == gender_m) | (Yeon.sex == gender_w)).filter(Yeon.age >= e_age)
 
@@ -204,3 +205,21 @@ def search_job(query: str, db: Session):
     models = db.query(People.name, People.age, People.height,
                       People.sex).filter(People.name.contains(query))
     return models
+
+
+def models_info(db: Session, rno):
+
+    # 세부정보
+    # rno를 api서버로 가져감. rno에 해당되는 Yeon.codesys를 조회함.
+    # 여기 없으면 People.codesys의 no으로 인식하고, rno와 일치하는 no에 해당하는People.codesys를 조회함.
+    # Yeon에서 가져온 경우에는 연예인 세부정보를 뿌려주고, (모델료, 모델 정보[이름, 나이, 키, 성별, 소속사, 연락처, 인스타, 포인트, 메일], 계약현황, 레디진행 이력, 활동 내역, 통화 메모)
+    # People에서 가져온 경우에는 모델 세부정보를 뿌려준다. (알파 모델료, 모델정보[이름, 나이, 키, 성별, 소속사, 연락처, 인스타, 포인트, 메일], 신체 사이즈, 통화 메모)
+
+    try:
+        yeon_detail = db.query(Yeon.codesys, Yeon.rno, Yeon.name, Yeon.sex, Yeon.age, Yeon.a_3, Yeon.a_6, Yeon.a_12, Yeon.height, People.coname, People.dam, People.tel1,
+                               People.dam2, People.dam2tel, People.dam3, People.dam3tel, People.sns2, People.insta_flw_str).join(Yeon, Yeon.codesys == People.codesys).filter(rno == Yeon.rno)
+
+        return yeon_detail
+
+    except:
+        return 123

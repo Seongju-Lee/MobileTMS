@@ -13,9 +13,13 @@
       <div class="card-header">
         <h5 class="title">모델 검색 결과</h5>
       </div>
-      <div class="card-body all-icons">
+      <div class="card-bodys all-icons" style="padding-left:15px;">
         <div class="row">
-          
+          {% if no_result %}
+           <div><h5> {{no_result}} </h5></div>
+            <br><h5 class="title"> {{alert}} </h5>
+          {% endif %}
+
           {% for job in jobs %}
 				
           <div class="">

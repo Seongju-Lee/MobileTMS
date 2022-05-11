@@ -1,12 +1,12 @@
 <div class="card" style="width: 8rem; height: 12rem; padding-right: 15px; margin-right: auto; margin-left: auto;">
 
-  <div class="card-body rounded border border-warning">
+  <div class="rounded border border-warning" style="height: 300px">
     <h5 class="card-title">{{ obj.name }}</h5>
     <h5 class="card-title">{{ obj.age }}</h5>
     <p class="card-text">3개월 : {{ obj.a_3 }}</p>
     <p class="card-text">6개월 : {{ obj.a_6 }}</p>
     <p class="card-text">12개월 : {{ obj.a_12 }}</p>
-	<p class="card-text">Company URL : {{obj.mcode}}</p>
-    <a href="/detail/{{obj.id}}" style="color: #ffffff; background-color: #e14eca;border-color: #e14eca; width: 15px;">Read More</a>
+    <p><a href="/detail/{{obj.rno}}" style="color: #ffffff; background-color: #e14eca;border-color: #e14eca; width: 15px;">세부 정보</a>
+    </p>
   </div>
 </div>

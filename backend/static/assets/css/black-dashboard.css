@@ -5205,6 +5205,17 @@ input[type="button"].btn-block {
   border:1px dotted #FF00FF;
 }
 
+.card-bodys {
+  flex: 1 1 auto;
+  padding: 1.5rem;
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  width: 90%;
+  min-width: 300px;
+  border:1px dotted #FF00FF;
+}
+
 .card-title {
   margin-bottom: 1.25rem;
 }

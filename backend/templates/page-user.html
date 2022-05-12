@@ -13,27 +13,100 @@
       <div class="card-header">
         <h5 class="title">Edit Profile</h5>
       </div>
-      <div class="card-body">
+      <div class="card-bodys">
         <form>
+          <h4> 모델정보 </h4>
           <div class="row">
             <div class="col-md-5 pr-md-1">
+
               <div class="form-group">
-                <label>이름 </label> <h5>{{item.name}}</h5>
+                <label>이름 </label> <h5>{{item.name}}</h5> 
+                <img class="avatar" src="http://pic2.readymodel.kr/mdpic/{{item.codesys[0:3]}}/{{item.codesys[0:4]}}/{{item.codesys}}/sys_photo/pic.jpg" style="width:90px; height:90px">
               </div>
             </div>
             <div class="col-md-3 px-md-1">
               <div class="form-group">
-                <h5><label>성별 </label> {{item.sex}}</h5> <p>  <h5> <label>나이 </label>  {{item.age}}</h5>
+                <h5><label>성별 </label> {{item.sex}}</h5> <p>  <h5> <label>나이 </label>  {{item.age}}</h5> <h5> <label>키 </label>  {{item.height}}</h5> <h5> <label>소속사</label>  {{item.coname}}</h5>
               </div>
-              
             </div>
+            
+          
+
             <div class="col-md-4 pl-md-1">
+              <label >모델료</label>
               <div class="form-group">
-                <label for="exampleInputEmail1">Email address</label>
-                <input type="email" class="form-control" value="bill.gates@microsoft.com">
+                <h5>{{item.a_3}} / {{item.a_6}} / {{item.a_12}}</h5>
               </div>
+
+              <div class="form-group">
+                  <label for="exampleInputEmail1">연락처</label>
+                  {%if item.dam %}
+                   <h5>{{item.dam}} : {{item.tel1}}</h5>
+                   {%endif %}
+                  {%if item.dam2 %}
+                    <h5>{{item.dam2}} : {{item.dam2tel}}</h5>
+                  {% endif %}
+                  {%if item.dam3 %}
+
+                    <h5>{{item.dam3}} : {{item.dam3tel}}</h5>
+                  {% endif %}
+                  <div class="form-group">
+                        <label for="exampleInputEmail1">인스타그램</label>
+                      {%if item.sns2%}  
+                        <h5> ID:  <a href="https://www.instagram.com/{{item.sns2}}/" > {{item.sns2}} </a> / 팔로워: {{item.insta_flw_str}}</h5>
+                      {% else %}
+                        SNS 계정이 확인되지 않아요 :<
+                      {% endif %}
+                    
+                  </div>
+
+                  <label>포인트</label>
+                    {%for str in item.point_str %}
+                      <h5>  {{str}} </h5>
+                    {% endfor %}
+                  
+                </div>
+                
             </div>
           </div>
+          <hr color = 'white' size='7px' width='80%' align='left'> 
+
+
+          <h4> 계약현황 </h4>
+          <div style="width:300px;overflow-x:auto; white-space:nowrap; margin:0 auto" >
+
+            <table border="1">
+              <th>브랜드명</th>
+              <th>계약품목</th>
+              <th>기간</th>
+              <th>ON-AIR</th>
+              <th>계약중</th>
+              <th>불명</th>
+              <th>국가</th>
+              <th>입력자</th>
+              <th>입력일</th>
+
+              {% for cf in celeb_cf %}
+                <tr>
+                  <td>{{cf.brand}}</td>
+                  <td>{{cf.poom}}</td>
+                  <td>{{cf.imonth}}</td>
+                  <td>{{cf.dstart}}</td>
+                  <td>{{cf.dend}}</td>
+                  <td>{{cf.indefin}}</td>
+                  <td>{{cf.nation}}</td>
+                  <td>{{cf.writer}}</td>
+                  <td>{{cf.wrdate}}</td>
+
+                </tr>
+              {% endfor %}
+           
+        
+            </table>
+
+            
+        </div>
+        
           <div class="row">
             <div class="col-md-6 pr-md-1">
               <div class="form-group">
@@ -87,50 +160,147 @@
         </form>
       </div>
       <div class="card-footer">
-        <button type="submit" class="btn btn-fill btn-primary">Save</button>
+        <button type="submit" class="btn btn-fill btn-info">Save</button>
       </div>
     </div>
   </div>
-  <div class="col-md-4">
-    <div class="card card-user">
-      <div class="card-body">
-        <p class="card-text">
-          <div class="author">
-            <div class="block block-one"></div>
-            <div class="block block-two"></div>
-            <div class="block block-three"></div>
-            <div class="block block-four"></div>
-            <a href="javascript:void(0)">
-              <img class="avatar" src="/static/assets/img/emilyz.jpg" alt="Bill Gates photo - when buys a Linux.">
-              <h5 class="title">
-                Bill Gates
-              </h5>
-            </a>
-            <p class="description">
-              bill.gates@microsoft.com
-            </p>
-          </div>
-        </p>
-        <div class="card-description">
-          Linux, my favorite OS - I admin that windows is just a big mistake.
-          Do not be scared of the truth because we need to restart the human foundation in truth And I love you like Kanye loves Kanye I love Rick Owens’ bed design but the back is...
-        </div>
-      </div>
-      <div class="card-footer">
-        <div class="button-container">
-          <button href="javascript:void(0)" class="btn btn-icon btn-round btn-facebook">
-            <i class="fab fa-facebook"></i>
-          </button>
-          <button href="javascript:void(0)" class="btn btn-icon btn-round btn-twitter">
-            <i class="fab fa-twitter"></i>
-          </button>
-          <button href="javascript:void(0)" class="btn btn-icon btn-round btn-google">
-            <i class="fab fa-google-plus"></i>
-          </button>
-        </div>
-      </div>
-    </div>
+
+
+  <div class="table-full-width table-responsive">
+    <table class="table">
+      <tbody>
+        <tr>
+          <td>
+            <div class="form-check">
+              <label class="form-check-label">
+                <input class="form-check-input" type="checkbox" value="">
+                <span class="form-check-sign">
+                  <span class="check"></span>
+                </span>
+              </label>
+            </div>
+          </td>
+          <td>
+            <p class="title">Update the Documentation</p>
+            <p class="text-muted">Dwuamish Head, Seattle, WA 8:47 AM</p>
+          </td>
+          <td class="td-actions text-right">
+            <button type="button" rel="tooltip" title="" class="btn btn-link" data-original-title="Edit Task">
+              <i class="tim-icons icon-pencil"></i>
+            </button>
+          </td>
+        </tr>
+        <tr>
+          <td>
+            <div class="form-check">
+              <label class="form-check-label">
+                <input class="form-check-input" type="checkbox" value="" checked="">
+                <span class="form-check-sign">
+                  <span class="check"></span>
+                </span>
+              </label>
+            </div>
+          </td>
+          <td>
+            <p class="title">GDPR Compliance</p>
+            <p class="text-muted">The GDPR is a regulation that requires businesses to protect the personal data and privacy of Europe citizens for transactions that occur within EU member states.</p>
+          </td>
+          <td class="td-actions text-right">
+            <button type="button" rel="tooltip" title="" class="btn btn-link" data-original-title="Edit Task">
+              <i class="tim-icons icon-pencil"></i>
+            </button>
+          </td>
+        </tr>
+        <tr>
+          <td>
+            <div class="form-check">
+              <label class="form-check-label">
+                <input class="form-check-input" type="checkbox" value="">
+                <span class="form-check-sign">
+                  <span class="check"></span>
+                </span>
+              </label>
+            </div>
+          </td>
+          <td>
+            <p >Solve the issues</p>
+            <p class="text-muted">Fifty percent of all respondents said they would be more likely to shop at a company </p>
+          </td>
+          <td class="td-actions text-right">
+            <button type="button" rel="tooltip" title="" class="btn btn-link" data-original-title="Edit Task">
+              <i class="tim-icons icon-pencil"></i>
+            </button>
+          </td>
+        </tr>
+        <tr>
+          <td>
+            <div class="form-check">
+              <label class="form-check-label">
+                <input class="form-check-input" type="checkbox" value="">
+                <span class="form-check-sign">
+                  <span class="check"></span>
+                </span>
+              </label>
+            </div>
+          </td>
+          <td>
+            <p class="title">Release v2.0.0</p>
+            <p class="text-muted">Ra Ave SW, Seattle, WA 98116, SUA 11:19 AM</p>
+          </td>
+          <td class="td-actions text-right">
+            <button type="button" rel="tooltip" title="" class="btn btn-link" data-original-title="Edit Task">
+              <i class="tim-icons icon-pencil"></i>
+            </button>
+          </td>
+        </tr>
+        <tr>
+          <td>
+            <div class="form-check">
+              <label class="form-check-label">
+                <input class="form-check-input" type="checkbox" value="">
+                <span class="form-check-sign">
+                  <span class="check"></span>
+                </span>
+              </label>
+            </div>
+          </td>
+          <td>
+            <p class="title">Export the processed files</p>
+            <p class="text-muted">The report also shows that consumers will not easily forgive a company once a breach exposing their personal data occurs. </p>
+          </td>
+          <td class="td-actions text-right">
+            <button type="button" rel="tooltip" title="" class="btn btn-link" data-original-title="Edit Task">
+              <i class="tim-icons icon-pencil"></i>
+            </button>
+          </td>
+        </tr>
+        <tr>
+          <td>
+            <div class="form-check">
+              <label class="form-check-label">
+                <input class="form-check-input" type="checkbox" value="">
+                <span class="form-check-sign">
+                  <span class="check"></span>
+                </span>
+              </label>
+            </div>
+          </td>
+          <td>
+            <p class="title">Arival at export process</p>
+            <p class="text-muted">Capitol Hill, Seattle, WA 12:34 AM</p>
+          </td>
+          <td class="td-actions text-right">
+            <button type="button" rel="tooltip" title="" class="btn btn-link" data-original-title="Edit Task">
+              <i class="tim-icons icon-pencil"></i>
+            </button>
+          </td>
+        </tr>
+      </tbody>
+    </table>
   </div>
+</div>
+
+ 
 </div>
 
 

@@ -1,6 +1,6 @@
 from sre_compile import MAXCODE
 from psycopg2 import Timestamp
-from sqlalchemy import Column, Integer, String, Date, Boolean, ForeignKey, TIMESTAMP, desc
+from sqlalchemy import Column, Integer, String, Date, Boolean, ForeignKey, TIMESTAMP, desc, Text
 from sqlalchemy.orm import relationship
 from db.base_class import Base
 
@@ -90,6 +90,15 @@ class Yeon(Base):
     a_3 = Column(Integer)
     a_6 = Column(Integer)
     a_12 = Column(Integer)
+
+
+class Mtel(Base):
+    __tablename__ = "mtel"
+
+    no = Column(Integer,  primary_key=True)
+    name = Column(String(20))
+    mcode = Column(String(20), ForeignKey("people.codesys"))
+    point2 = Column(Text)
 
 
 class SunokStar(Base):

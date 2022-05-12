@@ -22,6 +22,8 @@ from webapps.jobs.forms import JobCreateForm
 from schemas.jobs import JobCreate
 from typing import Optional
 from fastapi.encoders import jsonable_encoder
+from striprtf.striprtf import rtf_to_text
+
 import pandas as pd
 
 templates = Jinja2Templates(directory="templates")
@@ -386,8 +388,29 @@ def model_info(req: Request, rno: int, db: Session = Depends(get_db)):
     try:
         print('세부 정보 페이지 접속..', rno)
         info = models_info(db=db, rno=rno)
-        print(info)
-        print(jsonable_encoder(info[0]))
+
+        res = jsonable_encoder((info[:]))
+        res_model = jsonable_encoder((info[0]))
+        celeb_cf = []
+
+        res_model['point2'] = rtf_to_text(res_model['point2'])
+        i = 0
+        for model in res:
+            res[i]['point2'] = rtf_to_text(model['point2'])
+
+            i += 1
+        # print(res)
+        for m in res:
+            print(m['brand'])
+            celeb_cf.append({'brand': m['brand'], 'poom': m['poom'],
+                            'imonth': m['imonth'], 'fee': m['fee'], 'dstart': m['dstart'], 'dend': m['dend'], 'indefin': m['indefin'], 'nation': m['nation'], 'writer': m['writer'], 'wrdate': m['wrdate']})
+
+        for model in celeb_cf:
+            print(model)
+        # print(celeb_cf)
+
+        res_model['point_str'] = res_model['point2'].split('\n')
+        print(res_model)
         # 세부정보
         # rno를 api서버로 가져감. rno에 해당되는 Yeon.codesys를 조회함.
         # 여기 없으면 People.codesys의 no으로 인식하고, rno와 일치하는 no에 해당하는People.codesys를 조회함.
@@ -395,7 +418,8 @@ def model_info(req: Request, rno: int, db: Session = Depends(get_db)):
         # People에서 가져온 경우에는 모델 세부정보를 뿌려준다.
         return templates.TemplateResponse(
             "page-user.html", {"request": req,
-                               'item': jsonable_encoder(info[0])}
+                               'item': res_model,
+                               'celeb_cf': celeb_cf}
         )
     except:
         pass

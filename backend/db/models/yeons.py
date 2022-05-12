@@ -14,7 +14,14 @@ class RealTimeCF(Base):
     rdate = Column(String(20))
     dend = Column(String(20))
     codesys = Column(String(20), ForeignKey("yeon.codesys"))
-
+    poom = Column(String(20))
+    imonth = Column(Integer)
+    fee = Column(Integer)
+    dstart = Column(String(20))
+    indefin = Column(String(20))
+    nation = Column(String(20))
+    writer = Column(String(20))
+    wrdate = Column(String(20))
 
 # class RealTimePROC(Base):
 #     __tablename__ = "mmeeting_proc"

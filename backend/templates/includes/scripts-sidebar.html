@@ -17,6 +17,46 @@
         fixed_plugin_open = $('.sidebar .sidebar-wrapper .nav li.active a p').html();
 
 
+        $('input[name="cf"]').click(function(){
+
+
+          var list = new Array();
+
+
+          $('[name="cf_brand"]').each(function(index, item){
+            list.push((item).id.replace(/\./g,''));
+          })
+          console.log(list)
+      
+          var ischecked = $('input:checkbox[name="cf"]').is(":checked")
+
+
+          
+          if (ischecked) {
+
+            for(i=0; i<list.length; i++){
+              if(list[i] <= '20220513'){
+                console.log(list[i])
+                var a = "." + list[i];
+                $(a).hide();
+                
+              }
+              else{
+                console.log('출력: ', list[i])
+
+                $("."+list[i]).show();
+
+              }
+            }
+            
+
+          }else{
+            for(i=0; i<list.length; i++){
+              $("."+list[i]).show();
+            }
+          }
+        }
+        )
 
         $('.fixed-plugin a').click(function(event) {
           if ($(this).hasClass('switch-trigger')) {

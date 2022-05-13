@@ -3,12 +3,38 @@
 {% block title %} Page User {% endblock %} 
 
 <!-- Specific Page CSS goes HERE  -->
-{% block stylesheets %}{% endblock stylesheets %}
+{% block stylesheets %}
+  <style>
+   
 
+    @media (max-width: 600px) {
+      .table-width {
+        width: 500px;
+        overflow-x:auto;
+        white-space:nowrap;
+        margin:0 auto
+      }
+    }
+
+    @media (max-width: 420px) {
+      .table-width {
+        width: 300px;
+        overflow-x:auto;
+        white-space:nowrap;
+        margin:0 auto
+      }
+    }
+
+    
+  </style>
+
+{% endblock stylesheets %}
+  
 {% block content %}
 
+
 <div class="row">
-  <div class="col-md-8">
+  <div class="col-md-12">
     <div class="card">
       <div class="card-header">
         <h5 class="title">Edit Profile</h5>
@@ -17,10 +43,11 @@
         <form>
           <h4> 모델정보 </h4>
           <div class="row">
-            <div class="col-md-5 pr-md-1">
+            <div style="position: relative; padding-right: 15px; padding-left: 15px; min-width: 110px; margin: 3px;"> 
+            <!-- <div class="col-md-8 pr-md-1"> --> 
 
               <div class="form-group">
-                <label>이름 </label> <h5>{{item.name}}</h5> 
+                <label>이름 </label> <h5 >{{item.name}}</h5> 
                 <img class="avatar" src="http://pic2.readymodel.kr/mdpic/{{item.codesys[0:3]}}/{{item.codesys[0:4]}}/{{item.codesys}}/sys_photo/pic.jpg" style="width:90px; height:90px">
               </div>
             </div>
@@ -32,7 +59,7 @@
             
           
 
-            <div class="col-md-4 pl-md-1">
+            <div class="col-md-12 pl-md-1">
               <label >모델료</label>
               <div class="form-group">
                 <h5>{{item.a_3}} / {{item.a_6}} / {{item.a_12}}</h5>
@@ -72,38 +99,61 @@
           <hr color = 'white' size='7px' width='80%' align='left'> 
 
 
-          <h4> 계약현황 </h4>
-          <div style="width:300px;overflow-x:auto; white-space:nowrap; margin:0 auto" >
+          {% if celeb_cf %}
+            {% set token = Fasle %}
+            {% if not token %}
+              
+              <div >
+                  <div class="form-check">
+                    <label class="form-check-label"> 현재이력만
+                      <h4 > 계약현황 </h4>
+                      <input class="form-check-input" name='cf' type="checkbox" value="checked"  checked>
+                      <span class="form-check-sign">
+                        <span class="check"></span>
+                      </span>
+                    </label>
+                  </div>
 
-            <table border="1">
-              <th>브랜드명</th>
-              <th>계약품목</th>
-              <th>기간</th>
-              <th>ON-AIR</th>
-              <th>계약중</th>
-              <th>불명</th>
-              <th>국가</th>
-              <th>입력자</th>
-              <th>입력일</th>
+                </label>
+              </div>
 
-              {% for cf in celeb_cf %}
-                <tr>
-                  <td>{{cf.brand}}</td>
-                  <td>{{cf.poom}}</td>
-                  <td>{{cf.imonth}}</td>
-                  <td>{{cf.dstart}}</td>
-                  <td>{{cf.dend}}</td>
-                  <td>{{cf.indefin}}</td>
-                  <td>{{cf.nation}}</td>
-                  <td>{{cf.writer}}</td>
-                  <td>{{cf.wrdate}}</td> 
+              <div id = 'cf_' class = "table-width" >
+                
+                <table border="1"  >
+                  <th>브랜드명</th>
+                  <th>계약품목</th>
+                  <th>기간</th>
+                  <th>ON-AIR</th>
+                  <th>계약중</th>
+                  <th>불명</th>
+                  <th>국가</th>
+                  <th>입력자</th>
+                  <th>입력일</th>
 
-                </tr>
-              {% endfor %}
-           
-        
-            </table>
+                  {% for cf in celeb_cf %}
+                    {% if  cf.dend < '2022.05.13'%}
+                      <tr name = 'cf_brand' class = '{{cf.dend.replace(".", "")}}' id= '{{cf.dend.replace(".", "")}}' style = "display: none;" >
+                    {% else %}
+                      <tr name = 'cf_brand' class = '{{cf.dend.replace(".", "")}}' id= '{{cf.dend.replace(".", "")}}'>
+                    {% endif %}
+                    
+                        <td>{{cf.brand}}</td>
+                        <td>{{cf.poom}}</td>
+                        <td>{{cf.imonth}}</td>
+                        <td>{{cf.dstart}}</td>
+                        <td>{{cf.dend}}</td>
+                        <td>{{cf.indefin}}</td>
+                        <td>{{cf.nation}}</td>
+                        <td>{{cf.writer}}</td>
+                        <td>{{cf.wrdate}}</td> 
 
+                      </tr>
+                  {% endfor %}
+                {%endif%}
+              {%endif%}
+            
+                </table>
+              </div>
             
         </div>
         

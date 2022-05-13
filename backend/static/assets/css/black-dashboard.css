@@ -1275,6 +1275,8 @@ pre code {
   }
 }
 
+
+
 @media (min-width: 992px) {
   .col-lg {
     flex-basis: 0;
@@ -20225,7 +20227,7 @@ Copyright (c) 2015 Daniel Eden
   padding: 1.25rem;
 }
 
-@media (max-width: 767.98px) {
+@media (max-width: 967.98px) {
   .card.card-chart .card-header .btn-group-toggle .tim-icons {
     font-size: .875rem;
     top: -1px;

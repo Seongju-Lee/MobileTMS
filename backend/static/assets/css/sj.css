@@ -549,8 +549,7 @@ Created using IcoMoon - icomoon.io
     content: "\ea65";
   }
 
-
-
+  
 
   .dropdown.show .dropdown-menu,
 .bootstrap-select.show .dropdown-menu:not(.inner),
@@ -877,4 +876,22 @@ Created using IcoMoon - icomoon.io
   
   .fixed-plugins .bootstrap-switch {
     margin: 0;
+  }
+
+
+  @media (max-width: 411px) {
+    .table-width {
+      width: 300px;
+      overflow-x:auto;
+      white-space:nowrap;
+      margin:0 auto
+    }
+  }
+  @media (max-width: 768px) {
+    .table-width {
+      width: 500px;
+      overflow-x:auto;
+      white-space:nowrap;
+      margin:0 auto
+    }
   }

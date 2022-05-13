@@ -223,7 +223,11 @@ def models_info(db: Session, rno):
                                ).join(Yeon, Yeon.codesys == People.codesys).join(Mtel, Mtel.mcode == People.codesys).join(
                                    RealTimeCF, People.codesys == RealTimeCF.codesys).filter(rno == Yeon.rno)
 
-        return yeon_detail
+        yeon_activity = db.query(Yeon.codesys, Yeon.rno, Yeon.name, Yeon.sex, Yeon.age, Yeon.a_3, Yeon.a_6, Yeon.a_12, Yeon.height,
+                                 RealTimeDRAMA.drgubun, RealTimeDRAMA.drgubun2, RealTimeDRAMA.title, RealTimeDRAMA.dstart, RealTimeDRAMA.dend, RealTimeDRAMA.writer, RealTimeDRAMA.wrdate).join(
+            Yeon, Yeon.codesys == RealTimeDRAMA.codesys).filter(rno == Yeon.rno)
+
+        return yeon_detail, yeon_activity
 
     except:
         return 123

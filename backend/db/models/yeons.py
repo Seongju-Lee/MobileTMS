@@ -37,7 +37,12 @@ class RealTimeDRAMA(Base):
 
     rno = Column(Integer,  primary_key=True)
     edit_time = Column(TIMESTAMP)
+    drgubun = Column(String(20))
+    drgubun2 = Column(String(20))
     title = Column(String(20))
+    dstart = Column(String(20))
     rdate = Column(String(20))
     dend = Column(String(20))
+    wrdate = Column(String(20))
+    writer = Column(String(20))
     codesys = Column(String(20), ForeignKey("yeon.codesys"))

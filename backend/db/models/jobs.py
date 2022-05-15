@@ -1,5 +1,4 @@
 from sre_compile import MAXCODE
-from psycopg2 import Timestamp
 from sqlalchemy import Column, Integer, String, Date, Boolean, ForeignKey, TIMESTAMP, desc, Text
 from sqlalchemy.orm import relationship
 from db.base_class import Base

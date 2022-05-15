@@ -1,5 +1,4 @@
 from sre_compile import MAXCODE
-from psycopg2 import Timestamp
 from sqlalchemy import Column, Integer, String, Date, Boolean, ForeignKey, TIMESTAMP, desc
 from sqlalchemy.orm import relationship
 from db.base_class import Base
@@ -23,13 +22,6 @@ class RealTimeCF(Base):
     writer = Column(String(20))
     wrdate = Column(String(20))
 
-# class RealTimePROC(Base):
-#     __tablename__ = "mmeeting_proc"
-
-#     rno = Column(Integer, primary_key=True)
-#     edit_time = Column(TIMESTAMP)
-#     projcode = Column(String(20))
-#     mcode = Column(String(20), ForeignKey("yeon.codesys"))
 
 
 class RealTimeDRAMA(Base):

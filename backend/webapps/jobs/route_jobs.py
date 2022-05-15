@@ -415,7 +415,7 @@ def model_info(req: Request, rno: int, db: Session = Depends(get_db)):
             celeb_activity.append({'gubun': m['drgubun'], 'gubun2': m['drgubun2'], 'title': m['title'], 'dstart': m['dstart'], 'dend': m['dend'], 'writer': m['writer'],
                                    'wrdate': m['wrdate']})
         for model in celeb_activity:
-            print(model)
+            print('test중입니다: ' , model)
         # # print(celeb_cf)
 
         res_model['point_str'] = res_model['point2'].split('\n')

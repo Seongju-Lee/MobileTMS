@@ -160,7 +160,7 @@
 
               <hr color = 'white' size='7px' width='80%' align='left'> 
 
-
+          <!-- 셀럽 활동현황 -->
           {% if celeb_activity %}
               
               <div >
@@ -190,12 +190,15 @@
                  
 
                   {% for cf in celeb_activity %}
-                    {% if  cf.dend < '2022.05.13'%}
-                      <tr name = 'cf_brand' class = '{{cf.dend.replace(".", "")}}' id= '{{cf.dend.replace(".", "")}}' style = "display: none;" >
+                    {% if cf.dend == "" %}
+                      <tr name = 'title' class = 'not_input' style = "display: none;" >
                     {% else %}
-                      <tr name = 'cf_brand' class = '{{cf.dend.replace(".", "")}}' id= '{{cf.dend.replace(".", "")}}'>
-                    {% endif %}
-                    
+                      {% if  cf.dend < '2022.05.13'%}
+                        <tr name = 'title' class = '{{cf.dend.replace(".", "")}}' id= '{{cf.dend.replace(".", "")}}' style = "display: none;" >
+                      {% else %}
+                       <tr name = 'title' class = '{{cf.dend.replace(".", "")}}' id= '{{cf.dend.replace(".", "")}}'>
+                      {% endif %}    
+                    {%endif%}
                         <td>{{cf.gubun}}</td>
                         <td>{{cf.gubun2}}</td>
                         <td>{{cf.title}}</td>

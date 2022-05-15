@@ -55,8 +55,61 @@
               $("."+list[i]).show();
             }
           }
-        }
-        )
+        });
+
+        // 활동현황 
+        $('input[name="activity"]').click(function(){
+
+
+              var list_activity = new Array();
+
+
+              $('[name="title"]').each(function(index, item){
+                console.log(item.id)
+                list_activity.push(item.id);
+              })
+              console.log(list_activity);
+
+              var ischecked = $('input:checkbox[name="activity"]').is(":checked");
+
+              console.log('안녕하세요: ', ischecked);
+
+              if (ischecked) {
+
+                for(i=0; i<list_activity.length; i++){
+                  if(list_activity[i] == ''){
+                    $('.not_input').hide();
+                  }
+                  else if(list_activity[i] <= '20220513'){
+                    console.log(list_activity[i])
+                    var a = "." + list_activity[i];
+                    $(a).hide();
+                    
+                  }
+                  else{
+                    console.log('출력: ', list_activity[i])
+
+                    $("."+list_activity[i]).show();
+
+                  }
+                }
+                
+
+              }else{
+                
+                  for(i=0; i<list_activity.length; i++){
+                    if(list_activity[i] == ''){
+                    $('.not_input').hide();
+                  }
+                  else{
+                    $("."+list_activity[i]).show();
+                  }
+                }
+              }
+              }
+
+
+            );
 
         $('.fixed-plugin a').click(function(event) {
           if ($(this).hasClass('switch-trigger')) {

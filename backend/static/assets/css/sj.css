@@ -879,19 +879,4 @@ Created using IcoMoon - icomoon.io
   }
 
 
-  @media (max-width: 411px) {
-    .table-width {
-      width: 300px;
-      overflow-x:auto;
-      white-space:nowrap;
-      margin:0 auto
-    }
-  }
-  @media (max-width: 768px) {
-    .table-width {
-      width: 500px;
-      overflow-x:auto;
-      white-space:nowrap;
-      margin:0 auto
-    }
-  }
+  

@@ -131,21 +131,27 @@
                   <th>입력일</th>
 
                   {% for cf in celeb_cf %}
-                    {% if  cf.dend < '2022.05.13'%}
-                      <tr name = 'cf_brand' class = '{{cf.dend.replace(".", "")}}' id= '{{cf.dend.replace(".", "")}}' style = "display: none;" >
+                    {% if cf.dend == "" %}
+                      <tr name = 'title' class = 'not_input' style = "display: none;" >
                     {% else %}
-                      <tr name = 'cf_brand' class = '{{cf.dend.replace(".", "")}}' id= '{{cf.dend.replace(".", "")}}'>
+                      {% if ('?' in cf.dend) and (cf.dend < '2022.05.13')%}
+                      <tr name = 'cf_brand' class = '{{cf.dend.replace("?", "_").replace(".", "")}}' id= '{{cf.dend.replace("?", "_").replace(".", "")}}' style = "display: none;" >
+                      {% elif  cf.dend < '2022.05.13'%}
+                        <tr name = 'cf_brand' class = '{{cf.dend.replace(".", "")}}' id= '{{cf.dend.replace(".", "")}}' style = "display: none;" >
+                      {% else %}
+                        <tr name = 'cf_brand' class = '{{cf.dend.replace(".", "")}}' id= '{{cf.dend.replace(".", "")}}'>
+                      {% endif %}
                     {% endif %}
-                    
-                        <td>{{cf.brand}}</td>
-                        <td>{{cf.poom}}</td>
-                        <td>{{cf.imonth}}</td>
-                        <td>{{cf.dstart}}</td>
-                        <td>{{cf.dend}}</td>
-                        <td>{{cf.indefin}}</td>
-                        <td>{{cf.nation}}</td>
-                        <td>{{cf.writer}}</td>
-                        <td>{{cf.wrdate}}</td> 
+
+                        <td><h5>{{cf.brand}}</h5></td>
+                        <td><h5>{{cf.poom}}</h5></td>
+                        <td><h5>{{cf.imonth}}</h5></td>
+                        <td><h5>{{cf.dstart}}</h5></td>
+                        <td><h5>{{cf.dend}}</h5></td>
+                        <td><h5>{{cf.indefin}}</h5></td>
+                        <td><h5>{{cf.nation}}</h5></td>
+                        <td><h5>{{cf.writer}}</h5></td>
+                        <td><h5>{{cf.wrdate}}</h5></td> 
 
                       </tr>
                   {% endfor %}
@@ -167,7 +173,7 @@
                   <div class="form-check">
                     <label class="form-check-label"> 현재활동만
                       <h4 > 활동현황 </h4>
-                      <input class="form-check-input" name='activity' type="checkbox" value="checked"  checked>
+                      <input class="form-check-input" name='activities' type="checkbox" value="checked"  checked>
                       <span class="form-check-sign">
                         <span class="check"></span>
                       </span>
@@ -199,13 +205,13 @@
                        <tr name = 'title' class = '{{cf.dend.replace(".", "")}}' id= '{{cf.dend.replace(".", "")}}'>
                       {% endif %}    
                     {%endif%}
-                        <td>{{cf.gubun}}</td>
-                        <td>{{cf.gubun2}}</td>
-                        <td>{{cf.title}}</td>
-                        <td>{{cf.dstart}}</td>
-                        <td>{{cf.dend}}</td>
-                        <td>{{cf.writer}}</td>
-                        <td>{{cf.wrdate}}</td> 
+                        <td><h5>{{cf.gubun}}</h5></td>
+                        <td><h5>{{cf.gubun2}}</h5></td>
+                        <td><h5>{{cf.title}}</h5></td>
+                        <td><h5>{{cf.dstart}}</h5></td>
+                        <td><h5>{{cf.dend}}</h5></td>
+                        <td><h5>{{cf.writer}}</h5></td>
+                        <td><h5>{{cf.wrdate}}</h5></td> 
 
                       </tr>
                   {% endfor %}
@@ -213,64 +219,61 @@
             
                 </table>
               </div>
+
+              <!---------------------------------------------------------------------------------------------------------------->
+
+              <hr color = 'white' size='7px' width='80%' align='left'> 
+
+          <!-- 셀럽 통화메모 -->
+          {% if celeb_calls %}
+              
+              <div>
+                  <div class="form-check">
+                    <label class="form-check-label"> 
+                      <h4 > 통화메모 </h4>
+                      <input class="form-check-input" name='activity' type="checkbox" value="checked"  checked>
+                      <span class="form-check-sign">
+                        <span class="check"></span>
+                      </span>
+                    </label>
+                  </div>
+              </div>
+
+              <div style="float:left;">
+                {%for call in celeb_calls %}
+                  <input type='button' class = 'call_title' id='{{call.rcode}}' name= 'call_title' value={{call.title}}/>
+                {% endfor %}
+
+              </div><br><br>
+
+              {%for call in celeb_calls %}
+                
+                {% set token = call.memo %}
+                  <div class = "{{call.rcode}}">
+                    {%for call in token %}
+                      {% if call[0:3] == '202' or call[0:3] == '201'%}
+                        <br>
+                        <h5>{{call}}</h5>
+                      {% else %}
+                        <h5>{{call}}</h5> 
+                      {% endif %}
+                     
+                    {% endfor %}
+
+                    
+                    
+                  </div>
+              {% endfor %}
+              
+                 
+
+          {%endif%}
+
         </div>
         
-          <div class="row">
-            <div class="col-md-6 pr-md-1">
-              <div class="form-group">
-                <label>First Name</label>
-                <input type="text" class="form-control" placeholder="Company" value="Mike">
-              </div>
-            </div>
-            <div class="col-md-6 pl-md-1">
-              <div class="form-group">
-                <label>Last Name</label>
-                <input type="text" class="form-control" placeholder="Last Name" value="Andrew">
-              </div>
-            </div>
-          </div>
-          <div class="row">
-            <div class="col-md-12">
-              <div class="form-group">
-                <label>Address</label>
-                <input type="text" class="form-control" placeholder="Home Address" value="Bld Mihail Kogalniceanu, nr. 8 Bl 1, Sc 1, Ap 09">
-              </div>
-            </div>
-          </div>
-          <div class="row">
-            <div class="col-md-4 pr-md-1">
-              <div class="form-group">
-                <label>City</label>
-                <input type="text" class="form-control" placeholder="City" value="Mike">
-              </div>
-            </div>
-            <div class="col-md-4 px-md-1">
-              <div class="form-group">
-                <label>Country</label>
-                <input type="text" class="form-control" placeholder="Country" value="Andrew">
-              </div>
-            </div>
-            <div class="col-md-4 pl-md-1">
-              <div class="form-group">
-                <label>Postal Code</label>
-                <input type="number" class="form-control" placeholder="ZIP Code">
-              </div>
-            </div>
-          </div>
-          <div class="row">
-            <div class="col-md-8">
-              <div class="form-group">
-                <label>About Me</label>
-                <textarea rows="4" cols="80" class="form-control" placeholder="Here can be your description" value="Mike">Lamborghini Mercy, Your chick she so thirsty, I'm in that two seat Lambo.</textarea>
-              </div>
-            </div>
-          </div>
-        </form>
-      </div>
-      <div class="card-footer">
-        <button type="submit" class="btn btn-fill btn-info">Save</button>
-      </div>
-    </div>
+          
+        
+     
   </div>
 
 

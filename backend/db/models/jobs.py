@@ -72,8 +72,8 @@ class People(Base):
     dam3tel = Column(String(20))
     sns2 = Column(String(20))
     insta_flw_str = Column(String(20))
-    bun = Column(String(20)) # 학교
-    mfee = Column(String(20)) # 모델료 (매칭 필요)
+    bun = Column(String(20))  # 학교
+    mfee = Column(String(20))  # 모델료 (매칭 필요)
     # people = relationship("Chu19", back_populates="chu")
     # chu = Chu19
 
@@ -136,3 +136,17 @@ class Read(Base):
     edit_time = Column(TIMESTAMP)
     rdate = Column(String(20))
     mcode = Column(String(20), ForeignKey("yeon.codesys"))
+
+
+class Memo(Base):
+    __tablename__ = "memo5"
+
+    no = Column(Integer,  primary_key=True)
+    edit_time = Column(TIMESTAMP)
+    code = Column(String(20), ForeignKey("people.codesys"))
+    rcode = Column(String(20))
+    code2 = Column(String(20))
+    code3 = Column(String(20))
+    title = Column(String(20))
+    memo = Column(String(20))
+    # mcode = Column(String(20), ForeignKey("yeon.codesys"))

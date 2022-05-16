@@ -24,25 +24,36 @@
 
 
           $('[name="cf_brand"]').each(function(index, item){
-            list.push((item).id.replace(/\./g,''));
+            if((item).id.indexOf('?') == -1){
+              _item = (item).id.replace('?','_');
+              list.push(_item.replace(/\./g,''));
+            }
+            else{
+              list.push((item).id.replace(/\./g,''));
+            }
+          
           })
           console.log(list)
       
           var ischecked = $('input:checkbox[name="cf"]').is(":checked")
 
-
           
           if (ischecked) {
 
             for(i=0; i<list.length; i++){
-              if(list[i] <= '20220513'){
+              
+              console.log('출력: ', list[i])
+
+              if(list[i] == ''){
+                $('.not_input').hide();
+              }
+              else if(list[i] <= '20220513'){
                 console.log(list[i])
                 var a = "." + list[i];
                 $(a).hide();
                 
               }
               else{
-                console.log('출력: ', list[i])
 
                 $("."+list[i]).show();
 
@@ -52,13 +63,20 @@
 
           }else{
             for(i=0; i<list.length; i++){
-              $("."+list[i]).show();
-            }
+              console.log('shdfljsdlkfjlksdjf: ', list[i])
+              if(list[i] == ''){
+                $('.not_input').hide();
+              }
+              else{
+                $("."+list[i]).show();
+              }
+          }
+            
           }
         });
 
         // 활동현황 
-        $('input[name="activity"]').click(function(){
+        $('input[name="activities"]').click(function(){
 
 
               var list_activity = new Array();
@@ -68,13 +86,13 @@
                 console.log(item.id)
                 list_activity.push(item.id);
               })
-              console.log(list_activity);
+              console.log('AAAAAAAAAAAAAAAAAAAA: ',list_activity);
 
-              var ischecked = $('input:checkbox[name="activity"]').is(":checked");
+              var _ischecked = $('input:checkbox[name="activities"]').is(":checked");
 
-              console.log('안녕하세요: ', ischecked);
+              console.log('안녕하세요: ', _ischecked);
 
-              if (ischecked) {
+              if (_ischecked) {
 
                 for(i=0; i<list_activity.length; i++){
                   if(list_activity[i] == ''){
@@ -96,10 +114,10 @@
                 
 
               }else{
-                
+                  console.log('????????????????????????????')
                   for(i=0; i<list_activity.length; i++){
                     if(list_activity[i] == ''){
-                    $('.not_input').hide();
+                    $('.not_input').show();
                   }
                   else{
                     $("."+list_activity[i]).show();
@@ -110,6 +128,48 @@
 
 
             );
+
+
+///////////////// 통화메모
+            $('.call_title').on('click', function(e){
+
+              var target_id = e.target.id
+              var list_activity = new Array();
+              $('input[name="call_title"]').each(function(index, item){
+                
+
+                list_activity.push(item.id);
+              })
+
+              console.log(list_activity);
+              console.log(target_id);
+
+              
+              $('.'+target_id).show();
+              // 리스트에서 target_id빼고 다 hide
+              for(i = 0; i < list_activity.length; i++){
+
+                str = '.'+list_activity[i];
+
+                if (list_activity[i] == target_id){
+                  $('.'+target_id).show();
+                }
+                else{
+                  
+                  console.log(str);
+                  $(str).hide();
+
+                }
+              }
+            
+            
+            
+            }
+
+
+            );
+//////////////////////
+
 
         $('.fixed-plugin a').click(function(event) {
           if ($(this).hasClass('switch-trigger')) {

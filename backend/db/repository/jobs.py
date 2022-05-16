@@ -202,32 +202,55 @@ def order_realtime(db: Session, gender_w, gender_m, s_age, e_age, s_fee, e_fee):
 def search_job(query: str, db: Session):
     # celeb = db.query(Yeon.codesys, Yeon.name, Yeon.sex, Yeon.age, Yeon.a_3, Yeon.a_6, Yeon.a_12,).filter(Yeon.name.contains(query))
 
-    models = db.query(People.name, People.age, People.height,
-                      People.sex).filter(People.name.contains(query))
+    models = db.query(People.codesys.label('mcode') , People.name, People.age, People.height,People.sex).filter(People.name.contains(query))
     return models
 
 
-def models_info(db: Session, rno):
+def models_info(db: Session, codesys):
 
     # 세부정보
     # rno를 api서버로 가져감. rno에 해당되는 Yeon.codesys를 조회함.
     # 여기 없으면 People.codesys의 no으로 인식하고, rno와 일치하는 no에 해당하는People.codesys를 조회함.
     # Yeon에서 가져온 경우에는 연예인 세부정보를 뿌려주고, (모델료, 모델 정보[이름, 나이, 키, 성별, 소속사, 연락처, 인스타, 포인트, 메일], 계약현황, 레디진행 이력, 활동 내역, 통화 메모)
-    # People에서 가져온 경우에는 모델 세부정보를 뿌려준다. (알파 모델료, 모델정보[이름, 나이, 키, 성별, 소속사, 연락처, 인스타, 포인트, 메일], 신체 사이즈, 통화 메모)
+    # People에서 가져온 경우에는 모델 세부정보를 뿌려준다. (알파 모델료, 모델정보[이름, 나이, 키, 성별, 소속사, 연락처, 인스타, 포인트, 메일], 신체 사이즈, 통화 메모), 경력 사항 확인 필요
 
     # yeoncf.brand, yeoncf.poom , yeoncf.imonth, yeoncf.fee , yeoncf.dstart , yeoncf.dend , yeoncf.indefin , yeoncf.nation, yeoncf.writer , yeoncf.wrdate
+    
+    
     try:
+        
+        ##### 셀럽 세부정보
         yeon_detail = db.query(Yeon.codesys, Yeon.rno, Yeon.name, Yeon.sex, Yeon.age, Yeon.a_3, Yeon.a_6, Yeon.a_12, Yeon.height, People.coname, People.dam, People.tel1,
-                               People.dam2, People.dam2tel, People.dam3, People.dam3tel, People.sns2, People.insta_flw_str, Mtel.point2,
-                               RealTimeCF.brand, RealTimeCF.poom, RealTimeCF.imonth, RealTimeCF.fee, RealTimeCF.dstart, RealTimeCF.dend, RealTimeCF.indefin, RealTimeCF.nation, RealTimeCF.writer, RealTimeCF.wrdate
-                               ).join(Yeon, Yeon.codesys == People.codesys).join(Mtel, Mtel.mcode == People.codesys).join(
-                                   RealTimeCF, People.codesys == RealTimeCF.codesys).filter(rno == Yeon.rno)
+                            People.dam2, People.dam2tel, People.dam3, People.dam3tel, People.sns2, People.insta_flw_str, Mtel.point2,
+                            RealTimeCF.brand, RealTimeCF.poom, RealTimeCF.imonth, RealTimeCF.fee, RealTimeCF.dstart, RealTimeCF.dend, RealTimeCF.indefin, RealTimeCF.nation, RealTimeCF.writer, RealTimeCF.wrdate
+                            ).join(Yeon, Yeon.codesys == People.codesys).join(Mtel, Mtel.mcode == People.codesys).join(
+                                RealTimeCF, People.codesys == RealTimeCF.codesys).filter(codesys == Yeon.codesys)
 
         yeon_activity = db.query(Yeon.codesys, Yeon.rno, Yeon.name, Yeon.sex, Yeon.age, Yeon.a_3, Yeon.a_6, Yeon.a_12, Yeon.height,
-                                 RealTimeDRAMA.drgubun, RealTimeDRAMA.drgubun2, RealTimeDRAMA.title, RealTimeDRAMA.dstart, RealTimeDRAMA.dend, RealTimeDRAMA.writer, RealTimeDRAMA.wrdate).join(
-            Yeon, Yeon.codesys == RealTimeDRAMA.codesys).filter(rno == Yeon.rno)
+                                RealTimeDRAMA.drgubun, RealTimeDRAMA.drgubun2, RealTimeDRAMA.title, RealTimeDRAMA.dstart, RealTimeDRAMA.dend, RealTimeDRAMA.writer, RealTimeDRAMA.wrdate).join(
+            Yeon, Yeon.codesys == RealTimeDRAMA.codesys).filter(codesys == Yeon.codesys)
 
-        return yeon_detail, yeon_activity
+        ##### 일반모델 세부정보
+        model_detail = db.query(People.codesys, People.name, People.age, People.height, People.sex, People.coname, People.dam, People.tel1,
+                            People.dam2, People.dam2tel, People.dam3, People.dam3tel, People.sns2, People.insta_flw_str, Mtel.point2).join(
+                                Mtel, Mtel.mcode == People.codesys).filter(codesys == People.codesys)
 
+        if jsonable_encoder(yeon_detail[:]):
+            return yeon_detail, yeon_activity
+
+        else:
+            print('일반 k 모델입니다.')
+            return model_detail, 123
     except:
         return 123
+
+    #### 모델 세부정보
+    try:
+        model_detail
+        pass
+
+    except:
+        pass
+
+
+    

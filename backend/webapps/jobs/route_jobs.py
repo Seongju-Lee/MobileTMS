@@ -382,54 +382,70 @@ def search_filter(req: Request, s_date: str = '', e_date: str = '', gender_m: st
 # 세부정보
 
 
-@ router.get("/detail/{rno}")
-def model_info(req: Request, rno: int, db: Session = Depends(get_db)):
+@ router.get("/detail/{codesys}")
+def model_info(req: Request, codesys: str = '', db: Session = Depends(get_db)):
 
     try:
-        print('세부 정보 페이지 접속..', rno)
-        info, yeon_activity = models_info(db=db, rno=rno)
+        print('세부 정보 페이지 접속..', codesys)
+        info, yeon_activity = models_info(db=db, codesys=codesys)
 
-        res = jsonable_encoder((info[:]))
-        activity = jsonable_encoder((yeon_activity[:]))
-        res_model = jsonable_encoder((info[0]))
-        celeb_cf = []
-        celeb_activity = []
+        if not yeon_activity == 123:
+            res = jsonable_encoder((info[:]))
+            activity = jsonable_encoder((yeon_activity[:]))
+            res_model = jsonable_encoder((info[0]))
+            celeb_cf = []
+            celeb_activity = []
 
-        print('pppp: ', activity)
+            print('pppp: ', activity)
 
-        res_model['point2'] = rtf_to_text(res_model['point2'])
-        i = 0
-        for model in res:
-            res[i]['point2'] = rtf_to_text(model['point2'])
+            res_model['point2'] = rtf_to_text(res_model['point2'])
+            i = 0
+            for model in res:
+                res[i]['point2'] = rtf_to_text(model['point2'])
 
-            i += 1
-        # print(res)
-        for m in res:
+                i += 1
             # print(res)
-            # print(m['brand'])
-            celeb_cf.append({'brand': m['brand'], 'poom': m['poom'],
-                            'imonth': m['imonth'], 'fee': m['fee'], 'dstart': m['dstart'], 'dend': m['dend'], 'indefin': m['indefin'], 'nation': m['nation'], 'writer': m['writer'], 'wrdate': m['wrdate']})
+            for m in res:
+                # print(res)
+                # print(m['brand'])
+                celeb_cf.append({'brand': m['brand'], 'poom': m['poom'],
+                                'imonth': m['imonth'], 'fee': m['fee'], 'dstart': m['dstart'], 'dend': m['dend'], 'indefin': m['indefin'], 'nation': m['nation'], 'writer': m['writer'], 'wrdate': m['wrdate']})
 
-        for m in activity:
-            # print(m)
-            celeb_activity.append({'gubun': m['drgubun'], 'gubun2': m['drgubun2'], 'title': m['title'], 'dstart': m['dstart'], 'dend': m['dend'], 'writer': m['writer'],
-                                   'wrdate': m['wrdate']})
-        for model in celeb_activity:
-            print('test중입니다: ' , model)
-        # # print(celeb_cf)
+            for m in activity:
+                # print(m)
+                celeb_activity.append({'gubun': m['drgubun'], 'gubun2': m['drgubun2'], 'title': m['title'], 'dstart': m['dstart'], 'dend': m['dend'], 'writer': m['writer'],
+                                    'wrdate': m['wrdate']})
+            for model in celeb_activity:
+                print('test중입니다: ' , model)
+            # # print(celeb_cf)
 
-        res_model['point_str'] = res_model['point2'].split('\n')
-        # print(res_model)
-        # 세부정보
-        # rno를 api서버로 가져감. rno에 해당되는 Yeon.codesys를 조회함.
-        # 여기 없으면 People.codesys의 no으로 인식하고, rno와 일치하는 no에 해당하는People.codesys를 조회함.
-        # Yeon에서 가져온 경우에는 연예인 세부정보를 뿌려주고,
-        # People에서 가져온 경우에는 모델 세부정보를 뿌려준다.
-        return templates.TemplateResponse(
-            "page-user.html", {"request": req,
-                               'item': res_model,
-                               'celeb_cf': celeb_cf,
-                               'celeb_activity': celeb_activity}
-        )
+            res_model['point_str'] = res_model['point2'].split('\n')
+            # print(res_model)
+            # 세부정보
+            # rno를 api서버로 가져감. rno에 해당되는 Yeon.codesys를 조회함.
+            # 여기 없으면 People.codesys의 no으로 인식하고, rno와 일치하는 no에 해당하는People.codesys를 조회함.
+            # Yeon에서 가져온 경우에는 연예인 세부정보를 뿌려주고,
+            # People에서 가져온 경우에는 모델 세부정보를 뿌려준다.
+            return templates.TemplateResponse(
+                "page-user.html", {"request": req,
+                                'item': res_model,
+                                'celeb_cf': celeb_cf,
+                                'celeb_activity': celeb_activity}
+            )
+
+        else:
+            res = jsonable_encoder((info[:]))
+            
+
+            res_model = jsonable_encoder((info[0]))
+            res_model['point2'] = rtf_to_text(res_model['point2'])
+
+            print('ppppp: ',res_model)
+
+            ## 모델 전용 세부 페이지로 이동
+            return templates.TemplateResponse(
+                "page-user_model.html", {"request": req,
+                                'item': res_model}
+            )
     except:
         pass

@@ -2,11 +2,12 @@
 
   <div class="rounded border border-warning" style="height: 300px">
     <h5 class="card-title">{{ obj.name }}</h5>
+    <h5 class="card-title">{{ obj.mcode }}</h5>
     <h5 class="card-title">{{ obj.age }}</h5>
     <p class="card-text">3개월 : {{ obj.a_3 }}</p>
     <p class="card-text">6개월 : {{ obj.a_6 }}</p>
     <p class="card-text">12개월 : {{ obj.a_12 }}</p>
-    <p><a href="/detail/{{obj.rno}}" style="color: #ffffff; background-color: #0098f0; border-color: #0098f0; width: 15px;">세부 정보</a>
+    <p><a href="/detail/{{obj.mcode}}" style="color: #ffffff; background-color: #0098f0; border-color: #0098f0; width: 15px;">세부 정보</a>
     </p>
   </div>
 </div>

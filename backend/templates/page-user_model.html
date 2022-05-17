@@ -40,6 +40,8 @@
         <h5 class="title">Edit Profile</h5>
       </div>
       <div class="card-bodys">
+        <!-- 이름, 모델키워드, 나이, 키, 성별, 소속사, 연락처, 개인연락처, 인스타, 경력사항, 포인트, 모델료, 메일, 신체사이즈, 학교, 국적, 통화메모 -->
+       
         <form>
           <h4> 모델정보 </h4>
           <div class="row">
@@ -48,46 +50,66 @@
 
               <div class="form-group">
                 <label>이름 </label> <h5 >{{item.name}}</h5> 
-                <img class="avatar" src="http://pic2.readymodel.kr/mdpic/{{item.codesys[0:3]}}/{{item.codesys[0:4]}}/{{item.codesys}}/sys_photo/pic.jpg" style="width:90px; height:90px">
+              
+                <img class="avatar" src="http://pic2.readymodel.kr/mdpic/{{item.codesys[0:3]}}/{{item.codesys[0:4]}}/{{item.codesys}}/sys_photo/model.jpg" style="width:100px; height:100px">
+
               </div>
             </div>
             <div class="col-md-3 px-md-1">
               <div class="form-group">
-                <h5><label>성별 </label> {{item.sex}}</h5> <p>  <h5> <label>나이 </label>  {{item.age}}</h5> <h5> <label>키 </label>  {{item.height}}</h5> <h5> <label>소속사</label>  {{item.coname}}</h5>
+                 
+                <h5><label>성별 </label> {{item.sex}}</h5> <p>  <h5> <label>나이 </label>  {{item.age}}</h5> <h5> <label>키 </label>  {{item.height}}</h5> <h5> <label>소속사</label>  {{item.coname}}</h5> 
+                  <h5> <label>직업/학교</label>  {{item.bun}}</h5>   <h5> <label>신체 사이즈</label>  {{item.bodysize}}</h5> 
               </div>
             </div>
             
           
-
             <div class="col-md-12 pl-md-1">
-              <label >모델료</label>
-              <div class="form-group">
-                <h5>{{item.a_3}} / {{item.a_6}} / {{item.a_12}}</h5>
-              </div>
+            <hr color = 'white' size='7px' width='100%' align='left'> 
 
-              <div class="form-group">
-                  <label for="exampleInputEmail1">연락처</label>
+              <h4><b>알파모델료 </b></h4>
+                <h5>{{item.mfee}}</h5>
+
+              <hr color = 'white' size='7px' width='100%' align='left'> 
+              <div class="form-group" >
+                <h4><b>연락처 </b></h4>
                   {%if item.dam %}
-                   <h5>{{item.dam}} : {{item.tel1}}</h5>
+                   <h5>{{item.dam}} : <a href="tel:{{item.tel1}}"> {{item.tel1}} </a></h5>
                    {%endif %}
                   {%if item.dam2 %}
-                    <h5>{{item.dam2}} : {{item.dam2tel}}</h5>
+                    <h5>{{item.dam2}} : <a href="tel:{{item.dam2tel}}"> {{item.dam2tel}} </a></h5>
                   {% endif %}
                   {%if item.dam3 %}
 
-                    <h5>{{item.dam3}} : {{item.dam3tel}}</h5>
+                    <h5>{{item.dam3}} : <a href="tel:{{item.dam3tel}}"> {{item.dam3tel}} </a></h5>
                   {% endif %}
+                  {%if item.mail1 %}
+
+                    <h5>이메일 : <a href="mailto:{{item.mail1}}"> {{item.mail1}} </a></h5>
+                  {% endif %}
+
+                  <hr color = 'white' size='7px' width='100%' align='left'> 
+                  <h4><b>개인 연락처 </b></h4>
+                  {%if item.ptel %}
+                    <h5>본인 :  <a href="tel:{{item.ptel}}"> {{item.ptel}} </a> </h5>
+                  {% else %}
+                    <h5>본인 : - </h5>
+                  {% endif %}
+
+                  <hr color = 'white' size='7px' width='100%' align='left'> 
                   <div class="form-group">
-                        <label for="exampleInputEmail1">인스타그램</label>
-                      {%if item.sns2%}  
-                        <h5> ID:  <a href="https://www.instagram.com/{{item.sns2}}/" > {{item.sns2}} </a> / 팔로워: {{item.insta_flw_str}}</h5>
+                      <h4><b>인스타그램 </b></h4>
+                      {% if item.sns2 %}  
+                        <h5> ID:  <a href="https://www.instagram.com/{{item.sns2}}/" > {{item.sns2}}  </a>  / 팔로워:  <a href="https://www.instagram.com/{{item.sns2}}/" > {{item.insta_flw_str}} </a> </h5>
                       {% else %}
                         SNS 계정이 확인되지 않아요 :<
                       {% endif %}
                     
                   </div>
+                  
+                  <hr color = 'white' size='7px' width='100%' align='left'> 
 
-                  <label>포인트</label>
+                  <h4><b>포인트 </b></h4>
                     {%for str in item.point_str %}
                       <h5>  {{str}} </h5>
                     {% endfor %}
@@ -96,17 +118,15 @@
                 
             </div>
           </div>
-          <hr color = 'white' size='7px' width='80%' align='left'> 
+          <hr color = 'white' size='7px' width='100%' align='left'> 
 
 
-          {% if celeb_cf %}
-            {% set token = Fasle %}
-            {% if not token %}
-              
+          {% if activities %}
+           
               <div >
                   <div class="form-check">
-                    <label class="form-check-label"> 현재이력만
-                      <h4 > 계약현황 </h4>
+                    <label class="form-check-label"> 
+                      <h4><b> 에스더 광고이력 </b></h4>
                       <input class="form-check-input" name='cf' type="checkbox" value="checked"  checked>
                       <span class="form-check-sign">
                         <span class="check"></span>
@@ -123,33 +143,44 @@
                   <th>브랜드명</th>
                   <th>계약품목</th>
                   <th>기간</th>
+                  <th>모델료</th>
                   <th>ON-AIR</th>
                   <th>계약중</th>
+                  <th>레디</th>
                   <th>불명</th>
                   <th>국가</th>
                   <th>입력자</th>
                   <th>입력일</th>
+                  <th>종료일</th>
 
-                  {% for cf in celeb_cf %}
-                    {% if  cf.dend < '2022.05.13'%}
-                      <tr name = 'cf_brand' class = '{{cf.dend.replace(".", "")}}' id= '{{cf.dend.replace(".", "")}}' style = "display: none;" >
+                  {% for cf in activities %}
+                    {% if cf.dend == "" %}
+                      <tr name = 'title' class = 'not_input' style = "display: none;" >
                     {% else %}
-                      <tr name = 'cf_brand' class = '{{cf.dend.replace(".", "")}}' id= '{{cf.dend.replace(".", "")}}'>
+                      {% if ('?' in cf.dend) and (cf.dend < '2022.05.13')%}
+                      <tr name = 'cf_brand' class = '{{cf.dend.replace("?", "_").replace(".", "")}}' id= '{{cf.dend.replace("?", "_").replace(".", "")}}' style = "display: none;" >
+                      {% elif  cf.dend < '2022.05.13'%}
+                        <tr name = 'cf_brand' class = '{{cf.dend.replace(".", "")}}' id= '{{cf.dend.replace(".", "")}}' style = "display: none;" >
+                      {% else %}
+                        <tr name = 'cf_brand' class = '{{cf.dend.replace(".", "")}}' id= '{{cf.dend.replace(".", "")}}'>
+                      {% endif %}
                     {% endif %}
                     
-                        <td>{{cf.brand}}</td>
-                        <td>{{cf.poom}}</td>
-                        <td>{{cf.imonth}}</td>
-                        <td>{{cf.dstart}}</td>
-                        <td>{{cf.dend}}</td>
-                        <td>{{cf.indefin}}</td>
-                        <td>{{cf.nation}}</td>
-                        <td>{{cf.writer}}</td>
-                        <td>{{cf.wrdate}}</td> 
+                        <td><h5>{{cf.brand}}</h5></td>
+                        <td><h5>{{cf.poom}}</h5></td>
+                        <td><h5>{{cf.imonth}}</h5></td>
+                        <td><h5>{{cf.fee}}</h5></td>
+                        <td><h5>{{cf.dstart}}</h5></td>
+                        <td><h5>{{cf.dend}}</h5></td>
+                        <td><h5>{{cf.rdjin}}</h5></td>
+                        <td><h5>{{cf.indefin}}</h5></td>
+                        <td><h5>{{cf.nation}}</h5></td>
+                        <td><h5>{{cf.writer}}</h5></td>
+                        <td><h5>{{cf.wrdate}}</h5></td> 
+                        <td><h5>{{cf.dend}}</h5></td>
 
                       </tr>
                   {% endfor %}
-                {%endif%}
               {%endif%}
             
                 </table>
@@ -158,257 +189,61 @@
               
               <!---------------------------------------------------------------------------------------------------------------->
 
-              <hr color = 'white' size='7px' width='80%' align='left'> 
+              <hr color = 'white' size='7px' width='100%' align='left'> 
 
-          <!-- 셀럽 활동현황 -->
-          {% if celeb_activity %}
+          <!-- 모델 통화메모 -->
+          {% if model_calls %}
               
-              <div >
-                  <div class="form-check">
-                    <label class="form-check-label"> 현재활동만
-                      <h4 > 활동현황 </h4>
-                      <input class="form-check-input" name='activity' type="checkbox" value="checked"  checked>
-                      <span class="form-check-sign">
-                        <span class="check"></span>
-                      </span>
-                    </label>
-                  </div>
-
+              <div class="form-check">
+                <label class="form-check-label"> 
+                  <h4 > 통화메모 </h4>
                 </label>
               </div>
 
-              <div id = 'cf_' class = "table-width" >
+              <div style="float:left;">
+                {%for call in model_calls %}
+                  <input type='button' class = 'call_title' id='{{call.rcode}}' name= 'call_title' value={{call.title}}/>
+                {% endfor %}
+
+              </div><br><br>
+
+              {%for call in model_calls %}
                 
-                <table border="1"  >
-                  <th>구분</th>
-                  <th>소분류</th>
-                  <th>프로그램명</th>
-                  <th>시작일</th>
-                  <th>종료일</th>
-                  <th>입력자</th>
-                  <th>입력일</th>
+                {% set token = call.memo %}
+                  <div class = "{{call.rcode}}" style = 'display : none;'>
+                    {%for call in token %}
+                      {% if call[0:3] == '202' or call[0:3] == '201'%}
+                        <br>
+                        <h5 style=" font:  bold 1.2em/1em Georgia;">{{call}}</h5>
+                      {% else %}
+                        <h5>{{call}}</h5> 
+                      {% endif %}
+                     
+                    {% endfor %}
+
+                    
+                    
+                  </div>
+              {% endfor %}
+              
                  
 
-                  {% for cf in celeb_activity %}
-                    {% if cf.dend == "" %}
-                      <tr name = 'title' class = 'not_input' style = "display: none;" >
-                    {% else %}
-                      {% if  cf.dend < '2022.05.13'%}
-                        <tr name = 'title' class = '{{cf.dend.replace(".", "")}}' id= '{{cf.dend.replace(".", "")}}' style = "display: none;" >
-                      {% else %}
-                       <tr name = 'title' class = '{{cf.dend.replace(".", "")}}' id= '{{cf.dend.replace(".", "")}}'>
-                      {% endif %}    
-                    {%endif%}
-                        <td>{{cf.gubun}}</td>
-                        <td>{{cf.gubun2}}</td>
-                        <td>{{cf.title}}</td>
-                        <td>{{cf.dstart}}</td>
-                        <td>{{cf.dend}}</td>
-                        <td>{{cf.writer}}</td>
-                        <td>{{cf.wrdate}}</td> 
-
-                      </tr>
-                  {% endfor %}
-                {%endif%}
-            
-                </table>
-              </div>
+          {%endif%}
+          <img  src="http://pic2.readymodel.kr/mdpic/{{item.codesys[0:3]}}/{{item.codesys[0:4]}}/{{item.codesys}}/sys_photo/pic.jpg" style="width:100%;">
         </div>
         
-          <div class="row">
-            <div class="col-md-6 pr-md-1">
-              <div class="form-group">
-                <label>First Name</label>
-                <input type="text" class="form-control" placeholder="Company" value="Mike">
-              </div>
-            </div>
-            <div class="col-md-6 pl-md-1">
-              <div class="form-group">
-                <label>Last Name</label>
-                <input type="text" class="form-control" placeholder="Last Name" value="Andrew">
-              </div>
-            </div>
-          </div>
-          <div class="row">
-            <div class="col-md-12">
-              <div class="form-group">
-                <label>Address</label>
-                <input type="text" class="form-control" placeholder="Home Address" value="Bld Mihail Kogalniceanu, nr. 8 Bl 1, Sc 1, Ap 09">
-              </div>
-            </div>
-          </div>
-          <div class="row">
-            <div class="col-md-4 pr-md-1">
-              <div class="form-group">
-                <label>City</label>
-                <input type="text" class="form-control" placeholder="City" value="Mike">
-              </div>
-            </div>
-            <div class="col-md-4 px-md-1">
-              <div class="form-group">
-                <label>Country</label>
-                <input type="text" class="form-control" placeholder="Country" value="Andrew">
-              </div>
-            </div>
-            <div class="col-md-4 pl-md-1">
-              <div class="form-group">
-                <label>Postal Code</label>
-                <input type="number" class="form-control" placeholder="ZIP Code">
-              </div>
-            </div>
-          </div>
-          <div class="row">
-            <div class="col-md-8">
-              <div class="form-group">
-                <label>About Me</label>
-                <textarea rows="4" cols="80" class="form-control" placeholder="Here can be your description" value="Mike">Lamborghini Mercy, Your chick she so thirsty, I'm in that two seat Lambo.</textarea>
-              </div>
-            </div>
-          </div>
+          
         </form>
       </div>
-      <div class="card-footer">
+     <!-- <div class="card-footer">
         <button type="submit" class="btn btn-fill btn-info">Save</button>
-      </div>
+      </div> -->
     </div>
   </div>
 
 
-  <div class="table-full-width table-responsive">
-    <table class="table">
-      <tbody>
-        <tr>
-          <td>
-            <div class="form-check">
-              <label class="form-check-label">
-                <input class="form-check-input" type="checkbox" value="">
-                <span class="form-check-sign">
-                  <span class="check"></span>
-                </span>
-              </label>
-            </div>
-          </td>
-          <td>
-            <p class="title">Update the Documentation</p>
-            <p class="text-muted">Dwuamish Head, Seattle, WA 8:47 AM</p>
-          </td>
-          <td class="td-actions text-right">
-            <button type="button" rel="tooltip" title="" class="btn btn-link" data-original-title="Edit Task">
-              <i class="tim-icons icon-pencil"></i>
-            </button>
-          </td>
-        </tr>
-        <tr>
-          <td>
-            <div class="form-check">
-              <label class="form-check-label">
-                <input class="form-check-input" type="checkbox" value="" checked="">
-                <span class="form-check-sign">
-                  <span class="check"></span>
-                </span>
-              </label>
-            </div>
-          </td>
-          <td>
-            <p class="title">GDPR Compliance</p>
-            <p class="text-muted">The GDPR is a regulation that requires businesses to protect the personal data and privacy of Europe citizens for transactions that occur within EU member states.</p>
-          </td>
-          <td class="td-actions text-right">
-            <button type="button" rel="tooltip" title="" class="btn btn-link" data-original-title="Edit Task">
-              <i class="tim-icons icon-pencil"></i>
-            </button>
-          </td>
-        </tr>
-        <tr>
-          <td>
-            <div class="form-check">
-              <label class="form-check-label">
-                <input class="form-check-input" type="checkbox" value="">
-                <span class="form-check-sign">
-                  <span class="check"></span>
-                </span>
-              </label>
-            </div>
-          </td>
-          <td>
-            <p >Solve the issues</p>
-            <p class="text-muted">Fifty percent of all respondents said they would be more likely to shop at a company </p>
-          </td>
-          <td class="td-actions text-right">
-            <button type="button" rel="tooltip" title="" class="btn btn-link" data-original-title="Edit Task">
-              <i class="tim-icons icon-pencil"></i>
-            </button>
-          </td>
-        </tr>
-        <tr>
-          <td>
-            <div class="form-check">
-              <label class="form-check-label">
-                <input class="form-check-input" type="checkbox" value="">
-                <span class="form-check-sign">
-                  <span class="check"></span>
-                </span>
-              </label>
-            </div>
-          </td>
-          <td>
-            <p class="title">Release v2.0.0</p>
-            <p class="text-muted">Ra Ave SW, Seattle, WA 98116, SUA 11:19 AM</p>
-          </td>
-          <td class="td-actions text-right">
-            <button type="button" rel="tooltip" title="" class="btn btn-link" data-original-title="Edit Task">
-              <i class="tim-icons icon-pencil"></i>
-            </button>
-          </td>
-        </tr>
-        <tr>
-          <td>
-            <div class="form-check">
-              <label class="form-check-label">
-                <input class="form-check-input" type="checkbox" value="">
-                <span class="form-check-sign">
-                  <span class="check"></span>
-                </span>
-              </label>
-            </div>
-          </td>
-          <td>
-            <p class="title">Export the processed files</p>
-            <p class="text-muted">The report also shows that consumers will not easily forgive a company once a breach exposing their personal data occurs. </p>
-          </td>
-          <td class="td-actions text-right">
-            <button type="button" rel="tooltip" title="" class="btn btn-link" data-original-title="Edit Task">
-              <i class="tim-icons icon-pencil"></i>
-            </button>
-          </td>
-        </tr>
-        <tr>
-          <td>
-            <div class="form-check">
-              <label class="form-check-label">
-                <input class="form-check-input" type="checkbox" value="">
-                <span class="form-check-sign">
-                  <span class="check"></span>
-                </span>
-              </label>
-            </div>
-          </td>
-          <td>
-            <p class="title">Arival at export process</p>
-            <p class="text-muted">Capitol Hill, Seattle, WA 12:34 AM</p>
-          </td>
-          <td class="td-actions text-right">
-            <button type="button" rel="tooltip" title="" class="btn btn-link" data-original-title="Edit Task">
-              <i class="tim-icons icon-pencil"></i>
-            </button>
-          </td>
-        </tr>
-      </tbody>
-    </table>
-  </div>
+  
 </div>
-
- 
 </div>
 
 

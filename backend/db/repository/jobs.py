@@ -1,4 +1,5 @@
 from ast import Str
+from asyncore import write
 from datetime import datetime, timedelta
 import imp
 from mmap import mmap
@@ -10,8 +11,8 @@ from sqlalchemy.sql.expression import func
 
 from sqlalchemy.orm import Session
 from schemas.jobs import JobCreate
-from db.models.jobs import Job
-from db.models.jobs import People, Chu19, Movsel, Mmeeting_proc, Yeon, SunokStar, SunokStarChu, SCount, Read, Mtel, Memo
+from db.models.jobs import Job, People2
+from db.models.jobs import People, Chu19, Movsel, Mmeeting_proc, Yeon, SunokStar, SunokStarChu, SCount, Read, Mtel, Memo, Section, ModelCF
 from db.models.yeons import RealTimeCF, RealTimeDRAMA
 from dateutil.relativedelta import relativedelta
 
@@ -225,33 +226,58 @@ def models_info(db: Session, codesys):
             Memo, Memo.code == People.codesys).filter(codesys == People.codesys)
         # 셀럽 세부정보
         yeon_detail = db.query(Yeon.codesys, Yeon.rno, Yeon.name, Yeon.sex, Yeon.age, Yeon.a_3, Yeon.a_6, Yeon.a_12, Yeon.height, People.coname, People.dam, People.tel1,
-                               People.dam2, People.dam2tel, People.dam3, People.dam3tel, People.sns2, People.insta_flw_str, Mtel.point2,
-                               RealTimeCF.brand, RealTimeCF.poom, RealTimeCF.imonth, RealTimeCF.fee, RealTimeCF.dstart, RealTimeCF.dend, RealTimeCF.indefin, RealTimeCF.nation, RealTimeCF.writer, RealTimeCF.wrdate
+                               People.dam2, People.dam2tel, People.dam3, People.dam3tel, People.sns2, People.insta_flw_str,  People.rdcode, Mtel.point2,
+                               RealTimeCF.brand, RealTimeCF.poom, RealTimeCF.imonth, RealTimeCF.fee, RealTimeCF.dstart, RealTimeCF.dend, RealTimeCF.indefin, RealTimeCF.nation, RealTimeCF.writer, RealTimeCF.wrdate, People2.mail1
                                ).join(Yeon, Yeon.codesys == People.codesys).join(Mtel, Mtel.mcode == People.codesys).join(
-            RealTimeCF, People.codesys == RealTimeCF.codesys).filter(codesys == Yeon.codesys)
+            RealTimeCF, People.codesys == RealTimeCF.codesys).join(People2, People.codesys == People2.codesys).filter(codesys == Yeon.codesys)
 
         yeon_activity = db.query(Yeon.codesys, Yeon.rno, Yeon.name, Yeon.sex, Yeon.age, Yeon.a_3, Yeon.a_6, Yeon.a_12, Yeon.height,
                                  RealTimeDRAMA.drgubun, RealTimeDRAMA.drgubun2, RealTimeDRAMA.title, RealTimeDRAMA.dstart, RealTimeDRAMA.dend, RealTimeDRAMA.writer, RealTimeDRAMA.wrdate).join(
             Yeon, Yeon.codesys == RealTimeDRAMA.codesys).filter(codesys == Yeon.codesys)
 
         # 일반모델 세부정보
-        model_detail = db.query(People.codesys, People.name, People.age, People.height, People.sex, People.coname, People.dam, People.tel1,
-                                People.dam2, People.dam2tel, People.dam3, People.dam3tel, People.sns2, People.insta_flw_str, Mtel.point2).join(
-            Mtel, Mtel.mcode == People.codesys).filter(codesys == People.codesys)
+        model_detail = db.query(People.codesys, People.name, People.age, People.height, People.sex, People.coname, People.dam, People.tel1, People.rdcode, People.mfee, People.bun,
+                                People.dam2, People.dam2tel, People.dam3, People.dam3tel, People.sns2, People.insta_flw_str, People.ptel, Mtel.point2, People2.bodysize, People2.mail1).join(
+            Mtel, Mtel.mcode == People.codesys).join(People2, People.codesys == People2.codesys).filter(codesys == People.codesys)
+
+        # 모델 섹션
+        model_section = db.query(
+            Section.no, Section.edit_time, Section.code, Section.title)
+
+        # 모델_에스더 광고이력
+        model_cf = db.query(ModelCF.brand, ModelCF.poom, ModelCF.imonth, ModelCF.fee, ModelCF.dstart, ModelCF.dend, ModelCF.rdjin, ModelCF.indefin, ModelCF.nation, ModelCF.writer, ModelCF.wrdate).filter(
+            codesys == ModelCF.codesys)
 
         if jsonable_encoder(yeon_detail[:]):
-            return yeon_detail, yeon_activity, call_memo
+
+            print('일반 k 모델입니다.')
+            model = jsonable_encoder(model_detail[0])
+            section = jsonable_encoder(model_section[:])
+            model_section = model['rdcode'].split('/')
+            title = []
+            aa = []
+
+            for i in range(len(section)):
+                if section[i]['code'] in model_section:
+                    title.append(section[i]['title'])
+
+            model['rdcode'] = "/".join(title)
+
+            return yeon_detail, yeon_activity, call_memo, 321
 
         else:
             print('일반 k 모델입니다.')
-            return model_detail, 123
+            model = jsonable_encoder(model_detail[0])
+            section = jsonable_encoder(model_section[:])
+            model_section = model['rdcode'].split('/')
+            title = []
+            aa = []
+
+            for i in range(len(section)):
+                if section[i]['code'] in model_section:
+                    title.append(section[i]['title'])
+
+            model['rdcode'] = "/".join(title)
+            return model, model_cf, call_memo, 123
     except:
         return 123
-
-    # 모델 세부정보
-    try:
-        model_detail
-        pass
-
-    except:
-        pass

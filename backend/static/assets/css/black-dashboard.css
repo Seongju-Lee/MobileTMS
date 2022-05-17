@@ -17391,6 +17391,8 @@ table.tablesorter thead tr .headerSortDown {
   z-index: 4;
   position: relative;
   overflow: auto;
+  padding-left: 35px;
+  padding-right: 35px;
 }
 
 .sidebar .sidebar-wrapper .dropdown .dropdown-backdrop,

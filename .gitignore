@@ -10,3 +10,5 @@ __pycache__
 .coverage
 # exclude htmlcov report folder
 htmlcov
+# 모델 섹션 값
+model.json

@@ -70,12 +70,20 @@ class People(Base):
     dam2tel = Column(String(20))
     dam3 = Column(String(20))
     dam3tel = Column(String(20))
+    ptel = Column(String(20))
     sns2 = Column(String(20))
     insta_flw_str = Column(String(20))
     bun = Column(String(20))  # 학교
     mfee = Column(String(20))  # 모델료 (매칭 필요)
     # people = relationship("Chu19", back_populates="chu")
     # chu = Chu19
+
+
+class People2(Base):
+    no = Column(Integer,  primary_key=True)
+    codesys = Column(String(20))
+    bodysize = Column(String(20))
+    mail1 = Column(String(100))
 
 
 class Yeon(Base):
@@ -150,3 +158,32 @@ class Memo(Base):
     title = Column(String(20))
     memo = Column(String(20))
     # mcode = Column(String(20), ForeignKey("yeon.codesys"))
+
+
+class Section(Base):
+    __tablename__ = "tree"
+
+    no = Column(Integer,  primary_key=True)
+    edit_time = Column(TIMESTAMP)
+    code = Column(String(20))
+    title = Column(String(20))
+
+
+class ModelCF(Base):
+    __tablename__ = "modelcf"
+
+    rno = Column(Integer,  primary_key=True)
+    edit_time = Column(TIMESTAMP)
+    rcode = Column(String(20))
+    codesys = Column(String(20))
+    rdjin = Column(String(20))
+    indefin = Column(String(20))
+    brand = Column(String(20))
+    poom = Column(String(20))
+    imonth = Column(Integer)
+    fee = Column(Integer)
+    dstart = Column(String(20))
+    dend = Column(String(20))
+    nation = Column(String(20))
+    writer = Column(String(20))
+    wrdate = Column(String(20))

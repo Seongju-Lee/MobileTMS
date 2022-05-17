@@ -24,6 +24,7 @@ from typing import Optional
 from fastapi.encoders import jsonable_encoder
 from striprtf.striprtf import rtf_to_text
 
+import json
 import pandas as pd
 
 templates = Jinja2Templates(directory="templates")
@@ -387,12 +388,13 @@ def model_info(req: Request, codesys: str = '', db: Session = Depends(get_db)):
 
     try:
         print('세부 정보 페이지 접속..', codesys)
-        info, yeon_activity, call_memo = models_info(db=db, codesys=codesys)
+        info, activities, call_memo, token = models_info(
+            db=db, codesys=codesys)
 
-        if not yeon_activity == 123:
+        if not token == 123:
             res = jsonable_encoder((info[:]))
             calls = jsonable_encoder((call_memo[:]))
-            activity = jsonable_encoder((yeon_activity[:]))
+            activity = jsonable_encoder((activities[:]))
             res_model = jsonable_encoder((info[0]))
             celeb_cf = []
             celeb_activity = []
@@ -415,21 +417,12 @@ def model_info(req: Request, codesys: str = '', db: Session = Depends(get_db)):
                                        'wrdate': m['wrdate']})
 
             for call in calls:
-                # print('pppp: ', call)
 
                 celeb_calls.append(
                     {'title': call['title'], 'memo': call['memo'].split('\r\n'), 'rcode': call['rcode']})
             res_model['point_str'] = res_model['point2'].split('\n')
 
-            print(celeb_calls[:])
-
-            # print(res_model)
-            # 세부정보
-            # rno를 api서버로 가져감. rno에 해당되는 Yeon.codesys를 조회함.
-            # 여기 없으면 People.codesys의 no으로 인식하고, rno와 일치하는 no에 해당하는People.codesys를 조회함.
-            # Yeon에서 가져온 경우에는 연예인 세부정보를 뿌려주고,
-            # People에서 가져온 경우에는 모델 세부정보를 뿌려준다.
-            
+            print('ppppp: ', res_model)
             return templates.TemplateResponse(
                 "page-user.html", {"request": req,
                                    'item': res_model,
@@ -439,17 +432,41 @@ def model_info(req: Request, codesys: str = '', db: Session = Depends(get_db)):
             )
 
         else:
-            res = jsonable_encoder((info[:]))
 
-            res_model = jsonable_encoder((info[0]))
+            calls = jsonable_encoder((call_memo[:]))
+            model_calls = []
+            res_model = info
             res_model['point2'] = rtf_to_text(res_model['point2'])
 
-            print('ppppp: ', res_model)
+            res_model['point_str'] = res_model['point2'].split('\n')
+            print('ppppp_kmodel: ', jsonable_encoder(activities[:]))
+
+            try:
+
+                with open("model.json", 'r', encoding='utf-8') as json_file:
+                    aa = json.load(json_file)
+                    res_model['mfee'] = aa['model_fee'][res_model['mfee']]
+                    # print(res_model)
+            except:
+                print('일치하는 모델료가 json파일에 없음.')
+
+            print('광고이력 개수: ', len(jsonable_encoder(activities[:])))
+
+            try:
+                for call in calls:
+                    model_calls.append(
+                        {'title': call['title'], 'memo': call['memo'].split('\r\n'), 'rcode': call['rcode']})
+
+                print('model_통화메모입니다.: ', model_calls)
+            except:
+                pass
 
             # 모델 전용 세부 페이지로 이동
             return templates.TemplateResponse(
                 "page-user_model.html", {"request": req,
-                                         'item': res_model}
+                                         'item': res_model,
+                                         'activities': jsonable_encoder(activities[:]),
+                                         "model_calls": model_calls}
             )
     except:
         pass

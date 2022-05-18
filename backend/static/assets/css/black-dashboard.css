@@ -17385,14 +17385,14 @@ table.tablesorter thead tr .headerSortDown {
 
 .sidebar .sidebar-wrapper,
 .off-canvas-sidebar .sidebar-wrapper {
-  width: 100%;
+  width: 90%;
   min-height: 100%;
   max-height: calc(100vh - 705px);
   z-index: 4;
   position: relative;
   overflow: auto;
-  padding-left: 35px;
-  padding-right: 35px;
+  /* padding-left: 35px;
+  padding-right: 35px; */
 }
 
 .sidebar .sidebar-wrapper .dropdown .dropdown-backdrop,

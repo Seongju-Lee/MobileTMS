@@ -43,14 +43,6 @@ def home(request: Request, db: Session = Depends(get_db)):
     )
 
 
-# @router.get("/detail/{id}")
-# def job_detail(id: int, request: Request, db: Session = Depends(get_db)):
-#     job = retrieve_job(id=id, db=db)
-#     return templates.TemplateResponse(
-#         "jobs/detail.html", {"request": request, "job": job}
-#     )
-
-
 ######################
 # 날짜, 성별, 연령 등 필터들 예외처리 해놔야 함.
 # 필터내용
@@ -59,14 +51,14 @@ def search_filter(req: Request, s_date: str = '', e_date: str = '', gender_m: st
                   s_img: str = '', e_img: str = '', s_fav: str = '', e_fav: str = '', s_act: str = '', e_act: str = '', s_age: str = '', e_age: str = '', model: str = '', celeb: str = '',
                   sort_thrdays: str = '', sort_movchoi: str = '', sort_proc: str = '', sort_register: str = '', sort_recommend: str = '', sort_s_count: str = '',
                   sort_realtime: str = '', sort_read: str = '', alpha_s_fee: str = '', alpha_e_fee: str = '', s_fee: str = '', e_fee: str = '',
-                  query: str = '',
+                  query: str = '', name: str = '', coname: str = '', manager: str = '', tel: str = '',
                   db: Session = Depends(get_db)):
 
     try:
         now_year = datetime.today().year
         years = [i for i in range(now_year-10, 1930, -1)]
         if not (sort_thrdays or sort_movchoi or sort_proc or sort_register or sort_recommend or sort_s_count
-                or sort_read or sort_realtime or query):
+                or sort_read or sort_realtime or name or coname or manager or tel):
             return templates.TemplateResponse(
                 "ui-icons.html", {"request": req}
             )
@@ -170,27 +162,30 @@ def search_filter(req: Request, s_date: str = '', e_date: str = '', gender_m: st
         ###########################################
         # 프로카운트
         elif sort_proc:
-            models = proc(db=db, s_date=s_date, e_date=e_date,
-                          gender_w=gender_w, gender_m=gender_m, s_age=s_age, e_age=e_age, model=model, celeb=celeb, sort_realtime=sort_realtime)
+            models, gubun = proc(db=db, s_date=s_date, e_date=e_date,
+                                 gender_w=gender_w, gender_m=gender_m, s_age=s_age, e_age=e_age, model=model, celeb=celeb, sort_realtime=sort_realtime)
 
-            print('섹션 구분: ', model, celeb)
+            print('섹션 구분: ', models, celeb)
             count_models = jsonable_encoder(models[:])
+            print('섹션 구분: ', count_models)
             filter_models = []
-            df = pd.DataFrame(count_models).groupby(
-                ['mcode', 'name']).count().reset_index()
+            if gubun == 'model':
+                df = pd.DataFrame(count_models).groupby(
+                    ['mcode', 'name', 'sex', 'age', 'coname', 'mfee', 'height']).count().reset_index()
 
-            search_models = df.values.tolist()
-            res = sorted(search_models, key=lambda x: x[2], reverse=True)
-            print(res[0])
+                search_models = df.values.tolist()
+                res = sorted(search_models, key=lambda x: x[2], reverse=True)
+                print(res[0])
 
-            for model in res:
-                filter_models.append(
-                    {'mcode': model[0], 'name': model[1], 'count': model[2]})
+                for model in res:
+                    filter_models.append(
+                        {'mcode': model[0], 'name': model[1], 'gender': model[2], 'age': model[3], 'coname': model[4], 'mfee': model[5],  'height': model[6], 'count': model[7]})
 
-            return templates.TemplateResponse(
-                "ui-icons.html", {"request": req,
-                                  "jobs": jsonable_encoder(filter_models[:])}
-            )
+                return templates.TemplateResponse(
+                    "ui-icons.html", {"request": req,
+                                      "jobs": jsonable_encoder(filter_models[:]),
+                                      "gubun": gubun}
+                )
 
         ###########################################
         # 순옥스타_최신등록순
@@ -302,14 +297,13 @@ def search_filter(req: Request, s_date: str = '', e_date: str = '', gender_m: st
         ###########################################
         # 셀럽검색_실베스타
         elif sort_realtime:
-
             model_list = []
             real_time_cf, real_time_activity = order_realtime(db=db,
                                                               gender_w=gender_w, gender_m=gender_m, s_age=s_age, e_age=e_age,
                                                               e_fee=e_fee, s_fee=s_fee)
 
-            procount = proc(db=db, s_date=s_date, e_date=e_date,
-                            gender_w=gender_w, gender_m=gender_m, s_age=s_age, e_age=e_age, model=model, celeb=celeb, sort_realtime=sort_realtime)
+            procount, gubun = proc(db=db, s_date=s_date, e_date=e_date,
+                                   gender_w=gender_w, gender_m=gender_m, s_age=s_age, e_age=e_age, model=model, celeb=celeb, sort_realtime=sort_realtime)
 
             count_models = jsonable_encoder(real_time_cf[:])
             count_models2 = jsonable_encoder(real_time_activity[:])
@@ -335,6 +329,7 @@ def search_filter(req: Request, s_date: str = '', e_date: str = '', gender_m: st
             count_models = jsonable_encoder(procount[:])
             df_proc = pd.DataFrame(count_models).groupby(
                 ['codesys', 'rno',  'name', 'sex', 'age', 'a_3', 'a_6', 'a_12']).count().reset_index()
+
             # ########################################
 
             df = pd.merge(df_cf, df_activities, how='outer',
@@ -358,18 +353,23 @@ def search_filter(req: Request, s_date: str = '', e_date: str = '', gender_m: st
 
             return templates.TemplateResponse(
                 "ui-icons.html", {"request": req,
-                                  "jobs": jsonable_encoder(res[:])}
+                                  "jobs": jsonable_encoder(res[:]),
+                                  'gubun': gubun}
             )
 
-        elif query:
-            models = search_job(db=db, query=query)
+        elif name or coname or tel or manager:
+            print('dddd')
+            models = search_job(
+                db=db, name=name, coname=coname, tel=tel, manager=manager)
 
             models_search = jsonable_encoder(models[:])
             print(models_search)
 
+            # gubun 이라는 키가 들어가 있는 models_search를 ui-icons로 보냄.
             return templates.TemplateResponse(
                 "ui-icons.html", {"request": req,
-                                  "jobs": models_search}
+                                  "jobs": models_search,
+                                  'gubun': 'model'}
             )
 
     except:
@@ -399,8 +399,9 @@ def model_info(req: Request, codesys: str = '', db: Session = Depends(get_db)):
             celeb_cf = []
             celeb_activity = []
             celeb_calls = []
-
             res_model['point2'] = rtf_to_text(res_model['point2'])
+            print('22222222222222222222222: ', res_model)
+
             i = 0
             for model in res:
                 res[i]['point2'] = rtf_to_text(model['point2'])
@@ -415,14 +416,17 @@ def model_info(req: Request, codesys: str = '', db: Session = Depends(get_db)):
                 # print(m)
                 celeb_activity.append({'gubun': m['drgubun'], 'gubun2': m['drgubun2'], 'title': m['title'], 'dstart': m['dstart'], 'dend': m['dend'], 'writer': m['writer'],
                                        'wrdate': m['wrdate']})
-
+            print('qqqqqq: ', calls)
             for call in calls:
 
-                celeb_calls.append(
-                    {'title': call['title'], 'memo': call['memo'].split('\r\n'), 'rcode': call['rcode']})
+                try:
+                    celeb_calls.append(
+                        {'title': call['title'], 'memo': call['memo'].split('\r\n'), 'rcode': call['rcode']})
+                except:
+                    pass
+
             res_model['point_str'] = res_model['point2'].split('\n')
 
-            print('ppppp: ', res_model)
             return templates.TemplateResponse(
                 "page-user.html", {"request": req,
                                    'item': res_model,
@@ -469,4 +473,5 @@ def model_info(req: Request, codesys: str = '', db: Session = Depends(get_db)):
                                          "model_calls": model_calls}
             )
     except:
+        print('에러 발생: ')
         pass

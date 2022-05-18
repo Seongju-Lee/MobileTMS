@@ -253,10 +253,12 @@
 
         $('.light-badge').click(function() {
           $('body').addClass('white-content');
+          $('#autocompletes').css('border-color', '#000000')
         });
 
         $('.dark-badge').click(function() {
           $('body').removeClass('white-content');
+          $('#autocompletes').css('border-color', '#ffffff')
         });
       });
     });

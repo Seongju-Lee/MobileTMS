@@ -87,25 +87,30 @@ def proc(db: Session, s_date, e_date, gender_w, gender_m, s_age, e_age, model, c
 
     if not sort_realtime:
         if (celeb) and (not model):
-            proc = db.query(Mmeeting_proc.mcode, People.name, Mmeeting_proc.edit_time, Mmeeting_proc.projcode).join(
+            proc = db.query(Mmeeting_proc.mcode, People.name, People.sex, People.age, People.coname,  People.height, Mmeeting_proc.edit_time, Mmeeting_proc.projcode).join(
                 People, Mmeeting_proc.mcode == People.codesys).filter((Mmeeting_proc.edit_time >= s_date) & (Mmeeting_proc.edit_time <= e_date)).filter((People.sex == gender_m) | (People.sex == gender_w)).filter(People.age >= e_age).filter(
                     People.rdcode.contains('TC')
             )
+
+            gubun = 'celeb'
         elif (model) and (not celeb):
-            proc = db.query(Mmeeting_proc.mcode, People.name, Mmeeting_proc.edit_time, Mmeeting_proc.projcode).join(
+            proc = db.query(Mmeeting_proc.mcode, People.name, People.sex, People.age, People.coname, People.mfee, People.height, Mmeeting_proc.edit_time, Mmeeting_proc.projcode).join(
                 People, Mmeeting_proc.mcode == People.codesys).filter((Mmeeting_proc.edit_time >= s_date) & (Mmeeting_proc.edit_time <= e_date)).filter((People.sex == gender_m) | (People.sex == gender_w)).filter(People.age >= e_age).filter(
                     not_(People.rdcode.contains('TC'))
             )
+            gubun = 'model'
         else:
             proc = db.query(Mmeeting_proc.mcode, People.name, Mmeeting_proc.edit_time, Mmeeting_proc.projcode).join(
                 People, Mmeeting_proc.mcode == People.codesys).filter((Mmeeting_proc.edit_time >= s_date) & (Mmeeting_proc.edit_time <= e_date)).filter((People.sex == gender_m) | (People.sex == gender_w)).filter(People.age >= e_age)
+            gubun = 'all'
 
     else:
         proc = db.query(Mmeeting_proc.mcode.label('codesys'), Yeon.rno, Yeon.name, Yeon.sex, Yeon.age, Yeon.a_3, Yeon.a_6, Yeon.a_12, Mmeeting_proc.edit_time, Mmeeting_proc.projcode).join(
             Yeon, Mmeeting_proc.mcode == Yeon.codesys).filter((Mmeeting_proc.edit_time >= s_date) & (Mmeeting_proc.edit_time <= e_date)).filter((Yeon.sex == gender_m) | (Yeon.sex == gender_w)).filter(Yeon.age >= e_age).filter(
                 Yeon.rdcode.contains('TC'))
+        gubun = 'celeb'
 
-    return proc
+    return proc, gubun
 
 
 # 순옥스타_최신등록순
@@ -200,11 +205,18 @@ def order_realtime(db: Session, gender_w, gender_m, s_age, e_age, s_fee, e_fee):
     return real_time_cf, real_time_activity
 
 
-def search_job(query: str, db: Session):
+def search_job(db: Session, name='', coname='', tel='', manager=''):
     # celeb = db.query(Yeon.codesys, Yeon.name, Yeon.sex, Yeon.age, Yeon.a_3, Yeon.a_6, Yeon.a_12,).filter(Yeon.name.contains(query))
 
-    models = db.query(People.codesys.label('mcode'), People.name, People.age,
-                      People.height, People.sex).filter(People.name.contains(query))
+    print(name, coname, tel, manager, 'aaaaaaaaaaaaaaaaaaaaaaaa')
+
+    models = db.query(People.codesys.label('mcode'), People.name, People.age, People.sex, People.coname, People.mfee,
+                      People.height, People.sex).filter(People.name.contains(name) & People.coname.contains(coname) & (People.dam.contains(manager) | People.dam2.contains(manager) | People.dam3.contains(manager)) &
+                                                        (People.tel1.contains(tel) | People.dam2tel.contains(tel) | People.dam3tel.contains(tel)) & People.ptel.contains(tel))
+
+    # 연예인, 모델 나누는 로직 짜서
+    # 리스트 에 'gubun'이라는 키 하나 생성해서 'model', 'celeb'을 값으로 나눠서 return
+
     return models
 
 
@@ -250,7 +262,6 @@ def models_info(db: Session, codesys):
 
         if jsonable_encoder(yeon_detail[:]):
 
-            print('일반 k 모델입니다.')
             model = jsonable_encoder(model_detail[0])
             section = jsonable_encoder(model_section[:])
             model_section = model['rdcode'].split('/')

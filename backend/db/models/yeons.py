@@ -23,7 +23,6 @@ class RealTimeCF(Base):
     wrdate = Column(String(20))
 
 
-
 class RealTimeDRAMA(Base):
     __tablename__ = "yeondrama_nv"
 

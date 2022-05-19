@@ -1,6 +1,7 @@
-<div class="card" style="width: 7.6rem; height: 12rem; padding-right: 18px; margin-right: auto; margin-left: auto;">
+<div class="card" style="width: 7.6rem; height: 18rem; padding-right: 18px; margin-right: auto; margin-left: auto;">
 
   <div class="rounded border border-warning" style="height: 300px">
+    <img  src="http://t0.gstatic.com/licensed-image?q=tbn:ANd9GcSwV2WQ5u8iRS0JY_TuKN9tzHctMI6HLJ-8PwBSS7hw728aUNUhqeVgLE9bF-mk" style="width:100px; height:100px">
     <h5 class="card-title">{{ obj.name }}</h5>
     <h5 class="card-title">{{ obj.gender }} / {{ obj.age }} / {{obj.height}}</h5>
     {%if obj.coname%}
@@ -8,7 +9,13 @@
     {% else %}
       <p class="card-text">소속사 : - </p>
     {% endif %}
+
+    {%if obj.mfee%}
     <p class="card-text">모델료 : {{ obj.mfee }}</p>
+    {% else %}
+    <p class="card-text">모델료 : - </p>
+    {% endif %}
+
 
     <div style= "position: absolute; top: 88%; left:15%;" >
     <p style= 'width: 100%'><a href="/detail/{{obj.mcode}}" style="color: #ffffff; background-color: #0098f0; border-color: #0098f0; width: 100%;">세부 정보</a>

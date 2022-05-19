@@ -7,32 +7,37 @@
 
 {% block content %}
 
-    <div class="row" style = 'width : 100%; '>
-        <ul class="nav" style = 'width : 100%;' >
+    <div class="row" style = 'width : 100%; margin-left:1% '>
+        
 
             <form method="GET" action="/filter" style = 'width : 100%;'>
+              <ul class="nav" style = 'width : 100%; ' >
 
-              <li>
+                <li style="width:40%; float: left; margin: auto;">
+                  성명<br>
+                  <input class="form-control me-2" style = 'border-color: #ffffff; width: 100%' id="autocompletes" name="name" type="search" placeholder="성명"><br>
+                  </li>
+                  
+                <li style="width:40%; float: left; margin: auto;">
+                  회사명<br>
+                  <input class="form-control me-2" style = 'border-color: #ffffff' id="autocompletes_coname" name="coname" type="search" placeholder="회사명"><br>
+                </li>
+
+                <li style="width:40%; float: left; margin: auto;">
+                  담당자<br>
+                  <input class="form-control me-2" style = 'border-color: #ffffff' id="autocompletes_manager" name="manager" type="search" placeholder="담당자"><br>
+                </li>
+                <li style="width:40%; float: left; margin: auto;">
+                  연락처<br>
+                  <input class="form-control me-2" style = 'border-color: #ffffff' id="autocompletes_tel" name="tel" type="search" placeholder="연락처"><br>
+                </li>
+
+              </ul>
               
-              성명<br>
-              <input class="form-control me-2" style = 'border-color: #ffffff; width: 100%' id="autocompletes" name="name" type="search" placeholder="성명"><br>
-              회사명<br>
-              <input class="form-control me-2" style = 'border-color: #ffffff' id="autocompletes" name="coname" type="search" placeholder="회사명"><br>
-              </li>
+              <button class="btn btn-outline-success" type="submit" style=" margin: auto; display: block;">Search</button>
 
-              <li>
-              담당자<br>
-              <input class="form-control me-2" style = 'border-color: #ffffff' id="autocompletes" name="manager" type="search" placeholder="담당자"><br>
-              연락처<br>
-              <input class="form-control me-2" style = 'border-color: #ffffff' id="autocompletes" name="tel" type="search" placeholder="연락처">
-              
-              <button class="btn btn-outline-success" type="submit">Search</button>
-            </li>
-
-              <br><br><br><br><br><br>
         </form>
            
-        </ul>
          
          
         

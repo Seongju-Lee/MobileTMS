@@ -9,9 +9,10 @@ from fastapi import Request, status, responses, Response, requests
 from fastapi.security.utils import get_authorization_scheme_param
 from fastapi.responses import HTMLResponse
 from fastapi.templating import Jinja2Templates
-from db.repository.jobs import list_jobs, search_job, list_models, chu_30, movchoi, proc, order_register, order_recommend, order_s_count, order_read
+from db.repository.jobs import list_jobs, search_job, list_models, chu_30, movchoi, proc, order_register, order_recommend, order_s_count, order_read, search_celeb
 from db.repository.jobs import retrieve_job, create_new_job, order_realtime, models_info
 from jinja2 import ModuleLoader
+from numpy import mod
 from pyparsing import col
 from sqlalchemy import String,  null
 from sqlalchemy.orm import Session
@@ -313,7 +314,7 @@ def search_filter(req: Request, s_date: str = '', e_date: str = '', gender_m: st
             df_cf = pd.DataFrame(count_models)
 
             df_cf = df_cf.groupby(
-                ['codesys', 'rno', 'name',  'sex', 'age', 'a_3', 'a_6', 'a_12']).count().reset_index()
+                ['codesys', 'rno', 'name',  'sex', 'age', 'a_3', 'a_6', 'a_12', 'isyeon']).count().reset_index()
             # ########################################
 
             # # ########################################
@@ -321,55 +322,64 @@ def search_filter(req: Request, s_date: str = '', e_date: str = '', gender_m: st
             df_activities = pd.DataFrame(count_models2)
 
             df_activities = df_activities.groupby(
-                ['codesys', 'rno', 'name',  'sex', 'age', 'a_3', 'a_6', 'a_12']).count().reset_index()
+                ['codesys', 'rno', 'name',  'sex', 'age', 'a_3', 'a_6', 'a_12', 'isyeon']).count().reset_index()
             # ########################################
 
             # ########################################
             # # 프로카운트 개수 뽑기
             count_models = jsonable_encoder(procount[:])
             df_proc = pd.DataFrame(count_models).groupby(
-                ['codesys', 'rno',  'name', 'sex', 'age', 'a_3', 'a_6', 'a_12']).count().reset_index()
+                ['codesys', 'rno',  'name', 'sex', 'age', 'a_3', 'a_6', 'a_12', 'isyeon']).count().reset_index()
 
             # ########################################
 
             df = pd.merge(df_cf, df_activities, how='outer',
-                          on=['codesys', 'rno', 'name',  'sex', 'age', 'a_3', 'a_6', 'a_12'])
+                          on=['codesys', 'rno', 'name',  'sex', 'age', 'a_3', 'a_6', 'a_12',  'isyeon'])
 
             df_realTime = pd.merge(df, df_proc, how='outer', on=[
-                'codesys', 'rno', 'name',  'sex', 'age', 'a_3', 'a_6', 'a_12'])
+                'codesys', 'rno', 'name',  'sex', 'age', 'a_3', 'a_6', 'a_12', 'isyeon'])
 
             df_realTime = df_realTime.fillna(0)
 
             search_models = df_realTime.values.tolist()
-
+            print('aaaadddd: ', search_models)
             for model in search_models:
-                sum = model[8]*3 + model[12]*3 + model[10]*1
+
+                sum = model[9]*3 + model[13]*3 + model[11]*1
                 model_list.append({'mcode': model[0], 'rno': model[1], 'name': model[2], 'gender': model[3], 'age': model[4], 'a_3': model[5],
-                                   'a_6': model[6], 'a_12': model[7], 'cf': model[9], 'activity': model[11], 'proc': model[13], 'sum': sum})
+                                   'a_6': model[6], 'a_12': model[7], 'isyeon': model[8], 'cf': model[9], 'activity': model[11], 'proc': model[13], 'sum': sum})
 
             res = sorted(model_list, key=lambda x: x['sum'], reverse=True)
-            for model in res:
-                print(model)
+            # for model in res:
+            #     print(model)
 
             return templates.TemplateResponse(
                 "ui-icons.html", {"request": req,
-                                  "jobs": jsonable_encoder(res[:]),
-                                  'gubun': gubun}
+                                  "jobs": jsonable_encoder(res[:])}
             )
 
         elif name or coname or tel or manager:
-            print('dddd')
             models = search_job(
                 db=db, name=name, coname=coname, tel=tel, manager=manager)
 
             models_search = jsonable_encoder(models[:])
             print(models_search)
+            celebs, kmodels = [], []
+            for model in models_search:
+                if model['isyeon'] == 'V':
+                    celeb = search_celeb(db=db, mcode=model['mcode'])
+                    search_celebs = jsonable_encoder(celeb[:])
+                    celebs.append(search_celebs[0])
+                else:
+                    kmodels.append(model)
 
+            jobs = celebs + kmodels
+            print('최종 검색 본: ', jobs)
             # gubun 이라는 키가 들어가 있는 models_search를 ui-icons로 보냄.
             return templates.TemplateResponse(
                 "ui-icons.html", {"request": req,
-                                  "jobs": models_search,
-                                  'gubun': 'model'}
+                                  "kmodels": kmodels,
+                                  "jobs": jobs}
             )
 
     except:

@@ -1,5 +1,6 @@
 
-    <div class="sidebar">
+
+    <div class="sidebar" >
       <div class="sidebar-wrapper">
         <div class="logo">
        
@@ -8,65 +9,125 @@
           </a>
         </div>
 
-        <ul class="nav">
+        <ul class="nav" >
           <li class="{% if 'index' in segment %} active {% endif %}">
 
-            <form method="GET" action="/filter">
+            <form method="GET" action="/filter" >
 
-              <li>
-              검색 기간<br>
-              <input type='date' name='s_date' id='date1' value='2022-02-01'/>
-              <input type='date' name='e_date' id='date2' value='2022-05-01'/><br><br>
-              </li>
+              
               성별<br>
               <label><input type="checkbox" name="gender_m" value="man" checked> 남자</label>
               <label><input type="checkbox" name="gender_w" value="woman" checked> 여자</label> <br><br>
             
-              구분<br>
-              <label><input type="checkbox" name="model" value="not_tc"> 모델</label>
-              <label><input type="checkbox" name="celeb" value="tc"> 셀럽</label> <br><br>
+              연령<br>
+              <input  type="text" name="alpha_s_fee" value = 26(1997) style="width:40%; border: 1px solid #cad1d7; background-color: transparent; color: #ffffff;"> ~ <input  type="text" name="alpha_e_fee" value = 46(1977) style=" width:40%; border: 1px solid #cad1d7; background-color: transparent; color: #ffffff;"><br><br>
+              <button class="btns" type="submit" style="background-color: #344675; color: #ffffff; margin-top: 10px;" >10대</button>
+              <button class="btns" type="submit" style="background-color: #344675; color: #ffffff; margin-top: 10px;" >20대</button>
+              <button class="btns" type="submit" style="background-color: #344675; color: #ffffff; margin-top: 10px;" >30대</button>
+              <button class="btns" type="submit" style="background-color: #344675; color: #ffffff; margin-top: 10px;" >40대</button>
+              <button class="btns" type="submit" style="background-color: #344675; color: #ffffff; margin-top: 10px;" >50대 이상</button><br>
+              
+             
+              <br> <br>
+
+              <label>구분</label><br>
+              <label><input type="checkbox" name="chk_model" value="not_tc"> 모델</label>
+              <label><input type="checkbox" name="chk_celeb" value="tc"> 셀럽</label> <br><br>
 
             
-              <label> 알파모델료</label><br>
-              <input type="text" name="alpha_s_fee" value = 0 style="width:40px"> ~ <input type="text" name="alpha_e_fee" value = 600 style="width:40px"><br><br>
-              <label> 셀럽 모델료</label> <br>
-              <input type="text" name="s_fee" value = 0.0 style="width:40px"> ~ <input type="text" name="e_fee" value = 5 style="width:40px"><br>
-              <br><br>
+              
+              
 
-              연령<br>
-              <select name="s_age" id="s_age" value="s_age">
-                {% for year in years %}
-                  <option value = "{{year}}"> {{now_year - year + 1}}세({{year}}년)</option>
-                {% endfor%}
-              </select> ~ <select name="e_age" id="e_age" value="e_age">
-                {% for year in years %}
+              <div class='chu' style="display:none">
+
+                <label> 알파모델료</label><br>
+                <input type="text" name="alpha_s_fee" value = 0 style="width:40px"> ~ <input type="text" name="alpha_e_fee" value = 600 style="width:40px"><br><br>
+                <label><input type="checkbox" name="sort_thrdays" value="thrdays"> 상훈페이</label>
+                <label><input type="checkbox" name="sort_thrdays" value="thrdays"> 150~300</label><br>
+                <label><input type="checkbox" name="sort_thrdays" value="thrdays"> 350~500</label>
+                <label><input type="checkbox" name="sort_thrdays" value="thrdays"> 550~1000</label>
+                <label><input type="checkbox" name="sort_thrdays" value="thrdays"> 1100~1500</label>
+                <label><input type="checkbox" name="sort_thrdays" value="thrdays"> 1600~2000</label>
+                <label><input type="checkbox" name="sort_thrdays" value="thrdays"> 2100~4000</label>
+                <label><input type="checkbox" name="sort_thrdays" value="thrdays"> 4100~</label><br><br>
+
+                추천<br>
+                이미지 <input  type="text" name="s_img" value = 0 style="width:40px; border: 1px solid #cad1d7; background-color: transparent; color: #ffffff;"> <input  type="text" name="e_img" value = 100 style="width:40px; border: 1px solid #cad1d7; background-color: transparent; color: #ffffff;"><br>
+                호감도 <input  ype="text" name="s_fav" value = 0 style="width:40px; border: 1px solid #cad1d7; background-color: transparent; color: #ffffff;"> <input  type="text" name="e_fav"  value = 100 style="width:40px; border: 1px solid #cad1d7; background-color: transparent; color: #ffffff;"><br>
+                연기력 <input  type="text" name="s_act" value = 0 style="width:40px; border: 1px solid #cad1d7; background-color: transparent; color: #ffffff;"> <input  type="text" name="e_act" value = 0  style="width:40px; border: 1px solid #cad1d7; background-color: transparent; color: #ffffff;"> 
+                
+                <br><br>
+                정렬<br>
+                <label><input type="checkbox" name="sort_thrdays" value="thrdays"> 30일추천</label>
+                <label><input type="checkbox" name="sort_movchoi" value="movchoi"> 영상초이</label>
+                <label><input type="checkbox" name="sort_proc" value="proc"> 프로카운트</label> <br>
+
+
+                <input type="checkbox" name="btn_char" style="background-color: #344675; color: #ffffff; margin-top: 10px; " />캐릭터<br><br>
+
+                <div  class="check-list"  style="display:none;  ">
+                  <label><b>이케아</b></label>
+                  <ul style=" float: left; margin: auto;">
+                    <li><input type="checkbox" />숏컷/단발 여자 </li>
+                    <li><input type="checkbox" />장발 남자</li>
+                    <li><input type="checkbox" />민머리 남자 </li>
+                    <li><input type="checkbox" />탈모 남자 </li>
+                    <li><input type="checkbox" />쌍둥이 </li>
+                    <li><input type="checkbox" />혼혈 </li>
+                    <li><input type="checkbox" />주근깨</li>
+                    <hr color = 'white' size='7px' width='100%' align='left'> 
+                    <li><input type="checkbox" />전문 헤어/손/발 모델</li>
+                    <li><input type="checkbox" />헐크 / 바디</li>
+                    <li><input type="checkbox" />뚱뚱</li>
+                    <li><input type="checkbox" />코믹/엽기/오타쿠</li>
+                    <li><input type="checkbox" />타투/피어싱</li>
+                    <hr color = 'white' size='7px' width='100%' align='left'> 
+                    <li><input type="checkbox" />열정</li>
+                    <li><input type="checkbox" />중성매력</li>
+                    <li><input type="checkbox" />닮은꼴</li>
+                    <li><input type="checkbox" />쌘캐/독캐</li>
+                    <li><input type="checkbox" />헤어염색/핑키/할리퀸</li>
+                    <hr color = 'white' size='7px' width='100%' align='left'> 
+                    <li><input type="checkbox" />사투리</li>
+                    <li><input type="checkbox" />보이스</li>
+                  </ul>
+                 
+                  <label><b>레케아</b></label>
+                  <hr color = 'red' size='7px' width='100%' align='left'> 
+                  <ul class="rchar" style=" margin: auto;">
+                    <li><input type="checkbox"/>Apple </li>
+                    <li><input type="checkbox" />Orange</li>
+                    <li><input type="checkbox" />Grapes </li>
+                    <li><input type="checkbox" />Berry </li>
+                    <li><input type="checkbox" />Mango </li>
+                    <li><input type="checkbox" />Banana </li>
+                    <li><input type="checkbox" />Tomato</li>
+                  </ul>
                   
-                  <option value = "{{year}}"> {{now_year - year + 1}}세({{year}}년)</option>
-                  
-                {% endfor%}
-              </select>
-              <br> <br>
-              추천<br>
-              이미지 <input type="text" name="s_img" value = 0 style="width:40px"> <input type="text" name="e_img" value = 30 style="width:40px"><br>
-              호감도 <input type="text" name="s_fav" value = 0 style="width:40px"> <input type="text" name="e_fav"  value = 30 style="width:40px"><br>
-              연기력 <input type="text" name="s_act" value = 0 style="width:40px"> <input type="text" name="e_act" value = 30  style="width:40px"> 
-             <br><br>
-              정렬<br>
-              <label><input type="checkbox" name="sort_thrdays" value="thrdays"> 30일추천</label>
-              <label><input type="checkbox" name="sort_movchoi" value="movchoi"> 영상초이</label>
-              <label><input type="checkbox" name="sort_proc" value="proc"> 프로카운트</label> <br><br>
-              순옥스타_정렬<br>
-              <label><input type="checkbox" name="sort_register" value="order_register"> 최신등록순</label>
-              <label><input type="checkbox" name="sort_recommend" value="recommend"> 추천순</label>
-              <label><input type="checkbox" name="sort_s_count" value="s_count"> S카운트순</label> <br><br>
-     
-              셀럽검색<br>
-              <label><input type="checkbox" name="sort_realtime" value="order_realtime"> 실베스타</label>
-              <label><input type="checkbox" name="sort_read" value="read"> 열람횟수</label> <br><br>
+                </div>
+
+
+                <br><br>
+              </div>
+              <div class='star' style="display:none">
+
+                <label> 셀럽 모델료</label> <br>
+                <input type="text" name="s_fee" value = 0.0 style="width:40px"> ~ <input type="text" name="e_fee" value = 5 style="width:40px"><br>
+                <br><br>
+
+                순옥스타_정렬<br>
+                <label><input type="checkbox" name="sort_register" value="order_register"> 최신등록순</label>
+                <label><input type="checkbox" name="sort_recommend" value="recommend"> 추천순</label>
+                <label><input type="checkbox" name="sort_s_count" value="s_count"> S카운트순</label> <br><br>
+      
+                셀럽검색<br>
+                <label><input type="checkbox" name="sort_realtime" value="order_realtime"> 실베스타</label>
+                <label><input type="checkbox" name="sort_read" value="read"> 열람횟수</label> <br><br>
+
+              </div>
+              <button class="btn btn-outline-success" type="submit">Search</button>
 
               
-              <input class="form-control me-2" id="autocomplete" name="query" type="search" placeholder="Search" aria-label="Search">
-              <button class="btn btn-outline-success" type="submit">Search</button>
 
               <br><br><br><br><br><br>
         </form>

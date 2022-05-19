@@ -4,6 +4,7 @@ from datetime import datetime, timedelta
 import imp
 from mmap import mmap
 from ntpath import join
+from pickle import PERSID
 from fastapi.encoders import jsonable_encoder
 from numpy import sort
 from sqlalchemy import between, desc, not_
@@ -105,8 +106,8 @@ def proc(db: Session, s_date, e_date, gender_w, gender_m, s_age, e_age, model, c
             gubun = 'all'
 
     else:
-        proc = db.query(Mmeeting_proc.mcode.label('codesys'), Yeon.rno, Yeon.name, Yeon.sex, Yeon.age, Yeon.a_3, Yeon.a_6, Yeon.a_12, Mmeeting_proc.edit_time, Mmeeting_proc.projcode).join(
-            Yeon, Mmeeting_proc.mcode == Yeon.codesys).filter((Mmeeting_proc.edit_time >= s_date) & (Mmeeting_proc.edit_time <= e_date)).filter((Yeon.sex == gender_m) | (Yeon.sex == gender_w)).filter(Yeon.age >= e_age).filter(
+        proc = db.query(Mmeeting_proc.mcode.label('codesys'), Yeon.rno, Yeon.name, Yeon.sex, Yeon.age, Yeon.a_3, Yeon.a_6, Yeon.a_12, Mmeeting_proc.edit_time, Mmeeting_proc.projcode, People.isyeon).join(
+            Yeon, Mmeeting_proc.mcode == Yeon.codesys).join(People, People.codesys == Yeon.codesys).filter((Mmeeting_proc.edit_time >= s_date) & (Mmeeting_proc.edit_time <= e_date)).filter((Yeon.sex == gender_m) | (Yeon.sex == gender_w)).filter(Yeon.age >= e_age).filter(
                 Yeon.rdcode.contains('TC'))
         gubun = 'celeb'
 
@@ -192,13 +193,13 @@ def order_realtime(db: Session, gender_w, gender_m, s_age, e_age, s_fee, e_fee):
 
     print((year) + '.' + month + '.' + day)
     # 셀럽 계약현황
-    real_time_cf = db.query(Yeon.codesys, Yeon.rno, Yeon.name, Yeon.sex, Yeon.age, Yeon.a_3, Yeon.a_6, Yeon.a_12, RealTimeCF.brand, RealTimeCF.dend.label('cf_dend')).join(
-        RealTimeCF, Yeon.codesys == RealTimeCF.codesys).filter(
+    real_time_cf = db.query(Yeon.codesys, Yeon.rno, Yeon.name, Yeon.sex, Yeon.age, Yeon.a_3, Yeon.a_6, Yeon.a_12, RealTimeCF.brand, RealTimeCF.dend.label('cf_dend'), People.isyeon).join(
+        RealTimeCF, Yeon.codesys == RealTimeCF.codesys).join(People, People.codesys == Yeon.codesys).filter(
             (RealTimeCF.dend >= (year) + '.' + month + '.' + day)).filter((Yeon.a_3 >= s_fee) & (Yeon.a_3 <= e_fee)).filter((Yeon.sex == gender_m) | (Yeon.sex == gender_w)).filter(Yeon.age >= e_age)
 
     # 활동내역
-    real_time_activity = db.query(Yeon.codesys, Yeon.rno, Yeon.name, Yeon.sex, Yeon.age, Yeon.a_3, Yeon.a_6, Yeon.a_12, RealTimeDRAMA.title, RealTimeDRAMA.dend.label('drama_dend')).join(
-        RealTimeDRAMA, Yeon.codesys == RealTimeDRAMA.codesys).filter(
+    real_time_activity = db.query(Yeon.codesys, Yeon.rno, Yeon.name, Yeon.sex, Yeon.age, Yeon.a_3, Yeon.a_6, Yeon.a_12, RealTimeDRAMA.title, RealTimeDRAMA.dend.label('drama_dend'), People.isyeon).join(
+        RealTimeDRAMA, Yeon.codesys == RealTimeDRAMA.codesys).join(People, People.codesys == Yeon.codesys).filter(
             (RealTimeDRAMA.dend >= (year) + '.' + month + '.' + day)).filter((Yeon.a_3 >= s_fee) & (Yeon.a_3 <= e_fee)).filter((Yeon.sex == gender_m) | (Yeon.sex == gender_w)).filter(Yeon.age >= e_age)
 
     # 셀럽 프로카운트는 mmeeting_proc 에서
@@ -210,13 +211,35 @@ def search_job(db: Session, name='', coname='', tel='', manager=''):
 
     print(name, coname, tel, manager, 'aaaaaaaaaaaaaaaaaaaaaaaa')
 
-    models = db.query(People.codesys.label('mcode'), People.name, People.age, People.sex, People.coname, People.mfee,
-                      People.height, People.sex).filter(People.name.contains(name) & People.coname.contains(coname) & (People.dam.contains(manager) | People.dam2.contains(manager) | People.dam3.contains(manager)) &
-                                                        (People.tel1.contains(tel) | People.dam2tel.contains(tel) | People.dam3tel.contains(tel)) & People.ptel.contains(tel))
+    # is_yeon = db.query(People.isyeon).filter(People.isyeon.contains('V'))
+    # if is_yeon:
+    #     models = db.query(People.codesys.label('mcode'), People.name, People.age, People.sex.label('gender'), People.coname, People.mfee,
+    #                       People.height, People.sex, Yeon.a_3, Yeon.a_6, Yeon.a_12, People.isyeon).join(Yeon, Yeon.codesys == People.codesys).filter(People.name.contains(name) & People.coname.contains(coname) & (People.dam.contains(manager) | People.dam2.contains(manager) | People.dam3.contains(manager)) &
+    #                                                                                                                                                  (People.tel1.contains(tel) | People.dam2tel.contains(tel) | People.dam3tel.contains(tel)) & People.ptel.contains(tel))
+    # else:
+    models = db.query(People.codesys.label('mcode'), People.name, People.age, People.sex.label('gender'), People.coname, People.mfee,
+                      People.height, People.sex, People.isyeon).filter(People.name.contains(name) & People.coname.contains(coname) & (People.dam.contains(manager) | People.dam2.contains(manager) | People.dam3.contains(manager)) &
+                                                                       (People.tel1.contains(tel) | People.dam2tel.contains(tel) | People.dam3tel.contains(tel)) & People.ptel.contains(tel))
 
     # 연예인, 모델 나누는 로직 짜서
     # 리스트 에 'gubun'이라는 키 하나 생성해서 'model', 'celeb'을 값으로 나눠서 return
 
+    print('안녕하세요: ', jsonable_encoder(models[:]))
+    return models
+
+
+def search_celeb(db: Session, mcode):
+    # celeb = db.query(Yeon.codesys, Yeon.name, Yeon.sex, Yeon.age, Yeon.a_3, Yeon.a_6, Yeon.a_12,).filter(Yeon.name.contains(query))
+
+    print('안녕하세요222: ', mcode)
+
+    models = db.query(People.codesys.label('mcode'), People.name, People.age, People.sex.label('gender'), People.coname, People.mfee,
+                      People.height, People.sex, Yeon.a_3, Yeon.a_6, Yeon.a_12, People.isyeon).join(Yeon, Yeon.codesys == People.codesys).filter(People.codesys == mcode)
+
+    # 연예인, 모델 나누는 로직 짜서
+    # 리스트 에 'gubun'이라는 키 하나 생성해서 'model', 'celeb'을 값으로 나눠서 return
+
+    print('안녕하세요222: ', jsonable_encoder(models[:]))
     return models
 
 

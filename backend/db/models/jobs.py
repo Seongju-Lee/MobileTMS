@@ -1,6 +1,6 @@
 from ast import Str
 from sre_compile import MAXCODE
-from sqlalchemy import Column, Integer, String, Date, Boolean, ForeignKey, TIMESTAMP, desc, Text
+from sqlalchemy import Column, Integer, String, Date, Boolean, ForeignKey, TIMESTAMP, column, desc, Text
 from sqlalchemy.orm import relationship
 from db.base_class import Base
 
@@ -75,6 +75,7 @@ class People(Base):
     insta_flw_str = Column(String(20))
     bun = Column(String(20))  # 학교
     mfee = Column(String(20))  # 모델료 (매칭 필요)
+    isyeon = Column(String(20))
     # people = relationship("Chu19", back_populates="chu")
     # chu = Chu19
 

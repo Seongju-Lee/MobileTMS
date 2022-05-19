@@ -169,6 +169,66 @@
 //////////////////////
 
 
+
+
+
+
+
+
+///////////////////// 모델 & 셀럽 선택
+
+            $('input[name="chk_model"]').click(function(){
+
+              var _ischecked = $('input:checkbox[name="chk_model"]').is(":checked");
+
+              if (_ischecked) 
+                $('.chu').show();
+              else
+                $('.chu').hide();
+              }
+            );
+
+            $('input[name="chk_celeb"]').click(function(){
+
+              var _ischecked = $('input:checkbox[name="chk_celeb"]').is(":checked");
+
+              if (_ischecked) 
+
+                $('.star').show();
+                
+              else
+                $('.star').hide();
+              }
+
+
+            );
+
+/////////////////////
+
+
+///////////////////// 이케아/ 레케아
+
+            $('input[name="btn_char"]' ).click(function(){
+
+              var _ischecked = $('input:checkbox[name="btn_char"]').is(":checked");
+              
+              if ( _ischecked ){
+
+                $('.check-list').show();
+                console.log($('.sidebar-wrapper').css("overflow-y"))
+                console.log($('.sidebar-wrapper').css("overflow-x"))
+              }
+              else
+                $('.check-list').hide();
+                console.log($('.sidebar-wrapper').css("overflow-y"))
+                console.log($('.sidebar-wrapper').css("overflow-x"))
+              }
+            );
+
+/////////////////////
+
+
+
         $('.fixed-plugin a').click(function(event) {
           if ($(this).hasClass('switch-trigger')) {
             if (event.stopPropagation) {
@@ -254,11 +314,17 @@
         $('.light-badge').click(function() {
           $('body').addClass('white-content');
           $('#autocompletes').css('border-color', '#000000')
+          $('#autocompletes_coname').css('border-color', '#000000')
+          $('#autocompletes_manager').css('border-color', '#000000')
+          $('#autocompletes_tel').css('border-color', '#000000')
         });
 
         $('.dark-badge').click(function() {
           $('body').removeClass('white-content');
           $('#autocompletes').css('border-color', '#ffffff')
+          $('#autocompletes_coname').css('border-color', '#ffffff')
+          $('#autocompletes_manager').css('border-color', '#ffffff')
+          $('#autocompletes_tel').css('border-color', '#ffffff')
         });
       });
     });

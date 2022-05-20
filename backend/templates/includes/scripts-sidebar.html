@@ -17,6 +17,12 @@
         fixed_plugin_open = $('.sidebar .sidebar-wrapper .nav li.active a p').html();
 
 
+        var now = new Date();
+
+        $('#s_age').val('10' + '(' + (now.getFullYear() - 9) + ')') 
+        $('#e_age').val('100' + '(' + (now.getFullYear() - 99) + ')')
+
+
         $('input[name="cf"]').click(function(){
 
 
@@ -208,26 +214,95 @@
 
 ///////////////////// 이케아/ 레케아
 
-            $('input[name="btn_char"]' ).click(function(){
+            $('input[name="btn_echar"]' ).click(function(){
 
-              var _ischecked = $('input:checkbox[name="btn_char"]').is(":checked");
+              var _ischecked = $('input:checkbox[name="btn_echar"]').is(":checked");
               
               if ( _ischecked ){
 
-                $('.check-list').show();
+                $('.check-list_echar').show();
                 console.log($('.sidebar-wrapper').css("overflow-y"))
                 console.log($('.sidebar-wrapper').css("overflow-x"))
               }
               else
-                $('.check-list').hide();
+                $('.check-list_echar').hide();
                 console.log($('.sidebar-wrapper').css("overflow-y"))
                 console.log($('.sidebar-wrapper').css("overflow-x"))
               }
             );
 
+            $('input[name="btn_rchar"]' ).click(function(){
+
+              var _ischecked = $('input:checkbox[name="btn_rchar"]').is(":checked");
+              
+              if ( _ischecked ){
+
+                $('.check-list_rchar').show();
+                console.log($('.sidebar-wrapper').css("overflow-y"))
+                console.log($('.sidebar-wrapper').css("overflow-x"))
+              }
+              else
+                $('.check-list_rchar').hide();
+                console.log($('.sidebar-wrapper').css("overflow-y"))
+                console.log($('.sidebar-wrapper').css("overflow-x"))
+              }
+            );
+            
 /////////////////////
 
+            $('input[name="chk_age"]' ).click(function(){
 
+              // var _ischecked = $('input:checkbox[name="chk_age"]').is(":checked");
+
+              var _is10 = $('#ages_10').is(":checked");
+              var _is20 = $('#ages_20').is(":checked");
+              var _is30 = $('#ages_30').is(":checked");
+              var _is40 = $('#ages_40').is(":checked");
+              var _is50 = $('#ages_50').is(":checked");
+
+              var chk_ages = new Array();
+              var age_arange = new Array();
+              var a_all = new Array();
+
+              $("input[name='chk_age']:checked").each(function(index, name) { 
+                var tmpVal = $(name).val(); 
+                chk_ages.push(tmpVal);
+              });
+              
+              console.log(chk_ages)
+
+              
+              var a_10 = ['10' + '(' + ({{now_year}}- 9) + ')', '19' + '(' + ({{now_year}}- 18) + ')', '10'] 
+              var a_20 = ['20' + '(' + ({{now_year}}- 19) + ')', '29' + '(' + ({{now_year}}- 28) + ')', '20'] 
+              var a_30 = ['30' + '(' + ({{now_year}}- 29) + ')', '39' + '(' + ({{now_year}}- 38) + ')', '30'] 
+              var a_40 = ['40' + '(' + ({{now_year}}- 39) + ')', '49' + '(' + ({{now_year}}- 48) + ')', '40'] 
+              var a_50 = ['50' + '(' + ({{now_year}}- 49) + ')', '100' + '(' + ({{now_year}}- 99) + ')', '50'] 
+        
+              for(j = 0; j< 5; j++){
+                a_all.push(a_10, a_20, a_30, a_40, a_50)
+              }
+             
+              if (chk_ages){
+                for(i = 0; i< chk_ages.length; i++){
+                  for(j = 0; j< 5; j++){
+                    if(chk_ages[i] == a_all[j][2]){
+                      age_arange.push(a_all[j])
+                    }
+                  }
+                }
+                console.log(age_arange)
+                $('#s_age').val(age_arange[0][0])
+                $('#e_age').val(age_arange[chk_ages.length-1][1])
+                
+              }
+
+              else
+                $('.check-list_rchar').hide();
+              
+              }
+            );
+
+///////////////////////////
 
         $('.fixed-plugin a').click(function(event) {
           if ($(this).hasClass('switch-trigger')) {

@@ -1,5 +1,3 @@
-
-
     <div class="sidebar" >
       <div class="sidebar-wrapper">
         <div class="logo">
@@ -14,18 +12,24 @@
 
             <form method="GET" action="/filter" >
 
+              <li style='display:none'>
+                검색 기간<br>
+                <input type='date' name='s_date' id='date1' value='2022-02-01'/>
+                <input type='date' name='e_date' id='date2' value='2022-05-01'/><br><br>
+              </li>
               
               성별<br>
               <label><input type="checkbox" name="gender_m" value="man" checked> 남자</label>
               <label><input type="checkbox" name="gender_w" value="woman" checked> 여자</label> <br><br>
             
               연령<br>
-              <input  type="text" name="alpha_s_fee" value = 26(1997) style="width:40%; border: 1px solid #cad1d7; background-color: transparent; color: #ffffff;"> ~ <input  type="text" name="alpha_e_fee" value = 46(1977) style=" width:40%; border: 1px solid #cad1d7; background-color: transparent; color: #ffffff;"><br><br>
-              <button class="btns" type="submit" style="background-color: #344675; color: #ffffff; margin-top: 10px;" >10대</button>
-              <button class="btns" type="submit" style="background-color: #344675; color: #ffffff; margin-top: 10px;" >20대</button>
-              <button class="btns" type="submit" style="background-color: #344675; color: #ffffff; margin-top: 10px;" >30대</button>
-              <button class="btns" type="submit" style="background-color: #344675; color: #ffffff; margin-top: 10px;" >40대</button>
-              <button class="btns" type="submit" style="background-color: #344675; color: #ffffff; margin-top: 10px;" >50대 이상</button><br>
+              <input  type="text" id = 's_age' name="s_age" style="width:40%; border: 1px solid #cad1d7; background-color: transparent; color: #ffffff;"> ~ <input  type="text" id = 'e_age' name="e_age"  style=" width:40%; border: 1px solid #cad1d7; background-color: transparent; color: #ffffff;"><br><br>
+              <label><input id = 'ages_10' type="checkbox" name="chk_age" value="10" checked> 10대</label>
+              <label><input id = 'ages_20' type="checkbox" name="chk_age" value="20" checked> 20대</label>
+              <label><input id = 'ages_30' type="checkbox" name="chk_age" value="30" checked> 30대</label>
+              <label><input id = 'ages_40' type="checkbox" name="chk_age" value="40" checked> 40대</label>
+              <label><input id = 'ages_50' type="checkbox" name="chk_age" value="50" checked> 50대 이상</label>
+              
               
              
               <br> <br>
@@ -42,14 +46,14 @@
 
                 <label> 알파모델료</label><br>
                 <input type="text" name="alpha_s_fee" value = 0 style="width:40px"> ~ <input type="text" name="alpha_e_fee" value = 600 style="width:40px"><br><br>
-                <label><input type="checkbox" name="sort_thrdays" value="thrdays"> 상훈페이</label>
-                <label><input type="checkbox" name="sort_thrdays" value="thrdays"> 150~300</label><br>
-                <label><input type="checkbox" name="sort_thrdays" value="thrdays"> 350~500</label>
-                <label><input type="checkbox" name="sort_thrdays" value="thrdays"> 550~1000</label>
-                <label><input type="checkbox" name="sort_thrdays" value="thrdays"> 1100~1500</label>
-                <label><input type="checkbox" name="sort_thrdays" value="thrdays"> 1600~2000</label>
-                <label><input type="checkbox" name="sort_thrdays" value="thrdays"> 2100~4000</label>
-                <label><input type="checkbox" name="sort_thrdays" value="thrdays"> 4100~</label><br><br>
+                <label><input type="checkbox" name="alpha_fee" id="alpha_fees" value="0100"> 상훈페이</label>
+                <label><input type="checkbox" name="alpha_fee" value="0300"> 150~300</label><br>
+                <label><input type="checkbox" name="alpha_fee" value="0500"> 350~500</label>
+                <label><input type="checkbox" name="alpha_fee" value="1000"> 550~1000</label>
+                <label><input type="checkbox" name="alpha_fee" value="2000"> 1100~1500</label>
+                <label><input type="checkbox" name="alpha_fee" value="noname"> 1600~2000</label>
+                <label><input type="checkbox" name="alpha_fee" value="6000"> 2100~4000</label>
+                <label><input type="checkbox" name="alpha_fee" value="8000"> 4100~</label><br><br>
 
                 추천<br>
                 이미지 <input  type="text" name="s_img" value = 0 style="width:40px; border: 1px solid #cad1d7; background-color: transparent; color: #ffffff;"> <input  type="text" name="e_img" value = 100 style="width:40px; border: 1px solid #cad1d7; background-color: transparent; color: #ffffff;"><br>
@@ -63,11 +67,10 @@
                 <label><input type="checkbox" name="sort_proc" value="proc"> 프로카운트</label> <br>
 
 
-                <input type="checkbox" name="btn_char" style="background-color: #344675; color: #ffffff; margin-top: 10px; " />캐릭터<br><br>
+                <input type="checkbox" name="btn_echar" style="background-color: #344675; color: #ffffff; margin-top: 10px; " />이케아<br><br>
 
-                <div  class="check-list"  style="display:none;  ">
-                  <label><b>이케아</b></label>
-                  <ul style=" float: left; margin: auto;">
+                <div  class="check-list_echar"  style="display:none;  ">
+                  <ul >
                     <li><input type="checkbox" />숏컷/단발 여자 </li>
                     <li><input type="checkbox" />장발 남자</li>
                     <li><input type="checkbox" />민머리 남자 </li>
@@ -92,27 +95,56 @@
                     <li><input type="checkbox" />보이스</li>
                   </ul>
                  
-                  <label><b>레케아</b></label>
-                  <hr color = 'red' size='7px' width='100%' align='left'> 
+                </div>
+
+                <input type="checkbox" name="btn_rchar" style="background-color: #344675; color: #ffffff; " />레케아<br><br>
+
+                <div  class="check-list_rchar"  style="display:none;  ">
                   <ul class="rchar" style=" margin: auto;">
-                    <li><input type="checkbox"/>Apple </li>
-                    <li><input type="checkbox" />Orange</li>
-                    <li><input type="checkbox" />Grapes </li>
-                    <li><input type="checkbox" />Berry </li>
-                    <li><input type="checkbox" />Mango </li>
-                    <li><input type="checkbox" />Banana </li>
-                    <li><input type="checkbox" />Tomato</li>
+                    <li><input type="checkbox"/>이모모델 </li>
+                    <li><input type="checkbox" />실제가족</li>
+                    <li><input type="checkbox" />유아엄빠OK </li>
+                    <li><input type="checkbox" />갤럭시 사용 </li>
+                    <li><input type="checkbox" />아이폰 노출이력</li>
+                    <li><input type="checkbox" />아이폰 사용(갤럭시교체O)</li>
+                    <li><input type="checkbox" />아이폰 사용(갤럭시교체X)</li>
+                    <hr color = 'white' size='7px' width='100%' align='left'> 
+                    <li><input type="checkbox"/>업군A (DJ,밴드,음악관련) </li>
+                    <li><input type="checkbox"/>업군B (캘리,공방,아트관련) </li>
+                    <li><input type="checkbox"/>업군C (발레,무용,요가,댄서) </li>
+                    <li><input type="checkbox"/>업군D (레이싱/나레이터) </li>
+                    <li><input type="checkbox"/>업군E (뮤지컬) </li>
+                    <li><input type="checkbox"/>업군F (구기종목) </li>
+                    <li><input type="checkbox"/>한국 전통악기 </li>
+                    <hr color = 'white' size='7px' width='100%' align='left'> 
+                    <li><input type="checkbox"/>익스트림스포츠 </li>
+                    <li><input type="checkbox"/>스키, 스케이트, 보드 </li>
+                    <li><input type="checkbox"/>바이크</li>
+                    <li><input type="checkbox"/>파쿠르</li>
+                    <li><input type="checkbox"/>태권도,유도,격투기,무술</li>
+                    <li><input type="checkbox"/>모델골프</li>
+                    <li><input type="checkbox"/>서핑</li>
+                    <li><input type="checkbox"/>외국어</li>
+                    <li><input type="checkbox"/>마임</li>
+                    <li><input type="checkbox"/>운전면허</li>
+                    <li><input type="checkbox"/>감독선호모델</li>
                   </ul>
                   
                 </div>
-
 
                 <br><br>
               </div>
               <div class='star' style="display:none">
 
                 <label> 셀럽 모델료</label> <br>
-                <input type="text" name="s_fee" value = 0.0 style="width:40px"> ~ <input type="text" name="e_fee" value = 5 style="width:40px"><br>
+                <input type="text" name="s_fee" value = 0.0 style="width:40px"> ~ <input type="text" name="e_fee" value = 5 style="width:40px; margin-bottom:10px"><br>
+
+                <label><input type="checkbox" name="sort_thrdays" value="thrdays"> 전체</label>
+                <label><input type="checkbox" name="sort_thrdays" value="thrdays"> ~1억</label>
+                <label><input type="checkbox" name="sort_thrdays" value="thrdays"> 1억~4억</label>
+                <label><input type="checkbox" name="sort_thrdays" value="thrdays"> 4억~</label>
+                <label><input type="checkbox" name="sort_thrdays" value="thrdays"> X포함</label>
+
                 <br><br>
 
                 순옥스타_정렬<br>
@@ -123,6 +155,22 @@
                 셀럽검색<br>
                 <label><input type="checkbox" name="sort_realtime" value="order_realtime"> 실베스타</label>
                 <label><input type="checkbox" name="sort_read" value="read"> 열람횟수</label> <br><br>
+
+
+                <input type="checkbox" name="btn_echar" style="background-color: #344675; color: #ffffff;" />셀럽 섹션<br><br>
+
+                <div  class="check-list_echar"  style="display:none;  ">
+                  <ul >
+                    <li><input type="checkbox" />전체</li>
+                    <li><input type="checkbox" />가수</li>
+                    <li><input type="checkbox" />연기자</li>
+                    <li><input type="checkbox" />아이돌</li>
+                    <li><input type="checkbox" />예능인</li>
+                    <li><input type="checkbox" />방송인</li>
+                    <li><input type="checkbox" />유명인</li>
+                    <li><input type="checkbox" />셀럽유튜버</li>
+                  </ul>
+                </div>
 
               </div>
               <button class="btn btn-outline-success" type="submit">Search</button>

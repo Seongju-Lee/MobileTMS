@@ -3,7 +3,7 @@
   <div class="rounded border border-warning" style="height: 300px">
     <img  src="http://t0.gstatic.com/licensed-image?q=tbn:ANd9GcSwV2WQ5u8iRS0JY_TuKN9tzHctMI6HLJ-8PwBSS7hw728aUNUhqeVgLE9bF-mk" style="width:100px; height:100px">
     <h5 class="card-title">{{ obj.name }}</h5>
-    <h5 class="card-title">{{ obj.gender }} / {{ obj.age }} / {{obj.height}}</h5>
+    <h5 class="card-title"> {{ obj.age }} / {{ obj.gender }} / {{obj.height}}</h5>
     {%if obj.coname%}
       <p class="card-text">소속사 : {{ obj.coname }}</p>
     {% else %}

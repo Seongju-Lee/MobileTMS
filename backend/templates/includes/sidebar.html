@@ -30,7 +30,8 @@
               <label><input id = 'ages_40' type="checkbox" name="chk_age" value="40" checked> 40대</label>
               <label><input id = 'ages_50' type="checkbox" name="chk_age" value="50" checked> 50대 이상</label>
               
-              
+              <input name="hidden_s_age" id="hidden_s_age" style="display:none"/>
+              <input name="hidden_e_age" id="hidden_e_age" style="display:none"/>
              
               <br> <br>
 
@@ -45,15 +46,16 @@
               <div class='chu' style="display:none">
 
                 <label> 알파모델료</label><br>
-                <input type="text" name="alpha_s_fee" value = 0 style="width:40px"> ~ <input type="text" name="alpha_e_fee" value = 600 style="width:40px"><br><br>
-                <label><input type="checkbox" name="alpha_fee" id="alpha_fees" value="0100"> 상훈페이</label>
-                <label><input type="checkbox" name="alpha_fee" value="0300"> 150~300</label><br>
-                <label><input type="checkbox" name="alpha_fee" value="0500"> 350~500</label>
-                <label><input type="checkbox" name="alpha_fee" value="1000"> 550~1000</label>
-                <label><input type="checkbox" name="alpha_fee" value="2000"> 1100~1500</label>
-                <label><input type="checkbox" name="alpha_fee" value="noname"> 1600~2000</label>
-                <label><input type="checkbox" name="alpha_fee" value="6000"> 2100~4000</label>
-                <label><input type="checkbox" name="alpha_fee" value="8000"> 4100~</label><br><br>
+                <!-- <input type="text" name="alpha_s_fee" value = 0 style="width:40px"> ~ <input type="text" name="alpha_e_fee" value = 600 style="width:40px"><br><br> -->
+                <label><input type="checkbox" name="alpha_fee" id="alpha_0100" value="0100"> 상훈페이</label>
+                <label><input type="checkbox" name="alpha_fee" id="alpha_0300" value="0300"> 150~300</label><br>
+                <label><input type="checkbox" name="alpha_fee" id="alpha_0500" value="0500"> 350~500</label>
+                <label><input type="checkbox" name="alpha_fee" id="alpha_1000" value="1000"> 550~1000</label>
+                <label><input type="checkbox" name="alpha_fee" id="alpha_2000" value="2000"> 1100~1500</label>
+                <label><input type="checkbox" name="alpha_fee" id="alpha_noname" value="noname"> 1600~2000</label>
+                <label><input type="checkbox" name="alpha_fee" id="alpha_6000" value="6000"> 2100~4000</label>
+                <label><input type="checkbox" name="alpha_fee" id="alpha_8000" value="8000"> 4100~</label><br><br>
+                <input name="hidden_alpha_fee" id="hidden_alpha_fee" style="display:none"/>
 
                 추천<br>
                 이미지 <input  type="text" name="s_img" value = 0 style="width:40px; border: 1px solid #cad1d7; background-color: transparent; color: #ffffff;"> <input  type="text" name="e_img" value = 100 style="width:40px; border: 1px solid #cad1d7; background-color: transparent; color: #ffffff;"><br>

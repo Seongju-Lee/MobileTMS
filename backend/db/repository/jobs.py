@@ -2,9 +2,12 @@ from ast import Str
 from asyncore import write
 from datetime import datetime, timedelta
 import imp
+import json
 from mmap import mmap
 from ntpath import join
 from pickle import PERSID
+from tkinter import HIDDEN
+from xmlrpc.server import SimpleXMLRPCRequestHandler
 from fastapi.encoders import jsonable_encoder
 from numpy import sort
 from sqlalchemy import between, desc, not_
@@ -17,7 +20,95 @@ from db.models.jobs import People, Chu19, Movsel, Mmeeting_proc, Yeon, SunokStar
 from db.models.yeons import RealTimeCF, RealTimeDRAMA
 from dateutil.relativedelta import relativedelta
 
+def divide_ages(models_info, search_ages):
+    ## 나이 범위에 따라 구별
 
+    length = len(search_ages)
+    
+    print(length)
+    if length == 1:
+        choi = models_info.filter(
+                (People.age <= search_ages[0][0]) & (People.age >= search_ages[0][1]) 
+            )
+    elif length == 2:
+        choi = models_info.filter(
+                (People.age <= search_ages[0][0]) & (People.age >= search_ages[0][1]) | (People.age <= search_ages[1][0]) & (People.age >= search_ages[1][1])
+            )
+    elif length == 3:
+        choi = models_info.filter(
+                (People.age <= search_ages[0][0]) & (People.age >= search_ages[0][1]) | (People.age <= search_ages[1][0]) & (People.age >= search_ages[1][1]) |
+                (People.age <= search_ages[2][0]) & (People.age >= search_ages[2][1]) 
+            )
+    elif length == 4:
+        choi = models_info.filter(
+                ((People.age <= search_ages[0][0]) & (People.age >= search_ages[0][1])) | ((People.age <= search_ages[1][0]) & (People.age >= search_ages[1][1])) |
+                ((People.age <= search_ages[2][0]) & (People.age >= search_ages[2][1])) | ((People.age <= search_ages[3][0]) & (People.age >= search_ages[3][1]))
+            )
+    elif length == 5:
+        choi = models_info.filter(
+                (People.age <= search_ages[0][0]) & (People.age >= search_ages[0][1]) | (People.age <= search_ages[1][0]) & (People.age >= search_ages[1][1]) |
+                ((People.age <= search_ages[2][0]) & (People.age >= search_ages[2][1])) | ((People.age <= search_ages[3][0]) & (People.age >= search_ages[3][1])) |
+                ((People.age <= search_ages[4][0]) & (People.age >= search_ages[4][1]))
+            )
+    return choi
+
+    
+
+def divide_alpha(divide_age_models, hidden_alpha_fee):
+    hidden_alpha_fee = hidden_alpha_fee.split(',')
+
+    length = len(hidden_alpha_fee)
+
+    print(hidden_alpha_fee)
+    if length == 1:
+
+        res_models = divide_age_models.filter(People.mfee == hidden_alpha_fee[0])
+        return res_models
+
+    elif length == 2:
+        
+        res_models = divide_age_models.filter((People.mfee == hidden_alpha_fee[0]) | (People.mfee == hidden_alpha_fee[1]))
+        return res_models
+    elif length == 3:
+        
+        res_models = divide_age_models.filter((People.mfee == hidden_alpha_fee[0]) | (People.mfee == hidden_alpha_fee[1]) |
+        (People.mfee == hidden_alpha_fee[2]) )
+        return res_models
+    elif length == 4:
+        
+        res_models = divide_age_models.filter((People.mfee == hidden_alpha_fee[0]) | (People.mfee == hidden_alpha_fee[1]) |
+        (People.mfee == hidden_alpha_fee[2]) | (People.mfee == hidden_alpha_fee[3]))
+        return res_models
+    elif length == 5:
+        
+        res_models = divide_age_models.filter((People.mfee == hidden_alpha_fee[0]) | (People.mfee == hidden_alpha_fee[1])|
+        (People.mfee == hidden_alpha_fee[2]) | (People.mfee == hidden_alpha_fee[3]) |
+        (People.mfee == hidden_alpha_fee[4]))
+        return res_models
+    elif length == 6:
+        
+        res_models = divide_age_models.filter((People.mfee == hidden_alpha_fee[0]) | (People.mfee == hidden_alpha_fee[1])|
+        (People.mfee == hidden_alpha_fee[2]) | (People.mfee == hidden_alpha_fee[3]) |
+        (People.mfee == hidden_alpha_fee[4]) | (People.mfee == hidden_alpha_fee[5]))
+        return res_models
+    elif length == 7:
+        
+        res_models = divide_age_models.filter((People.mfee == hidden_alpha_fee[0]) | (People.mfee == hidden_alpha_fee[1])|
+        (People.mfee == hidden_alpha_fee[2]) | (People.mfee == hidden_alpha_fee[3]) |
+        (People.mfee == hidden_alpha_fee[4]) | (People.mfee == hidden_alpha_fee[5])|
+        (People.mfee == hidden_alpha_fee[6]) | (People.mfee == hidden_alpha_fee[1]))
+        return res_models
+    elif length == 8:
+    
+        res_models = divide_age_models.filter((People.mfee == hidden_alpha_fee[0]) | (People.mfee == hidden_alpha_fee[1])|
+        (People.mfee == hidden_alpha_fee[2]) | (People.mfee == hidden_alpha_fee[3]) |
+        (People.mfee == hidden_alpha_fee[4]) | (People.mfee == hidden_alpha_fee[5])|
+        (People.mfee == hidden_alpha_fee[6]) | (People.mfee == hidden_alpha_fee[7]))
+        return res_models
+
+    
+
+    
 def create_new_job(job: JobCreate, db: Session, owner_id: int):
     job = Job(**job.dict(), owner_id=owner_id)
     db.add(job)
@@ -51,35 +142,49 @@ def list_models(date: str, db: Session):
 
 
 # 추천2022_30일추천
-def chu_30(db: Session, chu_img, chu_fav, chu_act, gender_w, gender_m, s_age, e_age):
+def chu_30(db: Session, chu_img, chu_fav, chu_act, gender_w, gender_m, search_ages, hidden_alpha_fee):
 
     if gender_m:
         gender_m = '남'
     if gender_w:
         gender_w = '여'
     print(gender_w, gender_m)
-    print((e_age), (s_age))
+    print(datetime.today() - relativedelta(months=2))
+    # 테스트 위해서 임시로 날짜를 3달 전까지 변경 ==> 한달로 다시 변경해야 함.
+    chu = db.query((Chu19.mcode), Chu19.gubun, (Chu19.jum), People.mfee, People.name, People.sex, People.coname,  People.height, People.age, People.isyeon ).join(
+        People, Chu19.mcode == People.codesys).filter((Chu19.edit_time >= (datetime.today() - relativedelta(months=2)))).filter((People.sex == gender_m) | (People.sex == gender_w))
 
-    chu = db.query((Chu19.mcode), Chu19.gubun, People.name, (Chu19.jum)).join(
-        People, Chu19.mcode == People.codesys).filter((Chu19.edit_time >= (datetime.today() - relativedelta(months=1)))).filter((People.sex == gender_m) | (People.sex == gender_w)).filter(People.age >= e_age)
-
-    return chu
+    divide_age_models = divide_ages(models_info=chu, search_ages=search_ages)
+    res_model = divide_alpha(divide_age_models=divide_age_models, hidden_alpha_fee=hidden_alpha_fee)
+    
+    
+    return res_model
 
 
 # 추천2022_영상초이
-def movchoi(db: Session, s_date, e_date):
+def movchoi(db: Session, s_date, e_date,gender_w, gender_m, search_ages, hidden_alpha_fee):
 
     e_date = datetime.strptime(e_date, "%Y-%m-%d")
     e_date = e_date + timedelta(days=1)
     print(s_date, e_date)
-    choi = db.query((Movsel.mcode),  People.name, Movsel.rno, Movsel.edit_time).join(
-        People, Movsel.mcode == People.codesys).where((Movsel.edit_time >= s_date) & (Movsel.edit_time <= e_date))
+    if gender_m:
+        gender_m = '남'
+    if gender_w:
+        gender_w = '여'
 
-    return choi
+    models_info = db.query((Movsel.mcode),  People.name, Movsel.rno, Movsel.edit_time, People.age, People.mfee, People.sex, People.coname,  People.height,  People.isyeon).join(
+            People, Movsel.mcode == People.codesys).filter((People.sex == gender_m) | (People.sex == gender_w)).filter((Movsel.edit_time >= s_date) & (Movsel.edit_time <= e_date))
+
+    divide_age_models = divide_ages(models_info=models_info,search_ages=search_ages)
+
+    res_model = divide_alpha(divide_age_models=divide_age_models, hidden_alpha_fee=hidden_alpha_fee)
+
+    return res_model
+    
 
 
 # 추천2022_프로카운트
-def proc(db: Session, s_date, e_date, gender_w, gender_m, s_age, e_age, model, celeb, sort_realtime):
+def proc(db: Session, s_date, e_date, gender_w, gender_m, search_ages, hidden_alpha_fee, model, celeb, sort_realtime):
 
     if gender_m:
         gender_m = '남'
@@ -88,44 +193,58 @@ def proc(db: Session, s_date, e_date, gender_w, gender_m, s_age, e_age, model, c
 
     if not sort_realtime:
         if (celeb) and (not model):
-            proc = db.query(Mmeeting_proc.mcode, People.name, People.sex, People.age, People.coname,  People.height, Mmeeting_proc.edit_time, Mmeeting_proc.projcode).join(
-                People, Mmeeting_proc.mcode == People.codesys).filter((Mmeeting_proc.edit_time >= s_date) & (Mmeeting_proc.edit_time <= e_date)).filter((People.sex == gender_m) | (People.sex == gender_w)).filter(People.age >= e_age).filter(
+            proc = db.query(Mmeeting_proc.mcode, People.name, People.sex, People.age, People.coname,  People.height, Mmeeting_proc.edit_time, Mmeeting_proc.projcode, People.isyeon).join(
+                People, Mmeeting_proc.mcode == People.codesys).filter((Mmeeting_proc.edit_time >= s_date) & (Mmeeting_proc.edit_time <= e_date)).filter((People.sex == gender_m) | (People.sex == gender_w)).filter(
                     People.rdcode.contains('TC')
-            )
 
+            )
+            divide_age_models = divide_ages(models_info=proc, search_ages=search_ages)
+            res_model = divide_alpha(divide_age_models=divide_age_models, hidden_alpha_fee=hidden_alpha_fee)
             gubun = 'celeb'
         elif (model) and (not celeb):
-            proc = db.query(Mmeeting_proc.mcode, People.name, People.sex, People.age, People.coname, People.mfee, People.height, Mmeeting_proc.edit_time, Mmeeting_proc.projcode).join(
-                People, Mmeeting_proc.mcode == People.codesys).filter((Mmeeting_proc.edit_time >= s_date) & (Mmeeting_proc.edit_time <= e_date)).filter((People.sex == gender_m) | (People.sex == gender_w)).filter(People.age >= e_age).filter(
+            proc = db.query(Mmeeting_proc.mcode, People.name, People.sex, People.age, People.coname, People.mfee, People.height, Mmeeting_proc.edit_time, Mmeeting_proc.projcode, People.isyeon).join(
+                People, Mmeeting_proc.mcode == People.codesys).filter((Mmeeting_proc.edit_time >= s_date) & (Mmeeting_proc.edit_time <= e_date)).filter((People.sex == gender_m) | (People.sex == gender_w)).filter(
                     not_(People.rdcode.contains('TC'))
             )
+            divide_age_models = divide_ages(models_info=proc, search_ages=search_ages)
+            
+            res_model = divide_alpha(divide_age_models=divide_age_models, hidden_alpha_fee=hidden_alpha_fee)
+
             gubun = 'model'
         else:
-            proc = db.query(Mmeeting_proc.mcode, People.name, Mmeeting_proc.edit_time, Mmeeting_proc.projcode).join(
-                People, Mmeeting_proc.mcode == People.codesys).filter((Mmeeting_proc.edit_time >= s_date) & (Mmeeting_proc.edit_time <= e_date)).filter((People.sex == gender_m) | (People.sex == gender_w)).filter(People.age >= e_age)
+            proc = db.query(Mmeeting_proc.mcode, People.name, Mmeeting_proc.edit_time, Mmeeting_proc.projcode, People.isyeon).join(
+                People, Mmeeting_proc.mcode == People.codesys).filter((Mmeeting_proc.edit_time >= s_date) & (Mmeeting_proc.edit_time <= e_date)).filter((People.sex == gender_m) | (People.sex == gender_w))
+            divide_age_models = divide_ages(models_info=proc, search_ages=search_ages)
+            res_model = divide_alpha(divide_age_models=divide_age_models, hidden_alpha_fee=hidden_alpha_fee)
+            
             gubun = 'all'
 
     else:
         proc = db.query(Mmeeting_proc.mcode.label('codesys'), Yeon.rno, Yeon.name, Yeon.sex, Yeon.age, Yeon.a_3, Yeon.a_6, Yeon.a_12, Mmeeting_proc.edit_time, Mmeeting_proc.projcode, People.isyeon).join(
-            Yeon, Mmeeting_proc.mcode == Yeon.codesys).join(People, People.codesys == Yeon.codesys).filter((Mmeeting_proc.edit_time >= s_date) & (Mmeeting_proc.edit_time <= e_date)).filter((Yeon.sex == gender_m) | (Yeon.sex == gender_w)).filter(Yeon.age >= e_age).filter(
+            Yeon, Mmeeting_proc.mcode == Yeon.codesys).join(People, People.codesys == Yeon.codesys).filter((Mmeeting_proc.edit_time >= s_date) & (Mmeeting_proc.edit_time <= e_date)).filter((Yeon.sex == gender_m) | (Yeon.sex == gender_w)).filter(
                 Yeon.rdcode.contains('TC'))
         gubun = 'celeb'
 
-    return proc, gubun
+    for model in jsonable_encoder(res_model[:]):
+        print(model['mfee'], model['age'])
+    return res_model, gubun
 
 
 # 순옥스타_최신등록순
-def order_register(db: Session, s_date, e_date, gender_w, gender_m, s_age, e_age, model, celeb):
+def order_register(db: Session, s_date, e_date, gender_w, gender_m, search_ages ):
 
     if gender_m:
         gender_m = '남'
     if gender_w:
         gender_w = '여'
 
-        register = db.query(SunokStar.mcode, Yeon.name, SunokStar.edit_time,  Yeon.sex, Yeon.age, Yeon.a_3, Yeon.a_6, Yeon.a_12).join(
-            Yeon, SunokStar.mcode == Yeon.codesys).order_by(desc(SunokStar.edit_time)).filter((SunokStar.edit_time >= s_date) & (SunokStar.edit_time <= e_date)).filter((Yeon.sex == gender_m) | (Yeon.sex == gender_w)).filter(Yeon.age >= e_age)
-    return register
+    register = db.query(SunokStar.mcode, Yeon.name, SunokStar.edit_time,  Yeon.sex.label('gender'), Yeon.age, Yeon.a_3, Yeon.a_6, Yeon.a_12, People.isyeon, People.height).join(
+        Yeon, SunokStar.mcode == Yeon.codesys).join(
+        People, SunokStar.mcode == People.codesys).order_by(desc(SunokStar.edit_time)).filter((SunokStar.edit_time >= s_date) & (SunokStar.edit_time <= e_date)).filter((Yeon.sex == gender_m) | (Yeon.sex == gender_w))
+    res_celeb = divide_ages(register, search_ages)
 
+   
+    return res_celeb
 
 # 순옥스타_추천순
 def order_recommend(db: Session, gender_w, gender_m, s_age, e_age,):

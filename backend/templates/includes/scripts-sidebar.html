@@ -21,6 +21,8 @@
 
         $('#s_age').val('10' + '(' + (now.getFullYear() - 9) + ')') 
         $('#e_age').val('100' + '(' + (now.getFullYear() - 99) + ')')
+        $('#hidden_s_age').val(['10(2013)', '20(2003)', '30(1993)', '40(1983)', '50(1973)'])
+        $('#hidden_e_age').val(['19(2004)', '29(1994)', '39(1984)', '49(1974)', '100(1923)'])
 
 
         $('input[name="cf"]').click(function(){
@@ -248,7 +250,7 @@
               }
             );
             
-/////////////////////
+///////////////////// 나이 선택
 
             $('input[name="chk_age"]' ).click(function(){
 
@@ -263,6 +265,8 @@
               var chk_ages = new Array();
               var age_arange = new Array();
               var a_all = new Array();
+              var hidden_s = new Array();
+              var hidden_e = new Array();
 
               $("input[name='chk_age']:checked").each(function(index, name) { 
                 var tmpVal = $(name).val(); 
@@ -272,7 +276,7 @@
               console.log(chk_ages)
 
               
-              var a_10 = ['10' + '(' + ({{now_year}}- 9) + ')', '19' + '(' + ({{now_year}}- 18) + ')', '10'] 
+              var a_10 = ['10' + '(' + ({{now_year}} - 9) + ')', '19' + '(' + ({{now_year}}- 18)  + ')', '10'] 
               var a_20 = ['20' + '(' + ({{now_year}}- 19) + ')', '29' + '(' + ({{now_year}}- 28) + ')', '20'] 
               var a_30 = ['30' + '(' + ({{now_year}}- 29) + ')', '39' + '(' + ({{now_year}}- 38) + ')', '30'] 
               var a_40 = ['40' + '(' + ({{now_year}}- 39) + ')', '49' + '(' + ({{now_year}}- 48) + ')', '40'] 
@@ -291,9 +295,20 @@
                   }
                 }
                 console.log(age_arange)
+                
                 $('#s_age').val(age_arange[0][0])
                 $('#e_age').val(age_arange[chk_ages.length-1][1])
-                
+               
+                for(k = 0; k< age_arange.length; k++){
+                  // console.log(age_arange)
+                  hidden_s.push(age_arange[k][0])
+                  hidden_e.push(age_arange[k][1])
+                }
+                console.log(hidden_s)
+                console.log(hidden_e)
+
+                $('#hidden_s_age').val(hidden_s)
+                $('#hidden_e_age').val(hidden_e)
               }
 
               else
@@ -303,6 +318,43 @@
             );
 
 ///////////////////////////
+
+
+
+///////////////////// 알파모델료 선택
+
+           ///////////////////// 나이 선택
+
+            $('input[name="alpha_fee"]' ).click(function(){
+
+              var _is100 = $('#alpha_0100').is(":checked");
+              var _is300 = $('#alpha_0300').is(":checked");
+              var _is500 = $('#alpha_0500').is(":checked");
+              var _is1000 = $('#alpha_1000').is(":checked");
+              var _is2000 = $('#alpha_2000').is(":checked");
+              var _isnoname = $('#alpha_noname').is(":checked");
+              var _is6000 = $('#alpha_6000').is(":checked");
+              var _is8000 = $('#alpha_8000').is(":checked");
+
+              console.log('모델료 TEST: ', _is100, _is6000);
+
+
+              var chk_fees = new Array();
+
+              $("input[name='alpha_fee']:checked").each(function(index, name) { 
+                var alpha = $(name).val(); 
+                chk_fees.push(alpha);
+              });
+              
+              console.log(chk_fees)
+              $('#hidden_alpha_fee').val(chk_fees)
+
+              }
+            );
+
+///////////////////////////
+
+
 
         $('.fixed-plugin a').click(function(event) {
           if ($(this).hasClass('switch-trigger')) {

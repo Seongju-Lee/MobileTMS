@@ -139,13 +139,24 @@
               <div class='star' style="display:none">
 
                 <label> 셀럽 모델료</label> <br>
-                <input type="text" name="s_fee" value = 0.0 style="width:40px"> ~ <input type="text" name="e_fee" value = 5 style="width:40px; margin-bottom:10px"><br>
 
-                <label><input type="checkbox" name="sort_thrdays" value="thrdays"> 전체</label>
-                <label><input type="checkbox" name="sort_thrdays" value="thrdays"> ~1억</label>
-                <label><input type="checkbox" name="sort_thrdays" value="thrdays"> 1억~4억</label>
-                <label><input type="checkbox" name="sort_thrdays" value="thrdays"> 4억~</label>
-                <label><input type="checkbox" name="sort_thrdays" value="thrdays"> X포함</label>
+                <select name="fee_month">
+                  <option value="three_months">3개월</option>
+                  <option value="six_months">6개월</option>
+                  <option value="one_year">1년</option>
+                </select>
+
+                <!-- <input type="text" name="s_fee" value = 0.0 style="width:40px"> ~ <input type="text" name="e_fee" value = 5 style="width:40px; margin-bottom:10px"><br> -->
+
+                <br>
+                <label><input type="radio" name="celeb_fee" id="fee_all" value="fee_all" checked> 전체</label>
+                <label><input type="radio" name="celeb_fee" id="fee_100m" value="fee_100m"> ~1억</label>
+                <label><input type="radio" name="celeb_fee" id="fee_400m" value="fee_400m"> 1억~4억</label>
+                <label><input type="radio" name="celeb_fee" id="fee_400m_" value="fee_400m_"> 4억~</label>
+                <label><input type="checkbox" name="celeb_fee" id="fee_no" value="fee_no" checked> X포함</label>
+
+                <input name="hidden_celeb_fee" id="hidden_celeb_fee" style="display:none"/>
+                <input name="hidden_celeb_fee_month" id="hidden_celeb_fee_month" style="display:none"/>
 
                 <br><br>
 
@@ -159,20 +170,23 @@
                 <label><input type="checkbox" name="sort_read" value="read"> 열람횟수</label> <br><br>
 
 
-                <input type="checkbox" name="btn_echar" style="background-color: #344675; color: #ffffff;" />셀럽 섹션<br><br>
+                <input type="checkbox" name="btn_celeb_section" style="background-color: #344675; color: #ffffff;" />셀럽 섹션<br><br>
 
-                <div  class="check-list_echar"  style="display:none;  ">
+                <div  class="check-list_celeb_section"  style="display:none;  ">
                   <ul >
-                    <li><input type="checkbox" />전체</li>
-                    <li><input type="checkbox" />가수</li>
-                    <li><input type="checkbox" />연기자</li>
-                    <li><input type="checkbox" />아이돌</li>
-                    <li><input type="checkbox" />예능인</li>
-                    <li><input type="checkbox" />방송인</li>
-                    <li><input type="checkbox" />유명인</li>
-                    <li><input type="checkbox" />셀럽유튜버</li>
+                    <li><input type="checkbox" name='celeb_section' id="celeb_all" value="section_all" checked/>전체</li>
+                    <li><input type="checkbox" name='celeb_section' id="celeb_singer" value="section_singer" />가수</li>
+                    <li><input type="checkbox" name='celeb_section' id="celeb_actor" value="section_actor" />연기자</li>
+                    <li><input type="checkbox" name='celeb_section' id="celeb_idol" value="section_idol" />아이돌</li>
+                    <li><input type="checkbox" name='celeb_section' id="celeb_entertainment" value="section_entertainment" />예능인</li>
+                    <li><input type="checkbox" name='celeb_section' id="celeb_broadcast" value="section_broadcast" />방송인</li>
+                    <li><input type="checkbox" name='celeb_section' id="celeb_celeb" value="section_celeb" />유명인</li>
+                    <li><input type="checkbox" name='celeb_section' id="celeb_youtube" value="section_youtube" />셀럽유튜버</li>
                   </ul>
                 </div>
+
+                <input name="hidden_celeb_section" id="hidden_celeb_section" style="display:none"/>
+                
 
               </div>
               <button class="btn btn-outline-success" type="submit">Search</button>

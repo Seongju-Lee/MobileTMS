@@ -1,4 +1,5 @@
 from datetime import datetime
+from multiprocessing.dummy import JoinableQueue
 from pyexpat import model
 from re import A
 from statistics import mode
@@ -50,7 +51,9 @@ def home(request: Request, db: Session = Depends(get_db)):
 # 필터내용
 @ router.get("/filter")
 def search_filter(req: Request, s_date: str = '', e_date: str = '', gender_m: str = '', gender_w: str = '',
-                  s_img: str = '', e_img: str = '', s_fav: str = '', e_fav: str = '', s_act: str = '', e_act: str = '', s_age: str = '',hidden_s_age:str='', hidden_e_age:str='', hidden_alpha_fee:str='', e_age: str = '', chk_model: str = '', chk_celeb: str = '',
+                  s_img: str = '', e_img: str = '', s_fav: str = '', e_fav: str = '', s_act: str = '', e_act: str = '', s_age: str = '',hidden_s_age:str='', hidden_e_age:str='', hidden_alpha_fee:str='', hidden_celeb_fee:str='', hidden_celeb_fee_month:str='',
+                  hidden_celeb_section: str='',
+                  e_age: str = '', chk_model: str = '', chk_celeb: str = '',
                   sort_thrdays: str = '', sort_movchoi: str = '', sort_proc: str = '', sort_register: str = '', sort_recommend: str = '', sort_s_count: str = '',
                   sort_realtime: str = '', sort_read: str = '', alpha_s_fee: str = '', alpha_e_fee: str = '', s_fee: str = '', e_fee: str = '',
                   query: str = '', name: str = '', coname: str = '', manager: str = '', tel: str = '', chk_age: str = '', alpha_fees: str = '',
@@ -261,14 +264,34 @@ def search_filter(req: Request, s_date: str = '', e_date: str = '', gender_m: st
     ###########################################
     # 순옥스타_최신등록순
     elif sort_register:
-        models = order_register(db=db, s_date=s_date, e_date=e_date,
+
+        print(hidden_celeb_section)
+        models = order_register(db=db, s_date=s_date, e_date=e_date, hidden_celeb_fee= hidden_celeb_fee, hidden_celeb_fee_month= hidden_celeb_fee_month, hidden_celeb_section=hidden_celeb_section,
                                 gender_w=gender_w, gender_m=gender_m, search_ages = search_ages)
 
         count_models = jsonable_encoder(models[:])
 
-        for model in count_models:
-            print(model)
+    
+        try:
 
+            with open("model.json", 'r', encoding='utf-8') as json_file:
+                aa = json.load(json_file)
+                for job in count_models:
+                    print(job)
+                    if not job['mfee'] == '':
+                        if not  job['isyeon'] == 'V':
+                            job['mfee'] = aa['model_fee'][job['mfee']]
+                    if job['a_3'] == 0:
+                        job['a_3'] = 'X'
+                    if job['a_6'] == 0:
+                        job['a_6'] = 'X'
+                    if job['a_12'] == 0:
+                        job['a_12'] = 'X'
+                    
+            
+        except:
+            print('일치하는 모델료가 json파일에 없음.')
+            pass
         return templates.TemplateResponse(
             "ui-icons.html", {"request": req,
                               "jobs": count_models,
@@ -281,25 +304,27 @@ def search_filter(req: Request, s_date: str = '', e_date: str = '', gender_m: st
     # 순옥스타_추천순
     elif sort_recommend:
         models = order_recommend(db=db,
-                                 gender_w=gender_w, gender_m=gender_m, s_age=s_age, e_age=e_age)
+                                 gender_w=gender_w, gender_m=gender_m, search_ages=search_ages, hidden_celeb_fee=hidden_celeb_fee,
+                                 hidden_celeb_fee_month=hidden_celeb_fee_month,  hidden_celeb_section= hidden_celeb_section)
 
         filter_models = []
         print(models)
         print('섹션 구분: ', chk_model, chk_celeb)
         count_models = jsonable_encoder(models[:])
-
+        print(count_models)
         df = pd.DataFrame(count_models).groupby(
-            ['mcode', 'name', 'frcode', 'rcode', 'sex', 'age', 'a_3', 'a_6', 'a_12']).sum().reset_index()
+            ['mcode', 'name', 'frcode', 'rcode', 'sex', 'age', 'a_3', 'a_6', 'a_12', 'isyeon', 'height', 'coname', 'mfee']).sum().reset_index()
 
         search_models = df.values.tolist()
-        print(df)
+        for model in search_models:
+            print('검색모델: ', model)
 
-        res = sorted(search_models, key=lambda x: x[9], reverse=True)
+        res = sorted(search_models, key=lambda x: x[13], reverse=True)
 
         for model in res:
             print(model)
             filter_models.append(
-                {'mcode': model[0], 'name': model[1], 'gender': model[4], 'age': model[5], 'a_3': model[6], 'a_6': model[7], 'a_12': model[8], 'jum1': model[9], 'jum1': model[10]})
+                {'mcode': model[0], 'name': model[1], 'gender': model[4], 'age': model[5], 'a_3': model[6], 'a_6': model[7], 'a_12': model[8], 'isyeon': model[9], 'jum1': model[13], 'jum1': model[14]})
 
         return templates.TemplateResponse(
             "ui-icons.html", {"request": req,

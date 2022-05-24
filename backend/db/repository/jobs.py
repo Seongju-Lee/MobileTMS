@@ -20,6 +20,8 @@ from db.models.jobs import People, Chu19, Movsel, Mmeeting_proc, Yeon, SunokStar
 from db.models.yeons import RealTimeCF, RealTimeDRAMA
 from dateutil.relativedelta import relativedelta
 
+
+## 연령 분류(무식하게 짠 버전)
 def divide_ages(models_info, search_ages):
     ## 나이 범위에 따라 구별
 
@@ -53,7 +55,7 @@ def divide_ages(models_info, search_ages):
     return choi
 
     
-
+## 알파모델료 분류(무식하게 짠 버전)
 def divide_alpha(divide_age_models, hidden_alpha_fee):
     hidden_alpha_fee = hidden_alpha_fee.split(',')
 
@@ -106,8 +108,143 @@ def divide_alpha(divide_age_models, hidden_alpha_fee):
         (People.mfee == hidden_alpha_fee[6]) | (People.mfee == hidden_alpha_fee[7]))
         return res_models
 
+# 셀럽 모델료 구분 (무식하게 짠 버전)
+def divide_mfee(divide_age_models, hidden_celeb_fee, hidden_celeb_fee_month):
+
+    print('안녕하세요, 셀럽 모델료 TEST: ', hidden_celeb_fee)
+
+    length = len(hidden_celeb_fee)
+    celeb_fee = hidden_celeb_fee.split(',')
     
 
+    fee_dict = {'fee_all' : '', 'fee_100m': '1', 'fee_400m': '4', 'fee_400m_': '4.01', 'fee_no': 'X'}
+    month_dict = {'three_month': 'a_3', 'six_month': 'a_6', 'one_year': 'a_12'}
+
+    print(month_dict)
+
+    if celeb_fee[0] == 'fee_100m':
+        if 'fee_no' in celeb_fee: # length: 3 /// 날짜, 모델료 필터 
+            if celeb_fee[2] == 'three_months':
+                res_models = divide_age_models.filter((Yeon.a_3 <= 1) | (Yeon.a_3 == 0))
+                return res_models
+
+            elif celeb_fee[2] == 'six_months':
+                res_models = divide_age_models.filter((Yeon.a_6 <= 1 ) | (Yeon.a_6 == 0))
+                return res_models
+            elif celeb_fee[2] == 'one_year':
+                res_models = divide_age_models.filter((Yeon.a_12 <= 1) | (Yeon.a_12 == 0)) 
+                return res_models  
+
+
+        elif not 'fee_no' in celeb_fee: # length: 3 /// 날짜, 모델료 필터 
+            if celeb_fee[1] == 'three_months':
+                return divide_age_models.filter((Yeon.a_3 <= 1) & (Yeon.a_3 != 0))
+            elif celeb_fee[1] == 'six_months':
+                return divide_age_models.filter((Yeon.a_6 <= 1) & (Yeon.a_6 != 0))
+            elif celeb_fee[1] == 'one_year':
+                return divide_age_models.filter((Yeon.a_12 <= 1) & (Yeon.a_12 != 0)) 
+
+
+    if celeb_fee[0] == 'fee_400m':
+        if 'fee_no' in celeb_fee: # length: 3 /// 날짜, 모델료 필터 
+            if celeb_fee[2] == 'three_months':
+                return divide_age_models.filter(((Yeon.a_3 <= 4) & (Yeon.a_3 >= 1)) | (Yeon.a_3 == 0))
+            elif celeb_fee[2] == 'six_months':
+                return divide_age_models.filter(((Yeon.a_6 <= 4) & (Yeon.a_6 >= 1)) | (Yeon.a_6 == 0))
+            elif celeb_fee[2] == 'one_year':
+                return divide_age_models.filter(((Yeon.a_12 <= 4) & (Yeon.a_12 >= 1)) | (Yeon.a_12 == 0))   
+        
+
+        elif not 'fee_no' in celeb_fee: # length: 3 /// 날짜, 모델료 필터 
+            if celeb_fee[1] == 'three_months':
+                return divide_age_models.filter((Yeon.a_3 <= 4) & (Yeon.a_3 >= 1) & (Yeon.a_3 != 0))
+            elif celeb_fee[1] == 'six_months':
+                return divide_age_models.filter((Yeon.a_6 <= 4) & (Yeon.a_6 >= 1) & (Yeon.a_6 != 0)) 
+            elif celeb_fee[1] == 'one_year':
+                return divide_age_models.filter((Yeon.a_12 <= 4) & (Yeon.a_12 >= 1) & (Yeon.a_12 != 0) ) 
+
+
+
+    if celeb_fee[0] == 'fee_400m_':
+        if 'fee_no' in celeb_fee: # length: 3 /// 날짜, 모델료 필터 
+            if celeb_fee[2] == 'three_months':
+                return divide_age_models.filter((Yeon.a_3 >= 4) | (Yeon.a_3 == 0))
+            elif celeb_fee[2] == 'six_months':
+                return divide_age_models.filter((Yeon.a_6 >= 4) | (Yeon.a_6 == 0))
+            elif celeb_fee[2] == 'one_year':
+                return divide_age_models.filter((Yeon.a_12 >= 4) | (Yeon.a_12 == 0))   
+
+
+        elif not 'fee_no' in celeb_fee: 
+            if celeb_fee[1] == 'three_months':
+                return divide_age_models.filter((Yeon.a_3 >= 4) & (Yeon.a_3 != 0))
+            elif celeb_fee[1] == 'six_months':
+                return divide_age_models.filter((Yeon.a_6 >= 4) & (Yeon.a_6 != 0))
+            elif celeb_fee[1] == 'one_year':
+                return divide_age_models.filter((Yeon.a_12 >= 4) & (Yeon.a_12 != 0)) 
+    
+    else:
+        return divide_age_models
+       
+    # ['fee_400m_', 'fee_no', 'three_months']
+
+
+
+def celeb_section(res_model, hidden_celeb_section):
+    
+    print('테스트 중입니다.', hidden_celeb_section)
+
+    sections = hidden_celeb_section.split(',')
+    section_code = []
+    # 히든섹션 값이 model.json에 있으면 필터 함수 적용 시키고, 아니면 적용 시키지 않음]
+
+    try:
+
+        with open("model.json", 'r', encoding='utf-8') as json_file:
+            aa = json.load(json_file)
+
+            length = len(sections)
+            print(sections)
+
+
+            for section in sections:
+                section_code.append(aa['model_section'][section])
+
+            print('kkk: ', section_code)
+            if length == 1:
+                print(section_code)
+                return res_model.filter(Yeon.rdcode.contains(section_code))
+            elif length == 2:
+                print(section_code)
+                return res_model.filter(Yeon.rdcode.contains(section_code[0]) | Yeon.rdcode.contains(section_code[1]))
+            elif length == 3:
+                print(section_code)
+                return res_model.filter(Yeon.rdcode.contains(section_code[0]) | Yeon.rdcode.contains(section_code[1]) | Yeon.rdcode.contains(section_code[2]))
+            elif length == 4:
+                print(section_code)
+                return res_model.filter(Yeon.rdcode.contains(section_code[0]) | Yeon.rdcode.contains(section_code[1]) | Yeon.rdcode.contains(section_code[2])
+                 | Yeon.rdcode.contains(section_code[3]))
+            elif length == 5:
+                print(section_code)
+                return res_model.filter(Yeon.rdcode.contains(section_code[0]) | Yeon.rdcode.contains(section_code[1]) | Yeon.rdcode.contains(section_code[2])
+                 | Yeon.rdcode.contains(section_code[3]) | Yeon.rdcode.contains(section_code[4]))
+            elif length == 6:
+                print(section_code)
+                return res_model.filter(Yeon.rdcode.contains(section_code[0]) | Yeon.rdcode.contains(section_code[1])
+                 | Yeon.rdcode.contains(section_code[3]) | Yeon.rdcode.contains(section_code[4]) | Yeon.rdcode.contains(section_code[5]))
+            elif length == 6:
+                print(section_code)
+                return res_model.filter(Yeon.rdcode.contains(section_code[0]) | Yeon.rdcode.contains(section_code[1])
+                 | Yeon.rdcode.contains(section_code[3]) | Yeon.rdcode.contains(section_code[4]) | Yeon.rdcode.contains(section_code[5]) | Yeon.rdcode.contains(section_code[6]))
+            elif length == 8:
+                return res_model
+           
+    except:
+        print('일치하는 모델섹션이 json파일에 없음.')
+        pass
+    # res_celeb = res_model.filter()
+
+    # return res_celeb
     
 def create_new_job(job: JobCreate, db: Session, owner_id: int):
     job = Job(**job.dict(), owner_id=owner_id)
@@ -231,32 +368,41 @@ def proc(db: Session, s_date, e_date, gender_w, gender_m, search_ages, hidden_al
 
 
 # 순옥스타_최신등록순
-def order_register(db: Session, s_date, e_date, gender_w, gender_m, search_ages ):
+def order_register(db: Session, s_date, e_date, gender_w, gender_m, search_ages , hidden_celeb_fee, hidden_celeb_fee_month, hidden_celeb_section):
 
     if gender_m:
         gender_m = '남'
     if gender_w:
         gender_w = '여'
 
-    register = db.query(SunokStar.mcode, Yeon.name, SunokStar.edit_time,  Yeon.sex.label('gender'), Yeon.age, Yeon.a_3, Yeon.a_6, Yeon.a_12, People.isyeon, People.height).join(
+    print('haha...: ', hidden_celeb_section)
+    register = db.query(SunokStar.mcode, Yeon.name, SunokStar.edit_time,  Yeon.sex.label('gender'), Yeon.age, Yeon.a_3, Yeon.a_6, Yeon.a_12, People.isyeon, People.height, People.coname, People.mfee).join(
         Yeon, SunokStar.mcode == Yeon.codesys).join(
         People, SunokStar.mcode == People.codesys).order_by(desc(SunokStar.edit_time)).filter((SunokStar.edit_time >= s_date) & (SunokStar.edit_time <= e_date)).filter((Yeon.sex == gender_m) | (Yeon.sex == gender_w))
-    res_celeb = divide_ages(register, search_ages)
+    divide_age_models = divide_ages(register, search_ages)
+    res_model = divide_mfee(divide_age_models, hidden_celeb_fee, hidden_celeb_fee_month)
+    
+    res_celeb = celeb_section(res_model, hidden_celeb_section)
 
-   
     return res_celeb
 
+
 # 순옥스타_추천순
-def order_recommend(db: Session, gender_w, gender_m, s_age, e_age,):
+def order_recommend(db: Session, gender_w, gender_m, search_ages, hidden_celeb_fee, hidden_celeb_fee_month , hidden_celeb_section):
 
     if gender_m:
         gender_m = '남'
     if gender_w:
         gender_w = '여'
 
-    register = db.query(SunokStarChu.edit_time, SunokStarChu.frcode, SunokStar.rcode, SunokStar.mcode, SunokStarChu.jum1, SunokStarChu.jum2, Yeon.sex, Yeon.name, Yeon.age, Yeon.a_3, Yeon.a_6, Yeon.a_12).order_by(desc(SunokStar.edit_time)).filter(
-        SunokStar.rcode == SunokStarChu.frcode).filter(SunokStar.mcode == Yeon.codesys).filter((Yeon.sex == gender_m) | (Yeon.sex == gender_w)).filter(Yeon.age >= e_age)
-    return register
+    register = db.query(SunokStarChu.edit_time, SunokStarChu.frcode, SunokStar.rcode, SunokStar.mcode, SunokStarChu.jum1, SunokStarChu.jum2, Yeon.sex, Yeon.name, Yeon.age, Yeon.a_3, Yeon.a_6, Yeon.a_12, People.isyeon, People.height, People.coname, People.mfee).order_by(desc(SunokStar.edit_time)).join(People, People.codesys == SunokStar.mcode).filter(
+        SunokStar.rcode == SunokStarChu.frcode).filter(SunokStar.mcode == Yeon.codesys).filter((Yeon.sex == gender_m) | (Yeon.sex == gender_w))
+    
+    divide_age_models = divide_ages(register, search_ages)
+    res_model = divide_mfee(divide_age_models, hidden_celeb_fee, hidden_celeb_fee_month)
+
+    res_celeb = celeb_section(res_model, hidden_celeb_section)
+    return res_celeb
 
 
 # 순옥스타_추천순

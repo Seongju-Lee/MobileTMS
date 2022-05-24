@@ -23,8 +23,13 @@
         $('#e_age').val('100' + '(' + (now.getFullYear() - 99) + ')')
         $('#hidden_s_age').val(['10(2013)', '20(2003)', '30(1993)', '40(1983)', '50(1973)'])
         $('#hidden_e_age').val(['19(2004)', '29(1994)', '39(1984)', '49(1974)', '100(1923)'])
+        
+        $('#hidden_celeb_fee').val(['fee_all','three_months'])
+        $('#hidden_celeb_section').val(['section_all','section_singer','section_actor','section_idol','section_entertainment','section_broadcast','section_celeb','section_youtube'])
+        $('input:checkbox[name="celeb_section"]').prop('checked',true);
 
 
+      
         $('input[name="cf"]').click(function(){
 
 
@@ -177,12 +182,6 @@
 //////////////////////
 
 
-
-
-
-
-
-
 ///////////////////// 모델 & 셀럽 선택
 
             $('input[name="chk_model"]').click(function(){
@@ -323,7 +322,6 @@
 
 ///////////////////// 알파모델료 선택
 
-           ///////////////////// 나이 선택
 
             $('input[name="alpha_fee"]' ).click(function(){
 
@@ -355,6 +353,136 @@
 ///////////////////////////
 
 
+///////////////////// 셀럽모델료 선택
+
+           // 모델료 확인
+           $('input[name="celeb_fee"]' ).click(function(){
+
+              var _isall = $('#fee_all').is(":checked"); // 전체 
+              var _is100m = $('#fee_100m').is(":checked"); // ~1억 
+              var _is400m = $('#fee_400m').is(":checked"); // 1억~4억 
+              var _is400m_ = $('#fee_400m_').is(":checked"); // 4억~
+              var _isno = $('#fee_no').is(":checked"); // x 포함
+             
+              var month = $('select[name="fee_month"]').val()
+
+
+
+              var chk_fees = new Array();
+
+              $("input[name='celeb_fee']:checked").each(function(index, name) { 
+                var alpha = $(name).val(); 
+                chk_fees.push(alpha);
+              });
+
+              chk_fees.push(month);
+              console.log(chk_fees);
+              $('#hidden_celeb_fee').val(chk_fees);
+
+
+            });
+
+            // 개월 수 선택
+            $('select[name="fee_month"]' ).change(function(){
+
+              var _isall = $('#fee_all').is(":checked"); // 전체 
+              var _is100m = $('#fee_100m').is(":checked"); // ~1억 
+              var _is400m = $('#fee_400m').is(":checked"); // 1억~4억 
+              var _is400m_ = $('#fee_400m_').is(":checked"); // 4억~
+              var _isno = $('#fee_no').is(":checked"); // x 포함
+
+              var month = $('select[name="fee_month"]').val()
+
+
+
+              var chk_fees = new Array();
+
+              $("input[name='celeb_fee']:checked").each(function(index, name) { 
+                var alpha = $(name).val(); 
+                chk_fees.push(alpha);
+              });
+
+              chk_fees.push(month);
+              console.log(chk_fees);
+              $('#hidden_celeb_fee').val(chk_fees);
+
+
+              });
+
+///////////////////////////
+            
+///////////////////// 셀럽섹션
+            
+              // 전체 누르면 다 체크 
+            $('#celeb_all' ).click(function(){
+
+              var _isall = $('#celeb_all').is(":checked");
+              if( _isall ){
+                console.log(_isall)
+                $('input:checkbox[name="celeb_section"]').prop('checked',true);
+              }
+
+
+              
+            });
+
+            // 하나라도 해제 하면 전체 해제 시킴.
+            $('input[name="celeb_section"]' ).click(function(){
+
+              var tmp = new Array();
+
+              $("input[name='celeb_section']:checked").each(function(index, name) { 
+                var alpha = $(name).val(); 
+                tmp.push(alpha)
+              });
+
+
+              console.log('eee', tmp)
+
+              if (tmp.length != 8){
+                $('#celeb_all').prop('checked',false);
+              }
+
+              $('#hidden_celeb_section').val(tmp)
+              
+            });
+            
+
+            // 셀럽 섹션 누르면 오픈
+            $('input[name="btn_celeb_section"]' ).click(function(){
+
+            var _ischecked = $('input:checkbox[name="btn_celeb_section"]').is(":checked");
+
+            var _isall = $('#celeb_all').is(":checked");
+            var _issinger = $('#celeb_singer').is(":checked");
+            var _isactor = $('#celeb_actor').is(":checked");
+            var _isidol = $('#celeb_idol').is(":checked");
+            var _isentertainment = $('#celeb_entertainment').is(":checked");
+            var _isbroadcast = $('#celeb_broadcast').is(":checked");
+            var _isceleb = $('#celeb_celeb').is(":checked");
+            var _isyoutube = $('#celeb_youtube').is(":checked");
+
+            console.log(_isall)
+            
+
+            if ( _ischecked ){
+
+              
+              $('.check-list_celeb_section').show();
+              console.log($('.sidebar-wrapper').css("overflow-y"))
+              console.log($('.sidebar-wrapper').css("overflow-x"))
+            }
+            else
+              $('.check-list_celeb_section').hide();
+              console.log($('.sidebar-wrapper').css("overflow-y"))
+              console.log($('.sidebar-wrapper').css("overflow-x"))
+            }
+            );
+
+
+            
+
+///////////////////// 
 
         $('.fixed-plugin a').click(function(event) {
           if ($(this).hasClass('switch-trigger')) {

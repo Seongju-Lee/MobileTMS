@@ -249,6 +249,101 @@
               }
             );
             
+
+
+//////////////////////
+
+///////////////////// 이케아 / 레케아 세부 항목
+
+              ///// 이케아 
+            $('input[name="echar"]' ).click(function(){
+
+              var _isSA = $('#SA').is(":checked");
+              var _isSB = $('#SB').is(":checked");
+              var _isSC = $('#SC').is(":checked");
+              var _isSZ = $('#SZ').is(":checked");
+              var _isS1 = $('#S1').is(":checked");
+              var _isST = $('#ST').is(":checked");
+              var _isSQ = $('#SQ').is(":checked");
+
+              var _isS5 = $('#S5').is(":checked");
+              var _isSE = $('#SE').is(":checked");
+              var _isSD = $('#SD').is(":checked");
+              var _isSF = $('#SF').is(":checked");
+              var _isSL = $('#SL').is(":checked");
+
+
+              var _isS9 = $('#S9').is(":checked");
+              var _isAC = $('#AC').is(":checked");
+              var _isSH = $('#SH').is(":checked");
+              var _isXE = $('#XE').is(":checked");
+
+              var _isSG = $('#SG').is(":checked");
+              var _isS2 = $('#S2').is(":checked");
+
+
+
+              var chk_echar = new Array();
+
+              $("input[name='echar']:checked").each(function(index, name) { 
+                var alpha = $(name).val(); 
+                chk_echar.push(alpha);
+              });
+
+              console.log(chk_echar)
+              $('#hidden_echar').val(chk_echar)
+
+              }
+            );
+
+            ///// 레케아 
+            $('input[name="rchar"]' ).click(function(){
+
+              var _isS8 = $('#S8').is(":checked");
+              var _isXX = $('#XX').is(":checked");
+              var _isS0 = $('#S0').is(":checked");
+              var _isSK = $('#SK').is(":checked");
+              var _isIG = $('#IG').is(":checked");
+              var _isIP = $('#IP').is(":checked");
+              var _isSP = $('#SP').is(":checked");
+
+              var _isSI = $('#SI').is(":checked");
+              var _isSJ = $('#SJ').is(":checked");
+              var _isSS = $('#SS').is(":checked");
+              var _isSX = $('#SX').is(":checked");
+              var _isSM = $('#SM').is(":checked");
+              var _isF9 = $('#F9').is(":checked");
+              var _isF0 = $('#F0').is(":checked");
+
+              var _isXB = $('#XB').is(":checked");
+              var _isXA = $('#XA').is(":checked");
+              var _isBK = $('#BK').is(":checked");
+              var _isXV = $('#XV').is(":checked");
+              var _isXF = $('#XF').is(":checked");
+              var _isXG = $('#XG').is(":checked");
+              var _isXI = $('#XI').is(":checked");
+              var _isXC = $('#XC').is(":checked");
+              var _isXD = $('#XD').is(":checked");
+              var _isDR = $('#DR').is(":checked");
+              var _isDP = $('#DP').is(":checked");
+
+
+
+              var chk_rchar = new Array();
+
+              $("input[name='rchar']:checked").each(function(index, name) { 
+                var alpha = $(name).val(); 
+                chk_rchar.push(alpha);
+              });
+
+              console.log(chk_rchar)
+              $('#hidden_rchar').val(chk_rchar)
+
+              }
+              );
+/////////////////////
+
+
 ///////////////////// 나이 선택
 
             $('input[name="chk_age"]' ).click(function(){
@@ -352,7 +447,7 @@
 
 ///////////////////////////
 
-
+//////
 ///////////////////// 셀럽모델료 선택
 
            // 모델료 확인

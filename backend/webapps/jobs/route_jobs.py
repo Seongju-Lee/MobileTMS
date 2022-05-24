@@ -57,6 +57,7 @@ def search_filter(req: Request, s_date: str = '', e_date: str = '', gender_m: st
                   sort_thrdays: str = '', sort_movchoi: str = '', sort_proc: str = '', sort_register: str = '', sort_recommend: str = '', sort_s_count: str = '',
                   sort_realtime: str = '', sort_read: str = '', alpha_s_fee: str = '', alpha_e_fee: str = '', s_fee: str = '', e_fee: str = '',
                   query: str = '', name: str = '', coname: str = '', manager: str = '', tel: str = '', chk_age: str = '', alpha_fees: str = '',
+                  hidden_echar: str = '', hidden_rchar: str = '',
                   db: Session = Depends(get_db)):
 
     # try:
@@ -86,7 +87,9 @@ def search_filter(req: Request, s_date: str = '', e_date: str = '', gender_m: st
     # 추천 30일
     if sort_thrdays:
         models = chu_30(db=db, chu_act=s_act,
-                        chu_fav=s_fav, chu_img=s_img, gender_m=gender_m, gender_w=gender_w, search_ages=search_ages, hidden_alpha_fee=hidden_alpha_fee)
+                        chu_fav=s_fav, chu_img=s_img, gender_m=gender_m, gender_w=gender_w,
+                        search_ages=search_ages, hidden_alpha_fee=hidden_alpha_fee,
+                        hidden_echar=hidden_echar, hidden_rchar=hidden_rchar)
 
         img_ok, fav_ok, act_ok = False, False, False
         chu_models = jsonable_encoder(models[:])
@@ -100,6 +103,9 @@ def search_filter(req: Request, s_date: str = '', e_date: str = '', gender_m: st
         # print(search_models)
         filter_models = []
         output_models = []
+
+        print(hidden_echar, hidden_rchar , '이케아 레케아 테스트입니다.')
+
         for model in (search_models):
             print(': ', model)
             if model[1] == 'act':
@@ -183,7 +189,9 @@ def search_filter(req: Request, s_date: str = '', e_date: str = '', gender_m: st
     elif sort_movchoi:
 
         print(search_ages)
-        models = movchoi(db=db, gender_w=gender_w, gender_m=gender_m, s_date=s_date, e_date=e_date, search_ages = search_ages, hidden_alpha_fee=hidden_alpha_fee)
+        models = movchoi(db=db, gender_w=gender_w, gender_m=gender_m, s_date=s_date, e_date=e_date, search_ages = search_ages,
+        hidden_alpha_fee=hidden_alpha_fee , hidden_echar=hidden_echar, hidden_rchar=hidden_rchar)
+        
         choi_models = jsonable_encoder(models[:])
         res_models = []
 
@@ -224,7 +232,8 @@ def search_filter(req: Request, s_date: str = '', e_date: str = '', gender_m: st
     # 프로카운트
     elif sort_proc:
         models, gubun = proc(db=db, s_date=s_date, e_date=e_date, hidden_alpha_fee=hidden_alpha_fee,
-                             gender_w=gender_w, gender_m=gender_m,  search_ages = search_ages, model=chk_model, celeb=chk_celeb, sort_realtime=sort_realtime)
+                             gender_w=gender_w, gender_m=gender_m,  search_ages = search_ages, model=chk_model, celeb=chk_celeb,
+                             sort_realtime=sort_realtime, hidden_echar=hidden_echar, hidden_rchar=hidden_rchar)
 
         count_models = jsonable_encoder(models[:])
         filter_models = []

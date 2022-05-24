@@ -76,6 +76,7 @@ class People(Base):
     bun = Column(String(20))  # 학교
     mfee = Column(String(20))  # 모델료 (매칭 필요)
     isyeon = Column(String(20))
+    image = Column(String(400))
     # people = relationship("Chu19", back_populates="chu")
     # chu = Chu19
 

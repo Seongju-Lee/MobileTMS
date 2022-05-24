@@ -280,27 +280,46 @@ def list_models(date: str, db: Session):
 
 
 # 추천2022_30일추천
-def chu_30(db: Session, chu_img, chu_fav, chu_act, gender_w, gender_m, search_ages, hidden_alpha_fee):
+def chu_30(db: Session, chu_img, chu_fav, chu_act, gender_w, gender_m, search_ages, hidden_alpha_fee, hidden_echar, hidden_rchar):
 
     if gender_m:
         gender_m = '남'
     if gender_w:
         gender_w = '여'
-    print(gender_w, gender_m)
-    print(datetime.today() - relativedelta(months=2))
+
+    char_list = []
+
+    result_models = []
+    char_list = hidden_echar.split(',') + hidden_rchar.split(',')
+
+    
     # 테스트 위해서 임시로 날짜를 3달 전까지 변경 ==> 한달로 다시 변경해야 함.
-    chu = db.query((Chu19.mcode), Chu19.gubun, (Chu19.jum), People.mfee, People.name, People.sex, People.coname,  People.height, People.age, People.isyeon ).join(
+    chu = db.query((Chu19.mcode), Chu19.gubun, (Chu19.jum), People.mfee, People.name, People.sex, People.coname,  People.height, People.age, People.isyeon, People.image ).join(
         People, Chu19.mcode == People.codesys).filter((Chu19.edit_time >= (datetime.today() - relativedelta(months=2)))).filter((People.sex == gender_m) | (People.sex == gender_w))
 
     divide_age_models = divide_ages(models_info=chu, search_ages=search_ages)
     res_model = divide_alpha(divide_age_models=divide_age_models, hidden_alpha_fee=hidden_alpha_fee)
     
+    res_model = jsonable_encoder(res_model[:])
+    print('캐릭터 선택 리스트: ', char_list)
     
-    return res_model
+    if not (char_list[0] == '') and (char_list[1]== ''):
+        for model in res_model:
+            for char in char_list:
+                if (char in model['image']):
+                    if not char == '':
+                        print('model_image: ', model['image'])
+                        print('char_list: ', char)
+                        result_models.append(model)
+        return result_models
+    else:
+        return res_model
 
+    
+    
 
 # 추천2022_영상초이
-def movchoi(db: Session, s_date, e_date,gender_w, gender_m, search_ages, hidden_alpha_fee):
+def movchoi(db: Session, s_date, e_date,gender_w, gender_m, search_ages, hidden_alpha_fee, hidden_echar, hidden_rchar):
 
     e_date = datetime.strptime(e_date, "%Y-%m-%d")
     e_date = e_date + timedelta(days=1)
@@ -310,28 +329,53 @@ def movchoi(db: Session, s_date, e_date,gender_w, gender_m, search_ages, hidden_
     if gender_w:
         gender_w = '여'
 
-    models_info = db.query((Movsel.mcode),  People.name, Movsel.rno, Movsel.edit_time, People.age, People.mfee, People.sex, People.coname,  People.height,  People.isyeon).join(
+    char_list = []
+
+    result_models = []
+    char_list = hidden_echar.split(',') + hidden_rchar.split(',')
+
+    models_info = db.query((Movsel.mcode),  People.name, Movsel.rno, Movsel.edit_time, People.age, People.mfee, People.sex, People.coname,  People.height,  People.isyeon, People.image).join(
             People, Movsel.mcode == People.codesys).filter((People.sex == gender_m) | (People.sex == gender_w)).filter((Movsel.edit_time >= s_date) & (Movsel.edit_time <= e_date))
 
     divide_age_models = divide_ages(models_info=models_info,search_ages=search_ages)
 
     res_model = divide_alpha(divide_age_models=divide_age_models, hidden_alpha_fee=hidden_alpha_fee)
 
-    return res_model
+    res_model = jsonable_encoder(res_model[:])
+    print('캐릭터 선택 리스트: ', char_list)
+    
+    if not (char_list[0] == '') and (char_list[1]== ''):
+        for model in res_model:
+            for char in char_list:
+                if (char in model['image']):
+                    if not char == '':
+                        print('model_image: ', model['image'])
+                        print('char_list: ', char)
+                        result_models.append(model)
+        return result_models
+    else:
+        return res_model
     
 
 
 # 추천2022_프로카운트
-def proc(db: Session, s_date, e_date, gender_w, gender_m, search_ages, hidden_alpha_fee, model, celeb, sort_realtime):
+def proc(db: Session, s_date, e_date, gender_w, gender_m, search_ages, hidden_alpha_fee, model, celeb, sort_realtime, hidden_echar, hidden_rchar):
 
     if gender_m:
         gender_m = '남'
     if gender_w:
         gender_w = '여'
 
+    char_list = []
+    print(gender_w, gender_m)
+
+    result_models = []
+    char_list = hidden_echar.split(',') + hidden_rchar.split(',')
+
+
     if not sort_realtime:
         if (celeb) and (not model):
-            proc = db.query(Mmeeting_proc.mcode, People.name, People.sex, People.age, People.coname,  People.height, Mmeeting_proc.edit_time, Mmeeting_proc.projcode, People.isyeon).join(
+            proc = db.query(Mmeeting_proc.mcode, People.name, People.sex, People.age, People.coname,  People.height, Mmeeting_proc.edit_time, Mmeeting_proc.projcode, People.isyeon,  People.image).join(
                 People, Mmeeting_proc.mcode == People.codesys).filter((Mmeeting_proc.edit_time >= s_date) & (Mmeeting_proc.edit_time <= e_date)).filter((People.sex == gender_m) | (People.sex == gender_w)).filter(
                     People.rdcode.contains('TC')
 
@@ -340,7 +384,7 @@ def proc(db: Session, s_date, e_date, gender_w, gender_m, search_ages, hidden_al
             res_model = divide_alpha(divide_age_models=divide_age_models, hidden_alpha_fee=hidden_alpha_fee)
             gubun = 'celeb'
         elif (model) and (not celeb):
-            proc = db.query(Mmeeting_proc.mcode, People.name, People.sex, People.age, People.coname, People.mfee, People.height, Mmeeting_proc.edit_time, Mmeeting_proc.projcode, People.isyeon).join(
+            proc = db.query(Mmeeting_proc.mcode, People.name, People.sex, People.age, People.coname, People.mfee, People.height, Mmeeting_proc.edit_time, Mmeeting_proc.projcode, People.isyeon, People.image).join(
                 People, Mmeeting_proc.mcode == People.codesys).filter((Mmeeting_proc.edit_time >= s_date) & (Mmeeting_proc.edit_time <= e_date)).filter((People.sex == gender_m) | (People.sex == gender_w)).filter(
                     not_(People.rdcode.contains('TC'))
             )
@@ -350,7 +394,7 @@ def proc(db: Session, s_date, e_date, gender_w, gender_m, search_ages, hidden_al
 
             gubun = 'model'
         else:
-            proc = db.query(Mmeeting_proc.mcode, People.name, Mmeeting_proc.edit_time, Mmeeting_proc.projcode, People.isyeon).join(
+            proc = db.query(Mmeeting_proc.mcode, People.name, Mmeeting_proc.edit_time, Mmeeting_proc.projcode, People.isyeon,  People.image).join(
                 People, Mmeeting_proc.mcode == People.codesys).filter((Mmeeting_proc.edit_time >= s_date) & (Mmeeting_proc.edit_time <= e_date)).filter((People.sex == gender_m) | (People.sex == gender_w))
             divide_age_models = divide_ages(models_info=proc, search_ages=search_ages)
             res_model = divide_alpha(divide_age_models=divide_age_models, hidden_alpha_fee=hidden_alpha_fee)
@@ -358,7 +402,7 @@ def proc(db: Session, s_date, e_date, gender_w, gender_m, search_ages, hidden_al
             gubun = 'all'
 
     else:
-        proc = db.query(Mmeeting_proc.mcode.label('codesys'), Yeon.rno, Yeon.name, Yeon.sex, Yeon.age, Yeon.a_3, Yeon.a_6, Yeon.a_12, Mmeeting_proc.edit_time, Mmeeting_proc.projcode, People.isyeon).join(
+        proc = db.query(Mmeeting_proc.mcode.label('codesys'), Yeon.rno, Yeon.name, Yeon.sex, Yeon.age, Yeon.a_3, Yeon.a_6, Yeon.a_12, Mmeeting_proc.edit_time, Mmeeting_proc.projcode, People.isyeon,  People.image).join(
             Yeon, Mmeeting_proc.mcode == Yeon.codesys).join(People, People.codesys == Yeon.codesys).filter((Mmeeting_proc.edit_time >= s_date) & (Mmeeting_proc.edit_time <= e_date)).filter((Yeon.sex == gender_m) | (Yeon.sex == gender_w)).filter(
                 Yeon.rdcode.contains('TC'))
 
@@ -366,7 +410,22 @@ def proc(db: Session, s_date, e_date, gender_w, gender_m, search_ages, hidden_al
 
     for model in jsonable_encoder(res_model[:]):
         print(model['mfee'], model['age'])
-    return res_model, gubun
+
+
+    res_model = jsonable_encoder(res_model[:])
+    print('캐릭터 선택 리스트: ', char_list)
+    
+    if not (char_list[0] == '') and (char_list[1]== ''):
+        for model in res_model:
+            for char in char_list:
+                if (char in model['image']):
+                    if not char == '':
+                        print('model_image: ', model['image'])
+                        print('char_list: ', char)
+                        result_models.append(model)
+        return result_models
+    else:
+        return res_model
 
 
 # 순옥스타_최신등록순

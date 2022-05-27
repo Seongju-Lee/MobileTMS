@@ -294,14 +294,16 @@ def chu_30(db: Session, chu_img, chu_fav, chu_act, gender_w, gender_m, search_ag
 
     
     # 테스트 위해서 임시로 날짜를 3달 전까지 변경 ==> 한달로 다시 변경해야 함.
-    chu = db.query((Chu19.mcode), Chu19.gubun, (Chu19.jum), People.mfee, People.name, People.sex, People.coname,  People.height, People.age, People.isyeon, People.image ).join(
-        People, Chu19.mcode == People.codesys).filter((Chu19.edit_time >= (datetime.today() - relativedelta(months=2)))).filter((People.sex == gender_m) | (People.sex == gender_w))
+    chu = db.query((Chu19.mcode), Chu19.gubun, (Chu19.jum), People.mfee, People.name, People.sex, People.coname,  People.height, People.age, People.isyeon, People.image, Chu19.edit_time ).join(
+        People, Chu19.mcode == People.codesys).filter((Chu19.edit_time >= (datetime.today() - relativedelta(months=1)))).filter((People.sex == gender_m) | (People.sex == gender_w))
 
     divide_age_models = divide_ages(models_info=chu, search_ages=search_ages)
     res_model = divide_alpha(divide_age_models=divide_age_models, hidden_alpha_fee=hidden_alpha_fee)
     
+    print(datetime.today() - relativedelta(months=1))
+
     res_model = jsonable_encoder(res_model[:])
-    print('캐릭터 선택 리스트: ', char_list)
+    # print('캐릭터 선택 리스트: ', char_list)
     
     if not (char_list[0] == '') and (char_list[1]== ''):
         for model in res_model:
@@ -409,8 +411,8 @@ def proc(db: Session, s_date, e_date, gender_w, gender_m, search_ages, hidden_al
 
         gubun = 'celeb'
 
-    for model in jsonable_encoder(res_model[:]):
-        print(model['mfee'], model['age'])
+    # for model in jsonable_encoder(res_model[:]):
+    #     print(model['mfee'], model['age'])
 
 
     res_model = jsonable_encoder(res_model[:])

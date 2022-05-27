@@ -8,26 +8,26 @@
 {% block content %}
 
         <div class="row">
-          <div class="col-md-8">
+          <div class="col-md-12">
             <div class="card">
 
-              <form role="form" method="post" action="">
+              <form method="post" action="/" >
               
                 <div class="card-header">
                   <h5 class="title">Login</h5>
 
                   <h6 class="card-category">
-                      Add your credentials
+                      아이디, 패스워드 입력
                   </h6>
                 </div>
 
-                <div class="card-body">
+                <div class="card-bodys">
 
                     <div class="row">
 
                       <div class="col-md-3 px-md-1">
                         <div class="form-group">
-                          <label>Username</label>
+                          <label>ID</label>
                           <input class="form-control" id="username_login" name="username" required="" type="text" value="">
                         </div>
                       </div>
@@ -46,9 +46,8 @@
                     
                 </div>
                 <div class="card-footer">
-                  <button type="submit" name="login" class="btn btn-fill btn-primary">Login</button>
-                  &nbsp; &nbsp;
-                  Don't have an account? <a href="/register.html" class="text-primary">Create</a>
+                  <button type="submit" name="login" class="btn btn-fill btn-outline-success">Login</button>
+                 
                 </div>
 
               </form>

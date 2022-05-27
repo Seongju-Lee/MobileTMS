@@ -45,6 +45,17 @@ def home(request: Request, db: Session = Depends(get_db)):
                        "years": years,  "now_year": now_year}
     )
 
+@router.get("/login")
+def home(request: Request, db: Session = Depends(get_db)):
+
+    now_year = datetime.today().year
+    years = [i for i in range(now_year-10, 1930, -1)]
+
+    return templates.TemplateResponse(
+        "login.html", {"request": request,
+                       "years": years,  "now_year": now_year}
+    )
+
 
 ######################
 # 날짜, 성별, 연령 등 필터들 예외처리 해놔야 함.
@@ -76,7 +87,7 @@ def search_filter(req: Request, s_date: str = '', e_date: str = '', gender_m: st
     hidden_s_age = hidden_s_age.split(',')
     hidden_e_age = hidden_e_age.split(',')
 
-    print(hidden_e_age)
+    # print(hidden_e_age)
     if (not hidden_s_age[0] == '') and (not hidden_e_age[0] == ''):
         for i in range(len(hidden_e_age)):
             search_ages.append([int(hidden_s_age[i].split('(')[1].split(')')[0]), int(hidden_e_age[i].split('(')[1].split(')')[0])])
@@ -95,20 +106,50 @@ def search_filter(req: Request, s_date: str = '', e_date: str = '', gender_m: st
         img_ok, fav_ok, act_ok = False, False, False
         chu_models = jsonable_encoder(models[:])
         res_models = []
+        
+        # dddd = 0
+        # for model in models:
+        #     if model['mcode'] == 'Y0XH40NGFW721B':
+        #         if model['gubun'] == 'fav':
+        #             print(model)
+        #             dddd += model['jum']
+        # print(dddd)
+
+
         i = 0
         # print(chu_models)
         df = pd.DataFrame(chu_models).groupby(
             ['mcode', 'gubun', 'name', 'jum', 'mfee',  'sex', 'coname', 'height', 'age', 'isyeon']).sum().reset_index()
 
         search_models = df.values.tolist()
-        # print(search_models)
         filter_models = []
         output_models = []
 
+
         print(hidden_echar, hidden_rchar , '이케아 레케아 테스트입니다.')
 
+
+        # for model in (search_models):
+        #     res_models.append({'mcode': model[0], 'gubun': model[1], 'name': model[2], 'act_jum': model[3],
+        #             'mfee':model[4], 'gender':model[5], 'coname':model[6],
+        #             'height':model[7],'age':model[8], 'isyeon':model[9]})
+        for i in range(len(search_models)):
+            print(i)
+            print(search_models[i])
+            
+            # if search_models[i][0] == res_models[i+1][0]:
+
+            #     search_models[i] = search_models[i] + search_models[i-1]
+            # else:
+            #     pass
+
+        for mmm in search_models:
+            print(mmm)
+
+            
         for model in (search_models):
-            print(': ', model)
+        
+            print(model)
             if model[1] == 'act':
                 res_models.append(
                     {'mcode': model[0], 'gubun': model[1], 'name': model[2], 'act_jum': model[3],
@@ -126,10 +167,13 @@ def search_filter(req: Request, s_date: str = '', e_date: str = '', gender_m: st
                     'height':model[7],'age':model[8], 'isyeon':model[9]})
 
             if len(res_models) != i:
-               
+
                 if res_models[i]['mcode'] == res_models[i-1]['mcode']:
 
-                    res_models[i].update(res_models[i-1])
+                    if res_models[i]['gubun']  == res_models[i-1]['gubun']:
+                        res_models[i][res_models[i]['gubun'] +'_jum'] = res_models[i][res_models[i]['gubun'] + '_jum'] + res_models[i-1][res_models[i-1]['gubun'] + '_jum']
+                    else:
+                        res_models[i].update(res_models[i-1])
                 else:
                     filter_models.append(res_models[i-1])
 
@@ -151,7 +195,6 @@ def search_filter(req: Request, s_date: str = '', e_date: str = '', gender_m: st
             pass
 
         for model in filter_models:
-
             if not 'img_jum' in model.keys():
                 model['img_jum'] = 0
             if not 'fav_jum' in model.keys():
@@ -175,7 +218,9 @@ def search_filter(req: Request, s_date: str = '', e_date: str = '', gender_m: st
         for model in output_models:
             model['sum'] = model['img_jum'] + model['fav_jum'] + model['act_jum']
             
+            
         res = sorted(output_models, key=lambda x: x['sum'], reverse=True)
+        
 
         return templates.TemplateResponse(
             "ui-icons.html", {"request": req,
@@ -200,7 +245,7 @@ def search_filter(req: Request, s_date: str = '', e_date: str = '', gender_m: st
             ['mcode', 'name', 'age', 'mfee', 'sex', 'coname', 'height', 'isyeon']).count().reset_index()
 
         search_models = df.values.tolist()
-        print(search_models)
+        # print(search_models)
 
         res = sorted(search_models, key=lambda x: x[8], reverse=True)
 
@@ -209,6 +254,7 @@ def search_filter(req: Request, s_date: str = '', e_date: str = '', gender_m: st
             res_models.append(
                 {'mcode': model[0], 'name': model[1], 'age': model[2], 'mfee':model[3], 'gender':model[4], 'coname':model[5], 'height':model[6],'isyeon':model[8] ,'count': model[len(model)-1]})
 
+     
         try:
 
             with open("model.json", 'r', encoding='utf-8') as json_file:
@@ -243,9 +289,10 @@ def search_filter(req: Request, s_date: str = '', e_date: str = '', gender_m: st
                 ['mcode', 'name', 'sex', 'age', 'coname', 'mfee', 'height']).count().reset_index()
 
             search_models = df.values.tolist()
-            res = sorted(search_models, key=lambda x: x[2], reverse=True)
+            res = sorted(search_models, key=lambda x: x[10], reverse=True)
 
             for model in res:
+                
                 filter_models.append(
                     {'mcode': model[0], 'name': model[1], 'gender': model[2], 'age': model[3], 'coname': model[4], 'mfee': model[5],  'height': model[6], 'isyeon':model[8], 'count': model[len(model)-1]})
 

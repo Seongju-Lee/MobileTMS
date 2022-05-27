@@ -77,8 +77,9 @@ def search_filter(req: Request, s_date: str = '', e_date: str = '', gender_m: st
     hidden_e_age = hidden_e_age.split(',')
 
     print(hidden_e_age)
-    for i in range(len(hidden_e_age)):
-        search_ages.append([int(hidden_s_age[i].split('(')[1].split(')')[0]), int(hidden_e_age[i].split('(')[1].split(')')[0])])
+    if (not hidden_s_age[0] == '') and (not hidden_e_age[0] == ''):
+        for i in range(len(hidden_e_age)):
+            search_ages.append([int(hidden_s_age[i].split('(')[1].split(')')[0]), int(hidden_e_age[i].split('(')[1].split(')')[0])])
 
     print('알파모델료 TEST: ', hidden_alpha_fee)
 
@@ -191,7 +192,7 @@ def search_filter(req: Request, s_date: str = '', e_date: str = '', gender_m: st
         print(search_ages)
         models = movchoi(db=db, gender_w=gender_w, gender_m=gender_m, s_date=s_date, e_date=e_date, search_ages = search_ages,
         hidden_alpha_fee=hidden_alpha_fee , hidden_echar=hidden_echar, hidden_rchar=hidden_rchar)
-        
+
         choi_models = jsonable_encoder(models[:])
         res_models = []
 

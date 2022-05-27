@@ -308,8 +308,6 @@ def chu_30(db: Session, chu_img, chu_fav, chu_act, gender_w, gender_m, search_ag
             for char in char_list:
                 if (char in model['image']):
                     if not char == '':
-                        print('model_image: ', model['image'])
-                        print('char_list: ', char)
                         result_models.append(model)
         return result_models
     else:
@@ -372,7 +370,6 @@ def proc(db: Session, s_date, e_date, gender_w, gender_m, search_ages, hidden_al
     result_models = []
     char_list = hidden_echar.split(',') + hidden_rchar.split(',')
 
-
     if not sort_realtime:
         if (celeb) and (not model):
             proc = db.query(Mmeeting_proc.mcode, People.name, People.sex, People.age, People.coname,  People.height, Mmeeting_proc.edit_time, Mmeeting_proc.projcode, People.isyeon,  People.image).join(
@@ -384,6 +381,8 @@ def proc(db: Session, s_date, e_date, gender_w, gender_m, search_ages, hidden_al
             res_model = divide_alpha(divide_age_models=divide_age_models, hidden_alpha_fee=hidden_alpha_fee)
             gubun = 'celeb'
         elif (model) and (not celeb):
+            print('dddddddddddddddddddddddd: ', sort_realtime, model, celeb, s_date, e_date)
+
             proc = db.query(Mmeeting_proc.mcode, People.name, People.sex, People.age, People.coname, People.mfee, People.height, Mmeeting_proc.edit_time, Mmeeting_proc.projcode, People.isyeon, People.image).join(
                 People, Mmeeting_proc.mcode == People.codesys).filter((Mmeeting_proc.edit_time >= s_date) & (Mmeeting_proc.edit_time <= e_date)).filter((People.sex == gender_m) | (People.sex == gender_w)).filter(
                     not_(People.rdcode.contains('TC'))
@@ -394,6 +393,8 @@ def proc(db: Session, s_date, e_date, gender_w, gender_m, search_ages, hidden_al
 
             gubun = 'model'
         else:
+            print('ddddddd: ', s_date, e_date)
+
             proc = db.query(Mmeeting_proc.mcode, People.name, Mmeeting_proc.edit_time, Mmeeting_proc.projcode, People.isyeon,  People.image).join(
                 People, Mmeeting_proc.mcode == People.codesys).filter((Mmeeting_proc.edit_time >= s_date) & (Mmeeting_proc.edit_time <= e_date)).filter((People.sex == gender_m) | (People.sex == gender_w))
             divide_age_models = divide_ages(models_info=proc, search_ages=search_ages)
@@ -420,12 +421,10 @@ def proc(db: Session, s_date, e_date, gender_w, gender_m, search_ages, hidden_al
             for char in char_list:
                 if (char in model['image']):
                     if not char == '':
-                        print('model_image: ', model['image'])
-                        print('char_list: ', char)
                         result_models.append(model)
-        return result_models
+        return result_models, gubun
     else:
-        return res_model
+        return res_model, gubun
 
 
 # 순옥스타_최신등록순
@@ -585,7 +584,7 @@ def search_job(db: Session, name='', coname='', tel='', manager=''):
     # else:
     models = db.query(People.codesys.label('mcode'), People.name, People.age, People.sex.label('gender'), People.coname, People.mfee,
                       People.height, People.sex, People.isyeon).filter(People.name.contains(name) & People.coname.contains(coname) & (People.dam.contains(manager) | People.dam2.contains(manager) | People.dam3.contains(manager)) &
-                                                                       (People.tel1.contains(tel) | People.dam2tel.contains(tel) | People.dam3tel.contains(tel)) & People.ptel.contains(tel))
+                                                                       (People.tel1.contains(tel) | People.dam2tel.contains(tel) | People.dam3tel.contains(tel) | People.ptel.contains(tel)))
 
     # 연예인, 모델 나누는 로직 짜서
     # 리스트 에 'gubun'이라는 키 하나 생성해서 'model', 'celeb'을 값으로 나눠서 return

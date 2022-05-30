@@ -296,6 +296,7 @@ def chu_30(db: Session, chu_img, chu_fav, chu_act, gender_w, gender_m, search_ag
     # 테스트 위해서 임시로 날짜를 3달 전까지 변경 ==> 한달로 다시 변경해야 함.
     chu = db.query((Chu19.mcode), Chu19.gubun, (Chu19.jum), People.mfee, People.name, People.sex, People.coname,  People.height, People.age, People.isyeon, People.image, Chu19.edit_time ).join(
         People, Chu19.mcode == People.codesys).filter((Chu19.edit_time >= (datetime.today() - relativedelta(months=1)))).filter((People.sex == gender_m) | (People.sex == gender_w))
+    print('vvvvvvvvvvv: ', chu)
 
     divide_age_models = divide_ages(models_info=chu, search_ages=search_ages)
     res_model = divide_alpha(divide_age_models=divide_age_models, hidden_alpha_fee=hidden_alpha_fee)
@@ -303,6 +304,9 @@ def chu_30(db: Session, chu_img, chu_fav, chu_act, gender_w, gender_m, search_ag
     print(datetime.today() - relativedelta(months=1))
 
     res_model = jsonable_encoder(res_model[:])
+
+    # for mm in res_model:
+    #     print('vvvvvvvvvvv: ', mm)
     # print('캐릭터 선택 리스트: ', char_list)
     
     if not (char_list[0] == '') and (char_list[1]== ''):
@@ -430,7 +434,7 @@ def proc(db: Session, s_date, e_date, gender_w, gender_m, search_ages, hidden_al
 
 
 # 순옥스타_최신등록순
-def order_register(db: Session, s_date, e_date, gender_w, gender_m, search_ages , hidden_celeb_fee, hidden_celeb_fee_month, hidden_celeb_section):
+def order_register(db: Session, gender_w, gender_m, search_ages , hidden_celeb_fee, hidden_celeb_fee_month, hidden_celeb_section):
 
     if gender_m:
         gender_m = '남'
@@ -440,7 +444,7 @@ def order_register(db: Session, s_date, e_date, gender_w, gender_m, search_ages 
     print('haha...: ', hidden_celeb_section)
     register = db.query(SunokStar.mcode, Yeon.name, SunokStar.edit_time,  Yeon.sex.label('gender'), Yeon.age, Yeon.a_3, Yeon.a_6, Yeon.a_12, People.isyeon, People.height, People.coname, People.mfee).join(
         Yeon, SunokStar.mcode == Yeon.codesys).join(
-        People, SunokStar.mcode == People.codesys).order_by(desc(SunokStar.edit_time)).filter((SunokStar.edit_time >= s_date) & (SunokStar.edit_time <= e_date)).filter((Yeon.sex == gender_m) | (Yeon.sex == gender_w))
+        People, SunokStar.mcode == People.codesys).order_by(desc(SunokStar.edit_time)).filter((Yeon.sex == gender_m) | (Yeon.sex == gender_w))
     divide_age_models = divide_ages(register, search_ages)
     res_model = divide_mfee(divide_age_models, hidden_celeb_fee, hidden_celeb_fee_month)
     
@@ -480,7 +484,7 @@ def order_s_count(db: Session, gender_w, gender_m, search_ages, hidden_celeb_fee
 
     # print('안녕하세요용: ', search_ages)
     models = db.query(SCount.edit_time, SCount.mcode, Yeon.sex, Yeon.name, Yeon.age, Yeon.a_3, Yeon.a_6, Yeon.a_12, People.isyeon, People.height, People.coname, People.mfee).join(
-        Yeon, SCount.mcode == Yeon.codesys).join(People, SCount.mcode == People.codesys).order_by(desc(SCount.edit_time)).filter((SCount.edit_time >= s_date) & (
+        Yeon, SCount.mcode == Yeon.codesys).join(People, SCount.mcode == People.codesys).join(SunokStar, SunokStar.mcode == SCount.mcode).order_by(desc(SCount.edit_time)).filter((SCount.edit_time >= s_date) & (
             SCount.edit_time <= e_date)).filter((Yeon.sex == gender_m) | (Yeon.sex == gender_w))
 
     divide_age_models = divide_ages(models, search_ages)

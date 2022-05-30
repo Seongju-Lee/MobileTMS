@@ -107,81 +107,72 @@ def search_filter(req: Request, s_date: str = '', e_date: str = '', gender_m: st
         chu_models = jsonable_encoder(models[:])
         res_models = []
         
-        # dddd = 0
-        # for model in models:
-        #     if model['mcode'] == 'Y0XH40NGFW721B':
-        #         if model['gubun'] == 'fav':
-        #             print(model)
-        #             dddd += model['jum']
-        # print(dddd)
-
-
+        
         i = 0
-        # print(chu_models)
         df = pd.DataFrame(chu_models).groupby(
-            ['mcode', 'gubun', 'name', 'jum', 'mfee',  'sex', 'coname', 'height', 'age', 'isyeon']).sum().reset_index()
+            ['mcode', 'gubun', 'name',  'mfee',  'sex', 'coname', 'height', 'age', 'isyeon'])['jum'].sum().reset_index()
 
         search_models = df.values.tolist()
         filter_models = []
         output_models = []
 
+        # print('1111111: : ', search_models)
 
-        print(hidden_echar, hidden_rchar , '이케아 레케아 테스트입니다.')
-
-
-        # for model in (search_models):
-        #     res_models.append({'mcode': model[0], 'gubun': model[1], 'name': model[2], 'act_jum': model[3],
-        #             'mfee':model[4], 'gender':model[5], 'coname':model[6],
-        #             'height':model[7],'age':model[8], 'isyeon':model[9]})
-        for i in range(len(search_models)):
-            print(i)
-            print(search_models[i])
-            
-            # if search_models[i][0] == res_models[i+1][0]:
-
-            #     search_models[i] = search_models[i] + search_models[i-1]
-            # else:
-            #     pass
-
-        for mmm in search_models:
-            print(mmm)
-
+        for model in search_models:
+            if model[0] == 'Y0Y9J0Z4B7J31F':
+                print('1111111: : ', model)
+        # print(hidden_echar, hidden_rchar , '이케아 레케아 테스트입니다.')
             
         for model in (search_models):
-        
-            print(model)
-            if model[1] == 'act':
-                res_models.append(
-                    {'mcode': model[0], 'gubun': model[1], 'name': model[2], 'act_jum': model[3],
-                    'mfee':model[4], 'gender':model[5], 'coname':model[6],
-                    'height':model[7],'age':model[8], 'isyeon':model[9]})
-            elif model[1] == 'fav':
-                res_models.append(
-                    {'mcode': model[0], 'gubun': model[1], 'name': model[2], 'fav_jum': model[3],
-                    'mfee':model[4], 'gender':model[5], 'coname':model[6],
-                    'height':model[7],'age':model[8], 'isyeon':model[9]})
-            elif model[1] == 'img':
-                res_models.append(
-                    {'mcode': model[0], 'gubun': model[1], 'name': model[2], 'img_jum': model[3],
-                    'mfee':model[4], 'gender':model[5], 'coname':model[6],
-                    'height':model[7],'age':model[8], 'isyeon':model[9]})
+            if model[0] == 'Y0Y9J0Z4B7J31F':
+                print('llll22222: ', model)
+            res_models.append(
+                {'mcode': model[0], 'gubun': model[1], 'name': model[2],
+                'mfee':model[3], 'gender':model[4], 'coname':model[5],
+                'height':model[6],'age':model[7], 'isyeon':model[8], 'jum': model[9]})
 
-            if len(res_models) != i:
 
-                if res_models[i]['mcode'] == res_models[i-1]['mcode']:
+        df_res = pd.DataFrame(res_models).groupby(
+            ['mcode', 'gubun', 'name', 'mfee',  'gender', 'coname', 'height', 'age', 'isyeon'])['jum'].apply(list).reset_index(name='sum')
 
-                    if res_models[i]['gubun']  == res_models[i-1]['gubun']:
-                        res_models[i][res_models[i]['gubun'] +'_jum'] = res_models[i][res_models[i]['gubun'] + '_jum'] + res_models[i-1][res_models[i-1]['gubun'] + '_jum']
-                    else:
-                        res_models[i].update(res_models[i-1])
+        df_to_list = df_res.values.tolist()
+        # print(df_res)
+        j=0
+        for model in df_to_list:
+            
+            tmp = 0
+            for i in range(len(model[9])):
+                tmp += model[9][i]
+            model[9] = tmp 
+            df_to_list[j] = {'mcode': model[0], 'gubun': model[1], 'name': model[2],
+                    'mfee':model[3], 'gender':model[4], 'coname':model[5],
+                    'height':model[6],'age':model[7], 'isyeon':model[8], 'jum':model[9]}
+            j += 1
+
+        for model in (df_to_list):
+            # print('냐냐냐냐냐니: ', model)
+            if model['gubun'] == 'act':
+                model['act_jum'] = model['jum']
+            elif model['gubun'] == 'fav':
+                model['fav_jum'] = model['jum']
+            elif model['gubun'] == 'img':
+               model['img_jum'] = model['jum']
+
+        for i in range(len(df_to_list)):
+            try:
+                if i == 0:
+                    pass
+                
+                elif df_to_list[i]['mcode'] == df_to_list[i-1]['mcode']:
+                    df_to_list[i].update(df_to_list[i-1])
+                    df_to_list.remove(df_to_list[i-1])
                 else:
-                    filter_models.append(res_models[i-1])
+                    pass
+            except:
+                pass
+            
 
-                i += 1
-
-        filter_models.append(res_models[i-1])  # 마지막 모델 추가
-
-
+        filter_models = df_to_list
         try:
 
             with open("model.json", 'r', encoding='utf-8') as json_file:
@@ -195,6 +186,7 @@ def search_filter(req: Request, s_date: str = '', e_date: str = '', gender_m: st
             pass
 
         for model in filter_models:
+            
             if not 'img_jum' in model.keys():
                 model['img_jum'] = 0
             if not 'fav_jum' in model.keys():
@@ -221,7 +213,8 @@ def search_filter(req: Request, s_date: str = '', e_date: str = '', gender_m: st
             
         res = sorted(output_models, key=lambda x: x['sum'], reverse=True)
         
-
+        for model in res[:10]:
+            print('결과: ', model)
         return templates.TemplateResponse(
             "ui-icons.html", {"request": req,
                               "jobs": res, "years": years, "now_year": now_year}
@@ -323,7 +316,7 @@ def search_filter(req: Request, s_date: str = '', e_date: str = '', gender_m: st
     elif sort_register:
 
         print(hidden_celeb_section)
-        models = order_register(db=db, s_date=s_date, e_date=e_date, hidden_celeb_fee= hidden_celeb_fee, hidden_celeb_fee_month= hidden_celeb_fee_month, hidden_celeb_section=hidden_celeb_section,
+        models = order_register(db=db,  hidden_celeb_fee= hidden_celeb_fee, hidden_celeb_fee_month= hidden_celeb_fee_month, hidden_celeb_section=hidden_celeb_section,
                                 gender_w=gender_w, gender_m=gender_m, search_ages = search_ages)
 
         count_models = jsonable_encoder(models[:])
@@ -421,28 +414,33 @@ def search_filter(req: Request, s_date: str = '', e_date: str = '', gender_m: st
         filter_models = []
 
         count_models = jsonable_encoder(models[:])
-        print(count_models)
+        
 
         df = pd.DataFrame(count_models).groupby(
             ['mcode', 'name',  'sex', 'age', 'a_3', 'a_6', 'a_12', 'isyeon', 'height', 'coname', 'mfee']).count().reset_index()
 
         search_models = df.values.tolist()
-
+        print(df)
         res = sorted(search_models, key=lambda x: x[11], reverse=True)
+        # search_models
 
+        for m in res[:10]:
+            print(m)
         for model in res:
-            print(model)
             filter_models.append(
                 {'mcode': model[0], 'name': model[1], 'gender': model[2], 'age': model[3], 'a_3': model[4], 'a_6': model[5], 'a_12': model[6],
                 'isyeon': model[7], 'height': model[8], 'coname':model[9], 'mfee':model[10]})
 
+
+        # for model in filter_models[:10]:
+        #     print('ㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇ: ', model)
 
         try:
 
             with open("model.json", 'r', encoding='utf-8') as json_file:
                 aa = json.load(json_file)
                 for job in filter_models:
-                    print(job)
+                    # print(job)
                     if not job['mfee'] == '':
                         if not  job['isyeon'] == 'V':
                             job['mfee'] = aa['model_fee'][job['mfee']]

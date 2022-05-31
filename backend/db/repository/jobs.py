@@ -363,7 +363,7 @@ def movchoi(db: Session, s_date, e_date,gender_w, gender_m, search_ages, hidden_
 
 
 # 추천2022_프로카운트
-def proc(db: Session, s_date, e_date, gender_w, gender_m, search_ages, hidden_alpha_fee, model, celeb, sort_realtime, hidden_echar, hidden_rchar):
+def proc(db: Session, s_date, e_date, gender_w, gender_m, search_ages, hidden_alpha_fee, model, celeb, hidden_echar, hidden_rchar):
 
     if gender_m:
         gender_m = '남'
@@ -376,44 +376,43 @@ def proc(db: Session, s_date, e_date, gender_w, gender_m, search_ages, hidden_al
     result_models = []
     char_list = hidden_echar.split(',') + hidden_rchar.split(',')
 
-    if not sort_realtime:
-        if (celeb) and (not model):
-            proc = db.query(Mmeeting_proc.mcode, People.name, People.sex, People.age, People.coname,  People.height, Mmeeting_proc.edit_time, Mmeeting_proc.projcode, People.isyeon,  People.image).join(
-                People, Mmeeting_proc.mcode == People.codesys).filter((Mmeeting_proc.edit_time >= s_date) & (Mmeeting_proc.edit_time <= e_date)).filter((People.sex == gender_m) | (People.sex == gender_w)).filter(
-                    People.rdcode.contains('TC')
+    # if (celeb) and (not model):
+    #     proc = db.query(Mmeeting_proc.mcode, People.name, People.sex, People.age, People.coname,  People.height, Mmeeting_proc.edit_time, Mmeeting_proc.projcode, People.isyeon,  People.image).join(
+    #         People, Mmeeting_proc.mcode == People.codesys).filter((Mmeeting_proc.edit_time >= s_date) & (Mmeeting_proc.edit_time <= e_date)).filter((People.sex == gender_m) | (People.sex == gender_w)).filter(
+    #             People.rdcode.contains('TC')
 
-            )
-            divide_age_models = divide_ages(models_info=proc, search_ages=search_ages)
-            res_model = divide_alpha(divide_age_models=divide_age_models, hidden_alpha_fee=hidden_alpha_fee)
-            gubun = 'celeb'
-        elif (model) and (not celeb):
-            print('dddddddddddddddddddddddd: ', sort_realtime, model, celeb, s_date, e_date)
+    #     )
+    #     divide_age_models = divide_ages(models_info=proc, search_ages=search_ages)
+    #     res_model = divide_alpha(divide_age_models=divide_age_models, hidden_alpha_fee=hidden_alpha_fee)
+    #     gubun = 'celeb'
+    if (model) and (not celeb):
+        print('dddddddddddddddddddddddd: ', model, celeb, s_date, e_date)
 
-            proc = db.query(Mmeeting_proc.mcode, People.name, People.sex, People.age, People.coname, People.mfee, People.height, Mmeeting_proc.edit_time, Mmeeting_proc.projcode, People.isyeon, People.image).join(
-                People, Mmeeting_proc.mcode == People.codesys).filter((Mmeeting_proc.edit_time >= s_date) & (Mmeeting_proc.edit_time <= e_date)).filter((People.sex == gender_m) | (People.sex == gender_w)).filter(
-                    not_(People.rdcode.contains('TC'))
-            )
-            divide_age_models = divide_ages(models_info=proc, search_ages=search_ages)
-            
-            res_model = divide_alpha(divide_age_models=divide_age_models, hidden_alpha_fee=hidden_alpha_fee)
+        proc = db.query(Mmeeting_proc.mcode, People.name, People.sex, People.age, People.coname, People.mfee, People.height, Mmeeting_proc.edit_time, Mmeeting_proc.projcode, People.isyeon, People.image).join(
+            People, Mmeeting_proc.mcode == People.codesys).filter((Mmeeting_proc.edit_time >= s_date) & (Mmeeting_proc.edit_time <= e_date)).filter((People.sex == gender_m) | (People.sex == gender_w)).filter(
+                not_(People.rdcode.contains('TC'))
+        )
+        divide_age_models = divide_ages(models_info=proc, search_ages=search_ages)
+        
+        res_model = divide_alpha(divide_age_models=divide_age_models, hidden_alpha_fee=hidden_alpha_fee)
 
-            gubun = 'model'
-        else:
-            print('ddddddd: ', s_date, e_date)
+        gubun = 'model'
+    # else:
+    #     print('ddddddd: ', s_date, e_date)
 
-            proc = db.query(Mmeeting_proc.mcode, People.name, Mmeeting_proc.edit_time, Mmeeting_proc.projcode, People.isyeon,  People.image).join(
-                People, Mmeeting_proc.mcode == People.codesys).filter((Mmeeting_proc.edit_time >= s_date) & (Mmeeting_proc.edit_time <= e_date)).filter((People.sex == gender_m) | (People.sex == gender_w))
-            divide_age_models = divide_ages(models_info=proc, search_ages=search_ages)
-            res_model = divide_alpha(divide_age_models=divide_age_models, hidden_alpha_fee=hidden_alpha_fee)
-            
-            gubun = 'all'
+    #     proc = db.query(Mmeeting_proc.mcode, People.name, Mmeeting_proc.edit_time, Mmeeting_proc.projcode, People.isyeon,  People.image).join(
+    #         People, Mmeeting_proc.mcode == People.codesys).filter((Mmeeting_proc.edit_time >= s_date) & (Mmeeting_proc.edit_time <= e_date)).filter((People.sex == gender_m) | (People.sex == gender_w))
+    #     divide_age_models = divide_ages(models_info=proc, search_ages=search_ages)
+    #     res_model = divide_alpha(divide_age_models=divide_age_models, hidden_alpha_fee=hidden_alpha_fee)
+        
+    #     gubun = 'all'
 
-    else:
-        proc = db.query(Mmeeting_proc.mcode.label('codesys'), Yeon.rno, Yeon.name, Yeon.sex, Yeon.age, Yeon.a_3, Yeon.a_6, Yeon.a_12, Mmeeting_proc.edit_time, Mmeeting_proc.projcode, People.isyeon,  People.image).join(
-            Yeon, Mmeeting_proc.mcode == Yeon.codesys).join(People, People.codesys == Yeon.codesys).filter((Mmeeting_proc.edit_time >= s_date) & (Mmeeting_proc.edit_time <= e_date)).filter((Yeon.sex == gender_m) | (Yeon.sex == gender_w)).filter(
-                Yeon.rdcode.contains('TC'))
+    # else:
+    #     proc = db.query(Mmeeting_proc.mcode.label('codesys'), Yeon.rno, Yeon.name, Yeon.sex, Yeon.age, Yeon.a_3, Yeon.a_6, Yeon.a_12, Mmeeting_proc.edit_time, Mmeeting_proc.projcode, People.isyeon,  People.image).join(
+    #         Yeon, Mmeeting_proc.mcode == Yeon.codesys).join(People, People.codesys == Yeon.codesys).filter((Mmeeting_proc.edit_time >= s_date) & (Mmeeting_proc.edit_time <= e_date)).filter((Yeon.sex == gender_m) | (Yeon.sex == gender_w)).filter(
+    #             Yeon.rdcode.contains('TC'))
 
-        gubun = 'celeb'
+    #     gubun = 'celeb'
 
     # for model in jsonable_encoder(res_model[:]):
     #     print(model['mfee'], model['age'])
@@ -557,7 +556,7 @@ def order_realtime(db: Session, gender_w, gender_m, search_ages, hidden_celeb_fe
 
 
 
-def proc_celeb(db: Session, gender_w, gender_m, search_ages, hidden_celeb_fee, hidden_celeb_fee_month , hidden_celeb_section):
+def proc_celeb(db: Session, gender_w, gender_m, search_ages, hidden_celeb_fee, hidden_celeb_fee_month , hidden_celeb_section, s_date, e_date):
     
     if gender_m:
         gender_m = '남'
@@ -565,7 +564,8 @@ def proc_celeb(db: Session, gender_w, gender_m, search_ages, hidden_celeb_fee, h
         gender_w = '여'
 
     proc = db.query(Mmeeting_proc.mcode.label('codesys'), Yeon.rno, Yeon.name, Yeon.sex, Yeon.age, Yeon.a_3, Yeon.a_6, Yeon.a_12, Mmeeting_proc.edit_time, Mmeeting_proc.projcode, People.isyeon, People.isyeon, People.height, People.coname, People.mfee).join(
-            Yeon, Mmeeting_proc.mcode == Yeon.codesys).join(People, People.codesys == Yeon.codesys).filter((Yeon.sex == gender_m) | (Yeon.sex == gender_w)).filter(
+            Yeon, Mmeeting_proc.mcode == Yeon.codesys).join(People, People.codesys == Yeon.codesys).filter((Mmeeting_proc.edit_time >= s_date) & (
+            Mmeeting_proc.edit_time <= e_date)).filter((Yeon.sex == gender_m) | (Yeon.sex == gender_w)).filter(
                 Yeon.rdcode.contains('TC'))
 
     divide_age_models = divide_ages(proc, search_ages)

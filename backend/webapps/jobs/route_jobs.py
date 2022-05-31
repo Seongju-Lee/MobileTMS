@@ -36,7 +36,6 @@ router = APIRouter()
 
 @router.get("/")
 def home(request: Request, db: Session = Depends(get_db)):
-
     now_year = datetime.today().year
     years = [i for i in range(now_year-10, 1930, -1)]
 
@@ -61,7 +60,7 @@ def home(request: Request, db: Session = Depends(get_db)):
 # 날짜, 성별, 연령 등 필터들 예외처리 해놔야 함.
 # 필터내용
 @ router.get("/filter")
-def search_filter(req: Request, s_date: str = '', e_date: str = '', gender_m: str = '', gender_w: str = '',
+def search_filter(req: Request, s_date: str = '', e_date: str = '', gender_m: str = '', gender_w: str = '', model_filter: str ='', filter_celeb: str ='',
                   s_img: str = '', e_img: str = '', s_fav: str = '', e_fav: str = '', s_act: str = '', e_act: str = '', s_age: str = '',hidden_s_age:str='', hidden_e_age:str='', hidden_alpha_fee:str='', hidden_celeb_fee:str='', hidden_celeb_fee_month:str='',
                   hidden_celeb_section: str='',
                   e_age: str = '', chk_model: str = '', chk_celeb: str = '',
@@ -77,8 +76,7 @@ def search_filter(req: Request, s_date: str = '', e_date: str = '', gender_m: st
     ll = []
     search_ages = [] # 설정된 나이 구간 저장.
     ll.append(alpha_fees)
-    if not (sort_thrdays or sort_movchoi or sort_proc or sort_register or sort_recommend or sort_s_count
-            or sort_read or sort_realtime or name or coname or manager or tel):
+    if not (model_filter or filter_celeb or name or coname or manager or tel):
         return templates.TemplateResponse(
             "ui-icons.html", {"request": req,
                               "years": years,  "now_year": now_year}
@@ -97,7 +95,7 @@ def search_filter(req: Request, s_date: str = '', e_date: str = '', gender_m: st
 
     ###########################################
     # 추천 30일
-    if sort_thrdays:
+    if model_filter == 'thrdays':
         models = chu_30(db=db, chu_act=s_act,
                         chu_fav=s_fav, chu_img=s_img, gender_m=gender_m, gender_w=gender_w,
                         search_ages=search_ages, hidden_alpha_fee=hidden_alpha_fee,
@@ -225,7 +223,7 @@ def search_filter(req: Request, s_date: str = '', e_date: str = '', gender_m: st
 
     ###########################################
     # 영상초이
-    elif sort_movchoi:
+    elif model_filter == 'movchoi':
 
         print(search_ages)
         models = movchoi(db=db, gender_w=gender_w, gender_m=gender_m, s_date=s_date, e_date=e_date, search_ages = search_ages,
@@ -270,10 +268,10 @@ def search_filter(req: Request, s_date: str = '', e_date: str = '', gender_m: st
 
     ###########################################
     # 프로카운트
-    elif sort_proc:
+    elif model_filter == 'proc':
         models, gubun = proc(db=db, s_date=s_date, e_date=e_date, hidden_alpha_fee=hidden_alpha_fee,
                              gender_w=gender_w, gender_m=gender_m,  search_ages = search_ages, model=chk_model, celeb=chk_celeb,
-                             sort_realtime=sort_realtime, hidden_echar=hidden_echar, hidden_rchar=hidden_rchar)
+                             hidden_echar=hidden_echar, hidden_rchar=hidden_rchar)
 
         count_models = jsonable_encoder(models[:])
         filter_models = []
@@ -313,7 +311,7 @@ def search_filter(req: Request, s_date: str = '', e_date: str = '', gender_m: st
 
     ###########################################
     # 순옥스타_최신등록순
-    elif sort_register:
+    elif filter_celeb == 'order_register':
 
         print(hidden_celeb_section)
         models = order_register(db=db,  hidden_celeb_fee= hidden_celeb_fee, hidden_celeb_fee_month= hidden_celeb_fee_month, hidden_celeb_section=hidden_celeb_section,
@@ -351,7 +349,7 @@ def search_filter(req: Request, s_date: str = '', e_date: str = '', gender_m: st
 
     ###########################################
     # 순옥스타_추천순
-    elif sort_recommend:
+    elif filter_celeb == 'recommend':
         models = order_recommend(db=db,
                                  gender_w=gender_w, gender_m=gender_m, search_ages=search_ages, hidden_celeb_fee=hidden_celeb_fee,
                                  hidden_celeb_fee_month=hidden_celeb_fee_month,  hidden_celeb_section= hidden_celeb_section)
@@ -406,7 +404,7 @@ def search_filter(req: Request, s_date: str = '', e_date: str = '', gender_m: st
 
     ###########################################
     # 순옥스타_S카운트순
-    elif sort_s_count:
+    elif filter_celeb == 's_count':
         models = order_s_count(db=db,
                                gender_w=gender_w, gender_m=gender_m, search_ages=search_ages, hidden_celeb_fee=hidden_celeb_fee, hidden_celeb_fee_month=hidden_celeb_fee_month ,
                                hidden_celeb_section=hidden_celeb_section,s_date=s_date, e_date=e_date)
@@ -466,7 +464,7 @@ def search_filter(req: Request, s_date: str = '', e_date: str = '', gender_m: st
 
     ###########################################
     # 셀럽검색_열람순
-    elif sort_read:
+    elif filter_celeb == 'read':
         print('aaa')
         models = order_read(db=db,
                             gender_w=gender_w, gender_m=gender_m, search_ages=search_ages, s_date=s_date, e_date=e_date,
@@ -524,13 +522,13 @@ def search_filter(req: Request, s_date: str = '', e_date: str = '', gender_m: st
 
     ###########################################
     # 셀럽검색_실베스타
-    elif sort_realtime:
+    elif filter_celeb == 'order_realtime':
         model_list = []
         real_time_cf, real_time_activity = order_realtime(db=db,
                                                           gender_w=gender_w, gender_m=gender_m, search_ages=search_ages,
                                                           hidden_celeb_fee=hidden_celeb_fee, hidden_celeb_fee_month=hidden_celeb_fee_month, hidden_celeb_section=hidden_celeb_section)
         procount = proc_celeb(db=db, gender_w=gender_w, gender_m=gender_m, search_ages=search_ages, hidden_celeb_fee=hidden_celeb_fee, hidden_celeb_fee_month=hidden_celeb_fee_month,
-                                 hidden_celeb_section=hidden_celeb_section)
+                                 hidden_celeb_section=hidden_celeb_section, s_date=s_date, e_date=e_date)
 
         count_models = jsonable_encoder(real_time_cf[:])
         count_models2 = jsonable_encoder(real_time_activity[:])
@@ -573,12 +571,12 @@ def search_filter(req: Request, s_date: str = '', e_date: str = '', gender_m: st
         search_models = df_realTime.values.tolist()
         
         for model in search_models:
-            sum = model[13]*3 + model[15]*3 + model[17]*1
+            sum = model[13]*3 + model[15]*1 + model[17]*3
             model_list.append({'mcode': model[0], 'rno': model[1], 'name': model[2], 'gender': model[3], 'age': model[4], 'a_3': model[5],
                                'a_6': model[6], 'a_12': model[7], 'isyeon': model[8], 'height': model[9],'mfee':model[10],'coname':model[11], 'cf': model[13], 'activity': model[15], 'proc': model[17], 'sum': sum})
 
         res = sorted(model_list, key=lambda x: x['sum'], reverse=True)
-        for model in res[:100]:
+        for model in res[:10]:
             print(model)
 
 

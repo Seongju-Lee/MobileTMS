@@ -26,6 +26,7 @@ from schemas.jobs import JobCreate
 from typing import Optional
 from fastapi.encoders import jsonable_encoder
 from striprtf.striprtf import rtf_to_text
+from starlette.responses import RedirectResponse
 
 import json
 import pandas as pd
@@ -39,21 +40,32 @@ def home(request: Request, db: Session = Depends(get_db)):
     now_year = datetime.today().year
     years = [i for i in range(now_year-10, 1930, -1)]
 
+    # try:
+        # token: str = request.cookies.get("access_token")
+    
+        # print(token)
+        # if token is None:
+        #     return RedirectResponse('/login')
+        
+        # else:
     return templates.TemplateResponse(
         "index.html", {"request": request,
-                       "years": years,  "now_year": now_year}
+                    "years": years,  "now_year": now_year}
     )
 
-@router.get("/login")
-def home(request: Request, db: Session = Depends(get_db)):
+    # except:
+    #     print('?')
 
-    now_year = datetime.today().year
-    years = [i for i in range(now_year-10, 1930, -1)]
+# @router.get("/login")
+# def home(request: Request, db: Session = Depends(get_db)):
 
-    return templates.TemplateResponse(
-        "login.html", {"request": request,
-                       "years": years,  "now_year": now_year}
-    )
+#     now_year = datetime.today().year
+#     years = [i for i in range(now_year-10, 1930, -1)]
+
+#     return templates.TemplateResponse(
+#         "login.html", {"request": request,
+#                        "years": years,  "now_year": now_year}
+#     )
 
 
 ######################
@@ -76,7 +88,7 @@ def search_filter(req: Request, s_date: str = '', e_date: str = '', gender_m: st
     ll = []
     search_ages = [] # 설정된 나이 구간 저장.
     ll.append(alpha_fees)
-    if not (model_filter or filter_celeb or name or coname or manager or tel):
+    if not (model_filter or filter_celeb or name or coname or manager or tel ):
         return templates.TemplateResponse(
             "ui-icons.html", {"request": req,
                               "years": years,  "now_year": now_year}
@@ -93,202 +105,161 @@ def search_filter(req: Request, s_date: str = '', e_date: str = '', gender_m: st
     print('알파모델료 TEST: ', hidden_alpha_fee)
 
 
-    ###########################################
-    # 추천 30일
-    if model_filter == 'thrdays':
-        models = chu_30(db=db, chu_act=s_act,
-                        chu_fav=s_fav, chu_img=s_img, gender_m=gender_m, gender_w=gender_w,
-                        search_ages=search_ages, hidden_alpha_fee=hidden_alpha_fee,
-                        hidden_echar=hidden_echar, hidden_rchar=hidden_rchar)
+    try:
+        ###########################################
+        # 추천 30일
+        if model_filter == 'thrdays':
+            models = chu_30(db=db, chu_act=s_act,
+                            chu_fav=s_fav, chu_img=s_img, gender_m=gender_m, gender_w=gender_w,
+                            search_ages=search_ages, hidden_alpha_fee=hidden_alpha_fee,
+                            hidden_echar=hidden_echar, hidden_rchar=hidden_rchar)
 
-        img_ok, fav_ok, act_ok = False, False, False
-        chu_models = jsonable_encoder(models[:])
-        res_models = []
-        
-        
-        i = 0
-        df = pd.DataFrame(chu_models).groupby(
-            ['mcode', 'gubun', 'name',  'mfee',  'sex', 'coname', 'height', 'age', 'isyeon'])['jum'].sum().reset_index()
-
-        search_models = df.values.tolist()
-        filter_models = []
-        output_models = []
-
-        # print('1111111: : ', search_models)
-
-        for model in search_models:
-            if model[0] == 'Y0Y9J0Z4B7J31F':
-                print('1111111: : ', model)
-        # print(hidden_echar, hidden_rchar , '이케아 레케아 테스트입니다.')
-            
-        for model in (search_models):
-            if model[0] == 'Y0Y9J0Z4B7J31F':
-                print('llll22222: ', model)
-            res_models.append(
-                {'mcode': model[0], 'gubun': model[1], 'name': model[2],
-                'mfee':model[3], 'gender':model[4], 'coname':model[5],
-                'height':model[6],'age':model[7], 'isyeon':model[8], 'jum': model[9]})
-
-
-        df_res = pd.DataFrame(res_models).groupby(
-            ['mcode', 'gubun', 'name', 'mfee',  'gender', 'coname', 'height', 'age', 'isyeon'])['jum'].apply(list).reset_index(name='sum')
-
-        df_to_list = df_res.values.tolist()
-        # print(df_res)
-        j=0
-        for model in df_to_list:
-            
-            tmp = 0
-            for i in range(len(model[9])):
-                tmp += model[9][i]
-            model[9] = tmp 
-            df_to_list[j] = {'mcode': model[0], 'gubun': model[1], 'name': model[2],
-                    'mfee':model[3], 'gender':model[4], 'coname':model[5],
-                    'height':model[6],'age':model[7], 'isyeon':model[8], 'jum':model[9]}
-            j += 1
-
-        for model in (df_to_list):
-            # print('냐냐냐냐냐니: ', model)
-            if model['gubun'] == 'act':
-                model['act_jum'] = model['jum']
-            elif model['gubun'] == 'fav':
-                model['fav_jum'] = model['jum']
-            elif model['gubun'] == 'img':
-               model['img_jum'] = model['jum']
-
-        for i in range(len(df_to_list)):
-            try:
-                if i == 0:
-                    pass
-                
-                elif df_to_list[i]['mcode'] == df_to_list[i-1]['mcode']:
-                    df_to_list[i].update(df_to_list[i-1])
-                    df_to_list.remove(df_to_list[i-1])
-                else:
-                    pass
-            except:
-                pass
-            
-
-        filter_models = df_to_list
-        try:
-
-            with open("model.json", 'r', encoding='utf-8') as json_file:
-                aa = json.load(json_file)
-                for job in filter_models:
-                    if not job['mfee'] == '':
-                        job['mfee'] = aa['model_fee'][job['mfee']]
-            # print('안녕!!ㅎㅎ: ', res_models)
-        except:
-            print('일치하는 모델료가 json파일에 없음.')
-            pass
-
-        for model in filter_models:
-            
-            if not 'img_jum' in model.keys():
-                model['img_jum'] = 0
-            if not 'fav_jum' in model.keys():
-                model['fav_jum'] = 0
-            if not 'act_jum' in model.keys():
-                model['act_jum'] = 0
-
-            if ('img_jum' in model.keys()) and (model['img_jum'] >= int(s_img) and model['img_jum'] <= int(e_img)):
-                img_ok = True
-            if ('fav_jum' in model.keys()) and (model['fav_jum'] >= int(s_fav) and model['fav_jum'] <= int(e_fav)):
-                fav_ok = True
-            if ('act_jum' in model.keys()) and (model['act_jum'] >= int(s_act) and model['act_jum'] <= int(e_act)):
-                act_ok = True
-            # print('ouuuuutt: ', model)
-
-            if img_ok and fav_ok and act_ok:
-
-                output_models.append(model)
             img_ok, fav_ok, act_ok = False, False, False
-
-        for model in output_models:
-            model['sum'] = model['img_jum'] + model['fav_jum'] + model['act_jum']
+            chu_models = jsonable_encoder(models[:])
+            res_models = []
             
             
-        res = sorted(output_models, key=lambda x: x['sum'], reverse=True)
-        
-        for model in res[:10]:
-            print('결과: ', model)
-        return templates.TemplateResponse(
-            "ui-icons.html", {"request": req,
-                              "jobs": res, "years": years, "now_year": now_year}
-        )
-
-    ###########################################
-
-
-    ###########################################
-    # 영상초이
-    elif model_filter == 'movchoi':
-
-        print(search_ages)
-        models = movchoi(db=db, gender_w=gender_w, gender_m=gender_m, s_date=s_date, e_date=e_date, search_ages = search_ages,
-        hidden_alpha_fee=hidden_alpha_fee , hidden_echar=hidden_echar, hidden_rchar=hidden_rchar)
-
-        choi_models = jsonable_encoder(models[:])
-        res_models = []
-
-        df = pd.DataFrame(choi_models).groupby(
-            ['mcode', 'name', 'age', 'mfee', 'sex', 'coname', 'height', 'isyeon']).count().reset_index()
-
-        search_models = df.values.tolist()
-        # print(search_models)
-
-        res = sorted(search_models, key=lambda x: x[8], reverse=True)
-
-        for model in res:
-            print(model)
-            res_models.append(
-                {'mcode': model[0], 'name': model[1], 'age': model[2], 'mfee':model[3], 'gender':model[4], 'coname':model[5], 'height':model[6],'isyeon':model[8] ,'count': model[len(model)-1]})
-
-     
-        try:
-
-            with open("model.json", 'r', encoding='utf-8') as json_file:
-                aa = json.load(json_file)
-                for job in res_models:
-                    if not job['mfee'] == '':
-                        job['mfee'] = aa['model_fee'][job['mfee']]
-            # print('안녕!!ㅎㅎ: ', res_models)
-        except:
-            print('일치하는 모델료가 json파일에 없음.')
-            pass
-
-        return templates.TemplateResponse(
-            "ui-icons.html", {"request": req,
-                              "jobs": res_models[:],
-                              "years": years,  "now_year": now_year}
-        )
-    ###########################################
-
-
-    ###########################################
-    # 프로카운트
-    elif model_filter == 'proc':
-        models, gubun = proc(db=db, s_date=s_date, e_date=e_date, hidden_alpha_fee=hidden_alpha_fee,
-                             gender_w=gender_w, gender_m=gender_m,  search_ages = search_ages, model=chk_model, celeb=chk_celeb,
-                             hidden_echar=hidden_echar, hidden_rchar=hidden_rchar)
-
-        count_models = jsonable_encoder(models[:])
-        filter_models = []
-        if gubun == 'model':
-            df = pd.DataFrame(count_models).groupby(
-                ['mcode', 'name', 'sex', 'age', 'coname', 'mfee', 'height']).count().reset_index()
+            i = 0
+            df = pd.DataFrame(chu_models).groupby(
+                ['mcode', 'gubun', 'name',  'mfee',  'sex', 'coname', 'height', 'age', 'isyeon'])['jum'].sum().reset_index()
 
             search_models = df.values.tolist()
-            res = sorted(search_models, key=lambda x: x[10], reverse=True)
+            filter_models = []
+            output_models = []
+
+            # print('1111111: : ', search_models)
+
+            for model in search_models:
+                if model[0] == 'Y0Y9J0Z4B7J31F':
+                    print('1111111: : ', model)
+            # print(hidden_echar, hidden_rchar , '이케아 레케아 테스트입니다.')
+                
+            for model in (search_models):
+                if model[0] == 'Y0Y9J0Z4B7J31F':
+                    print('llll22222: ', model)
+                res_models.append(
+                    {'mcode': model[0], 'gubun': model[1], 'name': model[2],
+                    'mfee':model[3], 'gender':model[4], 'coname':model[5],
+                    'height':model[6],'age':model[7], 'isyeon':model[8], 'jum': model[9]})
+
+
+            df_res = pd.DataFrame(res_models).groupby(
+                ['mcode', 'gubun', 'name', 'mfee',  'gender', 'coname', 'height', 'age', 'isyeon'])['jum'].apply(list).reset_index(name='sum')
+
+            df_to_list = df_res.values.tolist()
+            # print(df_res)
+            j=0
+            for model in df_to_list:
+                
+                tmp = 0
+                for i in range(len(model[9])):
+                    tmp += model[9][i]
+                model[9] = tmp 
+                df_to_list[j] = {'mcode': model[0], 'gubun': model[1], 'name': model[2],
+                        'mfee':model[3], 'gender':model[4], 'coname':model[5],
+                        'height':model[6],'age':model[7], 'isyeon':model[8], 'jum':model[9]}
+                j += 1
+
+            for model in (df_to_list):
+                # print('냐냐냐냐냐니: ', model)
+                if model['gubun'] == 'act':
+                    model['act_jum'] = model['jum']
+                elif model['gubun'] == 'fav':
+                    model['fav_jum'] = model['jum']
+                elif model['gubun'] == 'img':
+                    model['img_jum'] = model['jum']
+
+            for i in range(len(df_to_list)):
+                try:
+                    if i == 0:
+                        pass
+                    
+                    elif df_to_list[i]['mcode'] == df_to_list[i-1]['mcode']:
+                        df_to_list[i].update(df_to_list[i-1])
+                        df_to_list.remove(df_to_list[i-1])
+                    else:
+                        pass
+                except:
+                    pass
+                
+
+            filter_models = df_to_list
+            try:
+
+                with open("model.json", 'r', encoding='utf-8') as json_file:
+                    aa = json.load(json_file)
+                    for job in filter_models:
+                        if not job['mfee'] == '':
+                            job['mfee'] = aa['model_fee'][job['mfee']]
+                # print('안녕!!ㅎㅎ: ', res_models)
+            except:
+                print('일치하는 모델료가 json파일에 없음.')
+                pass
+
+            for model in filter_models:
+                
+                if not 'img_jum' in model.keys():
+                    model['img_jum'] = 0
+                if not 'fav_jum' in model.keys():
+                    model['fav_jum'] = 0
+                if not 'act_jum' in model.keys():
+                    model['act_jum'] = 0
+
+                if ('img_jum' in model.keys()) and (model['img_jum'] >= int(s_img) and model['img_jum'] <= int(e_img)):
+                    img_ok = True
+                if ('fav_jum' in model.keys()) and (model['fav_jum'] >= int(s_fav) and model['fav_jum'] <= int(e_fav)):
+                    fav_ok = True
+                if ('act_jum' in model.keys()) and (model['act_jum'] >= int(s_act) and model['act_jum'] <= int(e_act)):
+                    act_ok = True
+                # print('ouuuuutt: ', model)
+
+                if img_ok and fav_ok and act_ok:
+
+                    output_models.append(model)
+                img_ok, fav_ok, act_ok = False, False, False
+
+            for model in output_models:
+                model['sum'] = model['img_jum'] + model['fav_jum'] + model['act_jum']
+                
+                
+            res = sorted(output_models, key=lambda x: x['sum'], reverse=True)
+            
+            for model in res[:10]:
+                print('결과: ', model)
+                
+            return templates.TemplateResponse(
+                "ui-icons.html", {"request": req,
+                                "jobs": res, "years": years, "now_year": now_year}
+            )
+
+        ###########################################
+
+
+        ###########################################
+        # 영상초이
+        elif model_filter == 'movchoi':
+
+            print(search_ages)
+            models = movchoi(db=db, gender_w=gender_w, gender_m=gender_m, s_date=s_date, e_date=e_date, search_ages = search_ages,
+            hidden_alpha_fee=hidden_alpha_fee , hidden_echar=hidden_echar, hidden_rchar=hidden_rchar)
+
+            choi_models = jsonable_encoder(models[:])
+            res_models = []
+
+            df = pd.DataFrame(choi_models).groupby(
+                ['mcode', 'name', 'age', 'mfee', 'sex', 'coname', 'height', 'isyeon']).count().reset_index()
+
+            search_models = df.values.tolist()
+            # print(search_models)
+
+            res = sorted(search_models, key=lambda x: x[8], reverse=True)
 
             for model in res:
-                
-                filter_models.append(
-                    {'mcode': model[0], 'name': model[1], 'gender': model[2], 'age': model[3], 'coname': model[4], 'mfee': model[5],  'height': model[6], 'isyeon':model[8], 'count': model[len(model)-1]})
+                print(model)
+                res_models.append(
+                    {'mcode': model[0], 'name': model[1], 'age': model[2], 'mfee':model[3], 'gender':model[4], 'coname':model[5], 'height':model[6],'isyeon':model[8] ,'count': model[len(model)-1]})
 
-            print('Test: ', jsonable_encoder(filter_models[:])[0])
-            res_models = jsonable_encoder(filter_models[:])
+        
             try:
 
                 with open("model.json", 'r', encoding='utf-8') as json_file:
@@ -300,365 +271,407 @@ def search_filter(req: Request, s_date: str = '', e_date: str = '', gender_m: st
             except:
                 print('일치하는 모델료가 json파일에 없음.')
                 pass
+
             return templates.TemplateResponse(
                 "ui-icons.html", {"request": req,
-                                  "jobs": res_models,
-                                  "gubun": gubun,
-                                  "years": years,  "now_year": now_year}
+                                "jobs": res_models[:],
+                                "years": years,  "now_year": now_year}
             )
-    ####################33333##################
+        ###########################################
 
 
-    ###########################################
-    # 순옥스타_최신등록순
-    elif filter_celeb == 'order_register':
+        ###########################################
+        # 프로카운트
+        elif model_filter == 'proc':
+            models, gubun = proc(db=db, s_date=s_date, e_date=e_date, hidden_alpha_fee=hidden_alpha_fee,
+                                gender_w=gender_w, gender_m=gender_m,  search_ages = search_ages, model=chk_model, celeb=chk_celeb,
+                                hidden_echar=hidden_echar, hidden_rchar=hidden_rchar)
 
-        print(hidden_celeb_section)
-        models = order_register(db=db,  hidden_celeb_fee= hidden_celeb_fee, hidden_celeb_fee_month= hidden_celeb_fee_month, hidden_celeb_section=hidden_celeb_section,
-                                gender_w=gender_w, gender_m=gender_m, search_ages = search_ages)
+            count_models = jsonable_encoder(models[:])
+            filter_models = []
+            if gubun == 'model':
+                df = pd.DataFrame(count_models).groupby(
+                    ['mcode', 'name', 'sex', 'age', 'coname', 'mfee', 'height']).count().reset_index()
 
-        count_models = jsonable_encoder(models[:])
-    
-        try:
+                search_models = df.values.tolist()
+                res = sorted(search_models, key=lambda x: x[10], reverse=True)
 
-            with open("model.json", 'r', encoding='utf-8') as json_file:
-                aa = json.load(json_file)
-                for job in count_models:
-                    print(job)
-                    if not job['mfee'] == '':
-                        if not  job['isyeon'] == 'V':
-                            job['mfee'] = aa['model_fee'][job['mfee']]
-                    if job['a_3'] == 0:
-                        job['a_3'] = 'X'
-                    if job['a_6'] == 0:
-                        job['a_6'] = 'X'
-                    if job['a_12'] == 0:
-                        job['a_12'] = 'X'
+                for model in res:
                     
-            
-        except:
-            print('일치하는 모델료가 json파일에 없음.')
-            pass
-        return templates.TemplateResponse(
-            "ui-icons.html", {"request": req,
-                              "jobs": count_models,
-                              "years": years,  "now_year": now_year}
-        )
-    ###########################################
+                    filter_models.append(
+                        {'mcode': model[0], 'name': model[1], 'gender': model[2], 'age': model[3], 'coname': model[4], 'mfee': model[5],  'height': model[6], 'isyeon':model[8], 'count': model[len(model)-1]})
+
+                print('Test: ', jsonable_encoder(filter_models[:])[0])
+                res_models = jsonable_encoder(filter_models[:])
+                try:
+
+                    with open("model.json", 'r', encoding='utf-8') as json_file:
+                        aa = json.load(json_file)
+                        for job in res_models:
+                            if not job['mfee'] == '':
+                                job['mfee'] = aa['model_fee'][job['mfee']]
+                    # print('안녕!!ㅎㅎ: ', res_models)
+                except:
+                    print('일치하는 모델료가 json파일에 없음.')
+                    pass
+                return templates.TemplateResponse(
+                    "ui-icons.html", {"request": req,
+                                    "jobs": res_models,
+                                    "gubun": gubun,
+                                    "years": years,  "now_year": now_year}
+                )
+        ####################33333##################
 
 
-    ###########################################
-    # 순옥스타_추천순
-    elif filter_celeb == 'recommend':
-        models = order_recommend(db=db,
-                                 gender_w=gender_w, gender_m=gender_m, search_ages=search_ages, hidden_celeb_fee=hidden_celeb_fee,
-                                 hidden_celeb_fee_month=hidden_celeb_fee_month,  hidden_celeb_section= hidden_celeb_section)
+        ###########################################
+        # 순옥스타_최신등록순
+        elif filter_celeb == 'order_register':
 
-        filter_models = []
-        print(models)
-        print('섹션 구분: ', chk_model, chk_celeb)
-        count_models = jsonable_encoder(models[:])
-        print(count_models)
-        df = pd.DataFrame(count_models).groupby(
-            ['mcode', 'name', 'frcode', 'rcode', 'sex', 'age', 'a_3', 'a_6', 'a_12', 'isyeon', 'height', 'coname', 'mfee']).sum().reset_index()
+            print(hidden_celeb_section)
+            models = order_register(db=db,  hidden_celeb_fee= hidden_celeb_fee, hidden_celeb_fee_month= hidden_celeb_fee_month, hidden_celeb_section=hidden_celeb_section,
+                                    gender_w=gender_w, gender_m=gender_m, search_ages = search_ages)
 
-        search_models = df.values.tolist()
-        for model in search_models:
-            print('검색모델: ', model)
-
-        res = sorted(search_models, key=lambda x: x[13], reverse=True)
-
-        for model in res:
-            print(model)
-            filter_models.append(
-                {'mcode': model[0], 'name': model[1], 'gender': model[4], 'age': model[5], 'a_3': model[6], 'a_6': model[7], 'a_12': model[8], 'isyeon': model[9],'height': model[10], 'coname': model[11], 'mfee': model[12], 'jum1': model[13], 'jum1': model[14]})
-
-        try:
-
-            with open("model.json", 'r', encoding='utf-8') as json_file:
-                aa = json.load(json_file)
-                for job in count_models:
-                    print(job)
-                    if not job['mfee'] == '':
-                        if not  job['isyeon'] == 'V':
-                            job['mfee'] = aa['model_fee'][job['mfee']]
-                    if job['a_3'] == 0:
-                        job['a_3'] = 'X'
-                    if job['a_6'] == 0:
-                        job['a_6'] = 'X'
-                    if job['a_12'] == 0:
-                        job['a_12'] = 'X'
-                    
-            
-        except:
-            print('일치하는 모델료가 json파일에 없음.')
-            pass
-
-        return templates.TemplateResponse(
-            "ui-icons.html", {"request": req,
-                              "jobs": jsonable_encoder(filter_models[:]),
-                              "years": years,  "now_year": now_year}
-        )
-    ###########################################
-
-
-    ###########################################
-    # 순옥스타_S카운트순
-    elif filter_celeb == 's_count':
-        models = order_s_count(db=db,
-                               gender_w=gender_w, gender_m=gender_m, search_ages=search_ages, hidden_celeb_fee=hidden_celeb_fee, hidden_celeb_fee_month=hidden_celeb_fee_month ,
-                               hidden_celeb_section=hidden_celeb_section,s_date=s_date, e_date=e_date)
-
-        filter_models = []
-
-        count_models = jsonable_encoder(models[:])
+            count_models = jsonable_encoder(models[:])
         
+            try:
 
-        df = pd.DataFrame(count_models).groupby(
-            ['mcode', 'name',  'sex', 'age', 'a_3', 'a_6', 'a_12', 'isyeon', 'height', 'coname', 'mfee']).count().reset_index()
+                with open("model.json", 'r', encoding='utf-8') as json_file:
+                    aa = json.load(json_file)
+                    for job in count_models:
+                        print(job)
+                        if not job['mfee'] == '':
+                            if not  job['isyeon'] == 'V':
+                                job['mfee'] = aa['model_fee'][job['mfee']]
+                        if job['a_3'] == 0:
+                            job['a_3'] = 'X'
+                        if job['a_6'] == 0:
+                            job['a_6'] = 'X'
+                        if job['a_12'] == 0:
+                            job['a_12'] = 'X'
+                        
+                
+            except:
+                print('일치하는 모델료가 json파일에 없음.')
+                pass
+            return templates.TemplateResponse(
+                "ui-icons.html", {"request": req,
+                                "jobs": count_models,
+                                "years": years,  "now_year": now_year}
+            )
+        ###########################################
 
-        search_models = df.values.tolist()
-        print(df)
-        res = sorted(search_models, key=lambda x: x[11], reverse=True)
-        # search_models
 
-        for m in res[:10]:
-            print(m)
-        for model in res:
-            filter_models.append(
-                {'mcode': model[0], 'name': model[1], 'gender': model[2], 'age': model[3], 'a_3': model[4], 'a_6': model[5], 'a_12': model[6],
-                'isyeon': model[7], 'height': model[8], 'coname':model[9], 'mfee':model[10]})
+        ###########################################
+        # 순옥스타_추천순
+        elif filter_celeb == 'recommend':
+            models = order_recommend(db=db,
+                                    gender_w=gender_w, gender_m=gender_m, search_ages=search_ages, hidden_celeb_fee=hidden_celeb_fee,
+                                    hidden_celeb_fee_month=hidden_celeb_fee_month,  hidden_celeb_section= hidden_celeb_section)
+
+            filter_models = []
+            print(models)
+            print('섹션 구분: ', chk_model, chk_celeb)
+            count_models = jsonable_encoder(models[:])
+            print(count_models)
+            df = pd.DataFrame(count_models).groupby(
+                ['mcode', 'name', 'frcode', 'rcode', 'sex', 'age', 'a_3', 'a_6', 'a_12', 'isyeon', 'height', 'coname', 'mfee']).sum().reset_index()
+
+            search_models = df.values.tolist()
+            for model in search_models:
+                print('검색모델: ', model)
+
+            res = sorted(search_models, key=lambda x: x[13], reverse=True)
+
+            for model in res:
+                print(model)
+                filter_models.append(
+                    {'mcode': model[0], 'name': model[1], 'gender': model[4], 'age': model[5], 'a_3': model[6], 'a_6': model[7], 'a_12': model[8], 'isyeon': model[9],'height': model[10], 'coname': model[11], 'mfee': model[12], 'jum1': model[13], 'jum1': model[14]})
+
+            try:
+
+                with open("model.json", 'r', encoding='utf-8') as json_file:
+                    aa = json.load(json_file)
+                    for job in count_models:
+                        print(job)
+                        if not job['mfee'] == '':
+                            if not  job['isyeon'] == 'V':
+                                job['mfee'] = aa['model_fee'][job['mfee']]
+                        if job['a_3'] == 0:
+                            job['a_3'] = 'X'
+                        if job['a_6'] == 0:
+                            job['a_6'] = 'X'
+                        if job['a_12'] == 0:
+                            job['a_12'] = 'X'
+                        
+                
+            except:
+                print('일치하는 모델료가 json파일에 없음.')
+                pass
+
+            return templates.TemplateResponse(
+                "ui-icons.html", {"request": req,
+                                "jobs": jsonable_encoder(filter_models[:]),
+                                "years": years,  "now_year": now_year}
+            )
+        ###########################################
 
 
-        # for model in filter_models[:10]:
-        #     print('ㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇ: ', model)
+        ###########################################
+        # 순옥스타_S카운트순
+        elif filter_celeb == 's_count':
+            models = order_s_count(db=db,
+                                gender_w=gender_w, gender_m=gender_m, search_ages=search_ages, hidden_celeb_fee=hidden_celeb_fee, hidden_celeb_fee_month=hidden_celeb_fee_month ,
+                                hidden_celeb_section=hidden_celeb_section,s_date=s_date, e_date=e_date)
 
-        try:
+            filter_models = []
 
-            with open("model.json", 'r', encoding='utf-8') as json_file:
-                aa = json.load(json_file)
-                for job in filter_models:
-                    # print(job)
-                    if not job['mfee'] == '':
-                        if not  job['isyeon'] == 'V':
-                            job['mfee'] = aa['model_fee'][job['mfee']]
-                    if job['a_3'] == 0:
-                        job['a_3'] = 'X'
-                    if job['a_6'] == 0:
-                        job['a_6'] = 'X'
-                    if job['a_12'] == 0:
-                        job['a_12'] = 'X'
-                    
+            count_models = jsonable_encoder(models[:])
             
-        except:
-            print('일치하는 모델료가 json파일에 없음.')
-            pass
 
-        return templates.TemplateResponse(
-            "ui-icons.html", {"request": req,
-                              "jobs": filter_models,
-                              "years": years,  "now_year": now_year}
-        )
-    ###########################################
+            df = pd.DataFrame(count_models).groupby(
+                ['mcode', 'name',  'sex', 'age', 'a_3', 'a_6', 'a_12', 'isyeon', 'height', 'coname', 'mfee']).count().reset_index()
 
+            search_models = df.values.tolist()
+            print(df)
+            res = sorted(search_models, key=lambda x: x[11], reverse=True)
+            # search_models
 
-    ###########################################
-    # 셀럽검색_열람순
-    elif filter_celeb == 'read':
-        print('aaa')
-        models = order_read(db=db,
-                            gender_w=gender_w, gender_m=gender_m, search_ages=search_ages, s_date=s_date, e_date=e_date,
-                            hidden_celeb_fee=hidden_celeb_fee, hidden_celeb_fee_month=hidden_celeb_fee_month, hidden_celeb_section=hidden_celeb_section)
-
-        filter_models = []
-
-        count_models = jsonable_encoder(models[:])
-        # print(count_models, 'aaa')
-
-        df = pd.DataFrame(count_models).groupby(
-            ['mcode', 'name',  'sex', 'age', 'a_3', 'a_6', 'a_12', 'isyeon', 'height', 'coname', 'mfee']).count().reset_index()
-
-        search_models = df.values.tolist()
-        print(search_models)
-
-        res = sorted(search_models, key=lambda x: x[11], reverse=True)
-
-        for model in res:
-            # print(model)
-            filter_models.append(
-                {'mcode': model[0], 'name': model[1], 'gender': model[2], 'age': model[3], 'a_3': model[4], 'a_6': model[5], 'a_12': model[6],
-                'isyeon': model[7], 'height': model[8], 'coname':model[9],'mfee':model[10]})
+            for m in res[:10]:
+                print(m)
+            for model in res:
+                filter_models.append(
+                    {'mcode': model[0], 'name': model[1], 'gender': model[2], 'age': model[3], 'a_3': model[4], 'a_6': model[5], 'a_12': model[6],
+                    'isyeon': model[7], 'height': model[8], 'coname':model[9], 'mfee':model[10]})
 
 
-        try:
+            # for model in filter_models[:10]:
+            #     print('ㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇ: ', model)
 
-            with open("model.json", 'r', encoding='utf-8') as json_file:
-                aa = json.load(json_file)
-                for job in filter_models:
-                    print(job)
-                    if not job['mfee'] == '':
-                        if not  job['isyeon'] == 'V':
-                            job['mfee'] = aa['model_fee'][job['mfee']]
-                    if job['a_3'] == 0:
-                        job['a_3'] = 'X'
-                    if job['a_6'] == 0:
-                        job['a_6'] = 'X'
-                    if job['a_12'] == 0:
-                        job['a_12'] = 'X'
-                    
+            try:
+
+                with open("model.json", 'r', encoding='utf-8') as json_file:
+                    aa = json.load(json_file)
+                    for job in filter_models:
+                        # print(job)
+                        if not job['mfee'] == '':
+                            if not  job['isyeon'] == 'V':
+                                job['mfee'] = aa['model_fee'][job['mfee']]
+                        if job['a_3'] == 0:
+                            job['a_3'] = 'X'
+                        if job['a_6'] == 0:
+                            job['a_6'] = 'X'
+                        if job['a_12'] == 0:
+                            job['a_12'] = 'X'
+                        
+                
+            except:
+                print('일치하는 모델료가 json파일에 없음.')
+                pass
+
+            return templates.TemplateResponse(
+                "ui-icons.html", {"request": req,
+                                "jobs": filter_models,
+                                "years": years,  "now_year": now_year}
+            )
+        ###########################################
+
+
+        ###########################################
+        # 셀럽검색_열람순
+        elif filter_celeb == 'read':
+            print('aaa')
+            models = order_read(db=db,
+                                gender_w=gender_w, gender_m=gender_m, search_ages=search_ages, s_date=s_date, e_date=e_date,
+                                hidden_celeb_fee=hidden_celeb_fee, hidden_celeb_fee_month=hidden_celeb_fee_month, hidden_celeb_section=hidden_celeb_section)
+
+            filter_models = []
+
+            count_models = jsonable_encoder(models[:])
+            # print(count_models, 'aaa')
+
+            df = pd.DataFrame(count_models).groupby(
+                ['mcode', 'name',  'sex', 'age', 'a_3', 'a_6', 'a_12', 'isyeon', 'height', 'coname', 'mfee']).count().reset_index()
+
+            search_models = df.values.tolist()
+            print(search_models)
+
+            res = sorted(search_models, key=lambda x: x[11], reverse=True)
+
+            for model in res:
+                # print(model)
+                filter_models.append(
+                    {'mcode': model[0], 'name': model[1], 'gender': model[2], 'age': model[3], 'a_3': model[4], 'a_6': model[5], 'a_12': model[6],
+                    'isyeon': model[7], 'height': model[8], 'coname':model[9],'mfee':model[10]})
+
+
+            try:
+
+                with open("model.json", 'r', encoding='utf-8') as json_file:
+                    aa = json.load(json_file)
+                    for job in filter_models:
+                        print(job)
+                        if not job['mfee'] == '':
+                            if not  job['isyeon'] == 'V':
+                                job['mfee'] = aa['model_fee'][job['mfee']]
+                        if job['a_3'] == 0:
+                            job['a_3'] = 'X'
+                        if job['a_6'] == 0:
+                            job['a_6'] = 'X'
+                        if job['a_12'] == 0:
+                            job['a_12'] = 'X'
+                        
+                
+            except:
+                print('일치하는 모델료가 json파일에 없음.')
+                pass
+
+
+            return templates.TemplateResponse(
+                "ui-icons.html", {"request": req,
+                                "jobs": filter_models,
+                                "years": years,  "now_year": now_year}
+            )
+        ###########################################
+
+
+        ###########################################
+        # 셀럽검색_실베스타
+        elif filter_celeb == 'order_realtime':
+            model_list = []
+            real_time_cf, real_time_activity = order_realtime(db=db,
+                                                            gender_w=gender_w, gender_m=gender_m, search_ages=search_ages,
+                                                            hidden_celeb_fee=hidden_celeb_fee, hidden_celeb_fee_month=hidden_celeb_fee_month, hidden_celeb_section=hidden_celeb_section)
+            procount = proc_celeb(db=db, gender_w=gender_w, gender_m=gender_m, search_ages=search_ages, hidden_celeb_fee=hidden_celeb_fee, hidden_celeb_fee_month=hidden_celeb_fee_month,
+                                    hidden_celeb_section=hidden_celeb_section, s_date=s_date, e_date=e_date)
+
+            count_models = jsonable_encoder(real_time_cf[:])
+            count_models2 = jsonable_encoder(real_time_activity[:])
+
+
+            #####################################
+            # 계약현황 개수 뽑기
+            df_cf = pd.DataFrame(count_models)
+
+            print('erai sibal: ', df_cf)
+
+            df_cf = df_cf.groupby(
+                ['codesys', 'rno', 'name',  'sex', 'age', 'a_3', 'a_6', 'a_12', 'isyeon', 'height', 'mfee', 'coname']).count().reset_index()
+            # ########################################
+
+            # # ########################################
+            # 활동내역 개수 뽑기
+            df_activities = pd.DataFrame(count_models2)
+
+            df_activities = df_activities.groupby(
+                ['codesys', 'rno', 'name',  'sex', 'age', 'a_3', 'a_6', 'a_12', 'isyeon', 'height', 'mfee', 'coname']).count().reset_index()
+            # ########################################
+
+            # ########################################
+            # # 프로카운트 개수 뽑기
+            count_models = jsonable_encoder(procount[:])
+            df_proc = pd.DataFrame(count_models).groupby(
+                ['codesys', 'rno',  'name', 'sex', 'age', 'a_3', 'a_6', 'a_12', 'isyeon', 'height', 'mfee', 'coname']).count().reset_index()
+
+            # ########################################
+
+            df = pd.merge(df_cf, df_activities, how='outer',
+                        on=['codesys', 'rno', 'name',  'sex', 'age', 'a_3', 'a_6', 'a_12',  'isyeon', 'height', 'mfee', 'coname'])
+
+            df_realTime = pd.merge(df, df_proc, how='outer', on=[
+                'codesys', 'rno', 'name',  'sex', 'age', 'a_3', 'a_6', 'a_12', 'isyeon', 'height', 'mfee', 'coname'])
+
+            df_realTime = df_realTime.fillna(0)
+
+            search_models = df_realTime.values.tolist()
             
-        except:
-            print('일치하는 모델료가 json파일에 없음.')
-            pass
+            for model in search_models:
+                sum = model[13]*3 + model[15]*1 + model[17]*3
+                model_list.append({'mcode': model[0], 'rno': model[1], 'name': model[2], 'gender': model[3], 'age': model[4], 'a_3': model[5],
+                                'a_6': model[6], 'a_12': model[7], 'isyeon': model[8], 'height': model[9],'mfee':model[10],'coname':model[11], 'cf': model[13], 'activity': model[15], 'proc': model[17], 'sum': sum})
+
+            res = sorted(model_list, key=lambda x: x['sum'], reverse=True)
+            for model in res[:10]:
+                print(model)
 
 
-        return templates.TemplateResponse(
-            "ui-icons.html", {"request": req,
-                              "jobs": filter_models,
-                              "years": years,  "now_year": now_year}
-        )
-    ###########################################
+            try:
+
+                with open("model.json", 'r', encoding='utf-8') as json_file:
+                    aa = json.load(json_file)
+                    for job in res:
+                        # print(job)
+                        if not job['mfee'] == '':
+                            if not  job['isyeon'] == 'V':
+                                job['mfee'] = aa['model_fee'][job['mfee']]
+                        if job['a_3'] == 0:
+                            job['a_3'] = 'X'
+                        if job['a_6'] == 0:
+                            job['a_6'] = 'X'
+                        if job['a_12'] == 0:
+                            job['a_12'] = 'X'
+                        
+                
+            except:
+                print('일치하는 모델료가 json파일에 없음.')
+                pass
+
+            return templates.TemplateResponse(
+                "ui-icons.html", {"request": req,
+                                "jobs": jsonable_encoder(res[:]),
+                                "years": years,  "now_year": now_year}
+            )
+        ########################################
 
 
-    ###########################################
-    # 셀럽검색_실베스타
-    elif filter_celeb == 'order_realtime':
-        model_list = []
-        real_time_cf, real_time_activity = order_realtime(db=db,
-                                                          gender_w=gender_w, gender_m=gender_m, search_ages=search_ages,
-                                                          hidden_celeb_fee=hidden_celeb_fee, hidden_celeb_fee_month=hidden_celeb_fee_month, hidden_celeb_section=hidden_celeb_section)
-        procount = proc_celeb(db=db, gender_w=gender_w, gender_m=gender_m, search_ages=search_ages, hidden_celeb_fee=hidden_celeb_fee, hidden_celeb_fee_month=hidden_celeb_fee_month,
-                                 hidden_celeb_section=hidden_celeb_section, s_date=s_date, e_date=e_date)
+        ########################################
+        #  # 단순검색
+        elif name or coname or tel or manager:
 
-        count_models = jsonable_encoder(real_time_cf[:])
-        count_models2 = jsonable_encoder(real_time_activity[:])
+            models = search_job(
+                db=db, name=name, coname=coname, tel=tel, manager=manager)
 
+            models_search = jsonable_encoder(models[:])
+            print(models_search)
+            celebs, kmodels = [], []
+            for model in models_search:
+                if model['isyeon'] == 'V':
+                    celeb = search_celeb(db=db, mcode=model['mcode'])
+                    search_celebs = jsonable_encoder(celeb[:])
+                    celebs.append(search_celebs[0])
+                else:
+                    kmodels.append(model)
 
-        #####################################
-        # 계약현황 개수 뽑기
-        df_cf = pd.DataFrame(count_models)
+            jobs = celebs + kmodels
+            print('최종 검색 본: ', jobs)
 
-        print('erai sibal: ', df_cf)
+            try:
 
-        df_cf = df_cf.groupby(
-            ['codesys', 'rno', 'name',  'sex', 'age', 'a_3', 'a_6', 'a_12', 'isyeon', 'height', 'mfee', 'coname']).count().reset_index()
-        # ########################################
-
-        # # ########################################
-        # 활동내역 개수 뽑기
-        df_activities = pd.DataFrame(count_models2)
-
-        df_activities = df_activities.groupby(
-            ['codesys', 'rno', 'name',  'sex', 'age', 'a_3', 'a_6', 'a_12', 'isyeon', 'height', 'mfee', 'coname']).count().reset_index()
-        # ########################################
-
-        # ########################################
-        # # 프로카운트 개수 뽑기
-        count_models = jsonable_encoder(procount[:])
-        df_proc = pd.DataFrame(count_models).groupby(
-            ['codesys', 'rno',  'name', 'sex', 'age', 'a_3', 'a_6', 'a_12', 'isyeon', 'height', 'mfee', 'coname']).count().reset_index()
-
-        # ########################################
-
-        df = pd.merge(df_cf, df_activities, how='outer',
-                      on=['codesys', 'rno', 'name',  'sex', 'age', 'a_3', 'a_6', 'a_12',  'isyeon', 'height', 'mfee', 'coname'])
-
-        df_realTime = pd.merge(df, df_proc, how='outer', on=[
-            'codesys', 'rno', 'name',  'sex', 'age', 'a_3', 'a_6', 'a_12', 'isyeon', 'height', 'mfee', 'coname'])
-
-        df_realTime = df_realTime.fillna(0)
-
-        search_models = df_realTime.values.tolist()
-        
-        for model in search_models:
-            sum = model[13]*3 + model[15]*1 + model[17]*3
-            model_list.append({'mcode': model[0], 'rno': model[1], 'name': model[2], 'gender': model[3], 'age': model[4], 'a_3': model[5],
-                               'a_6': model[6], 'a_12': model[7], 'isyeon': model[8], 'height': model[9],'mfee':model[10],'coname':model[11], 'cf': model[13], 'activity': model[15], 'proc': model[17], 'sum': sum})
-
-        res = sorted(model_list, key=lambda x: x['sum'], reverse=True)
-        for model in res[:10]:
-            print(model)
-
-
-        try:
-
-            with open("model.json", 'r', encoding='utf-8') as json_file:
-                aa = json.load(json_file)
-                for job in res:
-                    # print(job)
-                    if not job['mfee'] == '':
-                        if not  job['isyeon'] == 'V':
+                with open("model.json", 'r', encoding='utf-8') as json_file:
+                    aa = json.load(json_file)
+                    for job in jobs:
+                        if not job['mfee'] == '':
                             job['mfee'] = aa['model_fee'][job['mfee']]
-                    if job['a_3'] == 0:
-                        job['a_3'] = 'X'
-                    if job['a_6'] == 0:
-                        job['a_6'] = 'X'
-                    if job['a_12'] == 0:
-                        job['a_12'] = 'X'
-                    
-            
-        except:
-            print('일치하는 모델료가 json파일에 없음.')
-            pass
+                print(jobs)
+            except:
+                print('일치하는 모델료가 json파일에 없음.')
+                pass
 
+            # gubun 이라는 키가 들어가 있는 models_search를 ui-icons로 보냄.
+            return templates.TemplateResponse(
+                "ui-icons.html", {"request": req,
+                                "kmodels": kmodels,
+                                "jobs": jobs,
+                                "years": years,  "now_year": now_year}
+            )
+        ########################################
+
+
+    except:
         return templates.TemplateResponse(
             "ui-icons.html", {"request": req,
-                              "jobs": jsonable_encoder(res[:]),
+                              "no_result": '만족하는 결과가 없습니다.',
                               "years": years,  "now_year": now_year}
         )
-    ########################################
-
-
-    ########################################
-    #  # 단순검색
-    elif name or coname or tel or manager:
-
-        models = search_job(
-            db=db, name=name, coname=coname, tel=tel, manager=manager)
-
-        models_search = jsonable_encoder(models[:])
-        print(models_search)
-        celebs, kmodels = [], []
-        for model in models_search:
-            if model['isyeon'] == 'V':
-                celeb = search_celeb(db=db, mcode=model['mcode'])
-                search_celebs = jsonable_encoder(celeb[:])
-                celebs.append(search_celebs[0])
-            else:
-                kmodels.append(model)
-
-        jobs = celebs + kmodels
-        print('최종 검색 본: ', jobs)
-
-        try:
-
-            with open("model.json", 'r', encoding='utf-8') as json_file:
-                aa = json.load(json_file)
-                for job in jobs:
-                    if not job['mfee'] == '':
-                        job['mfee'] = aa['model_fee'][job['mfee']]
-            print(jobs)
-        except:
-            print('일치하는 모델료가 json파일에 없음.')
-            pass
-
-        # gubun 이라는 키가 들어가 있는 models_search를 ui-icons로 보냄.
-        return templates.TemplateResponse(
-            "ui-icons.html", {"request": req,
-                              "kmodels": kmodels,
-                              "jobs": jobs,
-                              "years": years,  "now_year": now_year}
-        )
-    ########################################
-
-
-    # except:
-    #     return templates.TemplateResponse(
-    #         "ui-icons.html", {"request": req,
-    #                           "no_result": '만족하는 결과가 없습니다.',
-    #                           'alert': '검색 필터가 누락되었는 지 확인 해주세요',
-    #                           "years": years,  "now_year": now_year}
-    #     )
 
 
 

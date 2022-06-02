@@ -102,7 +102,7 @@
                       {% if item.sns2 %}  
                         <h5> ID:  <a href="https://www.instagram.com/{{item.sns2}}/" > {{item.sns2}}  </a>  / 팔로워:  <a href="https://www.instagram.com/{{item.sns2}}/" > {{item.insta_flw_str}} </a> </h5>
                       {% else %}
-                        SNS 계정이 확인되지 않아요 :<
+                        <h4>SNS 계정이 확인되지 않아요 :< </h4>
                       {% endif %}
                     
                   </div>
@@ -110,10 +110,13 @@
                   <hr color = 'white' size='7px' width='100%' align='left'> 
 
                   <h4><b>포인트 </b></h4>
-                    {%for str in item.point_str %}
-                      <h5>  {{str}} </h5>
-                    {% endfor %}
-
+                    {% if item.point_str[0] == '' and item.point_str[1] == '\x00' %}
+                      <h4> 포인트가 존재하지 않습니다. </h4>
+                    {% else %}
+                      {%for str in item.point_str %}
+                        <h5>  {{str}} </h5>
+                      {% endfor %}
+                    {% endif %}
                   
 
                   <hr color = 'white' size='7px' width='100%' align='left'> 

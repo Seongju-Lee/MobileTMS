@@ -809,7 +809,6 @@ def model_info(req: Request, codesys: str = '', db: Session = Depends(get_db)):
             except:
                 pass
 
-            # print('aaaaaaddddddddddddddddd: ' , res_model)
             # 모델 전용 세부 페이지로 이동
             return templates.TemplateResponse(
                 "page-user_model.html", {"request": req,

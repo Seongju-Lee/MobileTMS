@@ -189,3 +189,15 @@ class ModelCF(Base):
     nation = Column(String(20))
     writer = Column(String(20))
     wrdate = Column(String(20))
+
+
+
+class ModelMov(Base):
+    __tablename__ = "subfile_model"
+
+    rno = Column(Integer,  primary_key=True)
+    edit_time = Column(TIMESTAMP)
+    mcode = Column(String(20))
+    fname = Column(String(50))
+    fext = Column(String(20))
+    fpath = Column(String(50))

@@ -17,7 +17,7 @@ from sqlalchemy.sql.expression import func
 from sqlalchemy.orm import Session
 from schemas.jobs import JobCreate
 from db.models.jobs import Job, People2
-from db.models.jobs import People, Chu19, Movsel, Mmeeting_proc, Yeon, SunokStar, SunokStarChu, SCount, Read, Mtel, Memo, Section, ModelCF
+from db.models.jobs import People, Chu19, Movsel, Mmeeting_proc, Yeon, SunokStar, SunokStarChu, SCount, Read, Mtel, Memo, Section, ModelCF, ModelMov
 from db.models.yeons import RealTimeCF, RealTimeDRAMA
 from dateutil.relativedelta import relativedelta
 
@@ -686,3 +686,31 @@ def models_info(db: Session, codesys):
             return model, model_cf, call_memo, 123
     except:
         return 123
+
+## 이미지영상
+def img_mov_info(db: Session, codesys):
+    
+    try:
+        return db.query(ModelMov.edit_time, ModelMov.mcode, ModelMov.fname, ModelMov.fext, ModelMov.fpath).filter(ModelMov.mcode == codesys).filter(ModelMov.fpath.contains('AA영상')).filter(ModelMov.fext.contains('mp4'))
+
+    except:
+        pass
+
+## 연기영상
+def act_mov_info(db: Session, codesys):
+    
+    try:
+        return db.query(ModelMov.edit_time, ModelMov.mcode, ModelMov.fname, ModelMov.fext, ModelMov.fpath).filter(ModelMov.mcode == codesys).filter(ModelMov.fpath.contains('AA연기')).filter(ModelMov.fext.contains('mp4'))
+
+    except:
+        pass
+
+## 연기영상
+def cf_mov_info(db: Session, codesys):
+    
+    try:
+        return db.query(ModelMov.edit_time, ModelMov.mcode, ModelMov.fname, ModelMov.fext, ModelMov.fpath).filter(ModelMov.mcode == codesys).filter(ModelMov.fpath.contains('AA광고')).filter(ModelMov.fext.contains('mp4'))
+
+    except:
+        pass
+

@@ -113,6 +113,17 @@
                     {%for str in item.point_str %}
                       <h5>  {{str}} </h5>
                     {% endfor %}
+
+                  
+
+                  <hr color = 'white' size='7px' width='100%' align='left'> 
+
+                  <h4><b>모델 영상 </b></h4>
+                    <!-- <a type='button' href="/mov/{{item.codesys}}">이미지영상 </a> -->
+                    <button type="button"  onclick='window.open("http://localhost:8000/img_mov/{{item.codesys}}" )'>이미지영상</button>
+                    <button type="button"  onclick='window.open("http://localhost:8000/act_mov/{{item.codesys}}" )'>연기영상</button>
+                    <button type="button"  onclick='window.open("http://localhost:8000/cf_mov/{{item.codesys}}" )'>광고영상</button>
+                  
                   
                 </div>
                 
@@ -126,7 +137,7 @@
               <div >
                   <div class="form-check">
                     <label class="form-check-label"> 
-                      <h4><b> 에스더 광고이력 </b></h4>
+                      <h4><b> 광고이력 </b></h4>
                       <input class="form-check-input" name='cf' type="checkbox" value="checked"  checked>
                       <span class="form-check-sign">
                         <span class="check"></span>

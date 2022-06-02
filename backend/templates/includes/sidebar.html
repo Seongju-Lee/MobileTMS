@@ -10,7 +10,7 @@
         <ul class="nav" >
           <li class="{% if 'index' in segment %} active {% endif %}">
 
-            <form method="GET" action="/filter" >
+            <form method="get" action="/filter" >
 
               <li style='display:none'>
                 검색 기간<br>
@@ -19,16 +19,16 @@
               </li>
               
               성별<br>
-              <label><input type="checkbox" name="gender_m" value="man" checked> 남자</label>
-              <label><input type="checkbox" name="gender_w" value="woman" checked> 여자</label> <br><br>
+              <label><input type="checkbox" name="gender_m" value="man" > 남자</label>
+              <label><input type="checkbox" name="gender_w" value="woman" > 여자</label> <br><br>
             
               연령<br>
-              <input  type="text" id = 's_age' name="s_age" style="width:40%; border: 1px solid #cad1d7; background-color: transparent; color: #ffffff;"> ~ <input  type="text" id = 'e_age' name="e_age"  style=" width:40%; border: 1px solid #cad1d7; background-color: transparent; color: #ffffff;"><br><br>
-              <label><input id = 'ages_10' type="checkbox" name="chk_age" value="10" checked> 10대</label>
-              <label><input id = 'ages_20' type="checkbox" name="chk_age" value="20" checked> 20대</label>
-              <label><input id = 'ages_30' type="checkbox" name="chk_age" value="30" checked> 30대</label>
-              <label><input id = 'ages_40' type="checkbox" name="chk_age" value="40" checked> 40대</label>
-              <label><input id = 'ages_50' type="checkbox" name="chk_age" value="50" checked> 50대 이상</label>
+              <input  type="text" id = 's_age' name="s_age" style="width:40%; border: 1px solid #cad1d7; background-color: transparent; color: #ffffff; display:none">  <input  type="text" id = 'e_age' name="e_age"  style=" width:40%; border: 1px solid #cad1d7; background-color: transparent; color: #ffffff; display:none" ><br><br>
+              <label><input id = 'ages_10' type="checkbox" name="chk_age" value="10" > 10대</label>
+              <label><input id = 'ages_20' type="checkbox" name="chk_age" value="20" > 20대</label>
+              <label><input id = 'ages_30' type="checkbox" name="chk_age" value="30" > 30대</label>
+              <label><input id = 'ages_40' type="checkbox" name="chk_age" value="40" > 40대</label>
+              <label><input id = 'ages_50' type="checkbox" name="chk_age" value="50" > 50대 이상</label>
               
               <input name="hidden_s_age" id="hidden_s_age" style="display:none"/>
               <input name="hidden_e_age" id="hidden_e_age" style="display:none"/>

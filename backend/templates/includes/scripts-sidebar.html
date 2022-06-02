@@ -142,36 +142,52 @@
 
 
 ///////////////// 통화메모
+
+            var tmp = '';
+
             $('.call_title').on('click', function(e){
 
               var target_id = e.target.id
               var list_activity = new Array();
+
+              
               $('input[name="call_title"]').each(function(index, item){
                 
-
+                console.log(item.value)
                 list_activity.push(item.id);
               })
 
-              console.log(list_activity);
-              console.log(target_id);
-
               
-              $('.'+target_id).show();
+              // console.log(list_activity);
+              console.log(target_id);
+              
+              
+              // $('.'+target_id).show();
               // 리스트에서 target_id빼고 다 hide
               for(i = 0; i < list_activity.length; i++){
 
                 str = '.'+list_activity[i];
-
                 if (list_activity[i] == target_id){
-                  $('.'+target_id).show();
+                  console.log('값 확인: ', tmp)
+                  if ((target_id + 'true') == tmp){
+
+                    $('.'+target_id).hide();
+                    tmp = target_id + 'false'
+
+                  }
+                  else{ 
+                    tmp = target_id + 'true'
+                    $('.'+target_id).show();
+                  }
                 }
                 else{
-                  
-                  console.log(str);
+                  // console.log(str);
                   $(str).hide();
 
                 }
               }
+
+              
             
             
             
@@ -678,5 +694,9 @@
         });
       });
     });
+
+
+
+    history.replaceState({}, null, location.pathname);
   </script>
   

@@ -1,4 +1,5 @@
-from datetime import datetime
+from dataclasses import dataclass
+from datetime import datetime, timedelta
 from multiprocessing.dummy import JoinableQueue
 from pyexpat import model
 from re import A
@@ -12,11 +13,11 @@ from fastapi.security.utils import get_authorization_scheme_param
 from fastapi.responses import HTMLResponse
 from fastapi.templating import Jinja2Templates
 from db.repository.jobs import list_jobs, search_job, list_models, chu_30, movchoi, proc, order_register, order_recommend, order_s_count, order_read, search_celeb
-from db.repository.jobs import retrieve_job, create_new_job, order_realtime, models_info, proc_celeb
+from db.repository.jobs import retrieve_job, create_new_job, order_realtime, models_info, proc_celeb, img_mov_info, cf_mov_info, act_mov_info
 from jinja2 import ModuleLoader
-from numpy import mod
+from numpy import min_scalar_type, mod
 from pyparsing import col
-from sqlalchemy import JSON, String,  null
+from sqlalchemy import JSON, String,  null, true
 from sqlalchemy.orm import Session
 from db.session import get_db
 from db.models.users import User
@@ -34,27 +35,62 @@ import pandas as pd
 templates = Jinja2Templates(directory="templates")
 router = APIRouter()
 
+access_time = datetime.now()
+
 
 @router.get("/")
 def home(request: Request, db: Session = Depends(get_db)):
     now_year = datetime.today().year
     years = [i for i in range(now_year-10, 1930, -1)]
 
-    # try:
-        # token: str = request.cookies.get("access_token")
-    
-        # print(token)
-        # if token is None:
-        #     return RedirectResponse('/login')
+    # print(now_time, 'aaaaaaaaaaaa')
+    try:
         
-        # else:
-    return templates.TemplateResponse(
-        "index.html", {"request": request,
-                    "years": years,  "now_year": now_year}
-    )
+        # if datetime.now() > (access_time + timedelta(minutes=1)):
+        #     request.cookies.__delitem__("access_token")
+        
+        token: str = request.cookies.get("access_token")
 
-    # except:
-    #     print('?')
+        print('token입니다. ', token)
+        if token is None:
+            return RedirectResponse('/login')
+        
+        else:
+
+            return templates.TemplateResponse(
+                "index.html", {"request": request,
+                            "years": years,  "now_year": now_year}
+            )
+
+    except:
+        print('?')
+
+@router.post("/")
+def home(request: Request, db: Session = Depends(get_db)):
+    now_year = datetime.today().year
+    years = [i for i in range(now_year-10, 1930, -1)]
+
+    # print(now_time, 'aaaaaaaaaaaa')
+    try:
+        
+        # if datetime.now() > (access_time + timedelta(minutes=1)):
+        #     request.cookies.__delitem__("access_token")
+        
+        token: str = request.cookies.get("access_token")
+
+        print('token입니다. ', token)
+        if token is None:
+            return RedirectResponse('/login')
+        
+        else:
+
+            return templates.TemplateResponse(
+                "index.html", {"request": request,
+                            "years": years,  "now_year": now_year}
+            )
+
+    except:
+        print('?')
 
 # @router.get("/login")
 # def home(request: Request, db: Session = Depends(get_db)):
@@ -76,8 +112,6 @@ def search_filter(req: Request, s_date: str = '', e_date: str = '', gender_m: st
                   s_img: str = '', e_img: str = '', s_fav: str = '', e_fav: str = '', s_act: str = '', e_act: str = '', s_age: str = '',hidden_s_age:str='', hidden_e_age:str='', hidden_alpha_fee:str='', hidden_celeb_fee:str='', hidden_celeb_fee_month:str='',
                   hidden_celeb_section: str='',
                   e_age: str = '', chk_model: str = '', chk_celeb: str = '',
-                  sort_thrdays: str = '', sort_movchoi: str = '', sort_proc: str = '', sort_register: str = '', sort_recommend: str = '', sort_s_count: str = '',
-                  sort_realtime: str = '', sort_read: str = '', alpha_s_fee: str = '', alpha_e_fee: str = '', s_fee: str = '', e_fee: str = '',
                   query: str = '', name: str = '', coname: str = '', manager: str = '', tel: str = '', chk_age: str = '', alpha_fees: str = '',
                   hidden_echar: str = '', hidden_rchar: str = '',
                   db: Session = Depends(get_db)):
@@ -103,6 +137,20 @@ def search_filter(req: Request, s_date: str = '', e_date: str = '', gender_m: st
             search_ages.append([int(hidden_s_age[i].split('(')[1].split(')')[0]), int(hidden_e_age[i].split('(')[1].split(')')[0])])
 
     print('알파모델료 TEST: ', hidden_alpha_fee)
+
+
+
+    try:
+        
+        token: str = req.cookies.get("access_token")
+
+        print('token입니다. ', token)
+        if token is None:
+            return RedirectResponse('/login')
+       
+
+    except:
+        print('?')
 
 
     try:
@@ -675,6 +723,7 @@ def search_filter(req: Request, s_date: str = '', e_date: str = '', gender_m: st
 
 
 
+
 ######################
 # 세부정보
 @ router.get("/detail/{codesys}")
@@ -755,10 +804,12 @@ def model_info(req: Request, codesys: str = '', db: Session = Depends(get_db)):
                     model_calls.append(
                         {'title': call['title'], 'memo': call['memo'].split('\r\n'), 'rcode': call['rcode']})
 
-                print('model_통화메모입니다.: ', model_calls)
+                # print('model_통화메모입니다.: ', model_calls)
+                model_calls = list(reversed(model_calls))
             except:
                 pass
 
+            # print('aaaaaaddddddddddddddddd: ' , res_model)
             # 모델 전용 세부 페이지로 이동
             return templates.TemplateResponse(
                 "page-user_model.html", {"request": req,
@@ -770,3 +821,84 @@ def model_info(req: Request, codesys: str = '', db: Session = Depends(get_db)):
     except:
         print('에러 발생: ')
         pass
+
+
+
+######################
+# 영상 정보
+@ router.get("/img_mov/{codesys}")
+def mov_info(req: Request, codesys: str = '', db: Session = Depends(get_db)):
+
+    print('영상 정보 페이지 접속..', codesys)
+    res_mov = img_mov_info(db=db, codesys=codesys)
+
+    res_mov = jsonable_encoder(res_mov[:])
+
+    if not res_mov:
+        
+        return templates.TemplateResponse(
+                "page-actmov.html", {"request": req, "text": '존재하지 않습니다.'}
+    )
+    else:
+        
+
+        mov_list = []
+        for mov in res_mov:
+            mov_list.append(mov)
+            print(mov)
+
+        return templates.TemplateResponse(
+                    "page-actmov.html", {"request": req, "mov": mov_list}
+        )
+
+@ router.get("/act_mov/{codesys}")
+def mov_info(req: Request, codesys: str = '', db: Session = Depends(get_db)):
+
+    print('영상 정보 페이지 접속..', codesys)
+    res_mov = act_mov_info(db=db, codesys=codesys)
+
+    res_mov = jsonable_encoder(res_mov[:])
+
+
+    if not res_mov:
+        
+        return templates.TemplateResponse(
+                "page-actmov.html", {"request": req, "text": '존재하지 않습니다.'}
+    )
+    else:
+        
+
+        mov_list = []
+        for mov in res_mov:
+            mov_list.append(mov)
+            print(mov)
+
+        return templates.TemplateResponse(
+                    "page-actmov.html", {"request": req, "mov": mov_list}
+        )
+
+
+@ router.get("/cf_mov/{codesys}")
+def mov_info(req: Request, codesys: str = '', db: Session = Depends(get_db)):
+
+    print('영상 정보 페이지 접속..', codesys)
+    res_mov = cf_mov_info(db=db, codesys=codesys)
+
+    res_mov = jsonable_encoder(res_mov[:])
+
+    if not res_mov:
+        
+        return templates.TemplateResponse(
+                "page-actmov.html", {"request": req, "text": '존재하지 않습니다.'}
+    )
+    else:
+        
+
+        mov_list = []
+        for mov in res_mov:
+            mov_list.append(mov)
+            print(mov)
+
+        return templates.TemplateResponse(
+                    "page-actmov.html", {"request": req, "mov": mov_list}
+        )

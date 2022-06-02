@@ -1,7 +1,10 @@
 <div class="card" style="width: 7.6rem; height: 18rem; padding-right: 18px; margin-right: auto; margin-left: auto;">
 
   <div class="rounded border border-warning" style="height: 300px">
-    <img  src="http://pic2.readymodel.kr/mdpic/{{obj.mcode[0:3]}}/{{obj.mcode[0:4]}}/{{obj.mcode}}/sys_photo/pic.jpg" style="width:100px; height:100px">
+    <a href="/detail/{{obj.mcode}}" >
+      <img  src="http://pic2.readymodel.kr/mdpic/{{obj.mcode[0:3]}}/{{obj.mcode[0:4]}}/{{obj.mcode}}/sys_photo/pic.jpg" style="width:100px; height:100px">
+    </a>
+    
     <h5 class="card-title">{{ obj.name }}</h5>
     <h5 class="card-title"> {{ obj.age }} / {{ obj.gender }} / {{obj.height}}</h5>
     {%if obj.coname%}
@@ -18,7 +21,7 @@
 
 
     <div style= "position: absolute; top: 88%; left:15%;" >
-    <p style= 'width: 100%'><a href="/detail/{{obj.mcode}}" style="color: #ffffff; background-color: #0098f0; border-color: #0098f0; width: 100%;">세부 정보</a>
+    <p style= 'width: 100%'>
     </p></div>
   </div>
 </div>

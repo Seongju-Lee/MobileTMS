@@ -56,6 +56,7 @@ async def login(request: Request, db: Session = Depends(get_db)):
 
                 except:
                     response = RedirectResponse(url='/login', status_code=302)
+                    
                 # response.set_cookie(key="access_tkn", value=f"Bearer {access_token}")
                 print((datetime.utcnow() + timedelta(minutes=1)))
                 return response

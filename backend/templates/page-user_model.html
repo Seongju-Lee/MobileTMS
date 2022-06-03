@@ -99,8 +99,10 @@
                   <hr color = 'white' size='7px' width='100%' align='left'> 
                   <div class="form-group">
                       <h4><b>인스타그램 </b></h4>
-                      {% if item.sns2 %}  
-                        <h5> ID:  <a href="https://www.instagram.com/{{item.sns2}}/" > {{item.sns2}}  </a>  / 팔로워:  <a href="https://www.instagram.com/{{item.sns2}}/" > {{item.insta_flw_str}} </a> </h5>
+                      {% if item.sns2 == 'X' %}
+                        <h4>SNS 계정이 확인되지 않아요 :< </h4>
+                      {% elif item.sns2 %}  
+                        <h5> ID:  <a style="color: burlywood;" onclick='window.open("https://www.instagram.com/{{item.sns2}}" )' > {{item.sns2}}  </a>  / 팔로워:  <a style="color: burlywood;" onclick='window.open("https://www.instagram.com/{{item.sns2}}" )' > {{item.insta_flw_str}} </a> </h5>
                       {% else %}
                         <h4>SNS 계정이 확인되지 않아요 :< </h4>
                       {% endif %}
@@ -123,9 +125,9 @@
 
                   <h4><b>모델 영상 </b></h4>
                     <!-- <a type='button' href="/mov/{{item.codesys}}">이미지영상 </a> -->
-                    <button type="button"  onclick='window.open("http://mm.musew.com:3001/img_mov/{{item.codesys}}" )'>이미지영상</button>
-                    <button type="button"  onclick='window.open("http://mm.musew.com:3001/act_mov/{{item.codesys}}" )'>연기영상</button>
-                    <button type="button"  onclick='window.open("http://mm.musew.com:3001/cf_mov/{{item.codesys}}" )'>광고영상</button>
+                    <button type="button"  onclick='location.href="http://mm.musew.com:3001/img_mov/{{item.codesys}}" '>이미지영상</button>
+                    <button type="button"  onclick='location.href="http://mm.musew.com:3001/act_mov/{{item.codesys}}" '>연기영상</button>
+                    <button type="button"  onclick='location.href="http://mm.musew.com:3001/cf_mov/{{item.codesys}}" '>광고영상</button>
                   
                   
                 </div>

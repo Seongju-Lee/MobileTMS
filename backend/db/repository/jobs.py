@@ -28,7 +28,8 @@ def divide_ages(models_info, search_ages):
 
     length = len(search_ages)
     
-    print(length)
+    print(search_ages , length)
+
     if length == 1:
         choi = models_info.filter(
                 (People.age <= search_ages[0][0]) & (People.age >= search_ages[0][1]) 
@@ -339,7 +340,7 @@ def movchoi(db: Session, s_date, e_date,gender_w, gender_m, search_ages, hidden_
     char_list = hidden_echar.split(',') + hidden_rchar.split(',')
 
     models_info = db.query((Movsel.mcode),  People.name, Movsel.rno, Movsel.edit_time, People.age, People.mfee, People.sex, People.coname,  People.height,  People.isyeon, People.image).join(
-            People, Movsel.mcode == People.codesys).filter((People.sex == gender_m) | (People.sex == gender_w)).filter((Movsel.edit_time >= s_date) & (Movsel.edit_time <= e_date))
+            People, Movsel.mcode == People.codesys).filter((People.sex == gender_m) | (People.sex == gender_w)).filter((Movsel.edit_time >= (datetime.today() - relativedelta(months=10))))
 
     divide_age_models = divide_ages(models_info=models_info,search_ages=search_ages)
 
@@ -564,8 +565,7 @@ def proc_celeb(db: Session, gender_w, gender_m, search_ages, hidden_celeb_fee, h
         gender_w = '여'
 
     proc = db.query(Mmeeting_proc.mcode.label('codesys'), Yeon.rno, Yeon.name, Yeon.sex, Yeon.age, Yeon.a_3, Yeon.a_6, Yeon.a_12, Mmeeting_proc.edit_time, Mmeeting_proc.projcode, People.isyeon, People.isyeon, People.height, People.coname, People.mfee).join(
-            Yeon, Mmeeting_proc.mcode == Yeon.codesys).join(People, People.codesys == Yeon.codesys).filter((Mmeeting_proc.edit_time >= s_date) & (
-            Mmeeting_proc.edit_time <= e_date)).filter((Yeon.sex == gender_m) | (Yeon.sex == gender_w)).filter(
+            Yeon, Mmeeting_proc.mcode == Yeon.codesys).join(People, People.codesys == Yeon.codesys).filter(Mmeeting_proc.edit_time >= (datetime.today() - relativedelta(months=3))).filter((Yeon.sex == gender_m) | (Yeon.sex == gender_w)).filter(
                 Yeon.rdcode.contains('TC'))
 
     divide_age_models = divide_ages(proc, search_ages)

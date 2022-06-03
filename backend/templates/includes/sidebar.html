@@ -12,18 +12,25 @@
 
             <form method="get" action="/filter" >
 
-              <li style='display:none'>
-                검색 기간<br>
-                <input type='date' name='s_date' id='date1' value='2022-03-31'/>
-                <input type='date' name='e_date' id='date2' value='2022-05-31'/><br><br>
-              </li>
+              
               
               성별<br>
               <label><input type="checkbox" name="gender_m" value="man" > 남자</label>
               <label><input type="checkbox" name="gender_w" value="woman" > 여자</label> <br><br>
             
               연령<br>
-              <input  type="text" id = 's_age' name="s_age" style="width:40%; border: 1px solid #cad1d7; background-color: transparent; color: #ffffff; display:none">  <input  type="text" id = 'e_age' name="e_age"  style=" width:40%; border: 1px solid #cad1d7; background-color: transparent; color: #ffffff; display:none" ><br><br>
+              <select name="s_age" id="s_age" value="s_age" style="width:40%; border: 1px solid #cad1d7; background-color: transparent; color: #ffffff;" >
+                {% for year in years %}
+                  <option value = "{{year}}"> {{now_year - year + 1}}세({{year}}년)</option>
+                {% endfor%}
+              </select> ~ <select name="e_age" id="e_age" value="e_age" style="width:40%; border: 1px solid #cad1d7; background-color: transparent; color: #ffffff;" >
+                {% for year in years %}
+                  
+                  <option value = "{{year}}"> {{now_year - year + 1}}세({{year}}년)</option>
+                  
+                {% endfor%}
+              </select>
+              <!-- <input  type="text" id = 's_age' name="s_age" style="width:40%; border: 1px solid #cad1d7; background-color: transparent; color: #ffffff; display:none">  <input  type="text" id = 'e_age' name="e_age"  style=" width:40%; border: 1px solid #cad1d7; background-color: transparent; color: #ffffff; display:none" ><br><br> -->
               <label><input id = 'ages_10' type="checkbox" name="chk_age" value="10" > 10대</label>
               <label><input id = 'ages_20' type="checkbox" name="chk_age" value="20" > 20대</label>
               <label><input id = 'ages_30' type="checkbox" name="chk_age" value="30" > 30대</label>
@@ -58,10 +65,16 @@
                 <input name="hidden_alpha_fee" id="hidden_alpha_fee" style="display:none"/>
 
                 추천<br>
-                이미지 <input  type="text" name="s_img" value = 0 style="width:40px; border: 1px solid #cad1d7; background-color: transparent; color: #ffffff;"> <input  type="text" name="e_img" value = 100 style="width:40px; border: 1px solid #cad1d7; background-color: transparent; color: #ffffff;"><br>
-                호감도 <input  ype="text" name="s_fav" value = 0 style="width:40px; border: 1px solid #cad1d7; background-color: transparent; color: #ffffff;"> <input  type="text" name="e_fav"  value = 100 style="width:40px; border: 1px solid #cad1d7; background-color: transparent; color: #ffffff;"><br>
-                연기력 <input  type="text" name="s_act" value = 0 style="width:40px; border: 1px solid #cad1d7; background-color: transparent; color: #ffffff;"> <input  type="text" name="e_act" value = 0  style="width:40px; border: 1px solid #cad1d7; background-color: transparent; color: #ffffff;"> 
-                
+                이미지  <input  type="text" name="s_img" id="s_img" value = 0 style="width:40px; border: 1px solid #cad1d7; background-color: transparent; color: #ffffff;">
+                      <input  type="text" name="e_img" id="e_img" value = 0 style="width:40px; border: 1px solid #cad1d7; background-color: transparent; color: #ffffff;">
+                      <input type="checkbox" name="btn_score" id="btn_img" value="chk_img"> <br>
+                호감도  <input  type="text" name="s_fav" id="s_fav" value = 0 style="width:40px; border: 1px solid #cad1d7; background-color: transparent; color: #ffffff;"> 
+                      <input  type="text" name="e_fav" id="e_fav"  value = 0 style="width:40px; border: 1px solid #cad1d7; background-color: transparent; color: #ffffff;">
+                      <input type="checkbox" name="btn_score" id="btn_fav" value="chk_fav"> <br>
+                연기력  <input  type="text" name="s_act" id="s_act" value = 0 style="width:40px; border: 1px solid #cad1d7; background-color: transparent; color: #ffffff;">
+                      <input  type="text" name="e_act" id="e_act" value = 0  style="width:40px; border: 1px solid #cad1d7; background-color: transparent; color: #ffffff;">
+                      <input type="checkbox" name="btn_score" id="btn_act" value="chk_act"> 
+                      <input name="hidden_score" id="hidden_score" style="display:none"/>
                 <br><br>
                 정렬<br>
                 <label><input type="radio" name="model_filter" value="thrdays"> 30일추천</label>
@@ -188,6 +201,12 @@
 
                 <input name="hidden_celeb_section" id="hidden_celeb_section" style="display:none"/>
                 
+
+                <li style='display:none'>
+                  검색 기간<br>
+                  <input type='date' name='s_date' id='date1' value='2021-08-31'/>
+                  <input type='date' name='e_date' id='date2' value='2022-05-31'/><br><br>
+                </li>
 
               </div>
               <button class="btn btn-outline-success" type="submit">Search</button>

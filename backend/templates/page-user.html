@@ -83,11 +83,13 @@
                   {% endif %}
                   <div class="form-group">
                     <hr color = 'white' size='7px' width='100%' align='left'> 
-                        <label for="exampleInputEmail1">인스타그램</label>
-                      {%if item.sns2%}  
-                        <h5> ID:  <a href="https://www.instagram.com/{{item.sns2}}/" > {{item.sns2}} </a>  / 팔로워:  <a href="https://www.instagram.com/{{item.sns2}}/" > {{item.insta_flw_str}} </a> </h5>
+                      <h4><b>인스타그램 </b></h4>
+                      {% if item.sns2 == 'X' %}
+                        <h4>SNS 계정이 확인되지 않아요 :< </h4>
+                      {% elif item.sns2 %}  
+                        <h5> ID:  <a style="color: burlywood;" onclick='window.open("https://www.instagram.com/{{item.sns2}}" )' > {{item.sns2}}  </a>  / 팔로워:  <a style="color: burlywood;" onclick='window.open("https://www.instagram.com/{{item.sns2}}" )' > {{item.insta_flw_str}} </a> </h5>
                       {% else %}
-                        SNS 계정이 확인되지 않아요 :<
+                        <h4>SNS 계정이 확인되지 않아요 :< </h4>
                       {% endif %}
                     
                   </div>

@@ -406,10 +406,10 @@
                     }
                   }
                 }
-                console.log(age_arange)
+                console.log('age_arange입니다: ',age_arange)
                 
-                $('#s_age').val(age_arange[0][0])
-                $('#e_age').val(age_arange[chk_ages.length-1][1])
+                $('#s_age').val(age_arange[0][0].substr(3,4)).change()
+                $('#e_age').val(age_arange[chk_ages.length-1][1].substr(3,4)).change()
                
                 for(k = 0; k< age_arange.length; k++){
                   // console.log(age_arange)
@@ -419,8 +419,8 @@
                 console.log(hidden_s)
                 console.log(hidden_e)
 
-                $('#hidden_s_age').val(hidden_s)
-                $('#hidden_e_age').val(hidden_e)
+                // $('#hidden_s_age').val(hidden_s)
+                // $('#hidden_e_age').val(hidden_e)
               }
 
               else
@@ -464,6 +464,60 @@
             );
 
 ///////////////////////////
+
+
+///////////////////// 모델 추천 이미지 선택
+
+
+$('input[name="btn_score"]' ).click(function(){
+
+    var _isimg = $('#btn_img').is(":checked");
+    var _isfav = $('#btn_fav').is(":checked");
+    var _isact = $('#btn_act').is(":checked");
+
+    var chk_score = new Array();
+
+    $("input[name='btn_score']:checked").each(function(index, name) { 
+      var alpha = $(name).val(); 
+      chk_score.push(alpha);
+    });
+
+    console.log('점수통합: ',chk_score)
+    $('#hidden_score').val(chk_score)
+    for(i = 0; i <= chk_score.length; i++){
+
+      if (chk_score.indexOf('chk_fav') != -1){
+        $('#s_fav').val(0);
+        $('#e_fav').val(100);
+      }else{
+        $('#s_fav').val(0);
+        $('#e_fav').val(0);
+      }
+
+      if (chk_score.indexOf('chk_img') != -1){
+        $('#s_img').val(0);
+        $('#e_img').val(100);
+      }else{
+        $('#s_img').val(0);
+        $('#e_img').val(0);
+      }
+
+      if (chk_score.indexOf('chk_act') != -1){
+        $('#s_act').val(0);
+        $('#e_act').val(100);
+      }else{
+        $('#s_act').val(0);
+        $('#e_act').val(0);
+      }
+
+    }
+    // $('#hidden_alpha_fee').val(chk_fees)
+
+    }
+);
+
+///////////////////////////
+
 
 //////
 ///////////////////// 셀럽모델료 선택

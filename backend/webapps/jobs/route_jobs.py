@@ -41,7 +41,7 @@ access_time = datetime.now()
 @router.get("/")
 def home(request: Request, db: Session = Depends(get_db)):
     now_year = datetime.today().year
-    years = [i for i in range(now_year-10, 1930, -1)]
+    years = [i for i in range(now_year-1, 1930, -1)]
 
     # print(now_time, 'aaaaaaaaaaaa')
     try:
@@ -68,7 +68,7 @@ def home(request: Request, db: Session = Depends(get_db)):
 @router.post("/")
 def home(request: Request, db: Session = Depends(get_db)):
     now_year = datetime.today().year
-    years = [i for i in range(now_year-10, 1930, -1)]
+    years = [i for i in range(now_year-1, 1930, -1)]
 
     # print(now_time, 'aaaaaaaaaaaa')
     try:
@@ -113,12 +113,12 @@ def search_filter(req: Request, s_date: str = '', e_date: str = '', gender_m: st
                   hidden_celeb_section: str='',
                   e_age: str = '', chk_model: str = '', chk_celeb: str = '',
                   query: str = '', name: str = '', coname: str = '', manager: str = '', tel: str = '', chk_age: str = '', alpha_fees: str = '',
-                  hidden_echar: str = '', hidden_rchar: str = '',
+                  hidden_echar: str = '', hidden_rchar: str = '', btn_img: str='', btn_fav: str='', btn_act: str='', hidden_score : str='',
                   db: Session = Depends(get_db)):
 
     # try:
     now_year = datetime.today().year
-    years = [i for i in range(now_year-10, 1930, -1)]
+    years = [i for i in range(now_year-1, 1930, -1)]
     ll = []
     search_ages = [] # 설정된 나이 구간 저장.
     ll.append(alpha_fees)
@@ -132,10 +132,13 @@ def search_filter(req: Request, s_date: str = '', e_date: str = '', gender_m: st
     hidden_e_age = hidden_e_age.split(',')
 
     # print(hidden_e_age)
-    if (not hidden_s_age[0] == '') and (not hidden_e_age[0] == ''):
-        for i in range(len(hidden_e_age)):
-            search_ages.append([int(hidden_s_age[i].split('(')[1].split(')')[0]), int(hidden_e_age[i].split('(')[1].split(')')[0])])
+    # if (not hidden_s_age[0] == '') and (not hidden_e_age[0] == ''):
+    #     for i in range(len(hidden_e_age)):
+    #         search_ages.append([int(hidden_s_age[i].split('(')[1].split(')')[0]), int(hidden_e_age[i].split('(')[1].split(')')[0])])
 
+
+    search_ages.append([s_age, e_age])
+    print('연령 TEST: ', search_ages)
     print('알파모델료 TEST: ', hidden_alpha_fee)
 
 
@@ -166,7 +169,6 @@ def search_filter(req: Request, s_date: str = '', e_date: str = '', gender_m: st
             chu_models = jsonable_encoder(models[:])
             res_models = []
             
-            
             i = 0
             df = pd.DataFrame(chu_models).groupby(
                 ['mcode', 'gubun', 'name',  'mfee',  'sex', 'coname', 'height', 'age', 'isyeon'])['jum'].sum().reset_index()
@@ -177,24 +179,28 @@ def search_filter(req: Request, s_date: str = '', e_date: str = '', gender_m: st
 
             # print('1111111: : ', search_models)
 
-            for model in search_models:
-                if model[0] == 'Y0Y9J0Z4B7J31F':
-                    print('1111111: : ', model)
+            # for model in search_models:
+            #     if model[0] == 'Y0X7T0UGD6R21B':
+            #         print('1111111: : ', model)
             # print(hidden_echar, hidden_rchar , '이케아 레케아 테스트입니다.')
                 
             for model in (search_models):
-                if model[0] == 'Y0Y9J0Z4B7J31F':
-                    print('llll22222: ', model)
+                # if model[0] == 'Y0X7T0UGD6R21B':
+                #     print('llll22222: ', model)
                 res_models.append(
                     {'mcode': model[0], 'gubun': model[1], 'name': model[2],
                     'mfee':model[3], 'gender':model[4], 'coname':model[5],
                     'height':model[6],'age':model[7], 'isyeon':model[8], 'jum': model[9]})
 
 
+            
+
             df_res = pd.DataFrame(res_models).groupby(
                 ['mcode', 'gubun', 'name', 'mfee',  'gender', 'coname', 'height', 'age', 'isyeon'])['jum'].apply(list).reset_index(name='sum')
 
             df_to_list = df_res.values.tolist()
+
+            
             # print(df_res)
             j=0
             for model in df_to_list:
@@ -217,21 +223,35 @@ def search_filter(req: Request, s_date: str = '', e_date: str = '', gender_m: st
                 elif model['gubun'] == 'img':
                     model['img_jum'] = model['jum']
 
+            
+
             for i in range(len(df_to_list)):
                 try:
                     if i == 0:
                         pass
                     
                     elif df_to_list[i]['mcode'] == df_to_list[i-1]['mcode']:
+                        if df_to_list[i]['mcode'] == 'Y0X7T0UGD6R21B':
+                            print('ㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇ: ', df_to_list[i-1])
+                            print('ㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇ: ', df_to_list[i])
+                            print('ㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇ: ', df_to_list[i+1])
                         df_to_list[i].update(df_to_list[i-1])
-                        df_to_list.remove(df_to_list[i-1])
+                        # df_to_list.remove(df_to_list[i-1])
                     else:
-                        pass
+                        filter_models.append(df_to_list[i-1])
                 except:
                     pass
                 
 
-            filter_models = df_to_list
+            # print(df_to_list)  
+            for model in filter_models[:]:
+                # if model['mcode'] == 'Y0X7T0UGD6R21B':
+                print('aiaiaiai1111 ',model)
+                
+
+
+
+            # filter_models = df_to_list
             try:
 
                 with open("model.json", 'r', encoding='utf-8') as json_file:
@@ -244,7 +264,14 @@ def search_filter(req: Request, s_date: str = '', e_date: str = '', gender_m: st
                 print('일치하는 모델료가 json파일에 없음.')
                 pass
 
+
+            print('dkkkkkkkkkkk: ', hidden_score)
+
+            hidden_scores = hidden_score.split(',')
+
             for model in filter_models:
+                
+
                 
                 if not 'img_jum' in model.keys():
                     model['img_jum'] = 0
@@ -253,27 +280,46 @@ def search_filter(req: Request, s_date: str = '', e_date: str = '', gender_m: st
                 if not 'act_jum' in model.keys():
                     model['act_jum'] = 0
 
-                if ('img_jum' in model.keys()) and (model['img_jum'] >= int(s_img) and model['img_jum'] <= int(e_img)):
-                    img_ok = True
-                if ('fav_jum' in model.keys()) and (model['fav_jum'] >= int(s_fav) and model['fav_jum'] <= int(e_fav)):
-                    fav_ok = True
-                if ('act_jum' in model.keys()) and (model['act_jum'] >= int(s_act) and model['act_jum'] <= int(e_act)):
-                    act_ok = True
+
+
+                if s_img == '0' and e_img == '0':
+                    model['img_jum'] = 0
+                if s_fav == '0' and e_fav == '0':
+                    model['fav_jum'] = 0
+                if (s_act == '0') and (e_act == '0'):
+                    model['act_jum'] = 0
+
+                if 'chk_img' in hidden_scores:
+                    if ('img_jum' in model.keys()) and (model['img_jum'] >= int(s_img) and model['img_jum'] <= int(e_img)):
+                        img_ok = True
+                if 'chk_fav' in hidden_scores:
+                    if ('fav_jum' in model.keys()) and (model['fav_jum'] >= int(s_fav) and model['fav_jum'] <= int(e_fav)):
+                        fav_ok = True
+                if 'chk_act' in hidden_scores:
+                    if ('act_jum' in model.keys()) and (model['act_jum'] >= int(s_act) and model['act_jum'] <= int(e_act)):
+                        act_ok = True
                 # print('ouuuuutt: ', model)
 
-                if img_ok and fav_ok and act_ok:
+                # print('중간: ', model)
+                if img_ok or fav_ok or act_ok:
+                    if model['mcode'] == 'Y0X7T0UGD6R21B':
+                        print(s_act, e_act)
 
+                        print('영아리1', model)
                     output_models.append(model)
                 img_ok, fav_ok, act_ok = False, False, False
 
+
             for model in output_models:
+                if model['mcode'] == 'Y0X7T0UGD6R21B':
+                    print('영아리', model)
                 model['sum'] = model['img_jum'] + model['fav_jum'] + model['act_jum']
                 
                 
             res = sorted(output_models, key=lambda x: x['sum'], reverse=True)
             
-            for model in res[:10]:
-                print('결과: ', model)
+            # for model in res[:500]:
+            #     print('결과: ', model)
                 
             return templates.TemplateResponse(
                 "ui-icons.html", {"request": req,
@@ -287,7 +333,7 @@ def search_filter(req: Request, s_date: str = '', e_date: str = '', gender_m: st
         # 영상초이
         elif model_filter == 'movchoi':
 
-            print(search_ages)
+            # print(search_ages)
             models = movchoi(db=db, gender_w=gender_w, gender_m=gender_m, s_date=s_date, e_date=e_date, search_ages = search_ages,
             hidden_alpha_fee=hidden_alpha_fee , hidden_echar=hidden_echar, hidden_rchar=hidden_rchar)
 
@@ -298,12 +344,17 @@ def search_filter(req: Request, s_date: str = '', e_date: str = '', gender_m: st
                 ['mcode', 'name', 'age', 'mfee', 'sex', 'coname', 'height', 'isyeon']).count().reset_index()
 
             search_models = df.values.tolist()
-            # print(search_models)
+            print(search_models)
 
+            
             res = sorted(search_models, key=lambda x: x[8], reverse=True)
 
+
+            for model in res[:20]:
+                print('TOP: ', model)
+
             for model in res:
-                print(model)
+                # print(model)
                 res_models.append(
                     {'mcode': model[0], 'name': model[1], 'age': model[2], 'mfee':model[3], 'gender':model[4], 'coname':model[5], 'height':model[6],'isyeon':model[8] ,'count': model[len(model)-1]})
 
@@ -729,97 +780,103 @@ def search_filter(req: Request, s_date: str = '', e_date: str = '', gender_m: st
 @ router.get("/detail/{codesys}")
 def model_info(req: Request, codesys: str = '', db: Session = Depends(get_db)):
 
-    try:
-        print('세부 정보 페이지 접속..', codesys)
-        info, activities, call_memo, token = models_info(
-            db=db, codesys=codesys)
 
-        if not token == 123:
-            res = jsonable_encoder((info[:]))
-            calls = jsonable_encoder((call_memo[:]))
-            activity = jsonable_encoder((activities[:]))
-            res_model = jsonable_encoder((info[0]))
-            celeb_cf = []
-            celeb_activity = []
-            celeb_calls = []
-            res_model['point2'] = rtf_to_text(res_model['point2'])
-            print('22222222222222222222222: ', res_model)
+    now_year = datetime.today().year
+    years = [i for i in range(now_year-1, 1930, -1)]
 
-            i = 0
-            for model in res:
-                res[i]['point2'] = rtf_to_text(model['point2'])
+    # try:
+    print('세부 정보 페이지 접속..', codesys)
+    info, activities, call_memo, token = models_info(
+        db=db, codesys=codesys)
 
-                i += 1
-            for m in res:
+    if not token == 123:
+        res = jsonable_encoder((info[:]))
+        calls = jsonable_encoder((call_memo[:]))
+        activity = jsonable_encoder((activities[:]))
+        res_model = jsonable_encoder((info[0]))
+        celeb_cf = []
+        celeb_activity = []
+        celeb_calls = []
+        res_model['point2'] = rtf_to_text(res_model['point2'])
 
-                celeb_cf.append({'brand': m['brand'], 'poom': m['poom'],
-                                'imonth': m['imonth'], 'fee': m['fee'], 'dstart': m['dstart'], 'dend': m['dend'], 'indefin': m['indefin'], 'nation': m['nation'], 'writer': m['writer'], 'wrdate': m['wrdate']})
+        i = 0
+        for model in res:
+            res[i]['point2'] = rtf_to_text(model['point2'])
 
-            for m in activity:
-                # print(m)
-                celeb_activity.append({'gubun': m['drgubun'], 'gubun2': m['drgubun2'], 'title': m['title'], 'dstart': m['dstart'], 'dend': m['dend'], 'writer': m['writer'],
-                                       'wrdate': m['wrdate']})
-            print('qqqqqq: ', calls)
+            i += 1
+        for m in res:
+
+            celeb_cf.append({'brand': m['brand'], 'poom': m['poom'],
+                            'imonth': m['imonth'], 'fee': m['fee'], 'dstart': m['dstart'], 'dend': m['dend'], 'indefin': m['indefin'], 'nation': m['nation'], 'writer': m['writer'], 'wrdate': m['wrdate']})
+
+        for m in activity:
+            celeb_activity.append({'gubun': m['drgubun'], 'gubun2': m['drgubun2'], 'title': m['title'], 'dstart': m['dstart'], 'dend': m['dend'], 'writer': m['writer'],
+                                    'wrdate': m['wrdate']})
+        
+        try:
             for call in calls:
 
-                try:
-                    celeb_calls.append(
-                        {'title': call['title'], 'memo': call['memo'].split('\r\n'), 'rcode': call['rcode']})
-                except:
-                    pass
+                celeb_calls.append(
+                    {'title': call['title'], 'memo': call['memo'].split('\r\n'), 'rcode': call['rcode']})
 
-            res_model['point_str'] = res_model['point2'].split('\n')
+            celeb_calls = list(reversed(celeb_calls))
+            print(celeb_calls)
+        except:
+            print('셀럽 통화메모 정렬 에러발생')
 
-            return templates.TemplateResponse(
-                "page-user.html", {"request": req,
-                                   'item': res_model,
-                                   'celeb_cf': celeb_cf,
-                                   'celeb_activity': celeb_activity,
-                                   'celeb_calls': celeb_calls}
-            )
+        res_model['point_str'] = res_model['point2'].split('\n')
 
-        else:
+        return templates.TemplateResponse(
+            "page-user.html", {"request": req,
+                                'item': res_model,
+                                'celeb_cf': celeb_cf,
+                                'celeb_activity': celeb_activity,
+                                'celeb_calls': celeb_calls, "years": years,  "now_year": now_year}
+        )
 
-            calls = jsonable_encoder((call_memo[:]))
-            model_calls = []
-            res_model = info
-            res_model['point2'] = rtf_to_text(res_model['point2'])
+    else:
 
-            res_model['point_str'] = res_model['point2'].split('\n')
-            print('ppppp_kmodel: ', jsonable_encoder(activities[:]))
+        calls = jsonable_encoder((call_memo[:]))
+        model_calls = []
+        res_model = info
+        res_model['point2'] = rtf_to_text(res_model['point2'])
 
-            try:
+        res_model['point_str'] = res_model['point2'].split('\n')
 
-                with open("model.json", 'r', encoding='utf-8') as json_file:
-                    aa = json.load(json_file)
-                    res_model['mfee'] = aa['model_fee'][res_model['mfee']]
-                    # print(res_model)
-            except:
-                print('일치하는 모델료가 json파일에 없음.')
+        try:
 
-            print('광고이력 개수: ', len(jsonable_encoder(activities[:])))
+            with open("model.json", 'r', encoding='utf-8') as json_file:
+                aa = json.load(json_file)
+                res_model['mfee'] = aa['model_fee'][res_model['mfee']]
+                # print(res_model)
+        except:
+            print('일치하는 모델료가 json파일에 없음.')
 
-            try:
-                for call in calls:
-                    model_calls.append(
-                        {'title': call['title'], 'memo': call['memo'].split('\r\n'), 'rcode': call['rcode']})
+        print('광고이력 개수: ', len(jsonable_encoder(activities[:])))
 
-                # print('model_통화메모입니다.: ', model_calls)
-                model_calls = list(reversed(model_calls))
-            except:
-                pass
-
-            # 모델 전용 세부 페이지로 이동
-            return templates.TemplateResponse(
-                "page-user_model.html", {"request": req,
-                                         'item': res_model,
-                                         'activities': jsonable_encoder(activities[:]),
-                                         "model_calls": model_calls}
-            )
         
-    except:
-        print('에러 발생: ')
-        pass
+
+        try:
+            for call in calls:
+                print(call)
+                if not call['memo'] == None:
+                    model_calls.append({'title': call['title'], 'memo': call['memo'].split('\r\n'), 'rcode': call['rcode']})
+            model_calls = list(reversed(model_calls))
+
+        except:
+            print('통화메모 내림차순 에러발생')
+
+        # 모델 전용 세부 페이지로 이동
+        return templates.TemplateResponse(
+            "page-user_model.html", {"request": req,
+                                        'item': res_model,
+                                        'activities': jsonable_encoder(activities[:]),
+                                        "model_calls": model_calls, "years": years,  "now_year": now_year}
+        )
+        
+    # except:
+    #     print('에러 발생: ')
+    #     pass
 
 
 
@@ -827,6 +884,10 @@ def model_info(req: Request, codesys: str = '', db: Session = Depends(get_db)):
 # 영상 정보
 @ router.get("/img_mov/{codesys}")
 def mov_info(req: Request, codesys: str = '', db: Session = Depends(get_db)):
+
+
+    now_year = datetime.today().year
+    years = [i for i in range(now_year-1, 1930, -1)]
 
     print('영상 정보 페이지 접속..', codesys)
     res_mov = img_mov_info(db=db, codesys=codesys)
@@ -836,7 +897,7 @@ def mov_info(req: Request, codesys: str = '', db: Session = Depends(get_db)):
     if not res_mov:
         
         return templates.TemplateResponse(
-                "page-actmov.html", {"request": req, "text": '존재하지 않습니다.'}
+                "page-actmov.html", {"request": req, "text": '존재하지 않습니다.', "years": years,  "now_year": now_year}
     )
     else:
         
@@ -847,11 +908,16 @@ def mov_info(req: Request, codesys: str = '', db: Session = Depends(get_db)):
             print(mov)
 
         return templates.TemplateResponse(
-                    "page-actmov.html", {"request": req, "mov": mov_list}
+                    "page-actmov.html", {"request": req, "mov": mov_list, "years": years,  "now_year": now_year}
         )
+
+
 
 @ router.get("/act_mov/{codesys}")
 def mov_info(req: Request, codesys: str = '', db: Session = Depends(get_db)):
+
+    now_year = datetime.today().year
+    years = [i for i in range(now_year-1, 1930, -1)]
 
     print('영상 정보 페이지 접속..', codesys)
     res_mov = act_mov_info(db=db, codesys=codesys)
@@ -862,7 +928,7 @@ def mov_info(req: Request, codesys: str = '', db: Session = Depends(get_db)):
     if not res_mov:
         
         return templates.TemplateResponse(
-                "page-actmov.html", {"request": req, "text": '존재하지 않습니다.'}
+                "page-actmov.html", {"request": req, "text": '존재하지 않습니다.', "years": years,  "now_year": now_year}
     )
     else:
         
@@ -873,12 +939,16 @@ def mov_info(req: Request, codesys: str = '', db: Session = Depends(get_db)):
             print(mov)
 
         return templates.TemplateResponse(
-                    "page-actmov.html", {"request": req, "mov": mov_list}
+                    "page-actmov.html", {"request": req, "mov": mov_list, "years": years,  "now_year": now_year}
         )
 
 
 @ router.get("/cf_mov/{codesys}")
 def mov_info(req: Request, codesys: str = '', db: Session = Depends(get_db)):
+
+
+    now_year = datetime.today().year
+    years = [i for i in range(now_year-1, 1930, -1)]
 
     print('영상 정보 페이지 접속..', codesys)
     res_mov = cf_mov_info(db=db, codesys=codesys)
@@ -888,7 +958,7 @@ def mov_info(req: Request, codesys: str = '', db: Session = Depends(get_db)):
     if not res_mov:
         
         return templates.TemplateResponse(
-                "page-actmov.html", {"request": req, "text": '존재하지 않습니다.'}
+                "page-actmov.html", {"request": req, "text": '존재하지 않습니다.', "years": years,  "now_year": now_year}
     )
     else:
         
@@ -899,5 +969,5 @@ def mov_info(req: Request, codesys: str = '', db: Session = Depends(get_db)):
             print(mov)
 
         return templates.TemplateResponse(
-                    "page-actmov.html", {"request": req, "mov": mov_list}
+                    "page-actmov.html", {"request": req, "mov": mov_list, "years": years,  "now_year": now_year}
         )

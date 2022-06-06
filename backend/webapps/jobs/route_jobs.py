@@ -116,7 +116,16 @@ def search_filter(req: Request, s_date: str = '', e_date: str = '', gender_m: st
                   hidden_echar: str = '', hidden_rchar: str = '', btn_img: str='', btn_fav: str='', btn_act: str='', hidden_score : str='',
                   db: Session = Depends(get_db)):
 
+
+    ###########3 셀럽 선택 시, 모델 관련 체크 다 지우고, 모델 선택 시,, 셀럽 
     # try:
+
+    if chk_celeb == '':
+        filter_celeb = ''
+
+    elif chk_model == '':
+        model_filter = ''
+
     now_year = datetime.today().year
     years = [i for i in range(now_year-1, 1930, -1)]
     ll = []

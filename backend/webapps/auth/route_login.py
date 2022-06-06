@@ -1,5 +1,5 @@
 from pydoc import resolve
-from ssl import AlertDescription
+from ssl import ALERT_DESCRIPTION_ACCESS_DENIED, AlertDescription
 from fastapi import APIRouter, Request, Depends, HTTPException
 from fastapi.templating import Jinja2Templates
 from sqlalchemy.orm import Session
@@ -20,6 +20,7 @@ templates = Jinja2Templates(directory="templates")
 
 @router.get("/login")
 def login(request: Request, msg: str = None):
+    print('param msg확인: ', msg)
     return templates.TemplateResponse(
         "login.html", {"request": request, "msg": msg}
     )
@@ -27,6 +28,8 @@ def login(request: Request, msg: str = None):
 
 @router.post("/login")
 async def login(request: Request, db: Session = Depends(get_db)):
+
+
     form = LoginForm(request)
     await form.load_data() 
 
@@ -42,27 +45,35 @@ async def login(request: Request, db: Session = Depends(get_db)):
             print('user임: ', user)
             if user == False:
 
-                response = RedirectResponse(url='/login', status_code=302)
-                return response
+                print('이쪽에서!!_')
+                form.__dict__.update(msg="로그인 실패: 다시 시도 해주세요")
+                return templates.TemplateResponse("login.html", form.__dict__)
+
+                # return response
             else:
                 access_token_expire = timedelta(minutes=settings.ACCESS_TOKEN_EXPIRE_MINUTES)
                 access_token = create_access_token(
                     data={"sub": jsonable_encoder(user[:])[0]['id']}, expires_delta=access_token_expire
                 )
-                print('access token: ', access_token)
                 try:
                     response = RedirectResponse(url='/', status_code=302)
                     response.set_cookie(key="access_token", value=access_token, expires= 10800)
 
                 except:
-                    response = RedirectResponse(url='/login', status_code=302)
+                    form.__dict__.update(msg="Login token error")
+                    return templates.TemplateResponse("login.html", form.__dict__)
                     
-                # response.set_cookie(key="access_tkn", value=f"Bearer {access_token}")
                 print((datetime.utcnow() + timedelta(minutes=1)))
                 return response
+                
         except HTTPException:
             form.__dict__.update(msg="")
             form.__dict__.get("errors").append("올바르지 않음.")
+
             return templates.TemplateResponse("login.html", form.__dict__)
         
-    return templates.TemplateResponse("login.html", form.__dict__)
+    else:
+        form.__dict__.update(msg="로그인 실패: 다시한번 시도 해주세요")
+        return templates.TemplateResponse("login.html", form.__dict__)
+    
+    

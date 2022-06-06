@@ -21,11 +21,13 @@ templates = Jinja2Templates(directory="templates")
 def authenticate_user(username: str, password: str, db: Session):
     user = get_users(username=username, db=db)
     print('user 확인: ', jsonable_encoder(user[:]))
-    # print('해쉬요~  ', password,'  ',Hasher.get_hash_password(password))
-    print(Hasher.verify_password(password, user[0].hashed_password))
+    user = jsonable_encoder(user[:])
+  
     if not user:
+        print('id error')
         return False
-    if not Hasher.verify_password(password, user[0].hashed_password):
+    elif not Hasher.verify_password(password, user[0]['hashed_password']):
+        print('password error')
         return False
     return user
 

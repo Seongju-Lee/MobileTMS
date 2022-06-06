@@ -206,21 +206,28 @@
 
               var _ischecked = $('input:checkbox[name="chk_model"]').is(":checked");
 
-              if (_ischecked) 
+              console.log(_ischecked)
+              if (_ischecked) {
                 $('.chu').show();
+                $('#chk_celeb').prop('checked',false);
+                $('.star').hide();
+              }
               else
                 $('.chu').hide();
               }
             );
 
+            
             $('input[name="chk_celeb"]').click(function(){
 
               var _ischecked = $('input:checkbox[name="chk_celeb"]').is(":checked");
 
-              if (_ischecked) 
+              if (_ischecked) {
 
                 $('.star').show();
-                
+                $('#chk_model').prop('checked',false);
+                $('.chu').hide();
+              }
               else
                 $('.star').hide();
               }
@@ -231,6 +238,50 @@
 /////////////////////
 
 
+
+
+  // input[type="checkbox"]:checked {
+  //   background: #32e732;
+  //   border: none;
+  // }
+
+
+            // $("input[type='checkbox']").css("width", '0.9rem').css("height", '0.9rem').css("border-radius", '100%').css("border", '1px solid #FFFFFF').css("appearance", 'none')
+            //             .css("cursor", 'pointer')
+
+           
+
+          //   $('.check_sec').css("width", '0.9rem').css("height", '0.9rem').css("border-radius", '10%').css("border", '1px solid #FFFFFF').css("appearance", 'none')
+          //               .css("cursor", 'pointer').css("transition", "background 0.2s")
+
+          //   $('input:checkbox[name="chk_model"]').click(function(){
+             
+
+          //     var chk_box_checked = $('input:checkbox[name="chk_model"]').is(":checked");
+          //     console.log('ddd: ', chk_box_checked)
+          //     if (chk_box_checked){
+          //       $('input:checkbox[name="chk_model"]').css("background", '#000000').css("border", 'none').css("content", 'v')
+                
+          //     }
+          //     else{
+          //       $('input:checkbox[name="chk_model"]').css("background", 'none').css("border", '1px solid #FFFFFF')
+          //     }
+
+          //   })
+
+          //   $('input:checkbox[name="chk_celeb"]').click(function(){
+             
+
+          //    var chk_box_checked = $('input:checkbox[name="chk_celeb"]').is(":checked");
+          //    console.log('ddd: ', chk_box_checked)
+          //    if (chk_box_checked){
+          //      $('input:checkbox[name="chk_celeb"]').css("background", '#000000').css("border", 'none').css("content", 'v')
+          //    }
+          //    else{
+          //      $('input:checkbox[name="chk_celeb"]').css("background", 'none').css("border", '1px solid #FFFFFF')
+          //    }
+
+          //  })
 ///////////////////// 이케아/ 레케아
 
             $('input[name="btn_echar"]' ).click(function(){
@@ -659,6 +710,20 @@ $('input[name="btn_score"]' ).click(function(){
 
 ///////////////////// 
 
+        
+
+
+
+
+
+
+
+
+
+
+
+
+/////////////////////
         $('.fixed-plugin a').click(function(event) {
           if ($(this).hasClass('switch-trigger')) {
             if (event.stopPropagation) {
@@ -760,6 +825,8 @@ $('input[name="btn_score"]' ).click(function(){
         });
       });
     });
+
+
 
 
 

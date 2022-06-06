@@ -5,7 +5,8 @@ from typing import Generator
 
 # For postgrSQL database
 SQLALCHEMY_DATABASE_URL = settings.DATABASE_URL
-engine = create_engine(SQLALCHEMY_DATABASE_URL)
+engine = create_engine(SQLALCHEMY_DATABASE_URL, pool_recycle=500)
+# engine = create_engine("mysql+pymysql://iamrep77:haha7070!OK@210.94.78.242:3306/ready", pool_recycle=500)
 
 # For SQlLite Database
 # By default SQLite will only allow one thread to communicate.

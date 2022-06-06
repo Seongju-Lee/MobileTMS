@@ -877,4 +877,21 @@ Created using IcoMoon - icomoon.io
   .fixed-plugins .bootstrap-switch {
     margin: 0;
   }
+
+
+
+  input[type="checkbox"] {
+    width: 1rem;
+    height: 1rem;
+    border-radius: 50%;
+    border: 1px solid #999;
+    appearance: none;
+    cursor: pointer;
+    transition: background 0.2s;
+  }
+
+  input[type="checkbox"]:checked {
+    background: #32e732;
+    border: none;
+  }
 /* ********************************* */

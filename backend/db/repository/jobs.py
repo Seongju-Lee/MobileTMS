@@ -26,34 +26,9 @@ from dateutil.relativedelta import relativedelta
 def divide_ages(models_info, search_ages):
     ## 나이 범위에 따라 구별
 
-    length = len(search_ages)
+    print('연령 선택: ',search_ages)
+    choi = models_info.filter( (People.age <= search_ages[0][0]) & (People.age >= search_ages[0][1]))
     
-    print(search_ages , length)
-
-    if length == 1:
-        choi = models_info.filter(
-                (People.age <= search_ages[0][0]) & (People.age >= search_ages[0][1]) 
-            )
-    elif length == 2:
-        choi = models_info.filter(
-                (People.age <= search_ages[0][0]) & (People.age >= search_ages[0][1]) | (People.age <= search_ages[1][0]) & (People.age >= search_ages[1][1])
-            )
-    elif length == 3:
-        choi = models_info.filter(
-                (People.age <= search_ages[0][0]) & (People.age >= search_ages[0][1]) | (People.age <= search_ages[1][0]) & (People.age >= search_ages[1][1]) |
-                (People.age <= search_ages[2][0]) & (People.age >= search_ages[2][1]) 
-            )
-    elif length == 4:
-        choi = models_info.filter(
-                ((People.age <= search_ages[0][0]) & (People.age >= search_ages[0][1])) | ((People.age <= search_ages[1][0]) & (People.age >= search_ages[1][1])) |
-                ((People.age <= search_ages[2][0]) & (People.age >= search_ages[2][1])) | ((People.age <= search_ages[3][0]) & (People.age >= search_ages[3][1]))
-            )
-    elif length == 5:
-        choi = models_info.filter(
-                (People.age <= search_ages[0][0]) & (People.age >= search_ages[0][1]) | (People.age <= search_ages[1][0]) & (People.age >= search_ages[1][1]) |
-                ((People.age <= search_ages[2][0]) & (People.age >= search_ages[2][1])) | ((People.age <= search_ages[3][0]) & (People.age >= search_ages[3][1])) |
-                ((People.age <= search_ages[4][0]) & (People.age >= search_ages[4][1]))
-            )
     return choi
 
     
@@ -63,7 +38,7 @@ def divide_alpha(divide_age_models, hidden_alpha_fee):
 
     length = len(hidden_alpha_fee)
 
-    print(hidden_alpha_fee)
+    print('알파모델료 선택: ',hidden_alpha_fee)
     if length == 1:
 
         res_models = divide_age_models.filter(People.mfee == hidden_alpha_fee[0])
@@ -100,7 +75,7 @@ def divide_alpha(divide_age_models, hidden_alpha_fee):
         res_models = divide_age_models.filter((People.mfee == hidden_alpha_fee[0]) | (People.mfee == hidden_alpha_fee[1])|
         (People.mfee == hidden_alpha_fee[2]) | (People.mfee == hidden_alpha_fee[3]) |
         (People.mfee == hidden_alpha_fee[4]) | (People.mfee == hidden_alpha_fee[5])|
-        (People.mfee == hidden_alpha_fee[6]) | (People.mfee == hidden_alpha_fee[1]))
+        (People.mfee == hidden_alpha_fee[6]))
         return res_models
     elif length == 8:
     
@@ -208,7 +183,6 @@ def celeb_section(res_model, hidden_celeb_section):
             length = len(sections)
             print(sections)
 
-
             for section in sections:
                 section_code.append(aa['model_section'][section])
 
@@ -225,28 +199,22 @@ def celeb_section(res_model, hidden_celeb_section):
             elif length == 4:
                 print(section_code)
                 return res_model.filter(Yeon.rdcode.contains(section_code[0]) | Yeon.rdcode.contains(section_code[1]) | Yeon.rdcode.contains(section_code[2])
-                 | Yeon.rdcode.contains(section_code[3]))
+                    | Yeon.rdcode.contains(section_code[3]))
             elif length == 5:
                 print(section_code)
                 return res_model.filter(Yeon.rdcode.contains(section_code[0]) | Yeon.rdcode.contains(section_code[1]) | Yeon.rdcode.contains(section_code[2])
-                 | Yeon.rdcode.contains(section_code[3]) | Yeon.rdcode.contains(section_code[4]))
+                    | Yeon.rdcode.contains(section_code[3]) | Yeon.rdcode.contains(section_code[4]))
             elif length == 6:
                 print(section_code)
-                return res_model.filter(Yeon.rdcode.contains(section_code[0]) | Yeon.rdcode.contains(section_code[1])
-                 | Yeon.rdcode.contains(section_code[3]) | Yeon.rdcode.contains(section_code[4]) | Yeon.rdcode.contains(section_code[5]))
-            elif length == 6:
-                print(section_code)
-                return res_model.filter(Yeon.rdcode.contains(section_code[0]) | Yeon.rdcode.contains(section_code[1])
-                 | Yeon.rdcode.contains(section_code[3]) | Yeon.rdcode.contains(section_code[4]) | Yeon.rdcode.contains(section_code[5]) | Yeon.rdcode.contains(section_code[6]))
+                return res_model.filter(Yeon.rdcode.contains(section_code[0]) | Yeon.rdcode.contains(section_code[1])| Yeon.rdcode.contains(section_code[2])
+                    | Yeon.rdcode.contains(section_code[3]) | Yeon.rdcode.contains(section_code[4]) | Yeon.rdcode.contains(section_code[5]))
             elif length == 8:
                 return res_model
-           
+        
     except:
         print('일치하는 모델섹션이 json파일에 없음.')
         pass
-    # res_celeb = res_model.filter()
-
-    # return res_celeb
+   
     
 def create_new_job(job: JobCreate, db: Session, owner_id: int):
     job = Job(**job.dict(), owner_id=owner_id)
@@ -294,16 +262,12 @@ def chu_30(db: Session, chu_img, chu_fav, chu_act, gender_w, gender_m, search_ag
     char_list = hidden_echar.split(',') + hidden_rchar.split(',')
 
     
-    # 테스트 위해서 임시로 날짜를 3달 전까지 변경 ==> 한달로 다시 변경해야 함.
     chu = db.query((Chu19.mcode), Chu19.gubun, (Chu19.jum), People.mfee, People.name, People.sex, People.coname,  People.height, People.age, People.isyeon, People.image, Chu19.edit_time ).join(
         People, Chu19.mcode == People.codesys).filter((Chu19.edit_time >= (datetime.today() - relativedelta(months=1)))).filter((People.sex == gender_m) | (People.sex == gender_w))
-    print('vvvvvvvvvvv: ', chu)
 
     divide_age_models = divide_ages(models_info=chu, search_ages=search_ages)
     res_model = divide_alpha(divide_age_models=divide_age_models, hidden_alpha_fee=hidden_alpha_fee)
     
-    print(datetime.today() - relativedelta(months=1))
-
     res_model = jsonable_encoder(res_model[:])
 
     # for mm in res_model:
@@ -449,11 +413,14 @@ def order_register(db: Session, gender_w, gender_m, search_ages , hidden_celeb_f
     register = db.query(SunokStar.mcode, Yeon.name, SunokStar.edit_time,  Yeon.sex.label('gender'), Yeon.age, Yeon.a_3, Yeon.a_6, Yeon.a_12, People.isyeon, People.height, People.coname, People.mfee).join(
         Yeon, SunokStar.mcode == Yeon.codesys).join(
         People, SunokStar.mcode == People.codesys).order_by(desc(SunokStar.edit_time)).filter((Yeon.sex == gender_m) | (Yeon.sex == gender_w))
+
+    
     divide_age_models = divide_ages(register, search_ages)
+    
     res_model = divide_mfee(divide_age_models, hidden_celeb_fee, hidden_celeb_fee_month)
     
     res_celeb = celeb_section(res_model, hidden_celeb_section)
-
+    print(res_celeb)
     return res_celeb
 
 

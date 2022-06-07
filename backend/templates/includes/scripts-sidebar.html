@@ -69,7 +69,6 @@
             if(params[i] == 'chk_age'){
               chk_age_id = 'ages_' + parameters[i].split('=')[1]
               $(`input:checkbox[id=${chk_age_id}]`).prop('checked',true);
-              console.log(chk_age_id)
             }
             /////////////////////////
 
@@ -107,7 +106,6 @@
         for (var i = 0; i < arr_alpha_fee.length; i++) {
             try {
                 hidden_alpha_val.push(arr_alpha_fee[i].split('_')[1])
-                console.log(arr_alpha_fee)
                 $(`input:checkbox[id=${arr_alpha_fee[i]}]`).prop('checked',true);
                 
             } catch (error) {
@@ -119,7 +117,6 @@
         // 추천 점수 체크
         for (var i = 0; i < arr_chu_score.length; i++) {
             try {
-                console.log(arr_chu_score[i])
                 hidden_chu_val.push(arr_chu_score[i].replace('btn', 'chk'))
                 var e_score = arr_chu_score[i].replace('btn', 'e')
                 $(`input:checkbox[id=${arr_chu_score[i]}]`).prop('checked',true);
@@ -134,7 +131,6 @@
         // 이케아
         for (var i = 0; i < arr_echar.length; i++) {
             try {
-                console.log(arr_echar[i])
                 $(`input:checkbox[id=${arr_echar[i]}]`).prop('checked',true);
 
             } catch (error) {
@@ -164,20 +160,13 @@
         if(arr_celeb_section.length != 0)
           for (var i = 0; i < arr_celeb_section.length; i++) {
               try {
-                  // console.log('111111 ',arr_celeb_section[i])
                   $(`input:checkbox[id=${arr_celeb_section[i].replace('section', 'celeb')}]`).prop('checked',true);
 
               } catch (error) {
                   console.log(error)
               }
           }
-          console.log('llldldldl: ', arr_celeb_section)
           $('#hidden_celeb_section').val(arr_celeb_section)
-
-        
-
-        console.log('kkkkkkkkkkkkkkkkkkkklllllllll',params)
-        console.log('kkkkkkkkkkkkkkkkkkkklllllllll',parameters)
 
         
 
@@ -197,22 +186,31 @@
             }
           
           })
-          console.log(list)
       
           var ischecked = $('input:checkbox[name="cf"]').is(":checked")
 
           
           if (ischecked) {
 
+            var now = new Date();
+            var _month = String(now.getMonth() + 1)
+            var _day = String(now.getDate())
+
+            if(_month.length == 1)
+              _month = '0' + String(now.getMonth() + 1)
+
+            if(_day.length == 1)
+              _day = '0' + String(now.getDate())
+
+            console.log('출력: ', list[i], now.getFullYear() + (_month ) + _day ) 
+
             for(i=0; i<list.length; i++){
               
-              console.log('출력: ', list[i])
 
               if(list[i] == ''){
                 $('.not_input').hide();
               }
-              else if(list[i] <= '20220513'){
-                console.log(list[i])
+              else if(list[i] <= (now.getFullYear() + (_month ) + _day)){
                 var a = "." + list[i];
                 $(a).hide();
                 
@@ -246,29 +244,41 @@
 
 
               $('[name="title"]').each(function(index, item){
-                console.log(item.id)
+                // console.log(item.id)
                 list_activity.push(item.id);
               })
-              console.log('AAAAAAAAAAAAAAAAAAAA: ',list_activity);
+              // console.log('AAAAAAAAAAAAAAAAAAAA: ',list_activity);
 
               var _ischecked = $('input:checkbox[name="activities"]').is(":checked");
 
-              console.log('안녕하세요: ', _ischecked);
+              // console.log('안녕하세요: ', _ischecked);
 
               if (_ischecked) {
+
+                var now = new Date();
+                var _month = String(now.getMonth() + 1)
+                var _day = String(now.getDate())
+
+                if(_month.length == 1)
+                  _month = '0' + String(now.getMonth() + 1)
+
+                if(_day.length == 1)
+                  _day = '0' + String(now.getDate())
+
+                // console.log('출력: ', list[i], now.getFullYear() + (_month ) + _day ) 
 
                 for(i=0; i<list_activity.length; i++){
                   if(list_activity[i] == ''){
                     $('.not_input').hide();
                   }
-                  else if(list_activity[i] <= '20220513'){
-                    console.log(list_activity[i])
+                  else if(list_activity[i] <= now.getFullYear() + (_month ) + _day){
+                    // console.log(list_activity[i])
                     var a = "." + list_activity[i];
                     $(a).hide();
                     
                   }
                   else{
-                    console.log('출력: ', list_activity[i])
+                    // console.log('출력: ', list_activity[i])
 
                     $("."+list_activity[i]).show();
 

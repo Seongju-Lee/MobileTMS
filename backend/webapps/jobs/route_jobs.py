@@ -43,11 +43,7 @@ def home(request: Request, db: Session = Depends(get_db)):
     now_year = datetime.today().year
     years = [i for i in range(now_year-1, 1930, -1)]
 
-    # print(now_time, 'aaaaaaaaaaaa')
     try:
-        
-        # if datetime.now() > (access_time + timedelta(minutes=1)):
-        #     request.cookies.__delitem__("access_token")
         
         token: str = request.cookies.get("access_token")
 
@@ -186,16 +182,9 @@ def search_filter(req: Request, s_date: str = '', e_date: str = '', gender_m: st
             filter_models = []
             output_models = []
 
-            # print('1111111: : ', search_models)
-
-            # for model in search_models:
-            #     if model[0] == 'Y0X7T0UGD6R21B':
-            #         print('1111111: : ', model)
-            # print(hidden_echar, hidden_rchar , '이케아 레케아 테스트입니다.')
                 
             for model in (search_models):
-                # if model[0] == 'Y0X7T0UGD6R21B':
-                #     print('llll22222: ', model)
+                
                 res_models.append(
                     {'mcode': model[0], 'gubun': model[1], 'name': model[2],
                     'mfee':model[3], 'gender':model[4], 'coname':model[5],
@@ -210,7 +199,6 @@ def search_filter(req: Request, s_date: str = '', e_date: str = '', gender_m: st
             df_to_list = df_res.values.tolist()
 
             
-            # print(df_res)
             j=0
             for model in df_to_list:
                 
@@ -240,27 +228,14 @@ def search_filter(req: Request, s_date: str = '', e_date: str = '', gender_m: st
                         pass
                     
                     elif df_to_list[i]['mcode'] == df_to_list[i-1]['mcode']:
-                        if df_to_list[i]['mcode'] == 'Y0X7T0UGD6R21B':
-                            print('ㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇ: ', df_to_list[i-1])
-                            print('ㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇ: ', df_to_list[i])
-                            print('ㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇ: ', df_to_list[i+1])
+                        
                         df_to_list[i].update(df_to_list[i-1])
-                        # df_to_list.remove(df_to_list[i-1])
                     else:
                         filter_models.append(df_to_list[i-1])
                 except:
                     pass
                 
 
-            # print(df_to_list)  
-            for model in filter_models[:]:
-                # if model['mcode'] == 'Y0X7T0UGD6R21B':
-                print('aiaiaiai1111 ',model)
-                
-
-
-
-            # filter_models = df_to_list
             try:
 
                 with open("model.json", 'r', encoding='utf-8') as json_file:
@@ -309,10 +284,7 @@ def search_filter(req: Request, s_date: str = '', e_date: str = '', gender_m: st
                         act_ok = True
 
                 if img_ok or fav_ok or act_ok:
-                    if model['mcode'] == 'Y0X7T0UGD6R21B':
-                        print(s_act, e_act)
-
-                        print('영아리1', model)
+                   
                     output_models.append(model)
                 img_ok, fav_ok, act_ok = False, False, False
 
@@ -323,8 +295,6 @@ def search_filter(req: Request, s_date: str = '', e_date: str = '', gender_m: st
                 
             res = sorted(output_models, key=lambda x: x['sum'], reverse=True)
             
-            # for model in res[:500]:
-            #     print('결과: ', model)
                 
             return templates.TemplateResponse(
                 "ui-icons.html", {"request": req,

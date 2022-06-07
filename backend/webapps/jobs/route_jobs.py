@@ -109,7 +109,7 @@ def home(request: Request, db: Session = Depends(get_db)):
 # 필터내용
 @ router.get("/filter")
 def search_filter(req: Request, s_date: str = '', e_date: str = '', gender_m: str = '', gender_w: str = '', model_filter: str ='', filter_celeb: str ='',
-                  s_img: str = '', e_img: str = '', s_fav: str = '', e_fav: str = '', s_act: str = '', e_act: str = '', s_age: str = '',hidden_s_age:str='', hidden_e_age:str='', hidden_alpha_fee:str='', hidden_celeb_fee:str='', hidden_celeb_fee_month:str='',
+                  s_img: str = '', e_img: str = '', s_fav: str = '', e_fav: str = '', s_act: str = '', e_act: str = '', s_age: str = '', hidden_alpha_fee:str='', hidden_celeb_fee:str='', hidden_celeb_fee_month:str='',
                   hidden_celeb_section: str='',
                   e_age: str = '', chk_model: str = '', chk_celeb: str = '',
                   query: str = '', name: str = '', coname: str = '', manager: str = '', tel: str = '', chk_age: str = '', alpha_fees: str = '',
@@ -137,8 +137,8 @@ def search_filter(req: Request, s_date: str = '', e_date: str = '', gender_m: st
                               "years": years,  "now_year": now_year}
         )
 
-    hidden_s_age = hidden_s_age.split(',')
-    hidden_e_age = hidden_e_age.split(',')
+    # hidden_s_age = hidden_s_age.split(',')
+    # hidden_e_age = hidden_e_age.split(',')
 
     # print(hidden_e_age)
     # if (not hidden_s_age[0] == '') and (not hidden_e_age[0] == ''):
@@ -307,9 +307,7 @@ def search_filter(req: Request, s_date: str = '', e_date: str = '', gender_m: st
                 if 'chk_act' in hidden_scores:
                     if ('act_jum' in model.keys()) and (model['act_jum'] >= int(s_act) and model['act_jum'] <= int(e_act)):
                         act_ok = True
-                # print('ouuuuutt: ', model)
 
-                # print('중간: ', model)
                 if img_ok or fav_ok or act_ok:
                     if model['mcode'] == 'Y0X7T0UGD6R21B':
                         print(s_act, e_act)
@@ -319,9 +317,7 @@ def search_filter(req: Request, s_date: str = '', e_date: str = '', gender_m: st
                 img_ok, fav_ok, act_ok = False, False, False
 
 
-            for model in output_models:
-                if model['mcode'] == 'Y0X7T0UGD6R21B':
-                    print('영아리', model)
+          
                 model['sum'] = model['img_jum'] + model['fav_jum'] + model['act_jum']
                 
                 
@@ -353,16 +349,13 @@ def search_filter(req: Request, s_date: str = '', e_date: str = '', gender_m: st
                 ['mcode', 'name', 'age', 'mfee', 'sex', 'coname', 'height', 'isyeon']).count().reset_index()
 
             search_models = df.values.tolist()
-            print(search_models)
+            # print(search_models)
 
             
             res = sorted(search_models, key=lambda x: x[8], reverse=True)
 
 
-            for model in res[:20]:
-                print('TOP: ', model)
-
-            for model in res:
+            for model in res[:400]:
                 # print(model)
                 res_models.append(
                     {'mcode': model[0], 'name': model[1], 'age': model[2], 'mfee':model[3], 'gender':model[4], 'coname':model[5], 'height':model[6],'isyeon':model[8] ,'count': model[len(model)-1]})
@@ -375,7 +368,6 @@ def search_filter(req: Request, s_date: str = '', e_date: str = '', gender_m: st
                     for job in res_models:
                         if not job['mfee'] == '':
                             job['mfee'] = aa['model_fee'][job['mfee']]
-                # print('안녕!!ㅎㅎ: ', res_models)
             except:
                 print('일치하는 모델료가 json파일에 없음.')
                 pass
@@ -591,17 +583,14 @@ def search_filter(req: Request, s_date: str = '', e_date: str = '', gender_m: st
             models = order_read(db=db,
                                 gender_w=gender_w, gender_m=gender_m, search_ages=search_ages, s_date=s_date, e_date=e_date,
                                 hidden_celeb_fee=hidden_celeb_fee, hidden_celeb_fee_month=hidden_celeb_fee_month, hidden_celeb_section=hidden_celeb_section)
-
             filter_models = []
 
             count_models = jsonable_encoder(models[:])
             # print(count_models, 'aaa')
-
             df = pd.DataFrame(count_models).groupby(
                 ['mcode', 'name',  'sex', 'age', 'a_3', 'a_6', 'a_12', 'isyeon', 'height', 'coname', 'mfee']).count().reset_index()
 
             search_models = df.values.tolist()
-            print(search_models)
 
             res = sorted(search_models, key=lambda x: x[11], reverse=True)
 

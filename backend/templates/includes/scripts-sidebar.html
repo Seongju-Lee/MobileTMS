@@ -23,15 +23,164 @@
 
         $('#s_age').val('10' + '(' + (now.getFullYear() - 9) + ')') 
         $('#e_age').val('100' + '(' + (now.getFullYear() - 99) + ')')
-        $('#hidden_s_age').val(['10(2013)', '20(2003)', '30(1993)', '40(1983)', '50(1973)'])
-        $('#hidden_e_age').val(['19(2004)', '29(1994)', '39(1984)', '49(1974)', '100(1923)'])
+        // $('#hidden_s_age').val(['10(2013)', '20(2003)', '30(1993)', '40(1983)', '50(1973)'])
+        // $('#hidden_e_age').val(['19(2004)', '29(1994)', '39(1984)', '49(1974)', '100(1923)'])
         
         $('#hidden_celeb_fee').val(['fee_all','three_months'])
         $('#hidden_celeb_section').val(['section_all','section_singer','section_actor','section_idol','section_entertainment','section_broadcast','section_celeb','section_youtube'])
         $('input:checkbox[name="celeb_section"]').prop('checked',true);
 
+        
+        _isman = $('input:checkbox[name="gender_m"]').is(":checked")
+        _iswoman = $('input:checkbox[name="gender_w"]').is(":checked")
 
-      
+        var url = location.href;
+
+        var parameters = (url.slice(url.indexOf('?') + 1, url.length)).split('&');
+        var params = new Array();
+
+        for (var i = 0; i < parameters.length; i++) {
+          params.push(parameters[i].split('=')[0]);
+        }
+
+        var arr_alpha_fee = new Array();
+        var arr_chu_score = new Array();
+        var arr_celeb_section = new Array();
+        var arr_echar = new Array();
+        var arr_rchar = new Array();
+        var hidden_alpha_val = new Array();
+        var hidden_chu_val = new Array();
+        var hidden_section_val = new Array();
+
+        for (var i = 0; i < params.length; i++) {
+          try {
+            if(params[i] != 'chk_age' ){
+              $(`input:checkbox[name=${params[i]}]`).prop('checked',true);
+            }
+
+            
+            ////////////// 나이 입력
+            if(params[i] == 's_age'){
+              $('#' + params[i]).val(parameters[i].split('=')[1]).change()
+            }if(params[i] == 'e_age'){
+              $('#' + params[i]).val(parameters[i].split('=')[1]).change()
+            }
+            //// 나이 체크박스
+            if(params[i] == 'chk_age'){
+              chk_age_id = 'ages_' + parameters[i].split('=')[1]
+              $(`input:checkbox[id=${chk_age_id}]`).prop('checked',true);
+              console.log(chk_age_id)
+            }
+            /////////////////////////
+
+
+            if(params[i] == 'alpha_fee' ){
+              arr_alpha_fee.push('alpha_' + parameters[i].split('=')[1])
+              $(`input:checkbox[name=alpha_fee]`).prop('checked',false);
+            }
+
+            if(params[i] == 'btn_score' ){
+              arr_chu_score.push(parameters[i].split('=')[1].replace('chk','btn'))
+              $(`input:checkbox[name=btn_score]`).prop('checked',false);
+            }
+            if(params[i] == 'echar' ){
+              arr_echar.push(parameters[i].split('=')[1])
+              $(`input:checkbox[name=echar]`).prop('checked',false);
+            }if(params[i] == 'rchar' ){
+              arr_rchar.push(parameters[i].split('=')[1])
+              $(`input:checkbox[name=rchar]`).prop('checked',false);
+            }if(params[i] == 'celeb_section' ){
+              arr_celeb_section.push(parameters[i].split('=')[1])
+              $(`input:checkbox[name=celeb_section]`).prop('checked',false);
+            }
+            
+
+          } catch (error) {
+            console.log(error)
+          }
+           
+          
+         
+        }
+
+        // 알파모델료 체크
+        for (var i = 0; i < arr_alpha_fee.length; i++) {
+            try {
+                hidden_alpha_val.push(arr_alpha_fee[i].split('_')[1])
+                console.log(arr_alpha_fee)
+                $(`input:checkbox[id=${arr_alpha_fee[i]}]`).prop('checked',true);
+                
+            } catch (error) {
+                console.log(error)
+            }
+        }
+        $('#hidden_alpha_fee').val(hidden_alpha_val)
+
+        // 추천 점수 체크
+        for (var i = 0; i < arr_chu_score.length; i++) {
+            try {
+                console.log(arr_chu_score[i])
+                hidden_chu_val.push(arr_chu_score[i].replace('btn', 'chk'))
+                var e_score = arr_chu_score[i].replace('btn', 'e')
+                $(`input:checkbox[id=${arr_chu_score[i]}]`).prop('checked',true);
+                $(`input:text[id=${e_score}]`).val('100');
+
+            } catch (error) {
+                console.log(error)
+            }
+        }
+        $('#hidden_score').val(hidden_chu_val)
+       
+        // 이케아
+        for (var i = 0; i < arr_echar.length; i++) {
+            try {
+                console.log(arr_echar[i])
+                $(`input:checkbox[id=${arr_echar[i]}]`).prop('checked',true);
+
+            } catch (error) {
+                console.log(error)
+            }
+        }
+        $('#hidden_echar').val(arr_echar)
+        ///////////////////
+
+        // 레케아
+        
+        if(arr_rchar.length != 0)
+          for (var i = 0; i < arr_rchar.length; i++) {
+              try {
+                  console.log(arr_rchar[i])
+                  $(`input:checkbox[id=${arr_rchar[i]}]`).prop('checked',true);
+
+              } catch (error) {
+                  console.log(error)
+              }
+          }
+          $('#hidden_rchar').val(arr_rchar)
+        ///////////////////
+
+        // 셀럽섹션
+        
+        if(arr_celeb_section.length != 0)
+          for (var i = 0; i < arr_celeb_section.length; i++) {
+              try {
+                  // console.log('111111 ',arr_celeb_section[i])
+                  $(`input:checkbox[id=${arr_celeb_section[i].replace('section', 'celeb')}]`).prop('checked',true);
+
+              } catch (error) {
+                  console.log(error)
+              }
+          }
+          console.log('llldldldl: ', arr_celeb_section)
+          $('#hidden_celeb_section').val(arr_celeb_section)
+
+        
+
+        console.log('kkkkkkkkkkkkkkkkkkkklllllllll',params)
+        console.log('kkkkkkkkkkkkkkkkkkkklllllllll',parameters)
+
+        
+
         $('input[name="cf"]').click(function(){
 
 

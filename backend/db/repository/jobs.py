@@ -310,15 +310,16 @@ def chu_30(db: Session, chu_img, chu_fav, chu_act, gender_w, gender_m, search_ag
     #     print('vvvvvvvvvvv: ', mm)
     # print('캐릭터 선택 리스트: ', char_list)
     
-    if not (char_list[0] == '') and (char_list[1]== ''):
+    if  (char_list[0] == '') and  (char_list[1]== ''):
+        return res_model
+        
+    else:
         for model in res_model:
             for char in char_list:
                 if (char in model['image']):
                     if not char == '':
                         result_models.append(model)
         return result_models
-    else:
-        return res_model
 
     
     
@@ -328,7 +329,7 @@ def movchoi(db: Session, s_date, e_date,gender_w, gender_m, search_ages, hidden_
 
     e_date = datetime.strptime(e_date, "%Y-%m-%d")
     e_date = e_date + timedelta(days=1)
-    print(s_date, e_date)
+    # print(s_date, e_date)
     if gender_m:
         gender_m = '남'
     if gender_w:
@@ -349,17 +350,16 @@ def movchoi(db: Session, s_date, e_date,gender_w, gender_m, search_ages, hidden_
     res_model = jsonable_encoder(res_model[:])
     print('캐릭터 선택 리스트: ', char_list)
     
-    if not (char_list[0] == '') and (char_list[1]== ''):
+    if  (char_list[0] == '') and  (char_list[1]== ''):
+        return res_model
+            
+    else:
         for model in res_model:
             for char in char_list:
                 if (char in model['image']):
                     if not char == '':
-                        print('model_image: ', model['image'])
-                        print('char_list: ', char)
                         result_models.append(model)
         return result_models
-    else:
-        return res_model
     
 
 
@@ -398,6 +398,21 @@ def proc(db: Session, s_date, e_date, gender_w, gender_m, search_ages, hidden_al
         res_model = divide_alpha(divide_age_models=divide_age_models, hidden_alpha_fee=hidden_alpha_fee)
 
         gubun = 'model'
+
+        res_model = jsonable_encoder(res_model[:])
+        print('캐릭터 선택 리스트: ', char_list)
+        
+        if  (char_list[0] == '') and  (char_list[1]== ''):
+            return res_model, gubun
+            
+        else:
+            for model in res_model:
+                for char in char_list:
+                    if (char in model['image']):
+                        if not char == '':
+                            result_models.append(model)
+            return result_models, gubun
+
     # else:
     #     print('ddddddd: ', s_date, e_date)
 
@@ -419,18 +434,7 @@ def proc(db: Session, s_date, e_date, gender_w, gender_m, search_ages, hidden_al
     #     print(model['mfee'], model['age'])
 
 
-    res_model = jsonable_encoder(res_model[:])
-    print('캐릭터 선택 리스트: ', char_list)
-    
-    if not (char_list[0] == '') and (char_list[1]== ''):
-        for model in res_model:
-            for char in char_list:
-                if (char in model['image']):
-                    if not char == '':
-                        result_models.append(model)
-        return result_models, gubun
-    else:
-        return res_model, gubun
+        
 
 
 # 순옥스타_최신등록순
@@ -505,8 +509,7 @@ def order_read(db: Session, gender_w, gender_m, search_ages, s_date, e_date, hid
    
     # 3개월 모델료 기준.
     models = db.query(Read.edit_time, Read.mcode, Yeon.sex, Yeon.name, Yeon.age, Yeon.a_3, Yeon.a_6, Yeon.a_12, People.isyeon, People.height, People.coname, People.mfee).join(
-        Yeon, Read.mcode == Yeon.codesys).join(People, Read.mcode == People.codesys).order_by(desc(Read.edit_time)).filter((Read.edit_time >= s_date) & (
-            Read.edit_time <= e_date)).filter((Yeon.sex == gender_m) | (Yeon.sex == gender_w)).filter(People.isyeon == 'V')
+        Yeon, Read.mcode == Yeon.codesys).join(People, Read.mcode == People.codesys).filter((Yeon.sex == gender_m) | (Yeon.sex == gender_w)).filter(People.isyeon == 'V').filter((Read.edit_time >= (datetime.today() - relativedelta(months=3))))
 
     divide_age_models = divide_ages(models, search_ages)
     res_model = divide_mfee(divide_age_models, hidden_celeb_fee, hidden_celeb_fee_month)

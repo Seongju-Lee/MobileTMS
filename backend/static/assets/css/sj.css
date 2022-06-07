@@ -880,7 +880,7 @@ Created using IcoMoon - icomoon.io
 
 
 
-  input[type="checkbox"] {
+  /* input[type="checkbox"] {
     width: 1rem;
     height: 1rem;
     border-radius: 50%;
@@ -893,5 +893,5 @@ Created using IcoMoon - icomoon.io
   input[type="checkbox"]:checked {
     background: #32e732;
     border: none;
-  }
+  } */
 /* ********************************* */

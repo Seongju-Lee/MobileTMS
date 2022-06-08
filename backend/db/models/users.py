@@ -20,3 +20,5 @@ class Users(Base):
     username = Column(String(20), nullable=False)
     id = Column(String(20), nullable=False)
     hashed_password = Column(String(100), nullable=False)
+    phone = Column(String(20))
+    last_auth = Column(String(20))

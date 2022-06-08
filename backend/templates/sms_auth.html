@@ -1,0 +1,56 @@
+{% extends "layouts/base-login.html" %}
+
+{% block title %} Login {% endblock %} 
+
+<!-- Specific Page CSS goes HERE  -->
+{% block stylesheets %}{% endblock stylesheets %}
+
+{% block content %} 
+
+        
+        <div class="row">
+          <div class="col-md-12">
+            <div class="card">
+
+              <form method="get" action="/auth" >
+              
+                <div class="card-header">
+                  <h5 class="title">문자인증</h5>
+                  {% if msg %}
+                  <input class="form-control" id="user_id" name="user_id" required="" type="text" value="{{msg['user_id']}}" style="display: none;">
+
+                  {% endif %}
+                  <h6 class="card-category">
+                      인증번호 입력
+                  </h6>
+                </div>
+                <div class="card-bodys">
+
+                    <div class="row">
+
+                      <div class="col-md-3 px-md-1">
+                        <div class="form-group">
+                          <label>인증번호</label>
+                          <input class="form-control" id="input_auth" name="input_auth" required="" type="text" value="">
+                        </div>
+                      </div>
+
+                    </div>
+                    
+                </div>
+                <div class="card-footer">
+                  <button type="submit" name="login" class="btn btn-fill btn-outline-success">Login</button>
+                 
+                </div>
+
+              </form>
+
+            </div>
+          </div>
+      </div>
+
+
+{% endblock content %}
+
+<!-- Specific Page JS goes HERE  -->
+{% block javascripts %}{% endblock javascripts %}

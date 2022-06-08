@@ -1,7 +1,8 @@
+import http
 from fastapi.security import OAuth2PasswordRequestForm, OAuth2PasswordBearer
 from apis.utils import OAuth2PasswordBearerWithCookie
 from fastapi import Depends
-from fastapi import APIRouter, HTTPException, status
+from fastapi import APIRouter, HTTPException, status, Request
 from db.session import get_db
 from sqlalchemy.orm import Session
 from core.config import settings
@@ -15,14 +16,33 @@ from fastapi.encoders import jsonable_encoder
 from fastapi.templating import Jinja2Templates
 from datetime import datetime, timedelta
 
+import json
+from requests.auth import HTTPBasicAuth
+
+from http.client import HTTPSConnection
+from base64 import b64encode
+
+import sys
+import os
+import hashlib
+import hmac
+import base64
+import requests
+import time
+from starlette.responses import RedirectResponse
+
 router = APIRouter()
 templates = Jinja2Templates(directory="templates")
+
 
 def authenticate_user(username: str, password: str, db: Session):
     user = get_users(username=username, db=db)
     print('user 확인: ', jsonable_encoder(user[:]))
     user = jsonable_encoder(user[:])
-  
+
+    
+
+
     if not user:
         print('id error')
         return False
@@ -86,3 +106,84 @@ def get_current_user_from_token(
     if user is None:
         raise credentials_exception
     return user
+
+
+timestamp = int(time.time() * 1000)
+timestamp = str(timestamp)
+access_key = "vBlKN4Z6s5GSU1usLIef" # access key id (from portal or Sub Account)
+# secret key (from portal or Sub Account)
+
+url = 'https://sens.apigw.ntruss.com'
+uri = '/sms/v2/services/ncp:sms:kr:287156821959:sms_test/messages'
+
+def make_signature():
+    secret_key = "bZDIT4R4WKz1YsPK2pRfFjzY1ltrmz58vdNknz8G" 
+    secret_key = bytes(secret_key, 'UTF-8')
+    method = "POST"
+    message = method + " " + uri + '\n' + timestamp + '\n' + access_key
+    message = bytes(message, 'UTF-8')
+    signingKey = base64.b64encode(hmac.new(secret_key, message, digestmod=hashlib.sha256).digest())
+    return signingKey
+
+# def sms_page():
+    
+
+# @router.post("/v1")
+# def token(user_phone: str='', user_id: str=''):
+
+#     # templates.TemplateResponse("sms_auth.html", {"request": 'tmp'})
+#     # sms_page()
+#     print('사용자 정보입니다:  ', user_phone, user_id)
+#     print(make_signature())
+
+#     header = {
+#     "Content-Type" : "application/json; charset=utf-8",
+#     "x-ncp-apigw-timestamp" : timestamp,
+#     "x-ncp-iam-access-key" : access_key,
+#     "x-ncp-apigw-signature-v2" : make_signature()
+#     }
+
+#     data = {
+#         "type":"SMS",
+#         "from":"01037038419",
+#         "subject":"발신번호테스트",
+#         "content":"[레디 모바일TMS] 인증번호 []를 입력해주세요.",
+#         "messages":[
+#             {
+#             "to":"01036111322",
+#             }
+#         ]
+#     }
+#     res= requests.post(url=(url+uri),headers=header,data=json.dumps(data))
+#     print(res.json())
+#     print(res.text)
+    
+    
+
+
+@router.post("/auth")
+def auth(request: Request, msg: str = None):
+
+
+    # 운영
+    # url = 'https://api.bizppurio.com/v3/message'
+    # 검수
+    url = 'https://dev-api.bizppurio.com/v3/message'
+    data = {
+        'account': 'test', 'refkey': 'test1234', 'type': 'sms',
+        'from': '01036111322', 'to': '01037038419', 'content': {
+        'sms':{
+        'message':'SMS 전송'
+        } }
+    }
+    session = requests.Session()
+    # 운영인 경우,verify 속성을 True로 변경 # session.verify = True
+    session.verify = False
+    headers = {'Content-type': 'application/json', 'Accept': 'text/plain',
+    'Authorization': 'Bearer ' + '{인증 토큰}'
+    }
+    response = session.post(url, data=json.dumps(data), headers=headers)
+
+    print('Status code: ', response.status_code)
+    print('Printing Entire Post Request')
+    print(response.json())

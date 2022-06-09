@@ -116,6 +116,19 @@ def search_filter(req: Request, s_date: str = '', e_date: str = '', gender_m: st
     ###########3 셀럽 선택 시, 모델 관련 체크 다 지우고, 모델 선택 시,, 셀럽 
     # try:
 
+    token: str = req.cookies.get("access_token")
+
+    print('token입니다. ', token)
+    if token is None:
+        return RedirectResponse('/login')
+    
+    else:
+        pass
+        # return templates.TemplateResponse(
+        #     "index.html", {"request": request,
+        #                 "years": years,  "now_year": now_year}
+        # )
+
     if chk_celeb == '':
         filter_celeb = ''
 
@@ -148,17 +161,7 @@ def search_filter(req: Request, s_date: str = '', e_date: str = '', gender_m: st
 
 
 
-    try:
-        
-        token: str = req.cookies.get("access_token")
-
-        print('token입니다. ', token)
-        if token is None:
-            return RedirectResponse('/login')
-       
-
-    except:
-        print('?')
+   
 
 
     try:
@@ -748,6 +751,19 @@ def search_filter(req: Request, s_date: str = '', e_date: str = '', gender_m: st
 @ router.get("/detail/{codesys}")
 def model_info(req: Request, codesys: str = '', db: Session = Depends(get_db)):
 
+
+
+    try:
+        
+        token: str = req.cookies.get("access_token")
+
+        print('token입니다. ', token)
+        if token is None:
+            return RedirectResponse('/login')
+       
+
+    except:
+        print('get token error')
 
     now_year = datetime.today().year
     years = [i for i in range(now_year-1, 1930, -1)]

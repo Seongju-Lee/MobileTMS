@@ -3,18 +3,31 @@
 {% block title %} UI Icons {% endblock %} 
 
 <!-- Specific Page CSS goes HERE  -->
-{% block stylesheets %}{% endblock stylesheets %}
+{% block stylesheets %}
+
+  <style>
+    @media (max-width: 360px) {
+      #tmp {
+        padding-right: 0px;
+        padding-left: 0px
+        
+      }
+    }
+   
+
+  </style>
+{% endblock stylesheets %}
 
 {% block content %}
 
 <div class="row" >
-  <div class="col-md-12">
+  <div class="col-md-12" id="tmp" >
     <div class="card">
-      <div class="card-header" style="margin-right: -57px; display:flex; flex-wrap:wrap; margin-left:-10px">
+      <div class="card-header" style="margin-right: -10%; display:flex; flex-wrap:wrap; margin-left:-10px">
         <h5 class="title">모델 검색 결과</h5>
       </div>
-      <div class="card-bodys all-icons" style=" width:100%">
-        <div class="rows" style="margin-right: -57px; display:flex; flex-wrap:wrap; margin-left:-10px">
+      <div class="card-bodys all-icons" style=" width:99%">
+        <div class="rows" style="margin-right: -10%; display:flex; flex-wrap:wrap; margin-left:0px">
           {% if no_result %}
            <div><h5> {{no_result}} </h5></div>
           {% endif %} 
@@ -22,7 +35,7 @@
           {% if jobs %}
             {% for job in jobs %}
           
-            <div class="">
+            <div style="width:6.6rem;">
               {% with obj=job %}
                 <!-- IF job에 gubun이라는 키가 존재하지 않을 때.-->
                 {% if obj.isyeon == 'V' %}

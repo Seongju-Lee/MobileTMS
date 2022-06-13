@@ -107,7 +107,7 @@ def home(request: Request, db: Session = Depends(get_db)):
 def search_filter(req: Request, s_date: str = '', e_date: str = '', gender_m: str = '', gender_w: str = '', model_filter: str ='', filter_celeb: str ='',
                   s_img: str = '', e_img: str = '', s_fav: str = '', e_fav: str = '', s_act: str = '', e_act: str = '', s_age: str = '', hidden_alpha_fee:str='', hidden_celeb_fee:str='', hidden_celeb_fee_month:str='',
                   hidden_celeb_section: str='',
-                  e_age: str = '', chk_model: str = '', chk_celeb: str = '',
+                  e_age: str = '', chk_model: str = '', chk_celeb: str = '', detail_search: str = '',
                   query: str = '', name: str = '', coname: str = '', manager: str = '', tel: str = '', chk_age: str = '', alpha_fees: str = '',
                   hidden_echar: str = '', hidden_rchar: str = '', btn_img: str='', btn_fav: str='', btn_act: str='', hidden_score : str='',
                   db: Session = Depends(get_db)):
@@ -147,14 +147,16 @@ def search_filter(req: Request, s_date: str = '', e_date: str = '', gender_m: st
     #                           "years": years,  "now_year": now_year}
     #     )
 
-
+    print('213: ', detail_search)
     search_ages.append([s_age, e_age])
 
-    if not (model_filter or filter_celeb ):
+    if not (model_filter or filter_celeb ) and detail_search:
         return templates.TemplateResponse(
             "ui-icons.html", {"request": req,
                               "no_result": '검색 필터를 선택해주세요.', "years": years, "now_year": now_year}
         )
+
+   
 
     try:
         ###########################################
@@ -893,7 +895,7 @@ def mov_info(req: Request, codesys: str = '', db: Session = Depends(get_db)):
         mov_list = []
         for mov in res_mov:
             mov_list.append(mov)
-            print(mov)
+            print('pppp:  ', mov)
 
         mov_list = list(reversed(mov_list))
         return templates.TemplateResponse(
@@ -984,7 +986,7 @@ def mov_info(req: Request, codesys: str = '', db: Session = Depends(get_db)):
             print(mov)
 
         mov_list = list(reversed(mov_list))
-        
+
         return templates.TemplateResponse(
                     "page-actmov.html", {"request": req, "mov": mov_list, "years": years,  "now_year": now_year}
         )

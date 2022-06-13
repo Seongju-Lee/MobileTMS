@@ -12,7 +12,27 @@
         padding-left: 0px
         
       }
+
+     
     }
+
+    @media (max-width: 400px) {
+
+      #model_card {
+        width:6.6rem;
+        
+      }
+    }
+
+    @media (min-width: 420px) {
+
+      #model_card {
+        width:7.2rem;
+        
+      }
+    }
+
+    
    
 
   </style>
@@ -35,7 +55,7 @@
           {% if jobs %}
             {% for job in jobs %}
           
-            <div style="width:6.6rem;">
+            <div id='model_card' >
               {% with obj=job %}
                 <!-- IF job에 gubun이라는 키가 존재하지 않을 때.-->
                 {% if obj.isyeon == 'V' %}

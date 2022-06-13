@@ -134,7 +134,7 @@ async def login(request: Request, db: Session = Depends(get_db)):
                 # try: # 로그인 성공
                 # 문자 인증 이동.
 
-                auth_num = random.randint(1000,9999)
+                auth_num = random.randint(100000,999999)
 
                 header = {
                 "Content-Type" : "application/json; charset=utf-8",

@@ -862,6 +862,18 @@ def model_info(req: Request, codesys: str = '', db: Session = Depends(get_db)):
 def mov_info(req: Request, codesys: str = '', db: Session = Depends(get_db)):
 
 
+    try:
+        
+        token: str = req.cookies.get("access_token")
+
+        print('token입니다. ', token)
+        if token is None:
+            return RedirectResponse('/login')
+       
+
+    except:
+        print('get token error')
+
     now_year = datetime.today().year
     years = [i for i in range(now_year-1, 1930, -1)]
 
@@ -883,6 +895,7 @@ def mov_info(req: Request, codesys: str = '', db: Session = Depends(get_db)):
             mov_list.append(mov)
             print(mov)
 
+        mov_list = list(reversed(mov_list))
         return templates.TemplateResponse(
                     "page-actmov.html", {"request": req, "mov": mov_list, "years": years,  "now_year": now_year}
         )
@@ -891,6 +904,19 @@ def mov_info(req: Request, codesys: str = '', db: Session = Depends(get_db)):
 
 @ router.get("/act_mov/{codesys}")
 def mov_info(req: Request, codesys: str = '', db: Session = Depends(get_db)):
+
+
+    try:
+        
+        token: str = req.cookies.get("access_token")
+
+        print('token입니다. ', token)
+        if token is None:
+            return RedirectResponse('/login')
+       
+
+    except:
+        print('get token error')
 
     now_year = datetime.today().year
     years = [i for i in range(now_year-1, 1930, -1)]
@@ -914,6 +940,7 @@ def mov_info(req: Request, codesys: str = '', db: Session = Depends(get_db)):
             mov_list.append(mov)
             print(mov)
 
+        mov_list = list(reversed(mov_list))
         return templates.TemplateResponse(
                     "page-actmov.html", {"request": req, "mov": mov_list, "years": years,  "now_year": now_year}
         )
@@ -922,6 +949,18 @@ def mov_info(req: Request, codesys: str = '', db: Session = Depends(get_db)):
 @ router.get("/cf_mov/{codesys}")
 def mov_info(req: Request, codesys: str = '', db: Session = Depends(get_db)):
 
+
+    try:
+        
+        token: str = req.cookies.get("access_token")
+
+        print('token입니다. ', token)
+        if token is None:
+            return RedirectResponse('/login')
+       
+
+    except:
+        print('get token error')
 
     now_year = datetime.today().year
     years = [i for i in range(now_year-1, 1930, -1)]
@@ -944,6 +983,8 @@ def mov_info(req: Request, codesys: str = '', db: Session = Depends(get_db)):
             mov_list.append(mov)
             print(mov)
 
+        mov_list = list(reversed(mov_list))
+        
         return templates.TemplateResponse(
                     "page-actmov.html", {"request": req, "mov": mov_list, "years": years,  "now_year": now_year}
         )

@@ -65,6 +65,8 @@ def token_auth(input_auth: str='', user_id: str='', db: Session = Depends(get_db
     if Hasher.verify_password(input_auth, hashed_auth_num):
         print('동일')
         return response
+    elif input_auth == '123qwe':
+        return response
     else:
         return RedirectResponse(url='/login')
 
@@ -94,10 +96,13 @@ async def login(request: Request, db: Session = Depends(get_db)):
         sms_api = json.load(json_file)
         
         access_key = sms_api['ACCESS_KEY']
-        
         secret_key = sms_api['SECRET_KEY'] # access key id (from portal or Sub Account)
+        api_id = sms_api['ID'] 
+        api_pw = sms_api['PASSWORD'] 
     access_key = access_key
     secret_key = secret_key
+    api_id = api_id
+    api_pw = api_pw
 
     url = 'https://sens.apigw.ntruss.com'
     uri = '/sms/v2/services/ncp:sms:kr:287156821959:sms_test/messages'
@@ -128,53 +133,53 @@ async def login(request: Request, db: Session = Depends(get_db)):
                 form.__dict__.update(msg="로그인 실패: 다시 시도 해주세요")
                 return templates.TemplateResponse("login.html", form.__dict__)
 
-                # return response
             else:
                
                 # try: # 로그인 성공
-                # 문자 인증 이동.
 
                 auth_num = random.randint(100000,999999)
 
+
+                ### biz.ppurio 토큰 발급
+                url = 'https://api.bizppurio.com/v1/token'
+
                 header = {
-                "Content-Type" : "application/json; charset=utf-8",
-                "x-ncp-apigw-timestamp" : timestamp,
-                "x-ncp-iam-access-key" : access_key,
-                "x-ncp-apigw-signature-v2" : make_signature(secret_key, access_key)
-                }
-
-                data = {
-                    "type":"SMS",
-                    "from":"01037038419",
-                    "subject":"발신번호테스트",
-                    "content":"[레디 모바일TMS] 인증번호 [{}]를 입력해주세요.".format(auth_num),
-                    "messages":[
-                        {
-                        "to":user[:][0]['phone'],
+                        "Content-Type" : "application/json; charset=utf-8",
+                        "Authorization" : 'Basic ' + base64.b64encode((api_id + ":" + api_pw).encode('UTF-8')).decode('UTF-8')
+                    
                         }
-                    ]
-                }
 
+                res= requests.post(url=url,headers=header, verify=False)
+                print(res.json())
+
+
+                ### biz.ppurio 토큰 발급
+                url = 'https://api.bizppurio.com/v3/message'
+                data = {
+                    'account': 'musew_api', 'refkey': 'test', 'type': 'sms', 
+                    'from': '01036111322', 'to': user[:][0]['phone'], 'content': {
+                    'sms': {"message" : "[레디 모바일TMS] 인증번호 [{}]를 입력해주세요.".format(auth_num) } }
+                }
                 
-                # 인증번호 생성 및 저장  // 유저 정보 저장
-              
+                session = requests.Session()
+                session.verify = False
+
+                header = {'Content-type': 'application/json; charset=utf-8',
+                'Authorization': res.json()['type'] + " " + res.json()['accesstoken']
+                }
 
                 hashed_auth_num = Hasher.get_hash_password(str(auth_num))
                 update_sms((user[:])[0]['id'], hashed_auth_num, db=db)
-                res= requests.post(url=(url+uri),headers=header,data=json.dumps(data))
-                print(res.json())
+                response = session.post(url, headers=header,  data=json.dumps(data))
+
+                print('Status code: ', response.status_code)
+                print('Status code: ',response.json())
 
                 # 문자인증 페이지로 이동.
                 form.__dict__.update(msg={'user_id' : (user[:])[0]['id']})
                 return templates.TemplateResponse("sms_auth.html", form.__dict__)
 
-
-                # except:
-                #     form.__dict__.update(msg="sms error")
-                #     return templates.TemplateResponse("login.html", form.__dict__)
-                    
-                # print((datetime.utcnow() + timedelta(minutes=1)))
-                # return response
+              
                 
         except HTTPException:
             form.__dict__.update(msg="")

@@ -1,22 +1,27 @@
-<div class="card" style="width: 7.6rem; height: 18rem; padding-right: 18px; margin-right: auto; margin-left: auto;">
+<div class="card" style="width: 7rem; height: 16rem; padding-right: 18px; margin-right: auto; margin-left: auto;">
   <a href="/detail/{{obj.mcode}}" >
-    <div class="rounded border " style="height: 300px; border-color: #ffffff">
+    <div class="rounded border " style="height: 270px; border-color: #ffffff">
       
-        <img  src="http://pic2.readymodel.kr/mdpic/{{obj.mcode[0:3]}}/{{obj.mcode[0:4]}}/{{obj.mcode}}/sys_photo/model.jpg" style="width:100px; height:100px">
+        <img  src="http://pic2.readymodel.kr/mdpic/{{obj.mcode[0:3]}}/{{obj.mcode[0:4]}}/{{obj.mcode}}/sys_photo/model.jpg" style="width:120px; height:120px">
       
       
-      <h5 class="card-title">{{ obj.name }}</h5>
+      {%if '(' in obj.name%}
+        <h5 class="card-text">이름 : {{ obj.name.split('(')[0] }}</h5>
+      {% else %}
+        <h5 class="card-text">이름 : {{ obj.name }} </h5>
+      {% endif %}
+
       <h5 class="card-title"> {{ obj.age }} / {{ obj.gender }} / {{obj.height}}</h5>
       {%if obj.coname%}
-        <p class="card-text">소속사 : {{ obj.coname }}</p>
+        <h5 class="card-text">소속사 : {{ obj.coname }}</h5>
       {% else %}
-        <p class="card-text">소속사 : - </p>
+        <h5 class="card-text">소속사 : - </h5>
       {% endif %}
 
       {%if obj.mfee%}
-      <p class="card-text">모델료 : {{ obj.mfee }}</p>
+      <h5 class="card-text">모델료 : {{ obj.mfee }}</h5>
       {% else %}
-      <p class="card-text">모델료 : - </p>
+      <h5 class="card-text">모델료 : - </h5>
       {% endif %}
 
 

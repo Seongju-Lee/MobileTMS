@@ -4,28 +4,28 @@
       
         <img src="http://pic2.readymodel.kr/mdpic/{{obj.mcode[0:3]}}/{{obj.mcode[0:4]}}/{{obj.mcode}}/sys_photo/model.jpg" style="width:120px; height:120px">
       
-      
-      {%if '(' in obj.name%}
-        <h5 class="card-text" style="margin-bottom:0px; color:burlywood; display: inline;" >이름</h5> <h5 style="margin-bottom:3px; display: inline;">{{ obj.name.split('(')[0] }}</h5>
-      {% else %}
-        <h5 class="card-text" style="margin-bottom:0px; color:burlywood; display: inline;">이름</h5> <h5 style="margin-bottom:3px; display: inline;"> {{ obj.name }} </h5>
-      {% endif %}
+      <div class="info_postion" style="padding-left:5%">
+        {%if '(' in obj.name%}
+          <h5 class="card-text" style="margin-bottom:0px; color:burlywood; display: inline;" >이름</h5> <h6 style="margin-bottom:3px; display: inline;">{{ obj.name.split('(')[0] }}</h6>
+        {% else %}
+          <h5 class="card-text" style="margin-bottom:0px; color:burlywood; display: inline;">이름</h5> <h6 style="margin-bottom:3px; display: inline;"> {{ obj.name }} </h6>
+        {% endif %}
 
-      <h5 class="card-text" style="margin-bottom:0px; color:burlywood">정보</h5>
-      <h5 class="card-title" style="margin-bottom:3px"> {{ obj.age }} / {{ obj.gender }} / {{obj.height}}</h5>
+        <h5 class="card-text" style="margin-bottom:0px; color:burlywood">정보</h5>
+        <h6 class="card-title" style="margin-bottom:3px"> {{ obj.age }} / {{ obj.gender }} / {{obj.height}}</h6>
 
-      {%if obj.coname%}
-        <h5 class="card-text" style="margin-bottom:0px; color:burlywood">소속사</h5><h5 style="margin-bottom:2px;">{{ obj.coname }}</h5>
-      {% else %}
-        <h5 class="card-text" style="margin-bottom:0px; color:burlywood"">소속사 </h5><h5 style="margin-bottom:2px;">-</h5>
-      {% endif %}
+        {%if obj.coname%}
+          <h5 class="card-text" style="margin-bottom:0px; color:burlywood">소속사</h5><h6 style="margin-bottom:2px;">{{ obj.coname }}</h6>
+        {% else %}
+          <h5 class="card-text" style="margin-bottom:0px; color:burlywood"">소속사 </h5><h6 style="margin-bottom:2px;">-</h6>
+        {% endif %}
 
-      {%if obj.mfee%}
-      <h5 class="card-text" style="margin-bottom:0px; color:burlywood; display: inline;">모델료</h5> <h5 style="margin-bottom:0px; display: inline;">{{ obj.mfee }}</h5>
-      {% else %}
-      <h5 class="card-text" style="margin-bottom:0px; color:burlywood; display: inline;">모델료</h5> <h5 style="margin-bottom:0px; display: inline;">-</h5>
-      {% endif %}
-
+        {%if obj.mfee%}
+        <h5 class="card-text" style="margin-bottom:0px; color:burlywood; display: inline;">모델료</h5> <h6 style="margin-bottom:0px; display: inline;">{{ obj.mfee }}</h6>
+        {% else %}
+        <h5 class="card-text" style="margin-bottom:0px; color:burlywood; display: inline;">모델료</h5> <h6 style="margin-bottom:0px; display: inline;">-</h6>
+        {% endif %}
+      </div>
 
       <div style= "position: absolute; top: 88%; left:15%;" >
       <p style= 'width: 100%'>

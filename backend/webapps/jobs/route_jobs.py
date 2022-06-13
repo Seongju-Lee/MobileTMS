@@ -140,29 +140,21 @@ def search_filter(req: Request, s_date: str = '', e_date: str = '', gender_m: st
     ll = []
     search_ages = [] # 설정된 나이 구간 저장.
     ll.append(alpha_fees)
-    if not (model_filter or filter_celeb or name or coname or manager or tel ):
-        return templates.TemplateResponse(
-            "ui-icons.html", {"request": req,
-                              "years": years,  "now_year": now_year}
-        )
-
-    # hidden_s_age = hidden_s_age.split(',')
-    # hidden_e_age = hidden_e_age.split(',')
-
-    # print(hidden_e_age)
-    # if (not hidden_s_age[0] == '') and (not hidden_e_age[0] == ''):
-    #     for i in range(len(hidden_e_age)):
-    #         search_ages.append([int(hidden_s_age[i].split('(')[1].split(')')[0]), int(hidden_e_age[i].split('(')[1].split(')')[0])])
+    
+    # if not (name or coname or manager or tel ):
+    #     return templates.TemplateResponse(
+    #         "ui-icons.html", {"request": req,
+    #                           "years": years,  "now_year": now_year}
+    #     )
 
 
     search_ages.append([s_age, e_age])
-    print('연령 TEST: ', search_ages)
-    print('알파모델료 TEST: ', hidden_alpha_fee)
 
-
-
-   
-
+    if not (model_filter or filter_celeb ):
+        return templates.TemplateResponse(
+            "ui-icons.html", {"request": req,
+                              "no_result": '검색 필터를 선택해주세요.', "years": years, "now_year": now_year}
+        )
 
     try:
         ###########################################

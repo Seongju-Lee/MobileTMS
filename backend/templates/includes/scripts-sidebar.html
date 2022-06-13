@@ -60,6 +60,7 @@
 
             
             ////////////// 나이 입력
+
             if(params[i] == 's_age'){
               $('#' + params[i]).val(parameters[i].split('=')[1]).change()
             }if(params[i] == 'e_age'){
@@ -77,6 +78,9 @@
               arr_alpha_fee.push('alpha_' + parameters[i].split('=')[1])
               $(`input:checkbox[name=alpha_fee]`).prop('checked',false);
             }
+
+
+            
 
             if(params[i] == 'btn_score' ){
               arr_chu_score.push(parameters[i].split('=')[1].replace('chk','btn'))
@@ -113,6 +117,11 @@
             }
         }
         $('#hidden_alpha_fee').val(hidden_alpha_val)
+
+        if(hidden_alpha_val.length == 0){
+          // hidden_alpha_val.push(['0100', '0300', '0500', '1000', '2000', '2010', '6000', '8000'])
+          $('#hidden_alpha_fee').val(['0100', '0300', '0500', '1000', '2000', '2010', '6000', '8000'])
+        }
 
         // 추천 점수 체크
         for (var i = 0; i < arr_chu_score.length; i++) {
@@ -669,6 +678,12 @@
               
               console.log(chk_fees)
               $('#hidden_alpha_fee').val(chk_fees)
+              if(chk_fees.length == 0){
+                $('#hidden_alpha_fee').val(['0100', '0300', '0500', '1000', '2000', '2010', '6000', '8000'])
+              }else{
+                $('#hidden_alpha_fee').val(chk_fees)
+              }
+            
 
               }
             );

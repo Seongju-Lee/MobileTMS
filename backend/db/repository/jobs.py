@@ -1,12 +1,13 @@
 from ast import Str
 from asyncore import write
 from curses import reset_prog_mode
-from datetime import datetime, timedelta
+from datetime import date, datetime, timedelta
 import imp
 import json
 from mmap import mmap
 from ntpath import join
 from pickle import PERSID
+from statistics import mode
 from tkinter import HIDDEN
 from xmlrpc.server import SimpleXMLRPCRequestHandler
 from fastapi.encoders import jsonable_encoder
@@ -38,52 +39,217 @@ def divide_alpha(divide_age_models, hidden_alpha_fee):
 
     length = len(hidden_alpha_fee)
 
-    print('알파모델료 선택: ',hidden_alpha_fee)
-    if length == 1:
+    # 레디자동 모델이 hidden_alpha_fee에 있으면 체크
+    #
+    print('알파모델료 선택11: ',hidden_alpha_fee)
 
-        res_models = divide_age_models.filter(People.mfee == hidden_alpha_fee[0])
-        return res_models
+    two_year = str(datetime.now().year - 2) + '.' + str(datetime.now().month) + '.' + str(datetime.now().day) 
+    if length == 1:
+        if 'ready' in hidden_alpha_fee:
+            res_models = divide_age_models.filter((People.rdcode.contains('TKMA') | People.rdcode.contains('TKMB') | People.rdcode.contains('TKMV') | People.rdcode.contains('TKMF') | People.rdcode.contains('TKC')
+            | People.rdcode.contains('TKHB') | People.rdcode.contains('TKHA') | People.rdcode.contains('TKHP') | People.rdcode.contains('TKHC') ) & ((People.mfee == hidden_alpha_fee[0]) | (People.mfee == '') & (People.rdate >= two_year) )) 
+            
+            res_models = jsonable_encoder(res_models[:])
+            
+            for model in res_models:
+                if model['mfee'] == '':
+                    model['mfee'] = '레디자동'
+            print(res_models)
+            return res_models
+
+        else:
+            res_models = divide_age_models.filter(People.mfee == hidden_alpha_fee[0])
+            return res_models
+
+        
 
     elif length == 2:
-        
-        res_models = divide_age_models.filter((People.mfee == hidden_alpha_fee[0]) | (People.mfee == hidden_alpha_fee[1]))
-        return res_models
+        if 'ready' in hidden_alpha_fee:
+            print('aaa', hidden_alpha_fee)
+
+            res_models = divide_age_models.filter((People.rdcode.contains('TKMA') | People.rdcode.contains('TKMB') | People.rdcode.contains('TKMV') | People.rdcode.contains('TKMF') | People.rdcode.contains('TKC')
+            | People.rdcode.contains('TKHB') | People.rdcode.contains('TKHA') | People.rdcode.contains('TKHP') | People.rdcode.contains('TKHC') )
+            & ((People.mfee == hidden_alpha_fee[0]) | (People.mfee == hidden_alpha_fee[1]) | (People.mfee == '') & (People.rdate >= two_year))) 
+           
+
+            res_models = jsonable_encoder(res_models[:])
+            
+            for model in res_models:
+                if model['mfee'] == '':
+                    model['mfee'] = '레디자동'
+            print(res_models)
+            return res_models
+
+        else:
+            res_models = divide_age_models.filter((People.mfee == hidden_alpha_fee[0]) | (People.mfee == hidden_alpha_fee[1]))
+            return res_models
+
     elif length == 3:
         
-        res_models = divide_age_models.filter((People.mfee == hidden_alpha_fee[0]) | (People.mfee == hidden_alpha_fee[1]) |
-        (People.mfee == hidden_alpha_fee[2]) )
-        return res_models
+        if 'ready' in hidden_alpha_fee:
+            print('aaa', hidden_alpha_fee)
+
+            res_models = divide_age_models.filter((People.rdcode.contains('TKMA') | People.rdcode.contains('TKMB') | People.rdcode.contains('TKMV') | People.rdcode.contains('TKMF') | People.rdcode.contains('TKC')
+            | People.rdcode.contains('TKHB') | People.rdcode.contains('TKHA') | People.rdcode.contains('TKHP') | People.rdcode.contains('TKHC') )
+            & ((People.mfee == hidden_alpha_fee[0]) | (People.mfee == hidden_alpha_fee[1]) |(People.mfee == hidden_alpha_fee[2]) | (People.mfee == '') & (People.rdate >= two_year)) 
+            )
+
+            res_models = jsonable_encoder(res_models[:])
+            
+            for model in res_models:
+                if model['mfee'] == '':
+                    model['mfee'] = '레디자동'
+            print(res_models)
+            return res_models
+
+        else:
+            res_models = divide_age_models.filter((People.mfee == hidden_alpha_fee[0]) | (People.mfee == hidden_alpha_fee[1]) |
+            (People.mfee == hidden_alpha_fee[2]) )
+            return res_models
+
+
     elif length == 4:
         
-        res_models = divide_age_models.filter((People.mfee == hidden_alpha_fee[0]) | (People.mfee == hidden_alpha_fee[1]) |
-        (People.mfee == hidden_alpha_fee[2]) | (People.mfee == hidden_alpha_fee[3]))
-        return res_models
+        if 'ready' in hidden_alpha_fee:
+            print('aaa', hidden_alpha_fee)
+
+            res_models = divide_age_models.filter((People.rdcode.contains('TKMA') | People.rdcode.contains('TKMB') | People.rdcode.contains('TKMV') | People.rdcode.contains('TKMF') | People.rdcode.contains('TKC')
+            | People.rdcode.contains('TKHB') | People.rdcode.contains('TKHA') | People.rdcode.contains('TKHP') | People.rdcode.contains('TKHC') )
+            & ((People.mfee == hidden_alpha_fee[0]) | (People.mfee == hidden_alpha_fee[1]) | (People.mfee == hidden_alpha_fee[2]) | (People.mfee == hidden_alpha_fee[3]) | (People.mfee == '') & (People.rdate >= two_year)) 
+            )
+
+            res_models = jsonable_encoder(res_models[:])
+            
+            for model in res_models:
+                if model['mfee'] == '':
+                    model['mfee'] = '레디자동'
+            print(res_models)
+            return res_models
+
+        else:
+            res_models = divide_age_models.filter((People.mfee == hidden_alpha_fee[0]) | (People.mfee == hidden_alpha_fee[1]) |
+            (People.mfee == hidden_alpha_fee[2]) | (People.mfee == hidden_alpha_fee[3]))
+            return res_models
+
     elif length == 5:
         
-        res_models = divide_age_models.filter((People.mfee == hidden_alpha_fee[0]) | (People.mfee == hidden_alpha_fee[1])|
-        (People.mfee == hidden_alpha_fee[2]) | (People.mfee == hidden_alpha_fee[3]) |
-        (People.mfee == hidden_alpha_fee[4]))
-        return res_models
+        if 'ready' in hidden_alpha_fee:
+            print('aaa', hidden_alpha_fee)
+
+            res_models = divide_age_models.filter((People.rdcode.contains('TKMA') | People.rdcode.contains('TKMB') | People.rdcode.contains('TKMV') | People.rdcode.contains('TKMF') | People.rdcode.contains('TKC')
+            | People.rdcode.contains('TKHB') | People.rdcode.contains('TKHA') | People.rdcode.contains('TKHP') | People.rdcode.contains('TKHC') )
+            & ((People.mfee == hidden_alpha_fee[0]) | (People.mfee == hidden_alpha_fee[1]) | (People.mfee == hidden_alpha_fee[2]) | (People.mfee == hidden_alpha_fee[3]) | (People.mfee == hidden_alpha_fee[4]) | ((People.mfee == '') & (People.rdate >= two_year))) 
+            )
+
+            res_models = jsonable_encoder(res_models[:])
+            
+            for model in res_models:
+                if model['mfee'] == '':
+                    model['mfee'] = '레디자동'
+            print(res_models)
+            return res_models
+
+        else:
+            res_models = divide_age_models.filter((People.mfee == hidden_alpha_fee[0]) | (People.mfee == hidden_alpha_fee[1])|
+            (People.mfee == hidden_alpha_fee[2]) | (People.mfee == hidden_alpha_fee[3]) |
+            (People.mfee == hidden_alpha_fee[4]))
+            return res_models
+
     elif length == 6:
         
-        res_models = divide_age_models.filter((People.mfee == hidden_alpha_fee[0]) | (People.mfee == hidden_alpha_fee[1])|
-        (People.mfee == hidden_alpha_fee[2]) | (People.mfee == hidden_alpha_fee[3]) |
-        (People.mfee == hidden_alpha_fee[4]) | (People.mfee == hidden_alpha_fee[5]))
-        return res_models
+        if 'ready' in hidden_alpha_fee:
+            print('aaa', hidden_alpha_fee)
+
+            res_models = divide_age_models.filter((People.rdcode.contains('TKMA') | People.rdcode.contains('TKMB') | People.rdcode.contains('TKMV') | People.rdcode.contains('TKMF') | People.rdcode.contains('TKC')
+            | People.rdcode.contains('TKHB') | People.rdcode.contains('TKHA') | People.rdcode.contains('TKHP') | People.rdcode.contains('TKHC') )
+            & ((People.mfee == hidden_alpha_fee[0]) | (People.mfee == hidden_alpha_fee[1]) | (People.mfee == hidden_alpha_fee[2]) | (People.mfee == hidden_alpha_fee[3]) | (People.mfee == hidden_alpha_fee[4]) | (People.mfee == hidden_alpha_fee[5]) | ((People.mfee == '') & (People.rdate >= two_year))) 
+            )
+
+            res_models = jsonable_encoder(res_models[:])
+            
+            for model in res_models:
+                if model['mfee'] == '':
+                    model['mfee'] = '레디자동'
+            print(res_models)
+            return res_models
+
+        else:
+
+            res_models = divide_age_models.filter((People.mfee == hidden_alpha_fee[0]) | (People.mfee == hidden_alpha_fee[1])|
+            (People.mfee == hidden_alpha_fee[2]) | (People.mfee == hidden_alpha_fee[3]) |
+            (People.mfee == hidden_alpha_fee[4]) | (People.mfee == hidden_alpha_fee[5]))
+            return res_models
+
+
     elif length == 7:
         
-        res_models = divide_age_models.filter((People.mfee == hidden_alpha_fee[0]) | (People.mfee == hidden_alpha_fee[1])|
-        (People.mfee == hidden_alpha_fee[2]) | (People.mfee == hidden_alpha_fee[3]) |
-        (People.mfee == hidden_alpha_fee[4]) | (People.mfee == hidden_alpha_fee[5])|
-        (People.mfee == hidden_alpha_fee[6]))
-        return res_models
+        if 'ready' in hidden_alpha_fee:
+            print('aaa', hidden_alpha_fee)
+
+            res_models = divide_age_models.filter((People.rdcode.contains('TKMA') | People.rdcode.contains('TKMB') | People.rdcode.contains('TKMV') | People.rdcode.contains('TKMF') | People.rdcode.contains('TKC')
+            | People.rdcode.contains('TKHB') | People.rdcode.contains('TKHA') | People.rdcode.contains('TKHP') | People.rdcode.contains('TKHC') )
+            & ((People.mfee == hidden_alpha_fee[0]) | (People.mfee == hidden_alpha_fee[1]) | (People.mfee == hidden_alpha_fee[2]) | (People.mfee == hidden_alpha_fee[3]) | (People.mfee == hidden_alpha_fee[4]) | (People.mfee == hidden_alpha_fee[5]) | (People.mfee == hidden_alpha_fee[6]) | ((People.mfee == '') & (People.rdate >= two_year))) 
+            )
+
+            res_models = jsonable_encoder(res_models[:])
+            
+            for model in res_models:
+                if model['mfee'] == '':
+                    model['mfee'] = '레디자동'
+            print(res_models)
+            return res_models
+
+        else:
+
+            res_models = divide_age_models.filter((People.mfee == hidden_alpha_fee[0]) | (People.mfee == hidden_alpha_fee[1])|
+            (People.mfee == hidden_alpha_fee[2]) | (People.mfee == hidden_alpha_fee[3]) |
+            (People.mfee == hidden_alpha_fee[4]) | (People.mfee == hidden_alpha_fee[5])|
+            (People.mfee == hidden_alpha_fee[6]))
+            return res_models
+    
+    
     elif length == 8:
     
-        res_models = divide_age_models.filter((People.mfee == hidden_alpha_fee[0]) | (People.mfee == hidden_alpha_fee[1])|
-        (People.mfee == hidden_alpha_fee[2]) | (People.mfee == hidden_alpha_fee[3]) |
-        (People.mfee == hidden_alpha_fee[4]) | (People.mfee == hidden_alpha_fee[5])|
-        (People.mfee == hidden_alpha_fee[6]) | (People.mfee == hidden_alpha_fee[7]))
+
+        if 'ready' in hidden_alpha_fee:
+            print('aaa', hidden_alpha_fee)
+
+            res_models = divide_age_models.filter((People.rdcode.contains('TKMA') | People.rdcode.contains('TKMB') | People.rdcode.contains('TKMV') | People.rdcode.contains('TKMF') | People.rdcode.contains('TKC')
+            | People.rdcode.contains('TKHB') | People.rdcode.contains('TKHA') | People.rdcode.contains('TKHP') | People.rdcode.contains('TKHC') )
+            & ((People.mfee == hidden_alpha_fee[0]) | (People.mfee == hidden_alpha_fee[1]) | (People.mfee == hidden_alpha_fee[2]) | (People.mfee == hidden_alpha_fee[3]) | (People.mfee == hidden_alpha_fee[4]) | (People.mfee == hidden_alpha_fee[5]) | (People.mfee == hidden_alpha_fee[6])| (People.mfee == hidden_alpha_fee[7]) | ((People.mfee == '') & (People.rdate >= two_year))) 
+            )
+
+            res_models = jsonable_encoder(res_models[:])
+            
+            for model in res_models:
+                if model['mfee'] == '':
+                    model['mfee'] = '레디자동'
+            print(res_models)
+            return res_models
+
+        else:
+
+            res_models = divide_age_models.filter((People.mfee == hidden_alpha_fee[0]) | (People.mfee == hidden_alpha_fee[1])|
+            (People.mfee == hidden_alpha_fee[2]) | (People.mfee == hidden_alpha_fee[3]) |
+            (People.mfee == hidden_alpha_fee[4]) | (People.mfee == hidden_alpha_fee[5])|
+            (People.mfee == hidden_alpha_fee[6]) | (People.mfee == hidden_alpha_fee[7]))
+            return res_models
+    
+    elif length == 9:
+
+        res_models = divide_age_models.filter((People.rdcode.contains('TKMA') | People.rdcode.contains('TKMB') | People.rdcode.contains('TKMV') | People.rdcode.contains('TKMF') | People.rdcode.contains('TKC')
+        | People.rdcode.contains('TKHB') | People.rdcode.contains('TKHA') | People.rdcode.contains('TKHP') | People.rdcode.contains('TKHC') )
+        & ((People.mfee == hidden_alpha_fee[0]) | (People.mfee == hidden_alpha_fee[1]) | (People.mfee == hidden_alpha_fee[2]) | (People.mfee == hidden_alpha_fee[3]) | (People.mfee == hidden_alpha_fee[4]) | (People.mfee == hidden_alpha_fee[5]) | (People.mfee == hidden_alpha_fee[6])| (People.mfee == hidden_alpha_fee[7])| (People.mfee == hidden_alpha_fee[8]) | ((People.mfee == '') & (People.rdate >= two_year))) 
+        )
+
+        res_models = jsonable_encoder(res_models[:])
+        
+        for model in res_models:
+            if model['mfee'] == '':
+                model['mfee'] = '레디자동'
+        print(res_models)
         return res_models
+
 
 # 셀럽 모델료 구분 (무식하게 짠 버전)
 def divide_mfee(divide_age_models, hidden_celeb_fee, hidden_celeb_fee_month):
@@ -270,6 +436,7 @@ def chu_30(db: Session, chu_img, chu_fav, chu_act, gender_w, gender_m, search_ag
     
     res_model = jsonable_encoder(res_model[:])
 
+    print(res_model)
     # for mm in res_model:
     #     print('vvvvvvvvvvv: ', mm)
     # print('캐릭터 선택 리스트: ', char_list)
@@ -548,39 +715,30 @@ def proc_celeb(db: Session, gender_w, gender_m, search_ages, hidden_celeb_fee, h
 
 
 def search_job(db: Session, name='', coname='', tel='', manager=''):
-    # celeb = db.query(Yeon.codesys, Yeon.name, Yeon.sex, Yeon.age, Yeon.a_3, Yeon.a_6, Yeon.a_12,).filter(Yeon.name.contains(query))
 
-    print(name, coname, tel, manager, 'aaaaaaaaaaaaaaaaaaaaaaaa')
+    two_year = str(datetime.now().year - 2) + '.' + str(datetime.now().month) + '.' + str(datetime.now().day)
 
-    # is_yeon = db.query(People.isyeon).filter(People.isyeon.contains('V'))
-    # if is_yeon:
-    #     models = db.query(People.codesys.label('mcode'), People.name, People.age, People.sex.label('gender'), People.coname, People.mfee,
-    #                       People.height, People.sex, Yeon.a_3, Yeon.a_6, Yeon.a_12, People.isyeon).join(Yeon, Yeon.codesys == People.codesys).filter(People.name.contains(name) & People.coname.contains(coname) & (People.dam.contains(manager) | People.dam2.contains(manager) | People.dam3.contains(manager)) &
-    #                                                                                                                                                  (People.tel1.contains(tel) | People.dam2tel.contains(tel) | People.dam3tel.contains(tel)) & People.ptel.contains(tel))
-    # else:
-    models = db.query(People.codesys.label('mcode'), People.name, People.age, People.sex.label('gender'), People.coname, People.mfee,
+    models = db.query(People.codesys.label('mcode'), People.name, People.age, People.sex.label('gender'), People.coname, People.mfee, People.rdate, People.rdcode,
                       People.height, People.sex, People.isyeon).filter(People.name.contains(name) & People.coname.contains(coname) & (People.dam.contains(manager) | People.dam2.contains(manager) | People.dam3.contains(manager)) &
                                                                        (People.tel1.contains(tel) | People.dam2tel.contains(tel) | People.dam3tel.contains(tel) | People.ptel.contains(tel)))
-
-    # 연예인, 모델 나누는 로직 짜서
-    # 리스트 에 'gubun'이라는 키 하나 생성해서 'model', 'celeb'을 값으로 나눠서 return
-
-    print('안녕하세요: ', jsonable_encoder(models[:]))
+# 
+    models = jsonable_encoder(models[:])
+    for model in models:
+        if (model['rdate'] >= two_year) and (model['mfee'] == '') and (('TKMA' in model['rdcode']) or ('TKMB' in model['rdcode']) or ('TKMV' in model['rdcode']) or ('TKMF' in model['rdcode']) or ('TKC' in model['rdcode']) or ('TKHA' in model['rdcode']) or ('TKHB' in model['rdcode']) or ('TKHC' in model['rdcode']) or ('TKHP' in model['rdcode'])):
+            model['mfee'] = '레디자동'
+        
     return models
 
 
 def search_celeb(db: Session, mcode):
     # celeb = db.query(Yeon.codesys, Yeon.name, Yeon.sex, Yeon.age, Yeon.a_3, Yeon.a_6, Yeon.a_12,).filter(Yeon.name.contains(query))
 
-    print('안녕하세요222: ', mcode)
 
     models = db.query(People.codesys.label('mcode'), People.name, People.age, People.sex.label('gender'), People.coname, People.mfee,
                       People.height, People.sex, Yeon.a_3, Yeon.a_6, Yeon.a_12, People.isyeon).join(Yeon, Yeon.codesys == People.codesys).filter(People.codesys == mcode)
 
-    # 연예인, 모델 나누는 로직 짜서
-    # 리스트 에 'gubun'이라는 키 하나 생성해서 'model', 'celeb'을 값으로 나눠서 return
+    
 
-    print('안녕하세요222: ', jsonable_encoder(models[:]))
     return models
 
 
@@ -592,7 +750,6 @@ def models_info(db: Session, codesys):
     # Yeon에서 가져온 경우에는 연예인 세부정보를 뿌려주고, (모델료, 모델 정보[이름, 나이, 키, 성별, 소속사, 연락처, 인스타, 포인트, 메일], 계약현황, 레디진행 이력, 활동 내역, 통화 메모)
     # People에서 가져온 경우에는 모델 세부정보를 뿌려준다. (알파 모델료, 모델정보[이름, 나이, 키, 성별, 소속사, 연락처, 인스타, 포인트, 메일], 신체 사이즈, 통화 메모), 경력 사항 확인 필요
 
-    # yeoncf.brand, yeoncf.poom , yeoncf.imonth, yeoncf.fee , yeoncf.dstart , yeoncf.dend , yeoncf.indefin , yeoncf.nation, yeoncf.writer , yeoncf.wrdate
 
     try:
 

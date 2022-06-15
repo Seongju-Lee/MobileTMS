@@ -141,13 +141,14 @@ def search_filter(req: Request, s_date: str = '', e_date: str = '', gender_m: st
     search_ages = [] # 설정된 나이 구간 저장.
     ll.append(alpha_fees)
     
+
+    print('모델료 체크: ', hidden_alpha_fee)
     # if not (name or coname or manager or tel ):
     #     return templates.TemplateResponse(
     #         "ui-icons.html", {"request": req,
     #                           "years": years,  "now_year": now_year}
     #     )
 
-    print('213: ', detail_search)
     search_ages.append([s_age, e_age])
 
     if not (model_filter or filter_celeb ) and detail_search:
@@ -238,8 +239,13 @@ def search_filter(req: Request, s_date: str = '', e_date: str = '', gender_m: st
                 with open("model.json", 'r', encoding='utf-8') as json_file:
                     aa = json.load(json_file)
                     for job in filter_models:
+                        print('ssss: ', job)
                         if not job['mfee'] == '':
-                            job['mfee'] = aa['model_fee'][job['mfee']]
+                            if job['mfee'] == '레디자동':
+                                job['mfee'] = '레디자동'
+                            else:
+                                job['mfee'] = aa['model_fee'][job['mfee']]
+                            
                 # print('안녕!!ㅎㅎ: ', res_models)
             except:
                 print('일치하는 모델료가 json파일에 없음.')
@@ -333,8 +339,12 @@ def search_filter(req: Request, s_date: str = '', e_date: str = '', gender_m: st
                 with open("model.json", 'r', encoding='utf-8') as json_file:
                     aa = json.load(json_file)
                     for job in res_models:
+                        print('ssss: ', job)
                         if not job['mfee'] == '':
-                            job['mfee'] = aa['model_fee'][job['mfee']]
+                            if job['mfee'] == '레디자동':
+                                job['mfee'] = '레디자동'
+                            else:
+                                job['mfee'] = aa['model_fee'][job['mfee']]
             except:
                 print('일치하는 모델료가 json파일에 없음.')
                 pass
@@ -374,13 +384,18 @@ def search_filter(req: Request, s_date: str = '', e_date: str = '', gender_m: st
 
                     with open("model.json", 'r', encoding='utf-8') as json_file:
                         aa = json.load(json_file)
-                        for job in res_models:
-                            if not job['mfee'] == '':
+                    for job in res_models:
+
+                        if not job['mfee'] == '':
+                            if job['mfee'] == '레디자동':
+                                job['mfee'] = '레디자동'
+                            else:
                                 job['mfee'] = aa['model_fee'][job['mfee']]
                     # print('안녕!!ㅎㅎ: ', res_models)
                 except:
                     print('일치하는 모델료가 json파일에 없음.')
                     pass
+
                 return templates.TemplateResponse(
                     "ui-icons.html", {"request": req,
                                     "jobs": res_models,
@@ -511,8 +526,6 @@ def search_filter(req: Request, s_date: str = '', e_date: str = '', gender_m: st
                     'isyeon': model[7], 'height': model[8], 'coname':model[9], 'mfee':model[10]})
 
 
-            # for model in filter_models[:10]:
-            #     print('ㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇ: ', model)
 
             try:
 
@@ -703,6 +716,7 @@ def search_filter(req: Request, s_date: str = '', e_date: str = '', gender_m: st
                     search_celebs = jsonable_encoder(celeb[:])
                     celebs.append(search_celebs[0])
                 else:
+                    print('검색: ', model)
                     kmodels.append(model)
 
             jobs = celebs + kmodels

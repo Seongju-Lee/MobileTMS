@@ -58,6 +58,7 @@ class People(Base):
 
     no = Column(Integer)
     codesys = Column(String(20),  primary_key=True)
+    rdate =  Column(String(20))
     rdcode = Column(String(20))
     name = Column(String(20))
     age = Column(String(20))

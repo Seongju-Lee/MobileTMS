@@ -156,9 +156,10 @@ def search_filter(req: Request, s_date: str = '', e_date: str = '', gender_m: st
     print('tq: ', s_age  , e_age)
     if s_age=='' and e_age == '':
         search_ages.append(['2021', '1931'])
+        
     else:
         search_ages.append([s_age, e_age])
-
+        
     print(search_ages, 'tqtqtqt')
     if not (model_filter or filter_celeb ) and detail_search:
         return templates.TemplateResponse(
@@ -727,7 +728,10 @@ def search_filter(req: Request, s_date: str = '', e_date: str = '', gender_m: st
                 if model['isyeon'] == 'V':
                     celeb = search_celeb(db=db, mcode=model['mcode'])
                     search_celebs = jsonable_encoder(celeb[:])
-                    celebs.append(search_celebs[0])
+                    if len(search_celebs) == 0:
+                        pass
+                    else:
+                        celebs.append(search_celebs[0])
                 else:
                     print('검색: ', model)
                     kmodels.append(model)

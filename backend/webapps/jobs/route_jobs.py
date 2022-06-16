@@ -118,7 +118,9 @@ def search_filter(req: Request, s_date: str = '', e_date: str = '', gender_m: st
 
     token: str = req.cookies.get("access_token")
 
-    print('token입니다. ', token)
+    if hidden_score == '':
+        hidden_score = 'chk_img, chk_fav'
+
     if token is None:
         return RedirectResponse('/login')
     
@@ -149,8 +151,15 @@ def search_filter(req: Request, s_date: str = '', e_date: str = '', gender_m: st
     #                           "years": years,  "now_year": now_year}
     #     )
 
-    search_ages.append([s_age, e_age])
+    
 
+    print('tq: ', s_age  , e_age)
+    if s_age=='' and e_age == '':
+        search_ages.append(['2021', '1931'])
+    else:
+        search_ages.append([s_age, e_age])
+
+    print(search_ages, 'tqtqtqt')
     if not (model_filter or filter_celeb ) and detail_search:
         return templates.TemplateResponse(
             "ui-icons.html", {"request": req,
@@ -163,6 +172,8 @@ def search_filter(req: Request, s_date: str = '', e_date: str = '', gender_m: st
         ###########################################
         # 추천 30일
         if model_filter == 'thrdays':
+            
+
             models = chu_30(db=db, chu_act=s_act,
                             chu_fav=s_fav, chu_img=s_img, gender_m=gender_m, gender_w=gender_w,
                             search_ages=search_ages, hidden_alpha_fee=hidden_alpha_fee,
@@ -251,7 +262,7 @@ def search_filter(req: Request, s_date: str = '', e_date: str = '', gender_m: st
                 print('일치하는 모델료가 json파일에 없음.')
                 pass
 
-
+            
             print('dkkkkkkkkkkk: ', hidden_score)
 
             hidden_scores = hidden_score.split(',')
@@ -614,6 +625,8 @@ def search_filter(req: Request, s_date: str = '', e_date: str = '', gender_m: st
         ###########################################
         # 셀럽검색_실베스타
         elif filter_celeb == 'order_realtime':
+
+            print('나이: ', search_ages)
             model_list = []
             real_time_cf, real_time_activity = order_realtime(db=db,
                                                             gender_w=gender_w, gender_m=gender_m, search_ages=search_ages,

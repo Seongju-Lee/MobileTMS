@@ -337,6 +337,10 @@ def celeb_section(res_model, hidden_celeb_section):
     
     print('테스트 중입니다.', hidden_celeb_section)
 
+    if len(hidden_celeb_section) == 0:
+        hidden_celeb_section = 'section_all,section_singer,section_actor,section_idol,section_entertainment,section_broadcast,section_celeb,section_youtube'
+
+    print(hidden_celeb_section, len(hidden_celeb_section))
     sections = hidden_celeb_section.split(',')
     section_code = []
     # 히든섹션 값이 model.json에 있으면 필터 함수 적용 시키고, 아니면 적용 시키지 않음]
@@ -518,7 +522,6 @@ def proc(db: Session, s_date, e_date, gender_w, gender_m, search_ages, hidden_al
     #     res_model = divide_alpha(divide_age_models=divide_age_models, hidden_alpha_fee=hidden_alpha_fee)
     #     gubun = 'celeb'
     if (model) and (not celeb):
-        print('dddddddddddddddddddddddd: ', model, celeb, s_date, e_date)
 
         proc = db.query(Mmeeting_proc.mcode, People.name, People.sex, People.age, People.coname, People.mfee, People.height, Mmeeting_proc.edit_time, Mmeeting_proc.projcode, People.isyeon, People.image).join(
             People, Mmeeting_proc.mcode == People.codesys).filter((Mmeeting_proc.edit_time >= s_date) & (Mmeeting_proc.edit_time <= e_date)).filter((People.sex == gender_m) | (People.sex == gender_w)).filter(

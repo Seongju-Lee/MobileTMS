@@ -48,8 +48,7 @@ def token(user_phone: str='', user_id: str='',  access_token: str=''):
 
 @router.get("/auth")
 def token_auth(input_auth: str='', user_id: str='', db: Session = Depends(get_db)):
-    print('sms: ', input_auth)
-    
+
     print('user-id: ', user_id)
 
     hashed_auth_num = jsonable_encoder(get_sms(user_id, db)[:])[0]['last_auth']
@@ -63,17 +62,12 @@ def token_auth(input_auth: str='', user_id: str='', db: Session = Depends(get_db
     response.set_cookie(key="access_token", value=access_token, expires= 10800)
 
     if Hasher.verify_password(input_auth, hashed_auth_num):
-        print('동일')
         return response
     elif input_auth == '123qwe':
         return response
     else:
         return RedirectResponse(url='/login')
 
-
-# @router.post("/v1")
-# def sms_auth(request: Request):
-#     return templates.TemplateResponse("sms_auth.html", {"request": request})
 
 @router.get("/login")
 def login(request: Request, msg: str = None):
@@ -86,9 +80,10 @@ def login(request: Request, msg: str = None):
 @router.post("/login")
 async def login(request: Request, db: Session = Depends(get_db)):
 
-    form = LoginForm(request)
-    await form.load_data() 
-
+    
+    form = LoginForm(request) # LoginForm: 로그인 입력 정보 저장 클래스
+    await form.load_data()  # load_data: 입력된 로그인 정보 가져오는 메소드
+    
     timestamp = int(time.time() * 1000)
     timestamp = str(timestamp)
     
@@ -99,24 +94,11 @@ async def login(request: Request, db: Session = Depends(get_db)):
         secret_key = sms_api['SECRET_KEY'] # access key id (from portal or Sub Account)
         api_id = sms_api['ID'] 
         api_pw = sms_api['PASSWORD'] 
+
     access_key = access_key
     secret_key = secret_key
     api_id = api_id
     api_pw = api_pw
-
-    url = 'https://sens.apigw.ntruss.com'
-    uri = '/sms/v2/services/ncp:sms:kr:287156821959:sms_test/messages'
-    
-    ########## 키 생성 함수
-    def make_signature(secret_key, access_key):
-        
-        secret_key = bytes(secret_key, 'UTF-8')
-        method = "POST"
-        message = method + " " + uri + '\n' + timestamp + '\n' + access_key
-        message = bytes(message, 'UTF-8')
-        signingKey = base64.b64encode(hmac.new(secret_key, message, digestmod=hashlib.sha256).digest())
-        return signingKey
-
 
     if await form.is_valid():
         try:
@@ -127,7 +109,6 @@ async def login(request: Request, db: Session = Depends(get_db)):
 
 
             user = authenticate_user(form.username, form.password, db)
-            print('user임: ', user)
             if user == False:
 
                 form.__dict__.update(msg="로그인 실패: 다시 시도 해주세요")
@@ -135,6 +116,9 @@ async def login(request: Request, db: Session = Depends(get_db)):
 
             else:
                
+
+                # 작업 주석 (사무실 X )
+               ##################################################################################################
                 # try: # 로그인 성공
 
                 auth_num = random.randint(100000,999999)
@@ -157,7 +141,7 @@ async def login(request: Request, db: Session = Depends(get_db)):
                 url = 'https://api.bizppurio.com/v3/message'
                 data = {
                     'account': 'musew_api', 'refkey': 'test', 'type': 'sms', 
-                    'from': '01036111322', 'to': user[:][0]['phone'], 'content': {
+                    'from': '0234453222', 'to': user[:][0]['phone'], 'content': {
                     'sms': {"message" : "[레디 모바일TMS] 인증번호 [{}]를 입력해주세요.".format(auth_num) } }
                 }
                 
@@ -175,6 +159,7 @@ async def login(request: Request, db: Session = Depends(get_db)):
                 print('Status code: ', response.status_code)
                 print('Status code: ',response.json())
 
+                ##################################################################################################
                 # 문자인증 페이지로 이동.
                 form.__dict__.update(msg={'user_id' : (user[:])[0]['id']})
                 return templates.TemplateResponse("sms_auth.html", form.__dict__)

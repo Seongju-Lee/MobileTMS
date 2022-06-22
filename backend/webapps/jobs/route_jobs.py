@@ -12,23 +12,21 @@ from fastapi import Request, status, responses, Response, requests
 from fastapi.security.utils import get_authorization_scheme_param
 from fastapi.responses import HTMLResponse
 from fastapi.templating import Jinja2Templates
-from db.repository.jobs import list_jobs, search_job, list_models, chu_30, movchoi, proc, order_register, order_recommend, order_s_count, order_read, search_celeb
-from db.repository.jobs import retrieve_job, create_new_job, order_realtime, models_info, proc_celeb, img_mov_info, cf_mov_info, act_mov_info
+from db.repository.search import list_jobs, search_job, list_models, chu_30, movchoi, proc, order_register, order_recommend, order_s_count, order_read, search_celeb
+from db.repository.search import retrieve_job, create_new_job, order_realtime, models_info, proc_celeb, img_mov_info, cf_mov_info, act_mov_info
 from jinja2 import ModuleLoader
 from numpy import min_scalar_type, mod
 from pyparsing import col
 from sqlalchemy import JSON, String,  null, true
 from sqlalchemy.orm import Session
 from db.session import get_db
-from db.models.users import User
-from apis.version1.route_login import get_current_user_from_token
 from webapps.jobs.forms import JobCreateForm
 from schemas.jobs import JobCreate
 from typing import Optional
 from fastapi.encoders import jsonable_encoder
 from striprtf.striprtf import rtf_to_text
 from starlette.responses import RedirectResponse
-
+ 
 import json
 import pandas as pd
 

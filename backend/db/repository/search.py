@@ -17,11 +17,11 @@ from sqlalchemy.sql.expression import func
 
 from sqlalchemy.orm import Session
 from schemas.jobs import JobCreate
-from db.models.jobs import Job, People2
-from db.models.jobs import People, Chu19, Movsel, Mmeeting_proc, Yeon, SunokStar, SunokStarChu, SCount, Read, Mtel, Memo, Section, ModelCF, ModelMov
+from db.models.kmodels import  People2
+from db.models.kmodels import People, Chu19, Movsel, Mmeeting_proc, Yeon, SunokStar, SunokStarChu, SCount, Read, Mtel, Memo, Section, ModelCF, ModelMov
 from db.models.yeons import RealTimeCF, RealTimeDRAMA
 from dateutil.relativedelta import relativedelta
-
+ 
 
 ## 연령 분류(무식하게 짠 버전)
 def divide_ages(models_info, search_ages):

@@ -1,5 +1,3 @@
-from pydoc import resolve
-from ssl import ALERT_DESCRIPTION_ACCESS_DENIED, AlertDescription
 from fastapi import APIRouter, Request, Depends, HTTPException
 from fastapi.templating import Jinja2Templates
 from sqlalchemy.orm import Session
@@ -16,12 +14,8 @@ from core.security import create_access_token
 from fastapi.encoders import jsonable_encoder
 import requests
 import json
-from requests.auth import HTTPBasicAuth
 import base64
-import sys
-import os
-import hashlib
-import hmac
+
 import base64
 import requests
 import time
@@ -29,9 +23,6 @@ import random
 
 router = APIRouter(include_in_schema=False)
 templates = Jinja2Templates(directory="templates")
-
-
-
 
 user_id = ''
 user_rno = ''
@@ -177,8 +168,3 @@ async def login(request: Request, db: Session = Depends(get_db)):
         return templates.TemplateResponse("login.html", form.__dict__)
     
     
-
-
-# @router.post("/sms")
-# def sms_auth_(user_phone: str='', user_id: str=''):
-#     return templates.TemplateResponse("sms_auth.html", {"request": 'tmp'})

@@ -1,4 +1,5 @@
 from datetime import date
+from numpy import integer
 from sqlalchemy import Column, Integer, String, ForeignKey, TIMESTAMP, Text
 from db.base_class import Base
 
@@ -64,3 +65,15 @@ class ProjectMemo(Base):
     no = Column(Integer,  primary_key=True)
     code = Column(String(20)) # project 코드
     memo = Column(Text)
+
+
+class ProjectModel(Base):
+    __tablename__ = "money5"
+
+    no = Column(Integer,  primary_key=True)
+    code = Column(String(20)) # 모델코드
+    projcode = Column(Text) # 프로젝트 코드
+    cdate = Column(String(30)) # 촬영일
+    mname = Column(String(30)) # 모델명
+    modelfee = Column(Integer) # 모델료
+    chunggu = Column(Integer) # 청구액

@@ -41,7 +41,7 @@
       </div>
       <div class="card-bodys">
         <form>
-          <h4> 프로젝트 정보 </h4>
+          <h4><b> 프로젝트 정보 </b></h4>
           <div class="row">
             <div style="position: relative; padding-right: 15px; padding-left: 15px; min-width: 110px; margin: 3px;"> 
             <!-- <div class="col-md-8 pr-md-1"> --> 
@@ -332,8 +332,9 @@
 
 
             <div >
+              <br>
               <div class="form-check">
-                  <h4 > 통화메모 </h4>
+                  <h4><b> 통화메모 </b></h4>
               </div>
               {% if memos %}
                 {% for memo in memos %}
@@ -341,13 +342,94 @@
                   {% for m in memo %}
                     <h5 style=" font: bold 1.2em/1em; ">{{m}}</h5>
                   {% endfor %}
-                  <hr color = 'white' size='7px' width=60%' align='left' "> 
+                  <br> 
                 {% endfor %}
 
               {% else %}
                 <h5 style=" font: bold 1.2em/1em; "> - </h5>
 
               {% endif %}
+            </div>
+
+
+
+
+            <div >
+              <br>
+              <div class="form-check">
+                  <h4><b> 관련모델정보 </b></h4>
+              </div>
+              
+
+              <table class="table tablesorter" >
+                
+                <thead class=" text-primary">
+                  <tr>
+                    <th>
+                      모델명
+                    </th>
+                    <th>
+                      촬영일
+                    </th>
+                    <th>
+                      청구액
+                    </th>
+                    <th class="text-center">
+                      모델료
+                    </th>
+                  </tr>
+                </thead>
+                <tbody >
+                  {% if models %}
+                    {% for model in models %}
+                      <tr>
+                        <td style="font-size: 0.65rem;  padding:7px;  " >
+                          <p style="color: #f3f3f3; font-size: 0.8rem; margin-bottom: 0px;"><b>{{model.mname}}</b></p>
+                        </td>
+                        <td style="font-size: 0.65rem; padding:7px;" >
+                          <p style="color: #f3f3f3; font-size: 0.8rem; margin-bottom: 0px;"><b>{{model.cdate}}</b></p>
+                        </td>
+                        <td style="font-size: 0.65rem; padding:7px;" >
+                          <p style="color: #f3f3f3; font-size: 0.8rem; margin-bottom: 0px;"><b>{{model.chunggu}}</b></p>
+                        </td>
+                        <td style="font-size: 0.65rem; padding:7px; " >
+                          <p style="color: #f3f3f3; font-size: 0.8rem; margin-bottom: 0px;"><b>{{model.modelfee}}</b></p>
+                        </td>
+                        
+                      </tr>
+                    {% endfor %}
+                  {% endif %}
+
+                  
+                  
+          
+
+              
+
+              
+                 
+
+                    
+
+                  
+
+                  </tr>
+
+
+
+                  
+
+
+                 
+
+
+  
+              </tr>
+                   
+                  
+                </tbody>
+              </table>
+
             </div>
 
 

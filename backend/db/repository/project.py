@@ -16,7 +16,7 @@ from sqlalchemy.sql.expression import func
 
 from sqlalchemy.orm import Session
 # from schemas.jobs import JobCreate
-from db.projects.project import ProjectTable, ProjectMemo
+from db.projects.project import ProjectTable, ProjectMemo, ProjectModel
 
 
 
@@ -60,3 +60,8 @@ def get_project_info(db: Session, pcode):
 def get_project_memo(db: Session, pcode):
     memo = db.query(ProjectMemo).filter(ProjectMemo.code == pcode)
     return memo
+
+def get_project_model(db: Session, projcode):
+
+    models = db.query(ProjectModel).filter(ProjectModel.projcode == projcode)
+    return models

@@ -10,7 +10,7 @@ from db.session import get_db
 from fastapi.encoders import jsonable_encoder
 from striprtf.striprtf import rtf_to_text
 from starlette.responses import RedirectResponse
-from db.repository.project import get_project, get_filter_project, get_project_info, get_project_memo
+from db.repository.project import get_project, get_filter_project, get_project_info, get_project_memo, get_project_model
 
 
 import json
@@ -43,22 +43,44 @@ def project(request: Request, db: Session = Depends(get_db), pcode:str=''):
         for i in memos:
             memo_.append(i.split('\n'))
         
+
+        models = get_project_model(db, pcode)
+        models = jsonable_encoder(models[:])
+
+        for model in models:
+            model['chunggu'] = format(model['chunggu'], ',')    
+            model['modelfee'] = format(model['modelfee'], ',')    
+                  
+        print('project models :: ', models)
+
         token: str = request.cookies.get("access_token")
+
+
 
         if token is None:
             return RedirectResponse('/login')
         else:   
             return templates.TemplateResponse(
-                    "project_info.html", {"request": request, "info": info[0], "memos": memo_}
+                    "project_info.html", {"request": request, "info": info[0], "memos": memo_, "models": models}
             )
+
+
     except:
+
         token: str = request.cookies.get("access_token")
+
+
+        models = get_project_model(db, pcode)
+        models = jsonable_encoder(models[:])
+
+        print('project models :: ', models)
+
 
         if token is None:
             return RedirectResponse('/login')
         else:   
             return templates.TemplateResponse(
-                    "project_info.html", {"request": request, "info": info[0]}
+                    "project_info.html", {"request": request, "info": info[0], "models": models}
             )
 
 

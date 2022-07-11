@@ -17,8 +17,6 @@ class Chu19(Base):
     jum = Column(Integer)
     mcode = Column(String(20), ForeignKey("people.codesys"))
 
-    # chu = relationship("People", back_populates="people")
-
 
 # 추천2022_ 30일추천 테이블
 class Movsel(Base):

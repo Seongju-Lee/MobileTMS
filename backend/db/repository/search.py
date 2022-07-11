@@ -16,7 +16,7 @@ from sqlalchemy import between, desc, not_
 from sqlalchemy.sql.expression import func
 
 from sqlalchemy.orm import Session
-from schemas.jobs import JobCreate
+# from schemas.jobs import JobCreate
 from db.models.kmodels import  People2
 from db.models.kmodels import People, Chu19, Movsel, Mmeeting_proc, Yeon, SunokStar, SunokStarChu, SCount, Read, Mtel, Memo, Section, ModelCF, ModelMov
 from db.models.yeons import RealTimeCF, RealTimeDRAMA
@@ -386,12 +386,12 @@ def celeb_section(res_model, hidden_celeb_section):
         pass
    
     
-def create_new_job(job: JobCreate, db: Session, owner_id: int):
-    job = Job(**job.dict(), owner_id=owner_id)
-    db.add(job)
-    db.commit()
-    db.refresh(job)
-    return job
+# def create_new_job(job: JobCreate, db: Session, owner_id: int):
+#     job = Job(**job.dict(), owner_id=owner_id)
+#     db.add(job)
+#     db.commit()
+#     db.refresh(job)
+#     return job
 
 
 def retrieve_job(id: int, db: Session):

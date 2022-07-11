@@ -1,0 +1,168 @@
+{% extends "layouts/base.html" %}
+
+{% block title %} UI Tables {% endblock %} 
+
+<!-- Specific Page CSS goes HERE  -->
+{% block stylesheets %}{% endblock stylesheets %}
+
+{% block content %}
+
+<div class="row">
+  
+      
+  <div style="position: relative; padding-right: 10px; padding-left: 5px; flex: auto; min-width: 110px;">
+    <div class="card  card-plain">
+      <div class="card-header">
+        <h4 class="card-title" style="font-size: 1.5rem;"> 프로젝트 </h4>
+        <p class="category"> 등록된 프로젝트입니다.</p>
+      </div>
+      <div class="card-bodys" style="padding: 0.5rem;">
+        <div class="table-responsive" >
+          <table class="table tablesorter "  id="">
+            <thead class=" text-primary">
+              <tr>
+                <th>
+                  등록일
+                </th>
+                <th>
+                  프로젝트명
+                </th>
+                <th>
+                  광고주
+                </th>
+                <th class="text-center">
+                  광고회사
+                </th>
+              </tr>
+            </thead>
+            <tbody >
+
+              {% for project in a_project[:50] %}
+                <tr>
+                  <td style="font-size: 0.8rem; padding-right: 0px;" >
+                    {{project.date}}
+                    {{project.teamtag}}
+                  </td>
+                  <td style="font-size: 0.8rem;">
+                    {{project.prname}}
+                  </td>
+                  <td style="font-size: 0.8rem; padding-right: 0px;">
+                    {{project.cfowner}}
+                  </td>
+                  <td class="text-center" style="font-size: 0.8rem; padding-left: 0px;">
+                    {{project.cfco}}
+                  </td>
+                </tr>
+              {% endfor %}
+              <tr>
+                <td>
+                  Dakota Rice
+                </td>
+                <td>
+                  Niger
+                </td>
+                <td>
+                  Oud-Turnhout
+                </td>
+                <td class="text-center">
+                  $36,738
+                </td>
+              </tr>
+
+
+              <tr>
+                <td>
+                  Minerva Hooper
+                </td>
+                <td>
+                  Curaçao
+                </td>
+                <td>
+                  Sinaai-Waas
+                </td>
+                <td class="text-center">
+                  $23,789
+                </td>
+              </tr>
+              <tr>
+                <td>
+                  Sage Rodriguez
+                </td>
+                <td>
+                  Netherlands
+                </td>
+                <td>
+                  Baileux
+                </td>
+                <td class="text-center">
+                  $56,142
+                </td>
+              </tr>
+              <tr>
+                <td>
+                  Philip Chaney
+                </td>
+                <td>
+                  Korea, South
+                </td>
+                <td>
+                  Overland Park
+                </td>
+                <td class="text-center">
+                  $38,735
+                </td>
+              </tr>
+              <tr>
+                <td>
+                  Doris Greene
+                </td>
+                <td>
+                  Malawi
+                </td>
+                <td>
+                  Feldkirchen in Kärnten
+                </td>
+                <td class="text-center">
+                  $63,542
+                </td>
+              </tr>
+              <tr>
+                <td>
+                  Mason Porter
+                </td>
+                <td>
+                  Chile
+                </td>
+                <td>
+                  Gloucester
+                </td>
+                <td class="text-center">
+                  $78,615
+                </td>
+              </tr>
+              <tr>
+                <td>
+                  Jon Porter
+                </td>
+                <td>
+                  Portugal
+                </td>
+                <td>
+                  Gloucester
+                </td>
+                <td class="text-center">
+                  $98,615
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+{% endblock content %}
+
+<!-- Specific Page JS goes HERE  -->
+{% block javascripts %}{% endblock javascripts %}

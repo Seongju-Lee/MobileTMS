@@ -1,0 +1,372 @@
+{% extends "layouts/base-project.html" %}
+
+{% block title %} Page User {% endblock %} 
+
+<!-- Specific Page CSS goes HERE  -->
+{% block stylesheets %}
+  <style>
+   
+
+    @media (max-width: 600px) {
+      .table-width {
+        width: 500px;
+        overflow-x:auto;
+        white-space:nowrap;
+        margin:0 auto
+      }
+    }
+
+    @media (max-width: 420px) {
+      .table-width {
+        width: 300px;
+        overflow-x:auto;
+        white-space:nowrap;
+        margin:0 auto
+      }
+    }
+
+    
+  </style>
+
+{% endblock stylesheets %}
+  
+{% block content %}
+
+
+<div class="row">
+  <div class="col-md-12">
+    <div class="card">
+      <div class="card-header">
+        <h5 class="title">Edit Profile</h5>
+      </div>
+      <div class="card-bodys">
+        <form>
+          <h4> 프로젝트 정보 </h4>
+          <div class="row">
+            <div style="position: relative; padding-right: 15px; padding-left: 15px; min-width: 110px; margin: 3px;"> 
+            <!-- <div class="col-md-8 pr-md-1"> --> 
+
+              <div class="form-group">
+                <h5 style="margin-bottom: 1px;">프로젝트명</h5> <label>{{info.prname}}</label> 
+              </div>
+            
+              <div class="form-group" style="float:left; margin-right: 25px;">
+                <h5 style="margin-bottom: 1px;">담당팀</h5> <label>{{info.teamtag}}</label> 
+              </div>
+
+              <div class="form-group" style="display:inline-block; margin-right: 25px;">
+                <h5 style="margin-bottom: 1px;">작성일</h5><label>{{info.date}}</label> 
+              </div>
+
+              <div class="form-group" style="display:inline-block; margin-right: 25px;">
+                {% if info.workercap %}
+                <h5 style="margin-bottom: 1px;">영업관리</h5>
+                <label> {{info.workercap}} </label>
+
+                {% else %}
+                  <h5 style="margin-bottom: 1px;">영업관리</h5>
+                  <label> - </label>
+                {% endif %}
+              </div>
+
+              
+
+
+            <hr color = 'white' size='7px' width='100%' align='center' "> 
+            <!-- -------------------------------------------------------------------  -->
+            <!-- -------------------------------------------------------------------  -->
+            
+
+
+            <div class="table-responsive" >
+              <table class="table tablesorter" >
+                
+                
+                <tbody >
+    
+                  <tr>
+                    <td style="font-size: 0.8rem; padding-right: 7px; padding:3px;  border-top-width: 0px;" >
+                      {% if info.cfowner %}
+                        <p style="color: #f3f3f3; font-size: 0.8rem; margin-bottom: 0px;"><b>광고주</b></p>
+                        <p style="color: #b3aeae; font-size: 0.7rem;"><b>{{info.cfowner}}</b></p>
+                      {% else %}
+                        <p style="color: #f3f3f3; font-size: 0.8rem; margin-bottom: 0px;"><b>광고주</b></p>
+                        <p style="color: #b3aeae; font-size: 0.7rem;"><b>-</b></p>
+                      {% endif %}
+                    </td>
+
+                    <td style="font-size: 0.8rem; padding-right: 7px; padding:3px;  border-top-width: 0px;" >
+                      {% if info.cfco %}
+                        <p style="color: #f3f3f3; font-size: 0.8rem; margin-bottom: 0px;"><b>광고회사</b></p>
+                        <p style="color: #b3aeae; font-size: 0.7rem;"><b>{{info.cfco}}</b></p>
+                      {% else %}
+                        <p style="color: #f3f3f3; font-size: 0.8rem; margin-bottom: 0px;"><b>광고회사</b></p>
+                        <p style="color: #b3aeae; font-size: 0.7rem;"><b>-</b></p>
+                      {% endif %}
+                    </td>
+                    
+                  </tr>
+
+                  
+                  
+                  <tr>
+
+                    <td style="font-size: 0.8rem; padding-right: 6px; padding:3px;" >
+                      {% if info.cd %}
+                        <p style="color: #f3f3f3; font-size: 0.8rem;"><b>CD</b></p>
+                        <p style="color: #b3aeae; font-size: 0.7rem;"><b>{{info.cd}}</b></p>
+                        <p style="color: #b3aeae; font-size: 0.7rem;"><b> <a href="tel:{{info.cdtel}}"> {{info.cdtel}} </a></b></p>
+                      {% else %}
+                        <p style="color: #f3f3f3; font-size: 0.8rem;"><b>CD</b></p>
+                        <p style="color: #b3aeae; font-size: 0.7rem;"><b> - </b></p>
+                      {% endif %}
+  
+                    </td>
+                    
+                    <td style="font-size: 0.8rem; padding-right: 7px; padding:3px; " >
+                    </td>
+
+                  </tr>
+
+                  <tr>
+
+                    <td style="font-size: 0.8rem; padding-right: 7px; padding:3px; border-top-width: 0px;" >
+                      {% if info.ae %}
+                        <p style="color: #f3f3f3; font-size: 0.8rem;"><b>AE</b></p>
+                        <p style="color: #b3aeae; font-size: 0.7rem;"><b>{{info.ae}}</b></p>
+                        <p style="color: #b3aeae; font-size: 0.7rem;"><b> <a href="tel:{{info.aetel}}"> {{info.aetel}} </a></b></p>
+
+                      {% else %}
+                        <p style="color: #f3f3f3; font-size: 0.8rem;"><b>AE</b></p>
+                        <p style="color: #b3aeae; font-size: 0.7rem;"><b> - </b></p>
+                      {% endif %}
+                    </td>
+
+                    <td style="font-size: 0.8rem; padding-right: 7px; padding:3px; border-top-width: 0px;" >
+                      {% if info.ae2 %}
+                        <p style="color: #f3f3f3; font-size: 0.8rem;"><b>AE2</b></p>
+                        <p style="color: #b3aeae; font-size: 0.7rem;"><b>{{info.ae2}}</b></p>
+                        <p style="color: #b3aeae; font-size: 0.7rem;"><b><a href="tel:{{info.ae2tel}}"> {{info.ae2tel}} </a> </b></p>
+
+                     
+                      {% endif %}
+                    </td>
+
+
+                  </tr>
+  
+
+                  <tr>
+
+                    <td style="font-size: 0.8rem; padding-right: 6px; padding:3px; border-top-width: 0px;" >
+                      {% if info.pd %}
+                        <p style="color: #f3f3f3; font-size: 0.8rem;"><b>PD</b></p>
+                        <p style="color: #b3aeae; font-size: 0.7rem;"><b>{{info.pd}}</b></p>
+                        <p style="color: #b3aeae; font-size: 0.7rem;"><b><a href="tel:{{info.pdtel}}"> {{info.pdtel}} </a> </b></p>
+
+                      {% else %}
+                        <p style="color: #f3f3f3; font-size: 0.8rem;"><b>PD</b></p>
+                        <p style="color: #b3aeae; font-size: 0.7rem;"><b> - </b></p>
+                      {% endif %}
+  
+                    </td>
+                  </tr>
+
+                  <!-- 프로덕션 -->
+                  <tr>
+                    <td style="font-size: 0.8rem; padding-right: 6px; padding-left: 3px;  border-top-width: 0px; " >
+                      {% if info.prod %}
+                        <p style="color: #f3f3f3; font-size: 0.8rem;"><b>프로덕션</b></p>
+                        <p style="color: #b3aeae; font-size: 0.7rem;"><b>{{info.prod}}</b></p>
+                        <p style="color: #b3aeae; font-size: 0.7rem;"><b><a href="tel:{{info.prodpdtel}}"> {{info.prodpdtel}} </a> </b></p>
+
+                      {% else %}
+                        <p style="color: #f3f3f3; font-size: 0.8rem;"><b>프로덕션</b></p>
+                        <p style="color: #b3aeae; font-size: 0.7rem;"><b> - </b></p>
+                      {% endif %}
+  
+                    </td>
+                  </tr>
+
+                  <tr>
+                    <td style="font-size: 0.8rem; padding-right: 6px; padding-top: 2px; padding-left: 3px; border-top-width: 0px;" >
+                      {% if info.dir %}
+                        <p style="color: #f3f3f3; font-size: 0.8rem;"><b>감독</b></p>
+                        <p style="color: #b3aeae; font-size: 0.7rem;"><b>{{info.dir}}</b></p>
+                        <p style="color: #b3aeae; font-size: 0.7rem;"><b><a href="tel:{{info.dirtel}}"> {{info.dirtel}} </a> </b></p>
+                      {% else %}
+                      <p style="color: #f3f3f3; font-size: 0.8rem;"><b>감독</b></p>
+                      <p style="color: #b3aeae; font-size: 0.7rem;"><b> - </b></p>
+                     
+                      {% endif %}
+                    </td>
+
+                    <td style="font-size: 0.8rem; padding-right: 6px; padding-top: 2px; padding-left: 3px; border-top-width: 0px;" >
+                      {% if info.sdir1 %}
+                        <p style="color: #f3f3f3; font-size: 0.8rem;"><b>조감독</b></p>
+                        <p style="color: #b3aeae; font-size: 0.7rem;"><b>{{info.sdir1}}</b></p>
+                        <p style="color: #b3aeae; font-size: 0.7rem;"><b><a href="tel:{{info.sdir1tel}}"> {{info.sdir1tel}} </a> </b></p>
+
+                      {% endif %}
+  
+                    </td>
+                  </tr>
+
+
+                  <td style="font-size: 0.8rem; padding-right: 6px; padding-left: 3px; padding-top: 2px; border-top-width: 0px; " >
+                    {% if info.pdcomp %}
+                      {% if info.pdcomptel %}
+                        <p style="color: #f3f3f3; font-size: 0.8rem;"><b>PD컴퍼니</b></p>
+                        <p style="color: #b3aeae; font-size: 0.7rem;"><b>{{info.pdcomp}}</b></p>
+                        <p style="color: #b3aeae; font-size: 0.7rem;"><b><a href="tel:{{info.pdcomptel}}"> {{info.pdcomptel}} </a> </b></p>
+                      {% else %}
+                        <p style="color: #f3f3f3; font-size: 0.8rem;"><b>PD컴퍼니</b></p>
+                        <p style="color: #b3aeae; font-size: 0.7rem;"><b>{{info.pdcomp}}</b></p><br>
+                        <p style="color: #b3aeae; font-size: 0.7rem;"><b></b></p>
+                      {% endif %}
+                    {% else %}
+                      <p style="color: #f3f3f3; font-size: 0.8rem;"><b>PD컴퍼니</b></p><br>
+                      <p style="color: #b3aeae; font-size: 0.7rem;"><b> - </b></p>
+                    {% endif %}
+
+                  </td>
+
+
+                    <td style="font-size: 0.8rem; padding-right: 6px; padding-left: 3px; padding-top: 2px; border-top-width: 0px; " >
+                      {% if info.pdcomppd1 %}
+                        <p style="color: #f3f3f3; font-size: 0.8rem;"><b>PD1</b></p>
+                        <p style="color: #b3aeae; font-size: 0.7rem;"><b>{{info.pdcomppd1}}</b></p>
+                        <p style="color: #b3aeae; font-size: 0.7rem;"><b><a href="tel:{{info.pdcomppd1tel}}"> {{info.pdcomppd1tel}} </a> </b></p>
+
+                      {% else %}
+                        <p style="color: #f3f3f3; font-size: 0.8rem;"><b>PD1</b></p><br>
+                        <p style="color: #b3aeae; font-size: 0.7rem;"><b> - </b></p>
+                      {% endif %}
+  
+                    </td>
+
+                    <td style="font-size: 0.8rem; padding-right: 6px; padding-left: 3px; padding-top: 2px; border-top-width: 0px;" >
+                      {% if info.pdcomppd2 %}
+                        <p style="color: #f3f3f3; font-size: 0.8rem;"><b>PD2</b></p>
+                        <p style="color: #b3aeae; font-size: 0.7rem;"><b>{{info.pdcomppd2}}</b></p>
+                        <p style="color: #b3aeae; font-size: 0.7rem;"><b><a href="tel:{{info.pdcomppd2tel}}"> {{info.pdcomppd2tel}} </a>  {{info.pdcomppd2tel}}</b></p>
+
+                     
+                      {% endif %}
+  
+                    </td>
+
+                  </tr>
+
+
+
+                  <tr >
+
+                    <td style="font-size: 0.8rem; padding-right: 6px; padding-left:3px; padding-top:25px;" >
+                      {% if info.media %}
+                        <p style="color: #f3f3f3; font-size: 0.8rem;"><b>매체</b></p>
+                        <p style="color: #b3aeae; font-size: 0.7rem;"><b>{{info.media}}</b></p>
+
+                      {% else %}
+                      <p style="color: #f3f3f3; font-size: 0.8rem;"><b>매체</b></p>
+                      <p style="color: #b3aeae; font-size: 0.7rem;"><b>-</b></p>
+                      {% endif %}
+  
+                    </td>
+
+                    <td style="font-size: 0.8rem; padding-right: 6px; padding-left:3px; padding-top:25px;" >
+                      {% if info.gegigan %}
+                        <p style="color: #f3f3f3; font-size: 0.8rem;"><b>계약기간</b></p>
+                        <p style="color: #b3aeae; font-size: 0.7rem;"><b>{{info.gegigan}}</b></p>
+
+                      {% else %}
+                      <p style="color: #f3f3f3; font-size: 0.8rem;"><b>계약기간</b></p>
+                      <p style="color: #b3aeae; font-size: 0.7rem;"><b>-</b></p>
+                      {% endif %}
+  
+                    </td>
+    
+                  </tr>
+
+
+                  <tr>
+
+                    <td style="font-size: 0.8rem; padding-right: 6px; padding:3px; border-top-width: 0px;" >
+                      {% if info.camsched %}
+                        <p style="color: #f3f3f3; font-size: 0.8rem;"><b>촬영일정</b></p>
+                        <p style="color: #b3aeae; font-size: 0.7rem;"><b>{{info.camsched}}</b></p>
+
+                      {% else %}
+                        <p style="color: #f3f3f3; font-size: 0.8rem;"><b>촬영일정</b></p>
+                        <p style="color: #b3aeae; font-size: 0.7rem;"><b> - </b></p>
+                      {% endif %}
+  
+                    </td>
+    
+                    <!-- <td style="font-size: 0.8rem; padding-right: 7px; padding:3px; " >
+                    </td> -->
+
+                  </tr>
+
+
+
+                  <td style="font-size: 0.8rem; padding-right: 6px; padding:3px; border-top-width: 0px;" >
+                    {% if info.pd %}
+                      <p style="color: #f3f3f3; font-size: 0.8rem;"><b>모델료 지급사</b></p>
+                      <p style="color: #b3aeae; font-size: 0.7rem;"><b>{{info.feecom}}</b></p>
+
+                    {% else %}
+                      <p style="color: #f3f3f3; font-size: 0.8rem;"><b>모델료 지급사</b></p>
+                      <p style="color: #b3aeae; font-size: 0.7rem;"><b> - </b></p>
+                    {% endif %}
+
+                  </td>
+  
+              </tr>
+                   
+                  
+                </tbody>
+              </table>
+            </div>
+
+
+
+            <div >
+              <div class="form-check">
+                  <h4 > 통화메모 </h4>
+              </div>
+              {% if memos %}
+                {% for memo in memos %}
+                  
+                  {% for m in memo %}
+                    <h5 style=" font: bold 1.2em/1em; ">{{m}}</h5>
+                  {% endfor %}
+                  <hr color = 'white' size='7px' width=60%' align='left' "> 
+                {% endfor %}
+
+              {% else %}
+                <h5 style=" font: bold 1.2em/1em; "> - </h5>
+
+              {% endif %}
+            </div>
+
+
+          </div>  
+
+
+
+            
+            </div>
+        </div>
+                       
+     
+  </div>
+</div>
+
+ 
+</div>
+
+{% endblock content %}
+
+<!-- Specific Page JS goes HERE  -->
+{% block javascripts %}{% endblock javascripts %}

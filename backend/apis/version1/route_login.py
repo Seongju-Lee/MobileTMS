@@ -1,4 +1,3 @@
-import http
 from fastapi.security import OAuth2PasswordRequestForm
 from fastapi import Depends
 from fastapi import APIRouter

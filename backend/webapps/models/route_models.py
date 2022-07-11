@@ -1,28 +1,12 @@
-from dataclasses import dataclass
 from datetime import datetime, timedelta
-from multiprocessing.dummy import JoinableQueue
-from pyexpat import model
-from re import A
-from statistics import mode
-from time import time
-import turtle
-from black import out
 from fastapi import APIRouter, Depends
 from fastapi import Request, status, responses, Response, requests
-from fastapi.security.utils import get_authorization_scheme_param
 from fastapi.responses import HTMLResponse
 from fastapi.templating import Jinja2Templates
-from db.repository.search import list_jobs, search_job, list_models, chu_30, movchoi, proc, order_register, order_recommend, order_s_count, order_read, search_celeb
-from db.repository.search import retrieve_job, create_new_job, order_realtime, models_info, proc_celeb, img_mov_info, cf_mov_info, act_mov_info
-from jinja2 import ModuleLoader
-from numpy import min_scalar_type, mod
-from pyparsing import col
-from sqlalchemy import JSON, String,  null, true
+from db.repository.search import search_job,  chu_30, movchoi, proc, order_register, order_recommend, order_s_count, order_read, search_celeb
+from db.repository.search import   order_realtime, models_info, proc_celeb, img_mov_info, cf_mov_info, act_mov_info
 from sqlalchemy.orm import Session
 from db.session import get_db
-from webapps.jobs.forms import JobCreateForm
-from schemas.jobs import JobCreate
-from typing import Optional
 from fastapi.encoders import jsonable_encoder
 from striprtf.striprtf import rtf_to_text
 from starlette.responses import RedirectResponse
@@ -40,7 +24,7 @@ access_time = datetime.now()
 def home(request: Request, db: Session = Depends(get_db)):
     now_year = datetime.today().year
     years = [i for i in range(now_year-1, 1930, -1)]
-
+ 
     try:
         
         token: str = request.cookies.get("access_token")
@@ -64,11 +48,7 @@ def home(request: Request, db: Session = Depends(get_db)):
     now_year = datetime.today().year
     years = [i for i in range(now_year-1, 1930, -1)]
 
-    # print(now_time, 'aaaaaaaaaaaa')
     try:
-        
-        # if datetime.now() > (access_time + timedelta(minutes=1)):
-        #     request.cookies.__delitem__("access_token")
         
         token: str = request.cookies.get("access_token")
 
@@ -86,17 +66,6 @@ def home(request: Request, db: Session = Depends(get_db)):
     except:
         print('?')
 
-# @router.get("/login")
-# def home(request: Request, db: Session = Depends(get_db)):
-
-#     now_year = datetime.today().year
-#     years = [i for i in range(now_year-10, 1930, -1)]
-
-#     return templates.TemplateResponse(
-#         "login.html", {"request": request,
-#                        "years": years,  "now_year": now_year}
-#     )
-
 
 ######################
 # 날짜, 성별, 연령 등 필터들 예외처리 해놔야 함.
@@ -106,8 +75,8 @@ def search_filter(req: Request, s_date: str = '', e_date: str = '', gender_m: st
                   s_img: str = '', e_img: str = '', s_fav: str = '', e_fav: str = '', s_act: str = '', e_act: str = '', s_age: str = '', hidden_alpha_fee:str='', hidden_celeb_fee:str='', hidden_celeb_fee_month:str='',
                   hidden_celeb_section: str='',
                   e_age: str = '', chk_model: str = '', chk_celeb: str = '', detail_search: str = '',
-                  query: str = '', name: str = '', coname: str = '', manager: str = '', tel: str = '', chk_age: str = '', alpha_fees: str = '',
-                  hidden_echar: str = '', hidden_rchar: str = '', btn_img: str='', btn_fav: str='', btn_act: str='', hidden_score : str='',
+                  name: str = '', coname: str = '', manager: str = '', tel: str = '',  alpha_fees: str = '',
+                  hidden_echar: str = '', hidden_rchar: str = '', hidden_score : str='',
                   db: Session = Depends(get_db)):
 
 
@@ -124,10 +93,7 @@ def search_filter(req: Request, s_date: str = '', e_date: str = '', gender_m: st
     
     else:
         pass
-        # return templates.TemplateResponse(
-        #     "index.html", {"request": request,
-        #                 "years": years,  "now_year": now_year}
-        # )
+      
 
     if chk_celeb == '':
         filter_celeb = ''
@@ -142,23 +108,12 @@ def search_filter(req: Request, s_date: str = '', e_date: str = '', gender_m: st
     ll.append(alpha_fees)
     
 
-    print('모델료 체크: ', hidden_alpha_fee)
-    # if not (name or coname or manager or tel ):
-    #     return templates.TemplateResponse(
-    #         "ui-icons.html", {"request": req,
-    #                           "years": years,  "now_year": now_year}
-    #     )
-
-    
-
-    print('tq: ', s_age  , e_age)
     if s_age=='' and e_age == '':
         search_ages.append(['2021', '1931'])
         
     else:
         search_ages.append([s_age, e_age])
         
-    print(search_ages, 'tqtqtqt')
     if not (model_filter or filter_celeb ) and detail_search:
         return templates.TemplateResponse(
             "ui-icons.html", {"request": req,
@@ -262,8 +217,6 @@ def search_filter(req: Request, s_date: str = '', e_date: str = '', gender_m: st
                 pass
 
             
-            print('dkkkkkkkkkkk: ', hidden_score)
-
             hidden_scores = hidden_score.split(',')
 
             for model in filter_models:
@@ -731,11 +684,9 @@ def search_filter(req: Request, s_date: str = '', e_date: str = '', gender_m: st
                     else:
                         celebs.append(search_celebs[0])
                 else:
-                    print('검색: ', model)
                     kmodels.append(model)
 
             jobs = celebs + kmodels
-            print('최종 검색 본: ', jobs)
 
             try:
 
@@ -792,7 +743,6 @@ def model_info(req: Request, codesys: str = '', db: Session = Depends(get_db)):
     years = [i for i in range(now_year-1, 1930, -1)]
 
     # try:
-    print('세부 정보 페이지 접속..', codesys)
     info, activities, call_memo, token = models_info(
         db=db, codesys=codesys)
 

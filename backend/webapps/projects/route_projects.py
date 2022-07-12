@@ -113,7 +113,8 @@ isceleb: str=''):
         a_project = get_project(db=db)
         a_project = (jsonable_encoder(a_project[:]))
 
-        a_project = list(reversed(a_project))
+        print('all project 확인 :: ', a_project)
+        a_project = list((a_project))
 
         
         return templates.TemplateResponse(
@@ -127,8 +128,7 @@ isceleb: str=''):
         ## 레디 진행이력 프로젝트 검색
 
         search_project = get_project_with(db, entertainment)
-        print( 'project tabel create :: ' , len(search_project))
-        
+        search_project = sorted(search_project , key= lambda x: x['cdate'], reverse=True)
 
         return templates.TemplateResponse(
                 "entertainment_project.html", {"request": request,

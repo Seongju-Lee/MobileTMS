@@ -24,7 +24,8 @@ from dateutil.relativedelta import relativedelta
  
 def get_project(db: Session):
     
-    a_project = db.query(ProjectTable)
+    a_project = db.query(ProjectTable).order_by(ProjectTable.date.desc()).limit(100)
+    
     return a_project
 
 
@@ -94,7 +95,6 @@ def get_project_with(db: Session, entertainment):
         for project in projects:
             if (project['modelfee']):
                 project['modelfee'] = format(project['modelfee'], ',')
-                # project['modelfee'] = '0.' + project['modelfee'][0:2]
             
             if project['susu']:  
                 project['susu'] =format(project['susu'], ',')
@@ -103,6 +103,9 @@ def get_project_with(db: Session, entertainment):
             project_table.append(project)
 
 
+
+
+    
     return project_table
     # for i in project_table:
     #     print( '프로젝트 테이블 구성 :: ' , i)

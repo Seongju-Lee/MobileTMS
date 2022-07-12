@@ -67,7 +67,7 @@ class ProjectMemo(Base):
     memo = Column(Text)
 
 
-class ProjectModel(Base):
+class ProjectContract(Base):
     __tablename__ = "money5"
 
     no = Column(Integer,  primary_key=True)
@@ -77,3 +77,13 @@ class ProjectModel(Base):
     mname = Column(String(30)) # 모델명
     modelfee = Column(Integer) # 모델료
     chunggu = Column(Integer) # 청구액
+    poom = Column(String(30)) # 프로젝트명
+    rdate = Column(String(30)) # 입력일
+    susu = Column(Integer) # 수수료
+    etc = Column(String(20)) # 비고
+    geyakdate = Column(String(30)) # 계약일
+    enddate = Column(String(30)) # 종료일
+    geyakm = Column(String(30)) # 계약개월
+    is_star = Column(String(20)) # 연예인
+    
+

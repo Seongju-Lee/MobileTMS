@@ -10,11 +10,12 @@ from db.session import get_db
 from fastapi.encoders import jsonable_encoder
 from striprtf.striprtf import rtf_to_text
 from starlette.responses import RedirectResponse
-from db.repository.project import get_project, get_filter_project, get_project_info, get_project_memo, get_project_model
+from db.repository.project import get_project, get_filter_project, get_project_info, get_project_memo, get_project_model, get_project_with
 
 
 import json
 import pandas as pd
+
 
 templates = Jinja2Templates(directory="templates")
 router = APIRouter()
@@ -92,6 +93,7 @@ project_name: str = '',
 rd_team: str = '',
 cf_owner: str = '',
 cf_regdate: str = '',
+entertainment: str = '',
 isceleb: str=''):
 
     now_year = datetime.today().year
@@ -104,6 +106,8 @@ isceleb: str=''):
     if token is None:
         return RedirectResponse('/login')
     
+
+    # 아무것도 입력안하고, 처음 경로로 들어오면 모든 프로젝트 검색
     elif not project_name and not rd_team and not cf_owner and not cf_regdate:
 
         a_project = get_project(db=db)
@@ -111,7 +115,7 @@ isceleb: str=''):
 
         a_project = list(reversed(a_project))
 
-
+        
         return templates.TemplateResponse(
             "project-table.html", {"request": request,
                         "years": years,  "now_year": now_year, "a_project": a_project}
@@ -119,19 +123,34 @@ isceleb: str=''):
 
 
 
-    print(project_name, rd_team, cf_owner, cf_regdate, isceleb)
-    filter_project = get_filter_project(db=db, project_name=project_name, rd_team=rd_team, cf_owner=cf_owner, cf_regdate=cf_regdate, isceleb=isceleb)
+    if entertainment:
+        ## 레디 진행이력 프로젝트 검색
 
-    f_project = (jsonable_encoder(filter_project[:]))
+        search_project = get_project_with(db, entertainment)
+        print( 'project tabel create :: ' , len(search_project))
+        
 
-    f_project = list(reversed(f_project))
+        return templates.TemplateResponse(
+                "entertainment_project.html", {"request": request,
+                            "years": years,  "now_year": now_year, 'entertainment_project': search_project, 'entertainment': entertainment}
+        )
+
+
+    else:
+        # 검색 필터에 맞는 프로젝트만 검색
+        print(project_name, rd_team, cf_owner, cf_regdate, isceleb)
+        filter_project = get_filter_project(db=db, project_name=project_name, rd_team=rd_team, cf_owner=cf_owner, cf_regdate=cf_regdate, isceleb=isceleb)
+
+        f_project = (jsonable_encoder(filter_project[:]))
+
+        f_project = list(reversed(f_project))
 
 
 
-    return templates.TemplateResponse(
-            "project-table.html", {"request": request,
-                        "years": years,  "now_year": now_year, "a_project": f_project}
-    )
+        return templates.TemplateResponse(
+                "project-table.html", {"request": request,
+                            "years": years,  "now_year": now_year, "a_project": f_project}
+        )
         
     
     # except:

@@ -16,9 +16,10 @@ from sqlalchemy.sql.expression import func
 
 from sqlalchemy.orm import Session
 # from schemas.jobs import JobCreate
-from db.projects.project import ProjectTable, ProjectMemo, ProjectModel
-
-
+from db.projects.project import ProjectTable, ProjectMemo, ProjectContract
+from db.models.kmodels import People
+from datetime import datetime
+from dateutil.relativedelta import relativedelta
 
  
 def get_project(db: Session):
@@ -63,5 +64,47 @@ def get_project_memo(db: Session, pcode):
 
 def get_project_model(db: Session, projcode):
 
-    models = db.query(ProjectModel).filter(ProjectModel.projcode == projcode)
+    models = db.query(ProjectContract).filter(ProjectContract.projcode == projcode)
     return models
+
+
+def get_project_with(db: Session, entertainment):
+
+
+    ############## 소속 연예인 리스트 ############
+    codes = []
+    entertainment_models = db.query(People.codesys).filter(People.coname.contains(entertainment))
+
+    for code in jsonable_encoder(entertainment_models[:]):
+
+        codes.append(code['codesys'])
+    
+
+
+    ############################
+
+    ############# 소속 연예인들 레디 진행 이력 리스트 ##############
+
+    project_table = []
+
+    for model in codes:
+        projects = db.query(ProjectContract).filter(ProjectContract.code == model).filter(ProjectContract.cdate >= (datetime.today() - relativedelta(months=36)))
+        projects = jsonable_encoder(projects[:])
+
+        for project in projects:
+            if (project['modelfee']):
+                project['modelfee'] = format(project['modelfee'], ',')
+                # project['modelfee'] = '0.' + project['modelfee'][0:2]
+            
+            if project['susu']:  
+                project['susu'] =format(project['susu'], ',')
+            if project['chunggu']:
+                project['chunggu'] = format(project['chunggu'], ',')
+            project_table.append(project)
+
+
+    return project_table
+    # for i in project_table:
+    #     print( '프로젝트 테이블 구성 :: ' , i)
+
+    # search_project = db.query(ProjectContract).filter(ProjectContract.)

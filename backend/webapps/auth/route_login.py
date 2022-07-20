@@ -34,6 +34,7 @@ def token(user_phone: str='', user_id: str='',  access_token: str=''):
 
     response = RedirectResponse(url='/v1' )
     response.set_cookie(key="access_token", value=access_token, expires= 10800)
+    response.set_cookie(key="usr", value=user_id, expires= 10800)
     return response
   
 
@@ -51,6 +52,7 @@ def token_auth(input_auth: str='', user_id: str='', db: Session = Depends(get_db
 
     response = RedirectResponse(url='/', status_code=302)
     response.set_cookie(key="access_token", value=access_token, expires= 10800)
+    response.set_cookie(key="usr", value=user_id, expires= 10800)
 
     if Hasher.verify_password(input_auth, hashed_auth_num):
         return response

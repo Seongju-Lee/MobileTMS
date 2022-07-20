@@ -11,13 +11,15 @@ from tkinter import HIDDEN
 from xmlrpc.server import SimpleXMLRPCRequestHandler
 from fastapi.encoders import jsonable_encoder
 from numpy import sort
-from sqlalchemy import between, desc, not_
+from sqlalchemy import between, desc, false, not_, true
 from sqlalchemy.sql.expression import func
 
 from sqlalchemy.orm import Session
 # from schemas.jobs import JobCreate
 from db.projects.project import ProjectTable, ProjectMemo, ProjectContract
 from db.models.kmodels import People
+from db.models.users import Users, RUsers
+
 from datetime import datetime
 from dateutil.relativedelta import relativedelta
 
@@ -102,12 +104,22 @@ def get_project_with(db: Session, entertainment):
                 project['chunggu'] = format(project['chunggu'], ',')
             project_table.append(project)
 
-
-
-
     
     return project_table
-    # for i in project_table:
-    #     print( '프로젝트 테이블 구성 :: ' , i)
 
-    # search_project = db.query(ProjectContract).filter(ProjectContract.)
+## 보안 프로젝트 일 경우만 call
+def project_security(db: Session, user_id, pcode, team_scrty, admin_scrty):
+
+
+    user_auth = db.query(RUsers.team, RUsers.power8).filter(RUsers.uid == user_id)
+    user_auth = jsonable_encoder(user_auth[:])[0]
+
+
+    if (user_auth['team'] in team_scrty) or ('PBO' in user_auth['power8']):
+        return 1
+    else:
+        return 0
+
+    
+
+

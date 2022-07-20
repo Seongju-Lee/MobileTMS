@@ -33,6 +33,8 @@ class ProjectTable(Base):
     pdcomp = Column(String(100)) # PD컴퍼니
     pdcomptel = Column(String(100)) # PD컴퍼니 TEL
 
+    onairck = Column(String(100)) # 온에어 날짜 
+
 
     pdcomppd1 = Column(String(100)) # PD컴퍼니 TEL
     pdcomppd1tel = Column(String(100)) # PD컴퍼니 TEL
@@ -54,6 +56,9 @@ class ProjectTable(Base):
     seleb = Column(String(20)) # 셀럽건 확인 여부
     
     prname = Column(String(100)) # 프로젝트명
+    
+    boan19 = Column(String(100)) # 보안 프로젝트 - 기본 관리자만 접근 가능
+    boan19ca = Column(String(100)) # 보안 프로젝트 - 지정된 팀만 접근 가능
 
     
 
@@ -85,5 +90,5 @@ class ProjectContract(Base):
     enddate = Column(String(30)) # 종료일
     geyakm = Column(String(30)) # 계약개월
     is_star = Column(String(20)) # 연예인
-    
+
 

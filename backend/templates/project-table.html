@@ -25,13 +25,16 @@
                   등록일
                 </th>
                 <th>
-                  프로젝트명
+                  프로젝트명 
                 </th>
                 <th>
                   광고주
                 </th>
                 <th class="text-center">
                   광고회사
+                </th>
+                <th>
+                  온에어
                 </th>
               </tr>
             </thead>
@@ -52,18 +55,27 @@
 
 
                   <td style="font-size: 0.8rem;">
-                    <a href='/p/{{project.code}}' style="font-size: 0.8rem; color: #ffffff;"><b>{{project.prname}}</b></a>
+                    <a href='/p/{{project.code}}' style="font-size: 0.8rem; color: #ffffff;  text-align: center;"><b>{{project.prname}} </b></a>
                   </td>
 
 
-                  <td style="font-size: 0.8rem; padding-right: 0px;">
+                  <td style="font-size: 0.8rem; padding-right: 2px;  text-align: center;">
                     {{project.cfowner}}
                   </td>
-
-
-                  <td class="text-center" style="font-size: 0.8rem; padding-left: 0px;">
+                  
+                  <td class="text-center" style="font-size: 0.8rem; padding-left: 1px;  text-align: center;">
                     {{project.cfco}}
                   </td>
+
+                  
+                    <td style="font-size: 0.8rem; padding-right: 2px; text-align: center;">
+                      {% if project.onairck %}
+                        {{project.onairck}}
+                      {% else %}
+                        -
+                      {%endif%}
+                    </td>
+                  
                 </tr>
               {% endfor %}
               

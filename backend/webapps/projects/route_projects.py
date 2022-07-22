@@ -57,6 +57,7 @@ def project(request: Request, db: Session = Depends(get_db), pcode:str=''):
         team_scrty.remove('')
         admin_scrty.remove('')
 
+        print('chk :: ', user, pcode, team_scrty, admin_scrty )
         scrty = project_security(db, user, pcode, team_scrty, admin_scrty)
 
 

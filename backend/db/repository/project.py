@@ -112,6 +112,8 @@ def project_security(db: Session, user_id, pcode, team_scrty, admin_scrty):
 
 
     user_auth = db.query(RUsers.team, RUsers.power8).filter(RUsers.uid == user_id)
+
+    print(' 유저 권한 확인 :: ' , jsonable_encoder(user_auth[:]))
     user_auth = jsonable_encoder(user_auth[:])[0]
 
 

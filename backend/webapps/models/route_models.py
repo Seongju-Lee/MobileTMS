@@ -1,4 +1,5 @@
 from datetime import datetime, timedelta
+import socketserver
 from fastapi import APIRouter, Depends
 from fastapi import Request, status, responses, Response, requests
 from fastapi.responses import HTMLResponse
@@ -13,6 +14,8 @@ from starlette.responses import RedirectResponse
  
 import json
 import pandas as pd
+import socket, platform
+
 
 templates = Jinja2Templates(directory="templates")
 router = APIRouter()
@@ -25,15 +28,32 @@ def home(request: Request, db: Session = Depends(get_db)):
     now_year = datetime.today().year
     years = [i for i in range(now_year-1, 1930, -1)]
  
+
     try:
         
         token: str = request.cookies.get("access_token")
+        user_id: str = request.cookies.get("usr")
 
-        print('token입니다. ', token)
+
+        #  token이 없을 때는 로그 넘기지 X
+
+
+        # token이 있을 때 - user_id 넘김. (user_id, device, ip, currnet_time, 현재 페이지(screen) - main )
+
+        # user_id
+        print('유저 아이디 ::  ', user_id)
+        print('디바이스 정보 ::  ', platform.system() )
+
+        
+        print('접속 IP ::  ', socket.gethostbyname(socket.gethostname()))
+        print('접속 시간 ::  ', user_id)
+
+
         if token is None:
             return RedirectResponse('/login')
         
         else:
+
 
             return templates.TemplateResponse(
                 "index.html", {"request": request,

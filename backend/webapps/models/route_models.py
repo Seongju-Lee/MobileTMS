@@ -16,7 +16,6 @@ import json
 import pandas as pd
 import socket, platform
 
-
 templates = Jinja2Templates(directory="templates")
 router = APIRouter()
 
@@ -41,8 +40,8 @@ def home(request: Request, db: Session = Depends(get_db)):
         # token이 있을 때 - user_id 넘김. (user_id, device, ip, currnet_time, 현재 페이지(screen) - main )
 
         # user_id
-        print('유저 아이디 ::  ', user_id)
-        print('디바이스 정보 ::  ', platform.system() )
+        print('유저 아이디 ::  ', platform.platform())
+        # print('디바이스 정보 ::  ', platform.system())
 
         
         print('접속 IP ::  ', request.client.host)

@@ -28,7 +28,7 @@ def home(request: Request, db: Session = Depends(get_db)):
     now_year = datetime.today().year
     years = [i for i in range(now_year-1, 1930, -1)]
  
-
+    
     try:
         
         token: str = request.cookies.get("access_token")
@@ -45,7 +45,7 @@ def home(request: Request, db: Session = Depends(get_db)):
         print('디바이스 정보 ::  ', platform.system() )
 
         
-        print('접속 IP ::  ', socket.gethostbyname(socket.gethostname()))
+        print('접속 IP ::  ', request.client.host)
         print('접속 시간 ::  ', user_id)
 
 

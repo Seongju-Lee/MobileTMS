@@ -67,6 +67,10 @@ def project(request: Request, db: Session = Depends(get_db), pcode:str=''):
                     "project_info.html", {"request": request, "info": '보안'}
             )
 
+        elif scrty == 'fail':
+                return templates.TemplateResponse(
+                        "project_info.html", {"request": request, "info": '로그아웃'}
+                )
 
     try:
         memo = rtf_to_text(pmemo[0]['memo']) # memo 없으면 except

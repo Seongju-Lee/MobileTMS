@@ -1,3 +1,4 @@
+from ast import expr_context
 from asyncore import write
 from curses import reset_prog_mode
 from datetime import date, datetime, timedelta
@@ -113,15 +114,17 @@ def project_security(db: Session, user_id, pcode, team_scrty, admin_scrty):
 
     user_auth = db.query(RUsers.team, RUsers.power8).filter(RUsers.uid == user_id)
 
-    print(' 유저 권한 확인 :: ' , jsonable_encoder(user_auth[:]))
-    user_auth = jsonable_encoder(user_auth[:])[0]
+    try:
+        print(' 유저 권한 확인 :: ' , jsonable_encoder(user_auth[:]))
+        user_auth = jsonable_encoder(user_auth[:])[0]
 
 
-    if (user_auth['team'] in team_scrty) or ('PBO' in user_auth['power8']):
-        return 1
-    else:
-        return 0
-
+        if (user_auth['team'] in team_scrty) or ('PBO' in user_auth['power8']):
+            return 1
+        else:
+            return 0
+    except:
+        return 'fail'
     
 
 

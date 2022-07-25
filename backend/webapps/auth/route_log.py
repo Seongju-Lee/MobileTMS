@@ -22,9 +22,34 @@ router = APIRouter()
 def access_main(request: Request, db: Session = Depends(get_db)):
 
 
+
+
+
+
+    #  token이 없을 때는 로그 넘기지 X      
+
+
+    # token이 있을 때 - user_id 넘김.
     # 접속 id, ip, device, 날짜, 화면(main),
     
     req = request.__dict__['_headers']
-    # id
-    print(' route log :: ', req)
+    
 
+
+    ## id : usr
+    user_id: str = request.cookies.get("usr")
+    print('USER ID :: ', user_id)
+
+    ## ip : request.client.host
+    print('USER IP :: ', request.client.host)
+
+    ## device : user-agent
+    print('USER DEVICE :: ' , request.__dict__['_headers']['user-agent'])
+    ## 날짜 : datetime
+    now = datetime.now()
+    print(now)
+    ## 화면 : main
+    print('USER SCREEN :: ' , 'main')
+
+    return req
+    

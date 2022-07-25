@@ -53,8 +53,22 @@
       
       var IorA = navigator.userAgent.toLowerCase()
       // var IorA = navigator.userAgent.toLowerCase();
+      var path = window.location.pathname;
+      console.log(' ::::: ', path);
 
-      console.log(' ::::: ', IorA);
+      $.ajax({
+        url: "/main",
+        type: "POST",
+        dataType: "json",
+        contentType: "application/json",
+        data : {
+          os : IorA
+        }
+
+      });
+
+
+      
     });
   </script>
 

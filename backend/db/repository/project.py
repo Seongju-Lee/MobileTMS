@@ -27,7 +27,7 @@ from dateutil.relativedelta import relativedelta
  
 def get_project(db: Session):
     
-    a_project = db.query(ProjectTable).order_by(ProjectTable.date.desc()).limit(100)
+    a_project = db.query(ProjectTable).order_by(ProjectTable.date.desc()).limit(300)
     
     return a_project
 

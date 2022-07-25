@@ -40,7 +40,7 @@
             </thead>
             <tbody >
 
-              {% for project in a_project[:50] %}
+              {% for project in a_project[:] %}
                 <tr>
                   <td style="font-size: 0.8rem; padding-right: 0px;" >
                     <p style="color: #f3f3f3; font-size: 0.75rem;"><b>{{project.date}}</b></p>
@@ -55,7 +55,7 @@
 
 
                   <td style="font-size: 0.8rem;">
-                    <a href='/p/{{project.code}}' style="font-size: 0.8rem; color: #ffffff;  text-align: center;"><b>{{project.prname}} </b></a>
+                    <a href='/p/{{project.code}}' target="_blank" style="font-size: 0.8rem; color: #ffffff;  text-align: center;"><b>{{project.prname}} </b></a>
                   </td>
 
 

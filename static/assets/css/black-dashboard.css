@@ -4940,7 +4940,7 @@
     }
   }
   
-  @media (max-width: 991.98px) {
+  @media (max-width: 1991.98px) {
   
     .navbar-expand-lg>.container,
     .navbar-expand-lg>.container-fluid {
@@ -4949,7 +4949,7 @@
     }
   }
   
-  @media (min-width: 992px) {
+  @media (min-width: 1992px) {
     .navbar-expand-lg {
       flex-flow: row nowrap;
       justify-content: flex-start;
@@ -15933,7 +15933,7 @@
     font-size: 20px;
   }
   
-  @media screen and (max-width: 991px) {
+  @media screen and (max-width: 1991px) {
     .navbar .container-fluid {
       padding-right: 15px;
       padding-left: 15px;

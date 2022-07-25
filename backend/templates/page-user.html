@@ -284,4 +284,25 @@
 {% endblock content %}
 
 <!-- Specific Page JS goes HERE  -->
-{% block javascripts %}{% endblock javascripts %}
+{% block javascripts %}
+
+
+<script>
+  $(document).ready(function() {
+
+    // console.log(' ::::: ', {{name}});
+    
+    $.ajax({
+      url: "/model_info/{{item.codesys}}",
+      type: "POST",
+      dataType: "json",
+      contentType: "application/json",
+    
+    });
+    
+    
+  });
+</script>
+
+
+{% endblock javascripts %}

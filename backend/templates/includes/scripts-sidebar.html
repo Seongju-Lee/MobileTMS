@@ -159,7 +159,6 @@
         if(arr_rchar.length != 0)
           for (var i = 0; i < arr_rchar.length; i++) {
               try {
-                  console.log(arr_rchar[i])
                   $(`input:checkbox[id=${arr_rchar[i]}]`).prop('checked',true);
 
               } catch (error) {
@@ -258,14 +257,11 @@
 
 
               $('[name="title"]').each(function(index, item){
-                // console.log(item.id)
                 list_activity.push(item.id);
               })
-              // console.log('AAAAAAAAAAAAAAAAAAAA: ',list_activity);
 
               var _ischecked = $('input:checkbox[name="activities"]').is(":checked");
 
-              // console.log('안녕하세요: ', _ischecked);
 
               if (_ischecked) {
 
@@ -279,20 +275,17 @@
                 if(_day.length == 1)
                   _day = '0' + String(now.getDate())
 
-                // console.log('출력: ', list[i], now.getFullYear() + (_month ) + _day ) 
 
                 for(i=0; i<list_activity.length; i++){
                   if(list_activity[i] == ''){
                     $('.not_input').hide();
                   }
                   else if(list_activity[i] <= now.getFullYear() + (_month ) + _day){
-                    // console.log(list_activity[i])
                     var a = "." + list_activity[i];
                     $(a).hide();
                     
                   }
                   else{
-                    // console.log('출력: ', list_activity[i])
 
                     $("."+list_activity[i]).show();
 
@@ -328,22 +321,14 @@
               
               $('input[name="call_title"]').each(function(index, item){
                 
-                console.log(item.value)
                 list_activity.push(item.id);
               })
 
               
-              // console.log(list_activity);
-              console.log(target_id);
-              
-              
-              // $('.'+target_id).show();
-              // 리스트에서 target_id빼고 다 hide
               for(i = 0; i < list_activity.length; i++){
 
                 str = '.'+list_activity[i];
                 if (list_activity[i] == target_id){
-                  console.log('값 확인: ', tmp)
                   if ((target_id + 'true') == tmp){
 
                     $('.'+target_id).hide();
@@ -379,7 +364,6 @@
 
               var _ischecked = $('input:checkbox[name="chk_model"]').is(":checked");
 
-              console.log(_ischecked)
               if (_ischecked) {
                 $('.chu').show();
                 $('#chk_celeb').prop('checked',false);
@@ -431,7 +415,6 @@
              
 
           //     var chk_box_checked = $('input:checkbox[name="chk_model"]').is(":checked");
-          //     console.log('ddd: ', chk_box_checked)
           //     if (chk_box_checked){
           //       $('input:checkbox[name="chk_model"]').css("background", '#000000').css("border", 'none').css("content", 'v')
                 
@@ -446,7 +429,6 @@
              
 
           //    var chk_box_checked = $('input:checkbox[name="chk_celeb"]').is(":checked");
-          //    console.log('ddd: ', chk_box_checked)
           //    if (chk_box_checked){
           //      $('input:checkbox[name="chk_celeb"]').css("background", '#000000').css("border", 'none').css("content", 'v')
           //    }
@@ -532,7 +514,6 @@
                 chk_echar.push(alpha);
               });
 
-              console.log(chk_echar)
               $('#hidden_echar').val(chk_echar)
 
               }
@@ -578,7 +559,6 @@
                 chk_rchar.push(alpha);
               });
 
-              console.log(chk_rchar)
               $('#hidden_rchar').val(chk_rchar)
 
               }
@@ -609,8 +589,6 @@
                 chk_ages.push(tmpVal);
               });
               
-              console.log(chk_ages)
-
               
               var a_10 = ['10' + '(' + ({{now_year}} - 9) + ')', '19' + '(' + ({{now_year}}- 18)  + ')', '10'] 
               var a_20 = ['20' + '(' + ({{now_year}}- 19) + ')', '29' + '(' + ({{now_year}}- 28) + ')', '20'] 
@@ -630,18 +608,14 @@
                     }
                   }
                 }
-                console.log('age_arange입니다: ',age_arange)
                 
                 $('#s_age').val(age_arange[0][0].substr(3,4)).change()
                 $('#e_age').val(age_arange[chk_ages.length-1][1].substr(3,4)).change()
                
                 for(k = 0; k< age_arange.length; k++){
-                  // console.log(age_arange)
                   hidden_s.push(age_arange[k][0])
                   hidden_e.push(age_arange[k][1])
                 }
-                console.log(hidden_s)
-                console.log(hidden_e)
 
                 // $('#hidden_s_age').val(hidden_s)
                 // $('#hidden_e_age').val(hidden_e)
@@ -671,8 +645,6 @@
               var _is6000 = $('#alpha_6000').is(":checked");
               var _is8000 = $('#alpha_8000').is(":checked");
 
-              console.log('모델료 TEST: ', _is100, _is6000);
-
 
               var chk_fees = new Array();
 
@@ -681,7 +653,6 @@
                 chk_fees.push(alpha);
               });
               
-              console.log(chk_fees)
               $('#hidden_alpha_fee').val(chk_fees)
               if(chk_fees.length == 0){
                 $('#hidden_alpha_fee').val(['0100', '0300', '0500', '1000', '2000', '2010', '6000', '8000'])
@@ -712,7 +683,6 @@ $('input[name="btn_score"]' ).click(function(){
       chk_score.push(alpha);
     });
 
-    console.log('점수통합: ',chk_score)
     $('#hidden_score').val(chk_score)
     for(i = 0; i <= chk_score.length; i++){
 
@@ -773,7 +743,6 @@ $('input[name="btn_score"]' ).click(function(){
               });
 
               chk_fees.push(month);
-              console.log(chk_fees);
               $('#hidden_celeb_fee').val(chk_fees);
 
 
@@ -800,7 +769,6 @@ $('input[name="btn_score"]' ).click(function(){
               });
 
               chk_fees.push(month);
-              console.log(chk_fees);
               $('#hidden_celeb_fee').val(chk_fees);
 
 
@@ -815,7 +783,6 @@ $('input[name="btn_score"]' ).click(function(){
 
               var _isall = $('#celeb_all').is(":checked");
               if( _isall ){
-                console.log(_isall)
                 $('input:checkbox[name="celeb_section"]').prop('checked',true);
               }
 
@@ -833,8 +800,6 @@ $('input[name="btn_score"]' ).click(function(){
                 tmp.push(alpha)
               });
 
-
-              console.log('eee', tmp)
 
               if (tmp.length != 8){
                 $('#celeb_all').prop('checked',false);
@@ -859,8 +824,6 @@ $('input[name="btn_score"]' ).click(function(){
             var _isceleb = $('#celeb_celeb').is(":checked");
             var _isyoutube = $('#celeb_youtube').is(":checked");
 
-            console.log(_isall)
-            
 
             if ( _ischecked ){
 

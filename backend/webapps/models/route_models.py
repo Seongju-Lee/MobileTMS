@@ -212,7 +212,6 @@ def search_filter(req: Request, s_date: str = '', e_date: str = '', gender_m: st
                 with open("model.json", 'r', encoding='utf-8') as json_file:
                     aa = json.load(json_file)
                     for job in filter_models:
-                        print('ssss: ', job)
                         if not job['mfee'] == '':
                             if job['mfee'] == '레디자동':
                                 job['mfee'] = '레디자동'
@@ -282,7 +281,6 @@ def search_filter(req: Request, s_date: str = '', e_date: str = '', gender_m: st
         # 영상초이
         elif model_filter == 'movchoi':
 
-            # print(search_ages)
             models = movchoi(db=db, gender_w=gender_w, gender_m=gender_m, s_date=s_date, e_date=e_date, search_ages = search_ages,
             hidden_alpha_fee=hidden_alpha_fee , hidden_echar=hidden_echar, hidden_rchar=hidden_rchar)
 
@@ -293,14 +291,12 @@ def search_filter(req: Request, s_date: str = '', e_date: str = '', gender_m: st
                 ['mcode', 'name', 'age', 'mfee', 'sex', 'coname', 'height', 'isyeon']).count().reset_index()
 
             search_models = df.values.tolist()
-            # print(search_models)
 
             
             res = sorted(search_models, key=lambda x: x[8], reverse=True)
 
 
             for model in res[:400]:
-                # print(model)
                 res_models.append(
                     {'mcode': model[0], 'name': model[1], 'age': model[2], 'mfee':model[3], 'gender':model[4], 'coname':model[5], 'height':model[6],'isyeon':model[8] ,'count': model[len(model)-1]})
 
@@ -362,7 +358,6 @@ def search_filter(req: Request, s_date: str = '', e_date: str = '', gender_m: st
                                 job['mfee'] = '레디자동'
                             else:
                                 job['mfee'] = aa['model_fee'][job['mfee']]
-                    # print('안녕!!ㅎㅎ: ', res_models)
                 except:
                     print('일치하는 모델료가 json파일에 없음.')
                     pass
@@ -380,7 +375,7 @@ def search_filter(req: Request, s_date: str = '', e_date: str = '', gender_m: st
         # 순옥스타_최신등록순
         elif filter_celeb == 'order_register':
 
-            print(hidden_celeb_section)
+            # print(hidden_celeb_section)
             models = order_register(db=db,  hidden_celeb_fee= hidden_celeb_fee, hidden_celeb_fee_month= hidden_celeb_fee_month, hidden_celeb_section=hidden_celeb_section,
                                     gender_w=gender_w, gender_m=gender_m, search_ages = search_ages)
 
@@ -391,7 +386,7 @@ def search_filter(req: Request, s_date: str = '', e_date: str = '', gender_m: st
                 with open("model.json", 'r', encoding='utf-8') as json_file:
                     aa = json.load(json_file)
                     for job in count_models:
-                        print(job)
+                        # print(job)
                         if not job['mfee'] == '':
                             if not  job['isyeon'] == 'V':
                                 job['mfee'] = aa['model_fee'][job['mfee']]
@@ -422,21 +417,20 @@ def search_filter(req: Request, s_date: str = '', e_date: str = '', gender_m: st
                                     hidden_celeb_fee_month=hidden_celeb_fee_month,  hidden_celeb_section= hidden_celeb_section)
 
             filter_models = []
-            print(models)
-            print('섹션 구분: ', chk_model, chk_celeb)
+            # print(models)
+            # print('섹션 구분: ', chk_model, chk_celeb)
             count_models = jsonable_encoder(models[:])
-            print(count_models)
+            # print(count_models)
             df = pd.DataFrame(count_models).groupby(
                 ['mcode', 'name', 'frcode', 'rcode', 'sex', 'age', 'a_3', 'a_6', 'a_12', 'isyeon', 'height', 'coname', 'mfee']).sum().reset_index()
 
             search_models = df.values.tolist()
-            for model in search_models:
-                print('검색모델: ', model)
+           
 
             res = sorted(search_models, key=lambda x: x[13], reverse=True)
 
             for model in res:
-                print(model)
+                # print(model)
                 filter_models.append(
                     {'mcode': model[0], 'name': model[1], 'gender': model[4], 'age': model[5], 'a_3': model[6], 'a_6': model[7], 'a_12': model[8], 'isyeon': model[9],'height': model[10], 'coname': model[11], 'mfee': model[12], 'jum1': model[13], 'jum1': model[14]})
 
@@ -485,12 +479,11 @@ def search_filter(req: Request, s_date: str = '', e_date: str = '', gender_m: st
                 ['mcode', 'name',  'sex', 'age', 'a_3', 'a_6', 'a_12', 'isyeon', 'height', 'coname', 'mfee']).count().reset_index()
 
             search_models = df.values.tolist()
-            print(df)
+            # print(df)
             res = sorted(search_models, key=lambda x: x[11], reverse=True)
             # search_models
 
-            for m in res[:10]:
-                print(m)
+           
             for model in res:
                 filter_models.append(
                     {'mcode': model[0], 'name': model[1], 'gender': model[2], 'age': model[3], 'a_3': model[4], 'a_6': model[5], 'a_12': model[6],
@@ -586,7 +579,6 @@ def search_filter(req: Request, s_date: str = '', e_date: str = '', gender_m: st
         # 셀럽검색_실베스타
         elif filter_celeb == 'order_realtime':
 
-            print('나이: ', search_ages)
             model_list = []
             real_time_cf, real_time_activity = order_realtime(db=db,
                                                             gender_w=gender_w, gender_m=gender_m, search_ages=search_ages,
@@ -602,7 +594,6 @@ def search_filter(req: Request, s_date: str = '', e_date: str = '', gender_m: st
             # 계약현황 개수 뽑기
             df_cf = pd.DataFrame(count_models)
 
-            print('erai sibal: ', df_cf)
 
             df_cf = df_cf.groupby(
                 ['codesys', 'rno', 'name',  'sex', 'age', 'a_3', 'a_6', 'a_12', 'isyeon', 'height', 'mfee', 'coname']).count().reset_index()
@@ -640,16 +631,12 @@ def search_filter(req: Request, s_date: str = '', e_date: str = '', gender_m: st
                                 'a_6': model[6], 'a_12': model[7], 'isyeon': model[8], 'height': model[9],'mfee':model[10],'coname':model[11], 'cf': model[13], 'activity': model[15], 'proc': model[17], 'sum': sum})
 
             res = sorted(model_list, key=lambda x: x['sum'], reverse=True)
-            for model in res[:10]:
-                print(model)
-
 
             try:
 
                 with open("model.json", 'r', encoding='utf-8') as json_file:
                     aa = json.load(json_file)
                     for job in res:
-                        # print(job)
                         if not job['mfee'] == '':
                             if not  job['isyeon'] == 'V':
                                 job['mfee'] = aa['model_fee'][job['mfee']]
@@ -681,8 +668,8 @@ def search_filter(req: Request, s_date: str = '', e_date: str = '', gender_m: st
                 db=db, name=name, coname=coname, tel=tel, manager=manager)
 
             models_search = jsonable_encoder(models[:])
-            print(models_search)
             celebs, kmodels = [], []
+
             for model in models_search:
                 if model['isyeon'] == 'V':
                     celeb = search_celeb(db=db, mcode=model['mcode'])
@@ -703,7 +690,6 @@ def search_filter(req: Request, s_date: str = '', e_date: str = '', gender_m: st
                     for job in jobs:
                         if not job['mfee'] == '':
                             job['mfee'] = aa['model_fee'][job['mfee']]
-                print(jobs)
             except:
                 print('일치하는 모델료가 json파일에 없음.')
                 pass
@@ -713,7 +699,7 @@ def search_filter(req: Request, s_date: str = '', e_date: str = '', gender_m: st
                 "ui-icons.html", {"request": req,
                                 "kmodels": kmodels,
                                 "jobs": jobs,
-                                "years": years,  "now_year": now_year}
+                                "years": years,  "now_year": now_year, "name": name, "coname": coname, "tel":tel, "manager": manager}
             )
         ########################################
 
@@ -785,7 +771,7 @@ def model_info(req: Request, codesys: str = '', db: Session = Depends(get_db)):
                     {'title': call['title'], 'memo': call['memo'].split('\r\n'), 'rcode': call['rcode']})
 
             celeb_calls = list(reversed(celeb_calls))
-            print(celeb_calls)
+            # print(celeb_calls)
         except:
             print('셀럽 통화메모 정렬 에러발생')
 
@@ -817,13 +803,10 @@ def model_info(req: Request, codesys: str = '', db: Session = Depends(get_db)):
         except:
             print('일치하는 모델료가 json파일에 없음.')
 
-        print('광고이력 개수: ', len(jsonable_encoder(activities[:])))
-
         
 
         try:
             for call in calls:
-                print(call)
                 if not call['memo'] == None:
                     model_calls.append({'title': call['title'], 'memo': call['memo'].split('\r\n'), 'rcode': call['rcode']})
             model_calls = list(reversed(model_calls))
@@ -866,7 +849,7 @@ def mov_info(req: Request, codesys: str = '', db: Session = Depends(get_db)):
     now_year = datetime.today().year
     years = [i for i in range(now_year-1, 1930, -1)]
 
-    print('영상 정보 페이지 접속..', codesys)
+    # print('영상 정보 페이지 접속..', codesys)
     res_mov = img_mov_info(db=db, codesys=codesys)
 
     res_mov = jsonable_encoder(res_mov[:])
@@ -882,7 +865,6 @@ def mov_info(req: Request, codesys: str = '', db: Session = Depends(get_db)):
         mov_list = []
         for mov in res_mov:
             mov_list.append(mov)
-            print('pppp:  ', mov)
 
         mov_list = list(reversed(mov_list))
         return templates.TemplateResponse(
@@ -910,7 +892,6 @@ def mov_info(req: Request, codesys: str = '', db: Session = Depends(get_db)):
     now_year = datetime.today().year
     years = [i for i in range(now_year-1, 1930, -1)]
 
-    print('영상 정보 페이지 접속..', codesys)
     res_mov = act_mov_info(db=db, codesys=codesys)
 
     res_mov = jsonable_encoder(res_mov[:])
@@ -927,7 +908,6 @@ def mov_info(req: Request, codesys: str = '', db: Session = Depends(get_db)):
         mov_list = []
         for mov in res_mov:
             mov_list.append(mov)
-            print(mov)
 
         mov_list = list(reversed(mov_list))
         return templates.TemplateResponse(
@@ -954,7 +934,6 @@ def mov_info(req: Request, codesys: str = '', db: Session = Depends(get_db)):
     now_year = datetime.today().year
     years = [i for i in range(now_year-1, 1930, -1)]
 
-    print('영상 정보 페이지 접속..', codesys)
     res_mov = cf_mov_info(db=db, codesys=codesys)
 
     res_mov = jsonable_encoder(res_mov[:])
@@ -970,7 +949,6 @@ def mov_info(req: Request, codesys: str = '', db: Session = Depends(get_db)):
         mov_list = []
         for mov in res_mov:
             mov_list.append(mov)
-            print(mov)
 
         mov_list = list(reversed(mov_list))
 

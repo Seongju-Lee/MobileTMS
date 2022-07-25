@@ -1,4 +1,37 @@
 
+      <style>
+
+          @media (min-width: 1991px) {
+              .navbar-expand-lg {
+                flex-flow: row nowrap;
+                justify-content: flex-start;
+              }
+
+              
+          }
+         
+
+          @media (min-width: 1992px) {
+            .navbar-expand-lg>.container, .navbar-expand-lg>.container-fluid {
+                flex-wrap: nowrap;
+            }
+          }
+
+          @media screen and (max-width: 1991px) {
+            .navbar .container-fluid {
+                padding-right: 15px;
+                padding-left: 15px;
+            }
+          }
+
+          @media (max-width: 1991.98px) {
+            .navbar-expand-lg>.container, .navbar-expand-lg>.container-fluid {
+                padding-right: 0;
+                padding-left: 0;
+            }
+          }
+
+      </style>
       <!-- Navbar -->
       <nav class="navbar navbar-expand-lg navbar-absolute navbar-transparent">
         <div class="container-fluid" style="padding-right:-20px; padding-left:15px;">
@@ -17,7 +50,7 @@
           </button>
           <div class="collapse navbar-collapse" id="navigation">
 
-            <ul style="flex-direction: row; display: flex; flex-direction: column; margin-left: auto !important; padding-top: 15px;">
+            <ul style="flex-direction: column; display: flex;  margin-left: auto !important; padding-top: 15px;">
               
               
               <li >
@@ -29,21 +62,25 @@
                     
                 </a>
               </li>
-
-              
+              <br>
+              <li style="padding-top: 20px;">
                 <a href="/" id='home' style="padding-top: 20px; padding-left: 5px;">
                   <div class="photo">
                     <img src="/static/assets/img/default-avatar.png" alt="Profile Photo">
                   </div>
                   <span style="color: black; padding-left: 8px;"><b>모델검색</b></span>
                 </a>
-                
+              </li>
+
+              <li style="padding-top: 20px;">
                 <a href="/p" id='project' style="padding-top: 20px; padding-left: 5px;">
                   <div class="photo">
                     <img src="/static/assets/img/handshake.png" alt="Profile Photo">
                   </div>
                   <span style="color: black; padding-left: 8px;">Project</span>
                 </a>
+
+              </li>
 
             </ul>
 

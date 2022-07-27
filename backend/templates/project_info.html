@@ -313,9 +313,16 @@
                   <tr>
 
                     <td style="font-size: 0.8rem; padding-right: 6px; padding:3px; border-top-width: 0px;" >
-                      {% if info.camsched %}
+                      {% if info.camdate %}
                         <p style="color: #f3f3f3; font-size: 0.8rem;"><b>촬영일정</b></p>
-                        <p style="color: #b3aeae; font-size: 0.7rem;"><b>{{info.camsched}}</b></p>
+                        <span style="color: #b3aeae; font-size: 0.7rem;"><b>{{info.wktype}}</b></span>
+                        <span style="color: #b3aeae; font-size: 0.7rem;"><b>{{info.camdate}}</b></span><br>
+                        <span style="color: #b3aeae; font-size: 0.7rem;"><b>{{info.wktype2}}</b></span>
+                        <span style="color: #b3aeae; font-size: 0.7rem;"><b>{{info.camdate2}}</b></span><br>
+                        <span style="color: #b3aeae; font-size: 0.7rem;"><b>{{info.wktype3}}</b></span>
+                        <span style="color: #b3aeae; font-size: 0.7rem;"><b>{{info.camdate3}}</b></span><br>
+                        <span style="color: #b3aeae; font-size: 0.7rem;"><b>{{info.wktype4}}</b></span>
+                        <span style="color: #b3aeae; font-size: 0.7rem;"><b>{{info.camdate4}}</b></span><br>
 
                       {% else %}
                         <p style="color: #f3f3f3; font-size: 0.8rem;"><b>촬영일정</b></p>
@@ -330,8 +337,8 @@
                   </tr>
 
 
-
-                  <td style="font-size: 0.8rem; padding-right: 6px; padding:3px; border-top-width: 0px;" >
+                  
+                  <td style="font-size: 0.8rem; padding-right: 6px; padding:3px; border-top-width: 0px; " >
                     {% if info.pd %}
                       <p style="color: #f3f3f3; font-size: 0.8rem;"><b>모델료 지급사</b></p>
                       <p style="color: #b3aeae; font-size: 0.7rem;"><b>{{info.feecom}}</b></p>

@@ -60,7 +60,16 @@ class ProjectTable(Base):
     boan19 = Column(String(100)) # 보안 프로젝트 - 기본 관리자만 접근 가능
     boan19ca = Column(String(100)) # 보안 프로젝트 - 지정된 팀만 접근 가능
 
-    
+
+    wktype = Column(String(100)) #  분류
+    camdate = Column(String(100)) # 촬영일
+    wktype2 = Column(String(100))
+    camdate2 = Column(String(100))
+    wktype3 = Column(String(100))
+    camdate3 = Column(String(100))
+    wktype4 = Column(String(100))
+    camdate4 = Column(String(100))
+
 
 
 

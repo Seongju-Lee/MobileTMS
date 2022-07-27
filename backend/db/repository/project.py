@@ -39,20 +39,25 @@ def get_filter_project(db: Session, project_name, rd_team, cf_owner, cf_regdate,
         if rd_team == '전체':
             
             f_project = db.query(ProjectTable).filter(ProjectTable.prname.contains(project_name) & not_(ProjectTable.seleb.contains('V'))&
-            ProjectTable.cfowner.contains(cf_owner) & ProjectTable.date.contains(cf_regdate))
+            (ProjectTable.dir.contains(cf_owner) | ProjectTable.sdir1.contains(cf_owner) | ProjectTable.pd.contains(cf_owner) | ProjectTable.ae.contains(cf_owner) | ProjectTable.ae2.contains(cf_owner) | ProjectTable.cd.contains(cf_owner) | ProjectTable.pdcomppd1.contains(cf_owner) | ProjectTable.pdcomppd2.contains(cf_owner) | ProjectTable.pdcomppd3.contains(cf_owner) | ProjectTable.prodpd.contains(cf_owner) | ProjectTable.sdir2.contains(cf_owner)) 
+            & ProjectTable.date.contains(cf_regdate))
         else:
             f_project = db.query(ProjectTable).filter(ProjectTable.prname.contains(project_name) &  not_(ProjectTable.seleb.contains('V')) &
-            ProjectTable.cfowner.contains(cf_owner) & ProjectTable.date.contains(cf_regdate))
+            (ProjectTable.dir.contains(cf_owner) | ProjectTable.sdir1.contains(cf_owner) | ProjectTable.pd.contains(cf_owner) | ProjectTable.ae.contains(cf_owner) | ProjectTable.ae2.contains(cf_owner) | ProjectTable.cd.contains(cf_owner) | ProjectTable.pdcomppd1.contains(cf_owner) | ProjectTable.pdcomppd2.contains(cf_owner) | ProjectTable.pdcomppd3.contains(cf_owner) | ProjectTable.prodpd.contains(cf_owner) | ProjectTable.sdir2.contains(cf_owner)) 
+            & ProjectTable.date.contains(cf_regdate))
 
     else:
 
         if rd_team == '전체':
             f_project = db.query(ProjectTable).filter(ProjectTable.prname.contains(project_name) & ProjectTable.seleb.contains(isceleb) &
-            ProjectTable.cfowner.contains(cf_owner) & ProjectTable.date.contains(cf_regdate))
+            (ProjectTable.dir.contains(cf_owner) | ProjectTable.sdir1.contains(cf_owner) | ProjectTable.pd.contains(cf_owner) | ProjectTable.ae.contains(cf_owner) | ProjectTable.ae2.contains(cf_owner) | ProjectTable.cd.contains(cf_owner) | ProjectTable.pdcomppd1.contains(cf_owner) | ProjectTable.pdcomppd2.contains(cf_owner) | ProjectTable.pdcomppd3.contains(cf_owner) | ProjectTable.prodpd.contains(cf_owner) | ProjectTable.sdir2.contains(cf_owner))
+             & ProjectTable.date.contains(cf_regdate))
         else:
             f_project = db.query(ProjectTable).filter(ProjectTable.prname.contains(project_name) & ProjectTable.teamtag.contains(rd_team) &
-            ProjectTable.seleb.contains(isceleb) & ProjectTable.cfowner.contains(cf_owner) & ProjectTable.date.contains(cf_regdate))
+            ProjectTable.seleb.contains(isceleb) & (ProjectTable.dir.contains(cf_owner) | ProjectTable.sdir1.contains(cf_owner) | ProjectTable.pd.contains(cf_owner) | ProjectTable.ae.contains(cf_owner) | ProjectTable.ae2.contains(cf_owner) | ProjectTable.cd.contains(cf_owner) | ProjectTable.pdcomppd1.contains(cf_owner) | ProjectTable.pdcomppd2.contains(cf_owner) | ProjectTable.pdcomppd3.contains(cf_owner) | ProjectTable.prodpd.contains(cf_owner) | ProjectTable.sdir2.contains(cf_owner))
+             & ProjectTable.date.contains(cf_regdate))
         
+   
     return f_project
 
 

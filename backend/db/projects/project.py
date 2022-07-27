@@ -25,6 +25,8 @@ class ProjectTable(Base):
     ae2tel = Column(String(40)) # AE TEL 2
     pd = Column(String(40)) # PD
     pdtel = Column(String(100)) # PD TEL
+    
+    
     media = Column(String(100)) # 매체
     gegigan = Column(String(100)) # 계약기간
     camsched = Column(String(100)) # 촬영일정
@@ -45,6 +47,7 @@ class ProjectTable(Base):
 
 
     prod = Column(String(100)) # 프로덕션
+    prodpd = Column(String(100)) # 프로덕션
     prodpdtel = Column(String(100)) # 프로덕션
     dir = Column(String(100)) # 감독
     dirtel = Column(String(100)) # 감독 TEL
@@ -52,6 +55,8 @@ class ProjectTable(Base):
     sdir1 = Column(String(100)) # 감독
     sdir1tel = Column(String(100)) # 감독 TEL
 
+    sdir2 = Column(String(100)) # 감독
+    sdir2tel = Column(String(100)) # 감독 TEL
 
     seleb = Column(String(20)) # 셀럽건 확인 여부
     

@@ -20,5 +20,5 @@ def update_logs(username: str, ip, device, now, screen, db: Session, action: str
     db.add(log)
     db.commit()
     db.refresh(log)
-    # user = db.query(AccessLog).filter(Users.id == username)
+
     return log

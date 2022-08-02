@@ -847,6 +847,7 @@ $('input[name="btn_score"]' ).click(function(){
         $('#logout').click(function(event) {
 
           $.removeCookie('access_token', { path: '/' });
+          $.removeCookie('usr', {path: '/'})
           location.replace('/')
         })
 

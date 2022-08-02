@@ -5,7 +5,7 @@ from fastapi import Request, status, responses, Response, requests
 from fastapi.responses import HTMLResponse
 from fastapi.templating import Jinja2Templates
 from db.repository.search import search_job,  chu_30, movchoi, proc, order_register, order_recommend, order_s_count, order_read, search_celeb
-from db.repository.search import   order_realtime, models_info, proc_celeb, img_mov_info, cf_mov_info, act_mov_info
+from db.repository.search import   order_realtime, models_info, proc_celeb, img_mov_info, cf_mov_info, act_mov_info, best_img
 from sqlalchemy.orm import Session
 from db.session import get_db
 from fastapi.encoders import jsonable_encoder
@@ -954,4 +954,49 @@ def mov_info(req: Request, codesys: str = '', db: Session = Depends(get_db)):
 
         return templates.TemplateResponse(
                     "page-actmov.html", {"request": req, "mov": mov_list, "years": years,  "now_year": now_year}
+        )
+
+
+
+@ router.get("/best_img/{codesys}")
+def mov_info(req: Request, codesys: str = '', db: Session = Depends(get_db)):
+
+
+    try:
+        
+        token: str = req.cookies.get("access_token")
+
+        print('token입니다. ', token)
+        if token is None:
+            return RedirectResponse('/login')
+       
+
+    except:
+        print('get token error')
+
+    now_year = datetime.today().year
+    years = [i for i in range(now_year-1, 1930, -1)]
+
+
+
+    imgs = best_img(db=db, codesys=codesys)
+    imgs = jsonable_encoder(imgs[:])
+
+    if not imgs:
+        
+        return templates.TemplateResponse(
+                "page-best_img.html", {"request": req, "text": '존재하지 않습니다.', "years": years,  "now_year": now_year}
+    )
+    else:
+        
+
+        img_list = []
+        for mov in imgs:
+            img_list.append(mov)
+
+        img_list = list(reversed(img_list))
+
+        print('test ::::  ', img_list)
+        return templates.TemplateResponse(
+                    "page-best_img.html", {"request": req, "imgs": img_list, "years": years,  "now_year": now_year}
         )

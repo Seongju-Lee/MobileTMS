@@ -844,3 +844,14 @@ def cf_mov_info(db: Session, codesys):
     except:
         pass
 
+
+
+## 베스트사진
+def best_img(db: Session, codesys):
+    
+    try:
+        return db.query(ModelMov.edit_time, ModelMov.mcode, ModelMov.fname, ModelMov.fext, ModelMov.fpath).filter(ModelMov.mcode == codesys).filter(ModelMov.fpath.contains('AA베스트사진')).filter(ModelMov.fext.contains('jpg'))
+
+    except:
+        pass
+

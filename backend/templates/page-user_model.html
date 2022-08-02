@@ -2,10 +2,8 @@
 
 {% block title %} Page User {% endblock %} 
 
-<!-- Specific Page CSS goes HERE  -->
 {% block stylesheets %}
   <style>
-   
 
     @media (max-width: 600px) {
       .table-width {
@@ -14,9 +12,7 @@
         white-space:nowrap;
         margin:0 auto
       }
-      
     }
-   
 
     @media (max-width: 420px) {
       .table-width {
@@ -26,19 +22,12 @@
         margin:0 auto
       }
     }
-
-    /* @media (max-width: 361px) {
-      .card{
-        padding-right: 10px;
-      }
-    } */
     
   </style>
 
 {% endblock stylesheets %}
   
 {% block content %}
-
 
 <div class="row">
   <div class="col-md-12">
@@ -127,7 +116,6 @@
                       {% endfor %}
                     {% endif %}
                   
-
                   <hr color = 'white' size='7px' width='100%' align='left'> 
 
                   <h4><b>모델 영상 </b></h4>
@@ -135,6 +123,7 @@
                     <button type="button"  onclick='location.href="http://m.musew.com/img_mov/{{item.codesys}}" '>이미지영상</button>
                     <button type="button"  onclick='location.href="http://m.musew.com/act_mov/{{item.codesys}}" '>연기영상</button>
                     <button type="button"  onclick='location.href="http://m.musew.com/cf_mov/{{item.codesys}}" '>광고영상</button>
+                    <button type="button"  onclick='location.href="http://localhost:8000/best_img/{{item.codesys}}" '>베스트사진</button>
                   
                   
                 </div>

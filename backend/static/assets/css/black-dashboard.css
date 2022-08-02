@@ -16470,7 +16470,6 @@ img {
 body {
   -moz-osx-font-smoothing: grayscale;
   -webkit-font-smoothing: antialiased;
-  overscroll-behavior-x: none;
 }
 
 h1,
@@ -17885,7 +17884,7 @@ table.tablesorter thead tr .headerSortDown {
     transition-duration: .2s, .2s, .35s;
     -webkit-transition-timing-function: linear, linear, ease;
     transition-timing-function: linear, linear, ease;
-    -webkit-overflow-scrolling: touch;
+   
   }
 
   .sidebar-mini .visible-on-sidebar-regular {

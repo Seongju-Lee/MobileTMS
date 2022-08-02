@@ -18026,7 +18026,7 @@ table.tablesorter thead tr .headerSortDown {
 
 @media screen and (max-width: 991px) {
   .sidebar {
-    /* position: fixed;
+    position: fixed;
     display: block;
     top: 0;
     height: 100%;
@@ -18035,7 +18035,7 @@ table.tablesorter thead tr .headerSortDown {
     left: 0;
     margin: 0;
     border-radius: 0;
-    z-index: 1032; */
+    z-index: 1032;
     visibility: visible;
     overflow-y: visible;
     padding: 0;

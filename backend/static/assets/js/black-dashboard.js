@@ -150,7 +150,7 @@ $(document).on('click', '.navbar-toggle', function() {
     setTimeout(function() {
       $toggle.removeClass('toggled');
       $('.bodyClick').remove();
-    }, 550);
+    }, 5550);
 
   } else {
     setTimeout(function() {

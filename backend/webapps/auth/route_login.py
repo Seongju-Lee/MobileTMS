@@ -65,7 +65,8 @@ def token_auth(input_auth: str='', user_id: str='', db: Session = Depends(get_db
 @router.get("/login")
 def login(request: Request, msg: str = None):
     print('param msg확인: ', msg)
-    msg='로그인 세션이 만료되었습니다.'
+    if msg:
+        msg='로그인 세션이 만료되었습니다.'
     return templates.TemplateResponse(
         "login.html", {"request": request, "msg": msg}
     )

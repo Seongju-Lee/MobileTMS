@@ -850,7 +850,7 @@ $('input[name="btn_score"]' ).click(function(){
           if(result){
             $.removeCookie('access_token', { path: '/' });
             $.removeCookie('usr', {path: '/'})
-            location.replace('/')
+            location.replace('/login')
           }
           
         })

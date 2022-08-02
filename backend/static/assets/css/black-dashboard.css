@@ -16470,6 +16470,7 @@ img {
 body {
   -moz-osx-font-smoothing: grayscale;
   -webkit-font-smoothing: antialiased;
+  overscroll-behavior-x: none;
 }
 
 h1,

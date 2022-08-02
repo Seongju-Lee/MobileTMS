@@ -100,6 +100,7 @@ def home(request: Request, db: Session = Depends(get_db),
 project_name: str = '',
 rd_team: str = '',
 cf_owner: str = '',
+cf_co: str = '',
 cf_regdate: str = '',
 entertainment: str = '',
 isceleb: str=''):
@@ -116,7 +117,7 @@ isceleb: str=''):
     
 
     # 아무것도 입력안하고, 처음 경로로 들어오면 모든 프로젝트 검색
-    elif not project_name and not rd_team and not cf_owner and not cf_regdate:
+    elif not project_name and not rd_team and not cf_owner and not cf_regdate and not cf_co:
 
         a_project = get_project(db=db)
         a_project = list(jsonable_encoder(a_project[:]))
@@ -142,7 +143,7 @@ isceleb: str=''):
 
     else:
         # 검색 필터에 맞는 프로젝트만 검색
-        filter_project = get_filter_project(db=db, project_name=project_name, rd_team=rd_team, cf_owner=cf_owner, cf_regdate=cf_regdate, isceleb=isceleb)
+        filter_project = get_filter_project(db=db, project_name=project_name, rd_team=rd_team, cf_owner=cf_owner, cf_co=cf_co, cf_regdate=cf_regdate, isceleb=isceleb)
 
         f_project = (jsonable_encoder(filter_project[:]))
         f_project = list(reversed(f_project))

@@ -12,6 +12,7 @@ from striprtf.striprtf import rtf_to_text
 from starlette.responses import RedirectResponse
 from db.repository.project import get_project, get_filter_project, get_project_info, get_project_memo, get_project_model, get_project_with, project_security
 from webapps.auth.forms import LoginForm
+from core.hashing import Hasher
 
 import json
 import pandas as pd
@@ -28,7 +29,7 @@ def project(request: Request, db: Session = Depends(get_db), pcode:str=''):
     
     token: str = request.cookies.get("access_token")
     if token is None:
-        return RedirectResponse('/login')
+        return RedirectResponse('/login?msg=_adf$dfsj149BSEjfeo_$')
 
 
     info = get_project_info(db=db, pcode=pcode)
@@ -113,7 +114,7 @@ isceleb: str=''):
     token: str = request.cookies.get("access_token")
 
     if token is None:
-        return RedirectResponse('/login')
+        return RedirectResponse('/login?msg=_adf$dfsj149BSEjfeo_$')
     
 
     # 아무것도 입력안하고, 처음 경로로 들어오면 모든 프로젝트 검색

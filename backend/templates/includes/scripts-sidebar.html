@@ -846,9 +846,13 @@ $('input[name="btn_score"]' ).click(function(){
 
         $('#logout').click(function(event) {
 
-          $.removeCookie('access_token', { path: '/' });
-          $.removeCookie('usr', {path: '/'})
-          location.replace('/')
+          var result = confirm("로그아웃 하시겠습니까?");
+          if(result){
+            $.removeCookie('access_token', { path: '/' });
+            $.removeCookie('usr', {path: '/'})
+            location.replace('/')
+          }
+          
         })
 
 ///////////////////// 

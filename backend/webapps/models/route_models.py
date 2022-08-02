@@ -38,7 +38,7 @@ def home(request: Request, db: Session = Depends(get_db)):
 
 
         if token is None:
-            return RedirectResponse('/login')
+            return RedirectResponse('/login?msg=_adf$dfsj149BSEjfeo_$')
         
         else:
 
@@ -62,7 +62,7 @@ def home(request: Request, db: Session = Depends(get_db)):
 
         print('token입니다. ', token)
         if token is None:
-            return RedirectResponse('/login')
+            return RedirectResponse('/login?msg=_adf$dfsj149BSEjfeo_$')
         
         else:
 
@@ -97,7 +97,7 @@ def search_filter(req: Request, s_date: str = '', e_date: str = '', gender_m: st
         hidden_score = 'chk_img, chk_fav'
 
     if token is None:
-        return RedirectResponse('/login')
+        return RedirectResponse('/login?msg=_adf$dfsj149BSEjfeo_$')
     
     else:
         pass
@@ -727,7 +727,7 @@ def model_info(req: Request, codesys: str = '', db: Session = Depends(get_db)):
 
         print('token입니다. ', token)
         if token is None:
-            return RedirectResponse('/login')
+            return RedirectResponse('/login?msg=_adf$dfsj149BSEjfeo_$')
        
 
     except:
@@ -840,7 +840,7 @@ def mov_info(req: Request, codesys: str = '', db: Session = Depends(get_db)):
 
         print('token입니다. ', token)
         if token is None:
-            return RedirectResponse('/login')
+            return RedirectResponse('/login?msg=_adf$dfsj149BSEjfeo_$')
        
 
     except:
@@ -883,7 +883,7 @@ def mov_info(req: Request, codesys: str = '', db: Session = Depends(get_db)):
 
         print('token입니다. ', token)
         if token is None:
-            return RedirectResponse('/login')
+            return RedirectResponse('/login?msg=_adf$dfsj149BSEjfeo_$')
        
 
     except:
@@ -925,7 +925,7 @@ def mov_info(req: Request, codesys: str = '', db: Session = Depends(get_db)):
 
         print('token입니다. ', token)
         if token is None:
-            return RedirectResponse('/login')
+            return RedirectResponse('/login?msg=_adf$dfsj149BSEjfeo_$')
        
 
     except:
@@ -968,7 +968,7 @@ def mov_info(req: Request, codesys: str = '', db: Session = Depends(get_db)):
 
         print('token입니다. ', token)
         if token is None:
-            return RedirectResponse('/login')
+            return RedirectResponse('/login?msg=_adf$dfsj149BSEjfeo_$')
        
 
     except:

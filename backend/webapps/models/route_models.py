@@ -5,7 +5,7 @@ from fastapi import Request, status, responses, Response, requests
 from fastapi.responses import HTMLResponse
 from fastapi.templating import Jinja2Templates
 from db.repository.search import search_job,  chu_30, movchoi, proc, order_register, order_recommend, order_s_count, order_read, search_celeb
-from db.repository.search import   order_realtime, models_info, proc_celeb, img_mov_info, cf_mov_info, act_mov_info, best_img
+from db.repository.search import   order_realtime, models_info, proc_celeb, img_mov_info, cf_mov_info, act_mov_info, best_img, get_rd_contracts
 from sqlalchemy.orm import Session
 from db.session import get_db
 from fastapi.encoders import jsonable_encoder
@@ -740,6 +740,12 @@ def model_info(req: Request, codesys: str = '', db: Session = Depends(get_db)):
     info, activities, call_memo, token = models_info(
         db=db, codesys=codesys)
 
+
+    rd_contracts = jsonable_encoder(get_rd_contracts(db, codesys)[:])
+    rd_contracts = sorted(rd_contracts, key=lambda x: x['cdate'],  reverse=True)
+    for constract in rd_contracts[:]:
+        constract['modelfee'] = format(constract['modelfee'], ',')
+
     if not token == 123:
         res = jsonable_encoder((info[:]))
         calls = jsonable_encoder((call_memo[:]))
@@ -769,7 +775,7 @@ def model_info(req: Request, codesys: str = '', db: Session = Depends(get_db)):
 
                 celeb_calls.append(
                     {'title': call['title'], 'memo': call['memo'].split('\r\n'), 'rcode': call['rcode']})
-
+                
             celeb_calls = list(reversed(celeb_calls))
             # print(celeb_calls)
         except:
@@ -782,6 +788,7 @@ def model_info(req: Request, codesys: str = '', db: Session = Depends(get_db)):
                                 'item': res_model,
                                 'celeb_cf': celeb_cf,
                                 'celeb_activity': celeb_activity,
+                                'rd_contracts' : rd_contracts,
                                 'celeb_calls': celeb_calls, "years": years,  "now_year": now_year}
         )
 
@@ -819,6 +826,7 @@ def model_info(req: Request, codesys: str = '', db: Session = Depends(get_db)):
             "page-user_model.html", {"request": req,
                                         'item': res_model,
                                         'activities': jsonable_encoder(activities[:]),
+                                        'rd_contracts' : rd_contracts,
                                         "model_calls": model_calls, "years": years,  "now_year": now_year}
         )
         

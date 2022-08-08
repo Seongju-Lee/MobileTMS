@@ -1,32 +1,30 @@
 {% extends "layouts/base.html" %}
 
-{% block title %} Page User {% endblock %} 
+{% block title %} Page User {% endblock %}
 
 {% block stylesheets %}
-  <style>
-
-    @media (max-width: 600px) {
-      .table-width {
-        width: 500px;
-        overflow-x:auto;
-        white-space:nowrap;
-        margin:0 auto
-      }
+<style>
+  @media (max-width: 600px) {
+    .table-width {
+      width: 500px;
+      overflow-x: auto;
+      white-space: nowrap;
+      margin: 0 auto
     }
+  }
 
-    @media (max-width: 420px) {
-      .table-width {
-        width: 300px;
-        overflow-x:auto;
-        white-space:nowrap;
-        margin:0 auto
-      }
+  @media (max-width: 420px) {
+    .table-width {
+      width: 300px;
+      overflow-x: auto;
+      white-space: nowrap;
+      margin: 0 auto
     }
-    
-  </style>
+  }
+</style>
 
 {% endblock stylesheets %}
-  
+
 {% block content %}
 
 <div class="row">
@@ -37,224 +35,313 @@
       </div>
       <div class="card-bodys">
         <!-- 이름, 모델키워드, 나이, 키, 성별, 소속사, 연락처, 개인연락처, 인스타, 경력사항, 포인트, 모델료, 메일, 신체사이즈, 학교, 국적, 통화메모 -->
-       
+
         <form>
           <h4> 모델정보 </h4>
           <div class="row">
-            <div style="position: relative; padding-right: 15px; padding-left: 15px; min-width: 110px; margin: 3px;"> 
-            <!-- <div class="col-md-8 pr-md-1"> --> 
+            <div style="position: relative; padding-right: 15px; padding-left: 15px; min-width: 110px; margin: 3px;">
+              <!-- <div class="col-md-8 pr-md-1"> -->
 
               <div class="form-group">
-                <label>이름 </label> <h5 >{{item.name}}</h5> 
-              
-                <img class="avatar" src="http://pic2.readymodel.kr/mdpic/{{item.codesys[0:3]}}/{{item.codesys[0:4]}}/{{item.codesys}}/sys_photo/model.jpg" style="width:100px; height:100px">
+                <label>이름 </label>
+                <h5>{{item.name}}</h5>
+
+                <img class="avatar"
+                  src="http://pic2.readymodel.kr/mdpic/{{item.codesys[0:3]}}/{{item.codesys[0:4]}}/{{item.codesys}}/sys_photo/model.jpg"
+                  style="width:100px; height:100px">
 
               </div>
             </div>
             <div class="col-md-3 px-md-1">
               <div class="form-group">
-                 
-                <h5><label>성별 </label> {{item.sex}}</h5> <p>  <h5> <label>나이 </label>  {{item.age}}</h5> <h5> <label>키 </label>  {{item.height}}</h5> <h5> <label>소속사</label><a href="/p?project_name=&rd_team=전체&cf_owner=&cf_regdate=&isceleb=&entertainment={{item.coname}}"> {{item.coname}}</a></h5> 
-                  <h5> <label>직업/학교</label>  {{item.bun}}</h5>   <h5> <label>신체 사이즈</label>  {{item.bodysize}}</h5> 
+
+                <h5><label>성별 </label> {{item.sex}}</h5>
+                <p>
+                <h5> <label>나이 </label> {{item.age}}</h5>
+                <h5> <label>키 </label> {{item.height}}</h5>
+                <h5> <label>소속사</label><a
+                    href="/p?project_name=&rd_team=전체&cf_owner=&cf_regdate=&isceleb=&entertainment={{item.coname}}">
+                    {{item.coname}}</a></h5>
+                <h5> <label>직업/학교</label> {{item.bun}}</h5>
+                <h5> <label>신체 사이즈</label> {{item.bodysize}}</h5>
               </div>
             </div>
-            
-          
+
+
             <div class="col-md-12 pl-md-1">
-            <hr color = 'white' size='7px' width='100%' align='left'> 
+              <hr color='white' size='7px' width='100%' align='left'>
 
               <h4><b>알파모델료 </b></h4>
-                <h5>{{item.mfee}}</h5>
+              <h5>{{item.mfee}}</h5>
 
-              <hr color = 'white' size='7px' width='100%' align='left'> 
-              <div class="form-group" >
+              <hr color='white' size='7px' width='100%' align='left'>
+              <div class="form-group">
                 <h4><b>연락처 </b></h4>
-                  {%if item.dam %}
-                   <h5>{{item.dam}} : <a href="tel:{{item.tel1}}"> {{item.tel1}} </a></h5>
-                   {%endif %}
-                  {%if item.dam2 %}
-                    <h5>{{item.dam2}} : <a href="tel:{{item.dam2tel}}"> {{item.dam2tel}} </a></h5>
-                  {% endif %}
-                  {%if item.dam3 %}
+                {%if item.dam %}
+                <h5>{{item.dam}} : <a href="tel:{{item.tel1}}"> {{item.tel1}} </a></h5>
+                {%endif %}
+                {%if item.dam2 %}
+                <h5>{{item.dam2}} : <a href="tel:{{item.dam2tel}}"> {{item.dam2tel}} </a></h5>
+                {% endif %}
+                {%if item.dam3 %}
 
-                    <h5>{{item.dam3}} : <a href="tel:{{item.dam3tel}}"> {{item.dam3tel}} </a></h5>
-                  {% endif %}
-                  {%if item.mail1 %}
+                <h5>{{item.dam3}} : <a href="tel:{{item.dam3tel}}"> {{item.dam3tel}} </a></h5>
+                {% endif %}
+                {%if item.mail1 %}
 
-                    <h5>이메일 : <a href="mailto:{{item.mail1}}"> {{item.mail1}} </a></h5>
-                  {% endif %}
+                <h5>이메일 : <a href="mailto:{{item.mail1}}"> {{item.mail1}} </a></h5>
+                {% endif %}
 
-                  <hr color = 'white' size='7px' width='100%' align='left'> 
-                  <h4><b>개인 연락처 </b></h4>
-                  {%if item.ptel %}
-                    <h5>본인 :  <a href="tel:{{item.ptel}}"> {{item.ptel}} </a> </h5>
-                  {% else %}
-                    <h5>본인 : - </h5>
-                  {% endif %}
+                <hr color='white' size='7px' width='100%' align='left'>
+                <h4><b>개인 연락처 </b></h4>
+                {%if item.ptel %}
+                <h5>본인 : <a href="tel:{{item.ptel}}"> {{item.ptel}} </a> </h5>
+                {% else %}
+                <h5>본인 : - </h5>
+                {% endif %}
 
-                  <hr color = 'white' size='7px' width='100%' align='left'> 
-                  <div class="form-group">
-                      <h4><b>인스타그램 </b></h4>
-                      {% if item.sns2 == 'X' %}
-                        <h4>SNS 계정이 확인되지 않아요 :< </h4>
-                      {% elif item.sns2 %}  
-                        <h5> ID:  <a style="color: burlywood;" onclick='window.open("https://www.instagram.com/{{item.sns2}}" )' > {{item.sns2}}  </a>  / 팔로워:  <a style="color: burlywood;" onclick='window.open("https://www.instagram.com/{{item.sns2}}" )' > {{item.insta_flw_str}} </a> </h5>
+                <hr color='white' size='7px' width='100%' align='left'>
+                <div class="form-group">
+                  <h4><b>인스타그램 </b></h4>
+                  {% if item.sns2 == 'X' %}
+                  <h4>SNS 계정이 확인되지 않아요 :< </h4>
+                      {% elif item.sns2 %}
+                      <h5> ID: <a style="color: burlywood;"
+                          onclick='window.open("https://www.instagram.com/{{item.sns2}}" )'> {{item.sns2}} </a> / 팔로워:
+                        <a style="color: burlywood;" onclick='window.open("https://www.instagram.com/{{item.sns2}}" )'>
+                          {{item.insta_flw_str}} </a> </h5>
                       {% else %}
-                        <h4>SNS 계정이 확인되지 않아요 :< </h4>
-                      {% endif %}
-                    
-                  </div>
-                  
-                  <hr color = 'white' size='7px' width='100%' align='left'> 
+                      <h4>SNS 계정이 확인되지 않아요 :< </h4>
+                          {% endif %}
 
-                  <h4><b>포인트 </b></h4>
-                    {% if item.point_str[0] == '' and item.point_str[1] == '\x00' %}
-                      <h4> 포인트가 존재하지 않습니다. </h4>
-                    {% else %}
-                      {%for str in item.point_str %}
-                        <h5>  {{str}} </h5>
-                      {% endfor %}
-                    {% endif %}
-                  
-                  <hr color = 'white' size='7px' width='100%' align='left'> 
-
-                  <h4><b>모델 영상 </b></h4>
-                    <!-- <a type='button' href="/mov/{{item.codesys}}">이미지영상 </a> -->
-                    <button type="button"  onclick='location.href="http://m.musew.com/img_mov/{{item.codesys}}" '>이미지영상</button>
-                    <button type="button"  onclick='location.href="http://m.musew.com/act_mov/{{item.codesys}}" '>연기영상</button>
-                    <button type="button"  onclick='location.href="http://m.musew.com/cf_mov/{{item.codesys}}" '>광고영상</button>
-                    <button type="button"  onclick='location.href="http://m.musew.com/best_img/{{item.codesys}}" '>베스트사진</button>
-                  
-                  
                 </div>
-                
-            </div>
-          </div>
-          <hr color = 'white' size='7px' width='100%' align='left'> 
+
+                <hr color='white' size='7px' width='100%' align='left'>
+
+                <h4><b>포인트 </b></h4>
+                {% if item.point_str[0] == '' and item.point_str[1] == '\x00' %}
+                <h4> 포인트가 존재하지 않습니다. </h4>
+                {% else %}
+                {%for str in item.point_str %}
+                <h5> {{str}} </h5>
+                {% endfor %}
+                {% endif %}
+
+                <hr color='white' size='7px' width='100%' align='left'>
+
+                <h4><b>모델 영상 </b></h4>
+                <!-- <a type='button' href="/mov/{{item.codesys}}">이미지영상 </a> -->
+                <button type="button"
+                  onclick='location.href="http://m.musew.com/img_mov/{{item.codesys}}" '>이미지영상</button>
+                <button type="button"
+                  onclick='location.href="http://m.musew.com/act_mov/{{item.codesys}}" '>연기영상</button>
+                <button type="button"
+                  onclick='location.href="http://m.musew.com/cf_mov/{{item.codesys}}" '>광고영상</button>
+                <button type="button"
+                  onclick='location.href="http://m.musew.com/best_img/{{item.codesys}}" '>베스트사진</button>
 
 
-          {% if activities %}
-           
-              <div >
-                  <div class="form-check">
-                    <label class="form-check-label"> 
-                      <h4><b> 광고이력 </b></h4>
-                      <input class="form-check-input" name='cf' type="checkbox" value="checked"  checked>
-                      <span class="form-check-sign">
-                        <span class="check"></span>
-                      </span>
-                    </label>
-                  </div>
-
-                </label>
               </div>
 
-              <div id = 'cf_' class = "table-width" >
-                
-                <table border="1"  >
-                  <th>브랜드명</th>
-                  <th>계약품목</th>
-                  <th>기간</th>
+
+
+              <hr color='white' size='7px' width='100%' align='left'>
+
+
+              {%if rd_contracts%}
+
+
+              <h4><b> 레디진행 </b></h4>
+
+              <div id='constract' class="table-width">
+
+                <table border="1">
+                  <th>촬영일</th>
+                  <th>프로젝트</th>
                   <th>모델료</th>
-                  <th>ON-AIR</th>
-                  <th>계약중</th>
-                  <th>레디</th>
-                  <th>불명</th>
-                  <th>국가</th>
-                  <th>입력자</th>
-                  <th>입력일</th>
-                  <th>종료일</th>
+                  <th>비고</th>
 
-                  {% for cf in activities %}
-                    {% if cf.dend == "" %}
-                      <tr name = 'title' class = 'not_input' style = "display: none;" >
-                    {% else %}
-                      {% if ('?' in cf.dend) and (cf.dend < '2022.05.13')%}
-                      <tr name = 'cf_brand' class = '{{cf.dend.replace("?", "_").replace(".", "")}}' id= '{{cf.dend.replace("?", "_").replace(".", "")}}' style = "display: none;" >
-                      {% elif  cf.dend < '2022.05.13'%}
-                        <tr name = 'cf_brand' class = '{{cf.dend.replace(".", "")}}' id= '{{cf.dend.replace(".", "")}}' style = "display: none;" >
-                      {% else %}
-                        <tr name = 'cf_brand' class = '{{cf.dend.replace(".", "")}}' id= '{{cf.dend.replace(".", "")}}'>
-                      {% endif %}
-                    {% endif %}
-                    
-                        <td><h5>{{cf.brand}}</h5></td>
-                        <td><h5>{{cf.poom}}</h5></td>
-                        <td><h5>{{cf.imonth}}</h5></td>
-                        <td><h5>{{cf.fee}}</h5></td>
-                        <td><h5>{{cf.dstart}}</h5></td>
-                        <td><h5>{{cf.dend}}</h5></td>
-                        <td><h5>{{cf.rdjin}}</h5></td>
-                        <td><h5>{{cf.indefin}}</h5></td>
-                        <td><h5>{{cf.nation}}</h5></td>
-                        <td><h5>{{cf.writer}}</h5></td>
-                        <td><h5>{{cf.wrdate}}</h5></td> 
-                        <td><h5>{{cf.dend}}</h5></td>
 
-                      </tr>
+                  {% for contract in rd_contracts %}
+
+                  <tr>
+                    <td>
+                      <h5>{{contract.cdate}}</h5>
+                    </td>
+                    <td>
+                      <h5>{{contract.poom}}</h5>
+                    </td>
+                    <td>
+                      <h5>{{contract.modelfee}}</h5>
+                    </td>
+                    <td>
+                      <h5>{{contract.etc}}</h5>
+                    </td>
+
+                  </tr>
                   {% endfor %}
-              {%endif%}
-            
+
                 </table>
               </div>
-            
-              
-              <!---------------------------------------------------------------------------------------------------------------->
 
-              <hr color = 'white' size='7px' width='100%' align='left'> 
+              {%endif%}
+
+            </div>
+          </div>
+
+          <!---------------------------------------------------------------------------------------------------------------->
+
+          <hr color='white' size='7px' width='100%' align='left'>
+
+          {% if activities %}
+
+          <div>
+            <div class="form-check">
+              <label class="form-check-label">
+                <h4><b> 광고이력 </b></h4>
+                <input class="form-check-input" name='cf' type="checkbox" value="checked" checked>
+                <span class="form-check-sign">
+                  <span class="check"></span>
+                </span>
+              </label>
+            </div>
+
+            </label>
+          </div>
+
+          <div id='cf_' class="table-width">
+
+            <table border="1">
+              <th>브랜드명</th>
+              <th>계약품목</th>
+              <th>기간</th>
+              <th>모델료</th>
+              <th>ON-AIR</th>
+              <th>계약중</th>
+              <th>레디</th>
+              <th>불명</th>
+              <th>국가</th>
+              <th>입력자</th>
+              <th>입력일</th>
+              <th>종료일</th>
+
+              {% for cf in activities %}
+              {% if cf.dend == "" %}
+              <tr name='title' class='not_input' style="display: none;">
+                {% else %}
+                {% if ('?' in cf.dend) and (cf.dend < '2023.05.13' )%} <tr name='cf_brand'
+                  class='{{cf.dend.replace("?", "_").replace(".", "")}}'
+                  id='{{cf.dend.replace("?", "_").replace(".", "")}}' style="display: none;">
+                  {% elif cf.dend < '2023.05.13' %} <tr name='cf_brand' class='{{cf.dend.replace(".", "")}}'
+                    id='{{cf.dend.replace(".", "")}}' style="display: none;">
+                    {% else %}
+              <tr name='cf_brand' class='{{cf.dend.replace(".", "")}}' id='{{cf.dend.replace(".", "")}}'>
+                {% endif %}
+                {% endif %}
+
+                <td>
+                  <h5>{{cf.brand}}</h5>
+                </td>
+                <td>
+                  <h5>{{cf.poom}}</h5>
+                </td>
+                <td>
+                  <h5>{{cf.imonth}}</h5>
+                </td>
+                <td>
+                  <h5>{{cf.fee}}</h5>
+                </td>
+                <td>
+                  <h5>{{cf.dstart}}</h5>
+                </td>
+                <td>
+                  <h5>{{cf.dend}}</h5>
+                </td>
+                <td>
+                  <h5>{{cf.rdjin}}</h5>
+                </td>
+                <td>
+                  <h5>{{cf.indefin}}</h5>
+                </td>
+                <td>
+                  <h5>{{cf.nation}}</h5>
+                </td>
+                <td>
+                  <h5>{{cf.writer}}</h5>
+                </td>
+                <td>
+                  <h5>{{cf.wrdate}}</h5>
+                </td>
+                <td>
+                  <h5>{{cf.dend}}</h5>
+                </td>
+
+              </tr>
+              {% endfor %}
+              {%endif%}
+
+            </table>
+          </div>
+
+
+          <!---------------------------------------------------------------------------------------------------------------->
+
+          <hr color='white' size='7px' width='100%' align='left'>
 
           <!-- 모델 통화메모 -->
           {% if model_calls %}
-              
-              <div class="form-check">
-                <label class="form-check-label"> 
-                  <h4 > 통화메모 </h4>
-                </label>
-              </div>
 
-              <div style="float:left;">
-                {%for call in model_calls %}
-                  <input type='button' class = 'call_title' id='{{call.rcode}}' name= 'call_title' value={{call.title}}/>
-                {% endfor %}
+          <div class="form-check">
+            <label class="form-check-label">
+              <h4> 통화메모 </h4>
+            </label>
+          </div>
 
-              </div><br><br>
+          <div style="float:left;">
+            {%for call in model_calls %}
+            <input type='button' class='call_title' id='{{call.rcode}}' name='call_title' value={{call.title}} />
+            {% endfor %}
 
-              {%for call in model_calls %}
-                
-                {% set token = call.memo %}
-                  <div class = "{{call.rcode}}" style = 'display : none;'>
-                    {%for call in token %}
-                      {% if call[0:3] == '202' or call[0:3] == '201'%}
-                        <br>
-                        <h5 style=" font:  bold 1.2em/1em Georgia;">{{call}}</h5>
-                      {% else %}
-                        <h5>{{call}}</h5> 
-                      {% endif %}
-                     
-                    {% endfor %}
+          </div><br><br>
 
-                    
-                    
-                  </div>
-              {% endfor %}
-              
-                 
+          {%for call in model_calls %}
+
+          {% set token = call.memo %}
+          <div class="{{call.rcode}}" style='display : none;'>
+            {%for call in token %}
+            {% if call[0:3] == '202' or call[0:3] == '201'%}
+              <br>
+              <h5 style=" font: bold 1.2em/1em;"><b>{{call}}</b></h5>
+            {% else %}
+              <h5>{{call}}</h5>
+            {% endif %}
+
+            {% endfor %}
+
+
+
+          </div>
+          {% endfor %}
+
+
 
           {%endif%}
-          <img  src="http://pic2.readymodel.kr/mdpic/{{item.codesys[0:3]}}/{{item.codesys[0:4]}}/{{item.codesys}}/sys_photo/pic.jpg" style="width:100%;">
-        </div>
-        
-          
-        </form>
+          <img
+            src="http://pic2.readymodel.kr/mdpic/{{item.codesys[0:3]}}/{{item.codesys[0:4]}}/{{item.codesys}}/sys_photo/pic.jpg"
+            style="width:100%;">
       </div>
-     <!-- <div class="card-footer">
+
+
+      </form>
+    </div>
+    <!-- <div class="card-footer">
         <button type="submit" class="btn btn-fill btn-info">Save</button>
       </div> -->
-    </div>
   </div>
+</div>
 
 
-  
+
 </div>
 </div>
 
@@ -265,19 +352,19 @@
 {% block javascripts %}
 
 <script>
-  $(document).ready(function() {
+  $(document).ready(function () {
 
     // console.log(' ::::: ', {{name}});
-    
+
     $.ajax({
       url: "/model_info/{{item.codesys}}",
       type: "POST",
       dataType: "json",
       contentType: "application/json",
-    
+
     });
-    
-    
+
+
   });
 </script>
 

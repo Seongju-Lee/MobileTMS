@@ -1,47 +1,32 @@
-from ast import Str
-from asyncore import write
-from curses import reset_prog_mode
 from datetime import date, datetime, timedelta
-import imp
 import json
-from mmap import mmap
-from ntpath import join
-from pickle import PERSID
-from statistics import mode
-from tkinter import HIDDEN
-from xmlrpc.server import SimpleXMLRPCRequestHandler
 from fastapi.encoders import jsonable_encoder
-from numpy import sort
 from sqlalchemy import between, desc, not_
-from sqlalchemy.sql.expression import func
 
 from sqlalchemy.orm import Session
-# from schemas.jobs import JobCreate
+
 from db.models.kmodels import  People2
 from db.models.kmodels import People, Chu19, Movsel, Mmeeting_proc, Yeon, SunokStar, SunokStarChu, SCount, Read, Mtel, Memo, Section, ModelCF, ModelMov
 from db.models.yeons import RealTimeCF, RealTimeDRAMA
+from db.projects.project import ProjectContract
+
 from dateutil.relativedelta import relativedelta
  
-
-## 연령 분류(무식하게 짠 버전)
+## 연령 분류
 def divide_ages(models_info, search_ages):
-    ## 나이 범위에 따라 구별
 
-    print('연령 선택: ',search_ages)
-    choi = models_info.filter( (People.age <= search_ages[0][0]) & (People.age >= search_ages[0][1]))
+    choi = models_info.filter((People.age <= search_ages[0][0]) & (People.age >= search_ages[0][1]))
     
     return choi
 
     
-## 알파모델료 분류(무식하게 짠 버전)
+## 알파모델료 분류
 def divide_alpha(divide_age_models, hidden_alpha_fee):
     hidden_alpha_fee = hidden_alpha_fee.split(',')
 
     length = len(hidden_alpha_fee)
 
     # 레디자동 모델이 hidden_alpha_fee에 있으면 체크
-    #
-    print('알파모델료 선택11: ',hidden_alpha_fee)
 
     two_year = str(datetime.now().year - 2) + '.' + str(datetime.now().month) + '.' + str(datetime.now().day) 
     if length == 1:
@@ -54,7 +39,6 @@ def divide_alpha(divide_age_models, hidden_alpha_fee):
             for model in res_models:
                 if model['mfee'] == '':
                     model['mfee'] = '레디자동'
-            print(res_models)
             return res_models
 
         else:
@@ -77,7 +61,6 @@ def divide_alpha(divide_age_models, hidden_alpha_fee):
             for model in res_models:
                 if model['mfee'] == '':
                     model['mfee'] = '레디자동'
-            print(res_models)
             return res_models
 
         else:
@@ -87,7 +70,6 @@ def divide_alpha(divide_age_models, hidden_alpha_fee):
     elif length == 3:
         
         if 'ready' in hidden_alpha_fee:
-            print('aaa', hidden_alpha_fee)
 
             res_models = divide_age_models.filter((People.rdcode.contains('TKMA') | People.rdcode.contains('TKMB') | People.rdcode.contains('TKMV') | People.rdcode.contains('TKMF') | People.rdcode.contains('TKC')
             | People.rdcode.contains('TKHB') | People.rdcode.contains('TKHA') | People.rdcode.contains('TKHP') | People.rdcode.contains('TKHC') )
@@ -99,7 +81,6 @@ def divide_alpha(divide_age_models, hidden_alpha_fee):
             for model in res_models:
                 if model['mfee'] == '':
                     model['mfee'] = '레디자동'
-            print(res_models)
             return res_models
 
         else:
@@ -111,7 +92,6 @@ def divide_alpha(divide_age_models, hidden_alpha_fee):
     elif length == 4:
         
         if 'ready' in hidden_alpha_fee:
-            print('aaa', hidden_alpha_fee)
 
             res_models = divide_age_models.filter((People.rdcode.contains('TKMA') | People.rdcode.contains('TKMB') | People.rdcode.contains('TKMV') | People.rdcode.contains('TKMF') | People.rdcode.contains('TKC')
             | People.rdcode.contains('TKHB') | People.rdcode.contains('TKHA') | People.rdcode.contains('TKHP') | People.rdcode.contains('TKHC') )
@@ -123,7 +103,6 @@ def divide_alpha(divide_age_models, hidden_alpha_fee):
             for model in res_models:
                 if model['mfee'] == '':
                     model['mfee'] = '레디자동'
-            print(res_models)
             return res_models
 
         else:
@@ -134,7 +113,6 @@ def divide_alpha(divide_age_models, hidden_alpha_fee):
     elif length == 5:
         
         if 'ready' in hidden_alpha_fee:
-            print('aaa', hidden_alpha_fee)
 
             res_models = divide_age_models.filter((People.rdcode.contains('TKMA') | People.rdcode.contains('TKMB') | People.rdcode.contains('TKMV') | People.rdcode.contains('TKMF') | People.rdcode.contains('TKC')
             | People.rdcode.contains('TKHB') | People.rdcode.contains('TKHA') | People.rdcode.contains('TKHP') | People.rdcode.contains('TKHC') )
@@ -146,7 +124,6 @@ def divide_alpha(divide_age_models, hidden_alpha_fee):
             for model in res_models:
                 if model['mfee'] == '':
                     model['mfee'] = '레디자동'
-            print(res_models)
             return res_models
 
         else:
@@ -158,7 +135,6 @@ def divide_alpha(divide_age_models, hidden_alpha_fee):
     elif length == 6:
         
         if 'ready' in hidden_alpha_fee:
-            print('aaa', hidden_alpha_fee)
 
             res_models = divide_age_models.filter((People.rdcode.contains('TKMA') | People.rdcode.contains('TKMB') | People.rdcode.contains('TKMV') | People.rdcode.contains('TKMF') | People.rdcode.contains('TKC')
             | People.rdcode.contains('TKHB') | People.rdcode.contains('TKHA') | People.rdcode.contains('TKHP') | People.rdcode.contains('TKHC') )
@@ -170,7 +146,6 @@ def divide_alpha(divide_age_models, hidden_alpha_fee):
             for model in res_models:
                 if model['mfee'] == '':
                     model['mfee'] = '레디자동'
-            print(res_models)
             return res_models
 
         else:
@@ -184,7 +159,6 @@ def divide_alpha(divide_age_models, hidden_alpha_fee):
     elif length == 7:
         
         if 'ready' in hidden_alpha_fee:
-            print('aaa', hidden_alpha_fee)
 
             res_models = divide_age_models.filter((People.rdcode.contains('TKMA') | People.rdcode.contains('TKMB') | People.rdcode.contains('TKMV') | People.rdcode.contains('TKMF') | People.rdcode.contains('TKC')
             | People.rdcode.contains('TKHB') | People.rdcode.contains('TKHA') | People.rdcode.contains('TKHP') | People.rdcode.contains('TKHC') )
@@ -196,7 +170,6 @@ def divide_alpha(divide_age_models, hidden_alpha_fee):
             for model in res_models:
                 if model['mfee'] == '':
                     model['mfee'] = '레디자동'
-            print(res_models)
             return res_models
 
         else:
@@ -212,7 +185,6 @@ def divide_alpha(divide_age_models, hidden_alpha_fee):
     
 
         if 'ready' in hidden_alpha_fee:
-            print('aaa', hidden_alpha_fee)
 
             res_models = divide_age_models.filter((People.rdcode.contains('TKMA') | People.rdcode.contains('TKMB') | People.rdcode.contains('TKMV') | People.rdcode.contains('TKMF') | People.rdcode.contains('TKC')
             | People.rdcode.contains('TKHB') | People.rdcode.contains('TKHA') | People.rdcode.contains('TKHP') | People.rdcode.contains('TKHC') )
@@ -224,7 +196,6 @@ def divide_alpha(divide_age_models, hidden_alpha_fee):
             for model in res_models:
                 if model['mfee'] == '':
                     model['mfee'] = '레디자동'
-            print(res_models)
             return res_models
 
         else:
@@ -247,14 +218,12 @@ def divide_alpha(divide_age_models, hidden_alpha_fee):
         for model in res_models:
             if model['mfee'] == '':
                 model['mfee'] = '레디자동'
-        print(res_models)
         return res_models
 
 
 # 셀럽 모델료 구분 (무식하게 짠 버전)
 def divide_mfee(divide_age_models, hidden_celeb_fee, hidden_celeb_fee_month):
 
-    print('안녕하세요, 셀럽 모델료 TEST: ', hidden_celeb_fee)
 
     length = len(hidden_celeb_fee)
     celeb_fee = hidden_celeb_fee.split(',')
@@ -335,12 +304,10 @@ def divide_mfee(divide_age_models, hidden_celeb_fee, hidden_celeb_fee_month):
 
 def celeb_section(res_model, hidden_celeb_section):
     
-    print('테스트 중입니다.', hidden_celeb_section)
 
     if len(hidden_celeb_section) == 0:
         hidden_celeb_section = 'section_all,section_singer,section_actor,section_idol,section_entertainment,section_broadcast,section_celeb,section_youtube'
 
-    print(hidden_celeb_section, len(hidden_celeb_section))
     sections = hidden_celeb_section.split(',')
     section_code = []
     # 히든섹션 값이 model.json에 있으면 필터 함수 적용 시키고, 아니면 적용 시키지 않음]
@@ -351,12 +318,10 @@ def celeb_section(res_model, hidden_celeb_section):
             aa = json.load(json_file)
 
             length = len(sections)
-            print(sections)
 
             for section in sections:
                 section_code.append(aa['model_section'][section])
 
-            print('kkk: ', section_code)
             if length == 1:
                 print(section_code)
                 return res_model.filter(Yeon.rdcode.contains(section_code))
@@ -385,23 +350,6 @@ def celeb_section(res_model, hidden_celeb_section):
         print('일치하는 모델섹션이 json파일에 없음.')
         pass
    
-    
-# def create_new_job(job: JobCreate, db: Session, owner_id: int):
-#     job = Job(**job.dict(), owner_id=owner_id)
-#     db.add(job)
-#     db.commit()
-#     db.refresh(job)
-#     return job
-
-
-def retrieve_job(id: int, db: Session):
-    job = db.query(Job).filter(Job.id == id).first()
-    return job
-
-
-def list_jobs(db: Session):
-    jobs = db.query(Job).filter(Job.is_active == True).all()
-    return jobs
 
 
 # 모델(추천2022)_기간검색
@@ -413,8 +361,6 @@ def list_models(date: str, db: Session):
     chu = db.query(Chu19, People).join(
         People, Chu19.mcode == People.codesys).where(start_date <= Chu19.edit_time)
 
-    print(datetime.today())
-    print(chu[0])
     return chu
 
 
@@ -440,10 +386,6 @@ def chu_30(db: Session, chu_img, chu_fav, chu_act, gender_w, gender_m, search_ag
     
     res_model = jsonable_encoder(res_model[:])
 
-    print(res_model)
-    # for mm in res_model:
-    #     print('vvvvvvvvvvv: ', mm)
-    # print('캐릭터 선택 리스트: ', char_list)
     
     if  (char_list[0] == '') and  (char_list[1]== ''):
         return res_model
@@ -456,7 +398,6 @@ def chu_30(db: Session, chu_img, chu_fav, chu_act, gender_w, gender_m, search_ag
                         result_models.append(model)
         return result_models
 
-    
     
 
 # 추천2022_영상초이
@@ -481,9 +422,7 @@ def movchoi(db: Session, s_date, e_date,gender_w, gender_m, search_ages, hidden_
     divide_age_models = divide_ages(models_info=models_info,search_ages=search_ages)
 
     res_model = divide_alpha(divide_age_models=divide_age_models, hidden_alpha_fee=hidden_alpha_fee)
-
     res_model = jsonable_encoder(res_model[:])
-    print('캐릭터 선택 리스트: ', char_list)
     
     if  (char_list[0] == '') and  (char_list[1]== ''):
         return res_model
@@ -507,20 +446,10 @@ def proc(db: Session, s_date, e_date, gender_w, gender_m, search_ages, hidden_al
         gender_w = '여'
 
     char_list = []
-    print(gender_w, gender_m)
 
     result_models = []
     char_list = hidden_echar.split(',') + hidden_rchar.split(',')
 
-    # if (celeb) and (not model):
-    #     proc = db.query(Mmeeting_proc.mcode, People.name, People.sex, People.age, People.coname,  People.height, Mmeeting_proc.edit_time, Mmeeting_proc.projcode, People.isyeon,  People.image).join(
-    #         People, Mmeeting_proc.mcode == People.codesys).filter((Mmeeting_proc.edit_time >= s_date) & (Mmeeting_proc.edit_time <= e_date)).filter((People.sex == gender_m) | (People.sex == gender_w)).filter(
-    #             People.rdcode.contains('TC')
-
-    #     )
-    #     divide_age_models = divide_ages(models_info=proc, search_ages=search_ages)
-    #     res_model = divide_alpha(divide_age_models=divide_age_models, hidden_alpha_fee=hidden_alpha_fee)
-    #     gubun = 'celeb'
     if (model) and (not celeb):
 
         proc = db.query(Mmeeting_proc.mcode, People.name, People.sex, People.age, People.coname, People.mfee, People.height, Mmeeting_proc.edit_time, Mmeeting_proc.projcode, People.isyeon, People.image).join(
@@ -534,7 +463,6 @@ def proc(db: Session, s_date, e_date, gender_w, gender_m, search_ages, hidden_al
         gubun = 'model'
 
         res_model = jsonable_encoder(res_model[:])
-        print('캐릭터 선택 리스트: ', char_list)
         
         if  (char_list[0] == '') and  (char_list[1]== ''):
             return res_model, gubun
@@ -547,29 +475,6 @@ def proc(db: Session, s_date, e_date, gender_w, gender_m, search_ages, hidden_al
                             result_models.append(model)
             return result_models, gubun
 
-    # else:
-    #     print('ddddddd: ', s_date, e_date)
-
-    #     proc = db.query(Mmeeting_proc.mcode, People.name, Mmeeting_proc.edit_time, Mmeeting_proc.projcode, People.isyeon,  People.image).join(
-    #         People, Mmeeting_proc.mcode == People.codesys).filter((Mmeeting_proc.edit_time >= s_date) & (Mmeeting_proc.edit_time <= e_date)).filter((People.sex == gender_m) | (People.sex == gender_w))
-    #     divide_age_models = divide_ages(models_info=proc, search_ages=search_ages)
-    #     res_model = divide_alpha(divide_age_models=divide_age_models, hidden_alpha_fee=hidden_alpha_fee)
-        
-    #     gubun = 'all'
-
-    # else:
-    #     proc = db.query(Mmeeting_proc.mcode.label('codesys'), Yeon.rno, Yeon.name, Yeon.sex, Yeon.age, Yeon.a_3, Yeon.a_6, Yeon.a_12, Mmeeting_proc.edit_time, Mmeeting_proc.projcode, People.isyeon,  People.image).join(
-    #         Yeon, Mmeeting_proc.mcode == Yeon.codesys).join(People, People.codesys == Yeon.codesys).filter((Mmeeting_proc.edit_time >= s_date) & (Mmeeting_proc.edit_time <= e_date)).filter((Yeon.sex == gender_m) | (Yeon.sex == gender_w)).filter(
-    #             Yeon.rdcode.contains('TC'))
-
-    #     gubun = 'celeb'
-
-    # for model in jsonable_encoder(res_model[:]):
-    #     print(model['mfee'], model['age'])
-
-
-        
-
 
 # 순옥스타_최신등록순
 def order_register(db: Session, gender_w, gender_m, search_ages , hidden_celeb_fee, hidden_celeb_fee_month, hidden_celeb_section):
@@ -579,7 +484,6 @@ def order_register(db: Session, gender_w, gender_m, search_ages , hidden_celeb_f
     if gender_w:
         gender_w = '여'
 
-    print('haha...: ', hidden_celeb_section)
     register = db.query(SunokStar.mcode, Yeon.name, SunokStar.edit_time,  Yeon.sex.label('gender'), Yeon.age, Yeon.a_3, Yeon.a_6, Yeon.a_12, People.isyeon, People.height, People.coname, People.mfee).join(
         Yeon, SunokStar.mcode == Yeon.codesys).join(
         People, SunokStar.mcode == People.codesys).order_by(desc(SunokStar.edit_time)).filter((Yeon.sex == gender_m) | (Yeon.sex == gender_w))
@@ -590,7 +494,6 @@ def order_register(db: Session, gender_w, gender_m, search_ages , hidden_celeb_f
     res_model = divide_mfee(divide_age_models, hidden_celeb_fee, hidden_celeb_fee_month)
     
     res_celeb = celeb_section(res_model, hidden_celeb_section)
-    print(res_celeb)
     return res_celeb
 
 
@@ -672,8 +575,6 @@ def order_realtime(db: Session, gender_w, gender_m, search_ages, hidden_celeb_fe
     if len(day) == 1:
         day = '0' + str(datetime.today().day)
 
-    # 3개월 모델료 기준.
-    print((year) + '.' + month + '.' + day)
     # 셀럽 계약현황
     real_time_cf = db.query(Yeon.codesys, Yeon.rno, Yeon.name, Yeon.sex, Yeon.age, Yeon.a_3, Yeon.a_6, Yeon.a_12, RealTimeCF.brand, RealTimeCF.dend.label('cf_dend'), People.isyeon, People.isyeon, People.height, People.coname, People.mfee).join(
         RealTimeCF, Yeon.codesys == RealTimeCF.codesys).join(People, People.codesys == Yeon.codesys).filter(
@@ -801,7 +702,6 @@ def models_info(db: Session, codesys):
             return yeon_detail, yeon_activity, call_memo, 321
 
         else:
-            print('일반 k 모델입니다.')
             model = jsonable_encoder(model_detail[0])
             section = jsonable_encoder(model_section[:])
             model_section = model['rdcode'].split('/')
@@ -817,12 +717,16 @@ def models_info(db: Session, codesys):
     except:
         return 123
 
+
+def get_rd_contracts(db:Session, codesys):
+
+    return db.query(ProjectContract).filter(ProjectContract.code == codesys)
+
 ## 이미지영상
 def img_mov_info(db: Session, codesys):
     
     try:
         return db.query(ModelMov.edit_time, ModelMov.mcode, ModelMov.fname, ModelMov.fext, ModelMov.fpath).filter(ModelMov.mcode == codesys).filter(ModelMov.fpath.contains('AA영상')).filter(ModelMov.fext.contains('mp4'))
-
     except:
         pass
 
@@ -831,7 +735,6 @@ def act_mov_info(db: Session, codesys):
     
     try:
         return db.query(ModelMov.edit_time, ModelMov.mcode, ModelMov.fname, ModelMov.fext, ModelMov.fpath).filter(ModelMov.mcode == codesys).filter(ModelMov.fpath.contains('AA연기')).filter(ModelMov.fext.contains('mp4'))
-
     except:
         pass
 
@@ -843,8 +746,6 @@ def cf_mov_info(db: Session, codesys):
 
     except:
         pass
-
-
 
 ## 베스트사진
 def best_img(db: Session, codesys):

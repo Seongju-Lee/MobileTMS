@@ -1,9 +1,6 @@
-from audioop import reverse
 from datetime import datetime, timedelta
-from turtle import rt
 from fastapi import APIRouter, Depends
-from fastapi import Request, status, responses, Response, requests
-from fastapi.responses import HTMLResponse
+from fastapi import Request
 from fastapi.templating import Jinja2Templates
 from sqlalchemy.orm import Session
 from db.session import get_db
@@ -11,12 +8,6 @@ from fastapi.encoders import jsonable_encoder
 from striprtf.striprtf import rtf_to_text
 from starlette.responses import RedirectResponse
 from db.repository.project import get_project, get_filter_project, get_project_info, get_project_memo, get_project_model, get_project_with, project_security
-from webapps.auth.forms import LoginForm
-from core.hashing import Hasher
-
-import json
-import pandas as pd
-
 
 templates = Jinja2Templates(directory="templates")
 router = APIRouter()
@@ -32,6 +23,7 @@ def project(request: Request, db: Session = Depends(get_db), pcode:str=''):
         return RedirectResponse('/login?msg=_adf$dfsj149BSEjfeo_$')
 
 
+
     info = get_project_info(db=db, pcode=pcode)
     info = jsonable_encoder(info[:])
     
@@ -45,7 +37,6 @@ def project(request: Request, db: Session = Depends(get_db), pcode:str=''):
         model['chunggu'] = format(model['chunggu'], ',')    
         model['modelfee'] = format(model['modelfee'], ',')    
             
-    
         
     ## 보안 프로젝트
     if info[0]['boan19ca'] or info[0]['boan19']:
@@ -58,12 +49,9 @@ def project(request: Request, db: Session = Depends(get_db), pcode:str=''):
         team_scrty.remove('')
         admin_scrty.remove('')
 
-        print('chk :: ', user, pcode, team_scrty, admin_scrty )
         scrty = project_security(db, user, pcode, team_scrty, admin_scrty)
 
-
         if not scrty:
-
             return templates.TemplateResponse(
                     "project_info.html", {"request": request, "info": '보안'}
             )
@@ -115,7 +103,6 @@ isceleb: str=''):
 
     if token is None:
         return RedirectResponse('/login?msg=_adf$dfsj149BSEjfeo_$')
-    
 
     # 아무것도 입력안하고, 처음 경로로 들어오면 모든 프로젝트 검색
     elif not project_name and not rd_team and not cf_owner and not cf_regdate and not cf_co:
@@ -154,7 +141,6 @@ isceleb: str=''):
                 "project-table.html", {"request": request,
                             "years": years,  "now_year": now_year, "a_project": f_project}
         )
-        
     
     # except:
     #     print('?')

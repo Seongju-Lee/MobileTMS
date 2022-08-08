@@ -1,4 +1,3 @@
-from ast import Str
 from sre_compile import MAXCODE
 from sqlalchemy import Column, Integer, String, Date, Boolean, ForeignKey, TIMESTAMP, column, desc, Text
 from sqlalchemy.orm import relationship

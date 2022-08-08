@@ -32,11 +32,26 @@
                 {% endfor%}
               </select>
               <br><br>
+<!-- 
+              <p style="color: #ffffff;">검색 대상</p>
+              <select name="rd_account" id="rd_account" value="rd_account" style="width:80%; border: 1px solid #cad1d7; background-color: transparent; color: #ffffff;" >
+
+                <script>
+                  {% set accounts = ['프로젝트명', '광고인', '거래처', '광고회사', 'PD', '프로덕션', '감독', '광고주', 'PD컴퍼니', 'CD'] %}
+                 
+                </script>
+
+                {% for account in accounts %}
+                  <option value = "{{accounts.index(account)}}"> {{account}} </option>
+                {% endfor%}
+              </select>
+
+              <br><br> -->
               <p style="color: #ffffff;">광고인</p>
               <input class="form-control me-2" style = 'border-color: #ffffff; width: 80%' id="autocompletes" name="cf_owner" type="search" placeholder="광고인"><br>
 
-              <p style="color: #ffffff;">광고회사</p>
-              <input class="form-control me-2" style = 'border-color: #ffffff; width: 80%' id="autocompletes" name="cf_co" type="search" placeholder="광고회사"><br>
+              <p style="color: #ffffff;">거래처</p>
+              <input class="form-control me-2" style = 'border-color: #ffffff; width: 80%' id="autocompletes" name="cf_co" type="search" placeholder="거래처"><br>
 
               <p style="color: #ffffff;">등록년도</p>
               <input class="form-control me-2" style = 'border-color: #ffffff; width: 80%' id="autocompletes" name="cf_regdate" type="search" placeholder="2022"><br>

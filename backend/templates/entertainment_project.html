@@ -21,7 +21,7 @@
       </div>
       <div class="card-bodys" style="padding: 0.5rem;">
         <div class="table-responsive" >
-          <table class="table tablesorters " style="width: 200%" id="">
+          <table class="table tablesorters " style="width: 200%; font-size: 0.8rem; color: #ffffff;  text-align: center;" id="">
             <thead class=" text-primary">
               <tr>
                 <th>
@@ -58,7 +58,7 @@
                 </th>
               </tr>
             </thead>
-            <tbody>
+            <tbody >
 
               {% for project in entertainment_project %}
                 <tr>
@@ -67,7 +67,7 @@
                   </td>
 
                   <td style="font-size: 0.8rem; width: 300px;">
-                    {{project.poom}}
+                    <a href='/p/{{project.projcode}}' target="_blank" style="font-size: 0.8rem; color: #ffffff;  text-align: center;">{{project.poom}}</a>
                   </td>
 
                   <td style="font-size: 0.8rem; ">

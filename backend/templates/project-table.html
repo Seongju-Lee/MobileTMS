@@ -42,38 +42,49 @@
 
               {% for project in a_project[:] %}
                 <tr style="text-align: center;">
+
                   <td style="font-size: 0.8rem; padding-right: 0px;" >
-                    <p style="color: #f3f3f3; font-size: 0.75rem;"><b>{{project.date}}</b></p>
+                    <a href='/p/{{project.code}}' target="_blank" style="font-size: 0.8rem; color: #ffffff;  text-align: center;">
 
-                    <p style="color: #f3f3f3; font-size: 0.7rem;"><b>{{project.teamtag}}</b></p>
+                      <p style="color: #f3f3f3; font-size: 0.75rem;"><b>{{project.date}}</b></p>
 
-                    {% if project.seleb == 'V' %}
-                      <p style="color: #f15050;"><b>셀럽</b></p>
-                    {% endif %}
+                      <p style="color: #f3f3f3; font-size: 0.7rem;"><b>{{project.teamtag}}</b></p>
+
+                      {% if project.seleb == 'V' %}
+                        <p style="color: #f15050;"><b>셀럽</b></p>
+                      {% endif %}
+                    </a>
                   
                   </td>
 
-
                   <td style="font-size: 0.8rem;">
-                    <a href='/p/{{project.code}}' target="_blank" style="font-size: 0.8rem; color: #ffffff;  text-align: center;"><b>{{project.prname}} </b></a>
+                    <a href='/p/{{project.code}}' target="_blank" style="font-size: 0.8rem; color: #ffffff;  text-align: center;">
+                      <b>{{project.prname}} </b>
+                    </a>
                   </td>
 
 
                   <td style="font-size: 0.8rem; padding-right: 2px;  text-align: center;">
-                    {{project.cfowner}}
+                    <a href='/p/{{project.code}}' target="_blank" style="font-size: 0.8rem; color: #ffffff;  text-align: center;">
+                      {{project.cfowner}}
+                    </a>
                   </td>
                   
                   <td class="text-center" style="font-size: 0.8rem; padding-left: 1px;  text-align: center;">
-                    {{project.cfco}}
+                    <a href='/p/{{project.code}}' target="_blank" style="font-size: 0.8rem; color: #ffffff;  text-align: center;">
+                      {{project.cfco}}
+                    </a>
                   </td>
 
                   
                     <td style="font-size: 0.8rem; padding-right: 2px; text-align: center;">
-                      {% if project.onairck %}
-                        {{project.onairck}}
-                      {% else %}
-                        -
-                      {%endif%}
+                      <a href='/p/{{project.code}}' target="_blank" style="font-size: 0.8rem; color: #ffffff;  text-align: center;">
+                        {% if project.onairck %}
+                          {{project.onairck}}
+                        {% else %}
+                          -
+                        {%endif%}
+                      </a>
                     </td>
                   
                 </tr>

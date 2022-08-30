@@ -6,8 +6,8 @@ from core.config import settings
 
 def create_access_token(data: dict, expires_delta: Optional[timedelta] = None):
     to_encode = data.copy()
-    print(datetime.utcnow() + timedelta(hours=9))
-    print(datetime.utcnow())
+    # print(datetime.utcnow() + timedelta(hours=9))
+    # print(datetime.utcnow())
     if expires_delta:
         expire = datetime.utcnow() +  expires_delta
     else:
@@ -16,6 +16,7 @@ def create_access_token(data: dict, expires_delta: Optional[timedelta] = None):
         )
 
     print('제한시간: ', expire)
+    
     to_encode.update({"exp": expire})
     encoded_jwt = jwt.encode(
         to_encode, settings.SECRET_KEY, algorithm=settings.ALGORITHM

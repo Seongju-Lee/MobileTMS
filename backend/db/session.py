@@ -5,6 +5,7 @@ from typing import Generator
 
 # For postgrSQL database
 SQLALCHEMY_DATABASE_URL = settings.DATABASE_URL
+print(SQLALCHEMY_DATABASE_URL)
 engine = create_engine(SQLALCHEMY_DATABASE_URL, pool_recycle=500)
 
 

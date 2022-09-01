@@ -1,0 +1,106 @@
+
+      <style>
+
+          @media (min-width: 1991px) {
+              .navbar-expand-lg {
+                flex-flow: row nowrap;
+                justify-content: flex-start;
+              }
+
+              
+          }
+         
+
+          @media (min-width: 1992px) {
+            .navbar-expand-lg>.container, .navbar-expand-lg>.container-fluid {
+                flex-wrap: nowrap;
+            }
+          }
+
+          @media screen and (max-width: 1991px) {
+            .navbar .container-fluid {
+                padding-right: 15px;
+                padding-left: 15px;
+            }
+          }
+
+          @media (max-width: 1991.98px) {
+            .navbar-expand-lg>.container, .navbar-expand-lg>.container-fluid {
+                padding-right: 0;
+                padding-left: 0;
+            }
+          }
+
+      </style>
+      <!-- Navbar -->
+      <nav class="navbar navbar-expand-lg navbar-absolute navbar-transparent" id="navbar" >
+        <div class="container-fluid" style="padding-right:-20px; padding-left:15px;">
+          <div class="navbar-wrapper">
+            <div class="navbar-toggle d-inline">
+              <button type="button" class="navbar-toggler" >
+                  <img src="/static/assets/img/filter_.png" width="20px" height="20px">
+              </button>
+            </div>
+
+          </div>
+          <button class="navbar-toggler" type="button" style='padding-right: 1px;' data-toggle="collapse" data-target="#navigation" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-bar navbar-kebab"></span>
+            <span class="navbar-toggler-bar navbar-kebab"></span>
+            <span class="navbar-toggler-bar navbar-kebab"></span>
+          </button>
+          <div class="collapse navbar-collapse" id="navigation">
+
+            <ul style="flex-direction: column; display: flex;  margin-left: auto !important; padding-top: 15px;">
+              
+              
+              
+              <li style="padding-bottom: 5px;">
+                <a id='logout' style="padding-top: 20px; padding-left: 5px; ">
+                  <div class="photo">
+                    <img src="/static/assets/img/logout.png" alt="Profile Photo">
+                  </div>
+                  <span style="color: black; padding-left: 8px;">Log out</span>
+                    
+                </a>
+              </li>
+              
+              <a href="/" id='home' style="padding-top: 20px; padding-left: 5px;">
+                <li >
+                <div class="photo">
+                  <img src="/static/assets/img/default-avatar.png" alt="Profile Photo">
+                </div>
+                <span style="color: black; padding-left: 8px;"><b>모델검색</b></span>
+              </li>
+              </a>
+            
+              <a href="/p" id='project' style="padding-top: 20px; padding-left: 5px;">
+                <li >
+                <div class="photo">
+                  <img src="/static/assets/img/handshake.png" alt="Profile Photo">
+                </div>
+                <span style="color: black; padding-left: 8px;">Project</span>
+              </li>
+              </a>
+
+              
+
+              
+
+            </ul>
+
+          </div>
+        </div>
+      </nav>
+      <div class="modal modal-search fade" id="searchModal" tabindex="-1" role="dialog" aria-labelledby="searchModal" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+          <div class="modal-content">
+            <div class="modal-header">
+              <input type="text" class="form-control" id="inlineFormInputGroup" placeholder="SEARCH">
+              <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <i class="tim-icons icon-simple-remove"></i>
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+      <!-- End Navbar -->

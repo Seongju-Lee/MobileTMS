@@ -23169,11 +23169,6 @@ pre[class*=language-]:before {
     background: #4099ff;
 }
 
-.pcoded-header:before,
-.pcoded-main-container:before {
-    content: "";
-    transition: all 0.15s ease-in-out;
-}
 
 .pcoded-navbar {
     display: block;

@@ -77,7 +77,7 @@ def login(request: Request, msg: str = None):
     if msg:
         msg='로그인 세션이 만료되었습니다.'
     return templates.TemplateResponse(
-        "login.html", {"request": request, "msg": msg}
+        "home/auth-signin.html", {"request": request, "msg": msg}
     )
 
 
@@ -85,9 +85,12 @@ def login(request: Request, msg: str = None):
 async def login(request: Request, db: Session = Depends(get_db)):
 
     
-    form = LoginForm(request) # LoginForm: 로그인 입력 정보 저장 클래스
-    await form.load_data()  # load_data: 입력된 로그인 정보 가져오는 메소드
     
+    form = LoginForm(request) # LoginForm: 로그인 입력 정보 저장 클래스
+    b = await form.load_data()  # load_data: 입력된 로그인 정보 가져오는 메소드
+    
+    print(form.username, form.request, b)
+
     timestamp = int(time.time() * 1000)
     timestamp = str(timestamp)
     
@@ -104,17 +107,21 @@ async def login(request: Request, db: Session = Depends(get_db)):
     api_id = api_id
     api_pw = api_pw
 
+    print(access_key, secret_key, api_id, api_pw)
     if await form.is_valid():
         try:
+            
             # form.__dict__.update(msg="Login Successful")
-            response = templates.TemplateResponse("login.html", form.__dict__)
+            response = templates.TemplateResponse("home/auth-signin.html", form.__dict__)
+            print(123)
             login_for_access_token(response=response, form_data=form, db=db)
+            print(45)
             print('token접근: ', login_for_access_token(response=response, form_data=form, db=db))
 
 
             user = authenticate_user(form.username, form.password, db)
             if user == False:
-
+                print(67)
                 form.__dict__.update(msg="로그인 실패: 다시 시도 해주세요")
                 return templates.TemplateResponse("login.html", form.__dict__)
 
@@ -166,7 +173,7 @@ async def login(request: Request, db: Session = Depends(get_db)):
                 ##################################################################################################
                 # 문자인증 페이지로 이동.
                 form.__dict__.update(msg={'user_id' : (user[:])[0]['id']})
-                return templates.TemplateResponse("sms_auth.html", form.__dict__)
+                return templates.TemplateResponse("home/auth-signup.html", form.__dict__)
 
               
                 

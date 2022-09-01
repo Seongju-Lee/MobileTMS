@@ -42,8 +42,9 @@ def home(request: Request, db: Session = Depends(get_db)):
         
         else:
 
+
             return templates.TemplateResponse(
-                "home/index.html", {"request": request,
+                "index.html", {"request": request,
                             "years": years,  "now_year": now_year}
             )
 

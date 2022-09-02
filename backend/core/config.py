@@ -7,8 +7,8 @@ load_dotenv(dotenv_path=env_path)
 
 
 class Settings:
-    PROJECT_TITLE: str = "Jobboard"
-    PROJECT_VERSION: str = "0.0.1"
+    PROJECT_TITLE: str = "WatsonTMS"
+    PROJECT_VERSION: str = "1.0.0"
 
     # POSTGRES_USER: str = os.getenv("POSTGRES_USER")
     # POSTGRES_PASSWORD: str = os.getenv("POSTGRES_PASSWORD")

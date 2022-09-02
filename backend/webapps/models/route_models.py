@@ -38,7 +38,7 @@ def home(request: Request, db: Session = Depends(get_db)):
 
 
         if token is None:
-            return RedirectResponse('/login')
+            return RedirectResponse('/user')
         
         else:
 

@@ -28337,16 +28337,17 @@ body.box-layout .pcoded-navbar.theme-horizontal ~ .pcoded-header {
 
 .table-card .card-body .table > thead > tr > th {
     border-top: 0;
+    white-space: nowrap;
 }
 
 .table-card .card-body .table tr td:first-child,
   .table-card .card-body .table tr th:first-child {
-    padding-left: 25px;
+    padding-left: 15px;
 }
 
 .table-card .card-body .table tr td:last-child,
   .table-card .card-body .table tr th:last-child {
-    padding-right: 25px;
+    padding-right: 15px;
 }
 
 .table-card .card-body .table.without-header tr:first-child td {
@@ -28920,8 +28921,10 @@ body.box-layout .pcoded-navbar.theme-horizontal ~ .pcoded-header {
 .table td,
 .table th {
     border-top: 1px solid #e2e5e8;
-    white-space: nowrap;
-    padding: 1.05rem 0.75rem;
+    white-space: pre-wrap;
+    padding: 0.85rem 0.5rem;
+    font-size: 0.8rem;
+    text-align: center;
 }
 
 .table thead th {

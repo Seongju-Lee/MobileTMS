@@ -11,7 +11,6 @@ class LoginForm:
         
     async def load_data(self):
         form = await self.request.form()
-        
         self.username = form.get("username")
         self.password = form.get("password")
 

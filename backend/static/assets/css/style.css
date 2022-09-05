@@ -316,7 +316,7 @@ body {
 }
 
 hr {
-    margin: 1rem 0;
+    margin: 1.5rem 0;
     color: inherit;
     background-color: currentColor;
     border: 0;
@@ -922,8 +922,8 @@ progress {
     flex-shrink: 0;
     width: 100%;
     max-width: 100%;
-    padding-right: calc(var(--bs-gutter-x) * .5);
-    padding-left: calc(var(--bs-gutter-x) * .5);
+    padding-right: calc(var(--bs-gutter-x) * .2);
+    padding-left: calc(var(--bs-gutter-x) * .2);
     margin-top: var(--bs-gutter-y);
 }
 
@@ -6230,8 +6230,8 @@ textarea.form-control-lg {
 
 .modal {
     position: fixed;
-    top: 0;
-    left: 0;
+    top: 1;
+    left: 1;
     z-index: 1055;
     display: none;
     width: 100%;
@@ -6244,7 +6244,7 @@ textarea.form-control-lg {
 .modal-dialog {
     position: relative;
     width: auto;
-    margin: 0.5rem;
+    margin: 0.1rem;
     pointer-events: none;
 }
 
@@ -20688,7 +20688,8 @@ strong {
 */
 .bd-example-row {
     background: #f6f7fb;
-    padding: 15px;
+    padding-left: 15px;
+    padding-right: 15px;
     margin-bottom: 15px;
 }
 

@@ -12,14 +12,14 @@
 		<div class="auth-content">
 			<div class="card">
 
-				<form method="get" action="/user/token" >
+				<form method="POST" action="/user/token" >
 					<div class="row align-items-center text-center">
 						<div class="col-md-12">
 							<div class="card-body">
 								<!-- <img src="/static/assets/images/logo-dark.png" alt="" class="img-fluid mb-4"> -->
 								<h4 class="mb-3 f-w-400">문자 인증</h4>
 								{% if msg %}
-									<input class="form-control" id="user_id" name="user_id" required="" type="text" value="{{msg['user_id']}}" style="display: none;">
+									<input class="form-control" id="username" name="username" required="" type="text" value="{{msg['user_id']}}" style="display: none;">
 
 								{% endif %}
 								<div class="input-group mb-3">

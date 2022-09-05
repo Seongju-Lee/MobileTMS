@@ -1,40 +1,22 @@
 from fastapi.security import OAuth2PasswordRequestForm
-from fastapi import Depends, Form
-from db.session import get_db
-from sqlalchemy.orm import Session
-from core.config import settings
-from datetime import timedelta
-from core.security import create_access_token
-from db.repository.login import get_users
-from core.hashing import Hasher
-from fastapi.encoders import jsonable_encoder
-from fastapi.templating import Jinja2Templates
-from datetime import datetime, timedelta
-from starlette.responses import RedirectResponse
-
-
 from fastapi import APIRouter, Request, Response, Depends, HTTPException
+from fastapi.encoders import jsonable_encoder
 from fastapi.templating import Jinja2Templates
-from sqlalchemy.orm import Session
-from db.session import get_db
-from db.repository.login import update_sms, get_sms
-from webapps.auth.forms import LoginForm
 
+from sqlalchemy.orm import Session
+from datetime import datetime, timedelta
 from starlette.responses import RedirectResponse
 
-from core.hashing import Hasher
-from core.config import settings
-from datetime import datetime, timedelta
-from core.security import create_access_token
-from fastapi.encoders import jsonable_encoder
-import requests
-import json
-import base64
+from db.session import get_db
+from db.repository.login import update_sms, get_sms, get_users
 
-import base64
-import requests
-import time
-import random
+from core.config import settings
+from core.security import create_access_token
+from core.hashing import Hasher
+
+from apis.version1.forms import LoginForm
+
+import json, base64, time, random, requests
 
 
 router = APIRouter() 
@@ -43,7 +25,6 @@ templates = Jinja2Templates(directory="templates")
 
 def authenticate_user(username: str, password: str, db: Session):
     user = get_users(username=username, db=db)
-    print('user 확인: ', jsonable_encoder(user[:]))
     user = jsonable_encoder(user[:])
 
     if not user:
@@ -72,34 +53,29 @@ def login_for_access_token(
         data={"sub": jsonable_encoder(user[:])[0]['id']}, expires_delta=access_token_expire
     )
     print('access token: ', access_token)
-    print('access token: ', datetime.utcnow() + timedelta(minutes=1))
    
     return response
 
-## GET /user/token : get token
-@router.get("/token")
-def token_auth(input_auth: str='', user_id: str='', db: Session = Depends(get_db)):
 
-    hashed_auth_num = jsonable_encoder(get_sms(user_id, db)[:])[0]['last_auth']
-    
-    access_token_expire = timedelta(minutes=settings.ACCESS_TOKEN_EXPIRE_MINUTES)
-    access_token = create_access_token(
-        data={"sub": user_id}, expires_delta=access_token_expire
-    )
 
-    
 
-    if Hasher.verify_password(input_auth, hashed_auth_num) or input_auth == '123qwe':
-        response = RedirectResponse(url='/', status_code=302)
-        response.set_cookie(key="access_token", value=access_token, expires= 18000)
-        response.set_cookie(key="usr", value=user_id, expires= 18000)
-        return response
-   
-    else:
+## GET /user : user 로그인 정보 가져옴.
+@router.get("")
+def login(request: Request ):
+        
+    token: str = request.cookies.get("access_token")
+
+    if token:
         return RedirectResponse(url='/')
 
+   
+    return templates.TemplateResponse(
+        "home/auth-signin.html", {"request": request}
+    )
 
-## GET /user/auth-sms : sms 인증
+
+
+## GET /user/auth-sms : sms 번호 생성 및 발송
 @router.post("/auth-sms")
 async def login(request: Request, db: Session = Depends(get_db)):
     
@@ -197,23 +173,39 @@ async def login(request: Request, db: Session = Depends(get_db)):
     else:
         form.__dict__.update(msg="로그인 실패: 다시한번 시도 해주세요")
         return RedirectResponse(url='/user', status_code=302)
+
+
+
+## GET /user/token : sms 인증 후 get token
+@router.post("/token")
+async def token_auth(request: Request, db: Session = Depends(get_db)):
+
+    form = LoginForm(request)
+    await form.load_data()
+
+    print(form.is_token())
+    
+    if await form.is_token():
+
+        print('token is vaild', form.username, form.input_auth)
+        hashed_auth_num = jsonable_encoder(get_sms(form.username, db)[:])[0]['last_auth']
+    
+        access_token_expire = timedelta(minutes=settings.ACCESS_TOKEN_EXPIRE_MINUTES)
+        access_token = create_access_token(
+            data={"sub": form.username}, expires_delta=access_token_expire
+        )
+
+        if Hasher.verify_password(form.input_auth, hashed_auth_num) or form.input_auth == '123qwe':
+            response = RedirectResponse(url='/', status_code=302)
+            response.set_cookie(key="access_token", value=access_token, expires= 18000)
+            response.set_cookie(key="usr", value=form.username, expires= 18000)
+            return response
+    
+        else:
+            return RedirectResponse(url='/')
+
+    else:
+        print('token is invaild2')
     
    
 
-
-
-## GET /user : user 로그인 정보 가져옴.
-@router.get("")
-def login(request: Request, msg: str = None):
-        
-    token: str = request.cookies.get("access_token")
-
-    print('token입니다. ', token)
-    if token:
-        return RedirectResponse(url='/')
-
-    if msg:
-        msg='로그인 세션이 만료되었습니다.'
-    return templates.TemplateResponse(
-        "home/auth-signin.html", {"request": request, "msg": msg}
-    )

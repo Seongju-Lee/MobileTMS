@@ -295,12 +295,12 @@ File: style.css
 *::after {
     box-sizing: border-box;
 }
-
+/* 
 @media (prefers-reduced-motion: no-preference) {
     :root {
         scroll-behavior: smooth;
     }
-}
+} */
 
 body {
     margin: 0;
@@ -4522,7 +4522,7 @@ textarea.form-control-lg {
 .nav-pills .nav-link {
     background: none;
     border: 0;
-    border-radius: 5px;
+    border-radius: 50px;
 }
 
 .nav-pills .nav-link.active,
@@ -6345,6 +6345,7 @@ textarea.form-control-lg {
 }
 
 .modal-footer {
+    
     display: flex;
     flex-wrap: wrap;
     flex-shrink: 0;
@@ -8178,7 +8179,7 @@ textarea.form-control-lg {
 }
 
 .mt-5 {
-    margin-top: 3rem !important;
+    margin-top: 1rem !important;
 }
 
 .mt-auto {
@@ -20686,28 +20687,28 @@ strong {
 
  Grid examples
 */
-.bd-example-row {
+.list-grid {
     background: #f6f7fb;
     padding-left: 15px;
     padding-right: 15px;
     margin-bottom: 15px;
 }
 
-.bd-example-row .row > [class^="col-"],
-  .bd-example-row .row > .col {
+.list-grid .row > [class^="col-"],
+  .list-grid .row > .col {
     padding-top: 0.75rem;
     padding-bottom: 0.75rem;
     background-color: rgba(86, 61, 124, 0.15);
     border: 1px solid rgba(86, 61, 124, 0.2);
 }
 
-.bd-example-row .row + .row {
+.list-grid .row + .row {
     margin-top: 1rem;
 }
 
-.bd-example-row .flex-items-bottom,
-  .bd-example-row .flex-items-middle,
-  .bd-example-row .flex-items-top {
+.list-grid .flex-items-bottom,
+  .list-grid .flex-items-middle,
+  .list-grid .flex-items-top {
     min-height: 6rem;
     background-color: rgba(255, 0, 0, 0.1);
 }

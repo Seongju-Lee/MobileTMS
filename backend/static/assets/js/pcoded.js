@@ -259,13 +259,13 @@ document.querySelector(".mobile-menu").addEventListener('click', function () {
 // menu [ Mobile ]
 document.querySelector("#mobile-collapse").addEventListener("click", function (e) {
     var vw = window.innerWidth;
-    console.log('111111111111111111111133311')
+    
     if (vw < 992) {
         if (document.querySelector(".pcoded-navbar").classList.contains('mob-open')) {
-            console.log('111111111111111111111111')
+            
             document.querySelector(".pcoded-navbar").classList.remove('mob-open');
         } else {
-            console.log('111111111111111111111111')
+            
             document.querySelector(".pcoded-navbar").classList.add('mob-open');
         }
         e.stopPropagation();
@@ -278,11 +278,11 @@ document.addEventListener("DOMContentLoaded", function () {
         e.stopPropagation();
     });
     document.querySelector('.pcoded-main-container').addEventListener("click", function () {
-        console.log('111111111111111111111111')
+        
         if (vw < 992) {
             
             if (document.querySelector(".pcoded-navbar").classList.contains("mob-open") == true) {
-                console.log('111111111111111111111111')
+                
                 document.querySelector(".pcoded-navbar").classList.remove('mob-open');
                 document.querySelector("#mobile-collapse,#mobile-collapse1").classList.remove('on');
             }

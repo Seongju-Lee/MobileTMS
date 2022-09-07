@@ -12,12 +12,12 @@
 }
 
 .modal-dialog{
-  position: absolute;
-  top:0; 
+  position: fixed;
+  top:185px; 
   left: 0; 
   bottom: 0; 
   right: 0;
-  background: rgba(0, 0, 0, 0.8);
+  /* background: rgba(0, 0, 0, 0.8); */
   z-index: 998;
 }
 
@@ -351,6 +351,24 @@ input[type="range"]::-webkit-slider-thumb_age {
   /* appearance를 해야 위의 스타일들을 볼 수 있음 */
   -webkit-appearance: none;
 }
+
+
+
+.fixed-nav {
+    position: fixed;
+    z-index: 4;
+    width: 96.2%;
+    /* box-shadow: 0 5px rgba(0, 0, 0, 0.1); */
+  }
+
+
+@media only screen and (max-width: 575px)
+{
+ 
+
+
+}
+
 </style>
 
 {% endblock stylesheets %}
@@ -369,46 +387,45 @@ input[type="range"]::-webkit-slider-thumb_age {
                     
                     
                     
+                  <div id="filter-bar" class="card" >
+                    <label style="font-size: 15px;">
+                      <h5 class="mt-5">모델 정보</h5>
+                    
+                    </label>
+                  
+                    <!-- active show 이용해서 정렬값 정렬하기. ==> 30일추천, 영상초이, 프로카운트 -->
+                    <div class="card-header" style="padding: 0px; padding-left:10px; padding-right:10px; float: left;">
+                              
+                      <ul class="nav nav-pills nav-fill mt-3 border-bottom pb-3" id="pills-tab" role="tablist">
+                          
+                          <li class="nav-item">
+                              <a class="nav-link active" id="pills-home-tab" data-bs-toggle="pill" href="#pills-home" role="tab" aria-controls="pills-home" aria-selected="true"><i class="feather icon-film m-r-5"></i>30일 추천</a>
+                          </li>
+                          <li class="nav-item">
+                              <a class="nav-link" id="pills-profile-tab" data-bs-toggle="pill" href="#pills-profile" role="tab" aria-controls="pills-profile" aria-selected="false"><i class="feather icon-file-text m-r-5"></i>영상초이</a>
+                          </li>
+                          <li class="nav-item">
+                              <a class="nav-link" id="pills-contact-tab" data-bs-toggle="pill" href="#pills-contact" role="tab" aria-controls="pills-contact" aria-selected="false"><i class="feather icon-mail m-r-5"></i>프로카운트</a>
+                          </li>
+                         
+                          <li class="nav-item">
+                            <input type="button" style="margin-bottom:0.5rem; background-position: center; border-color: #000000;"  id="modal-filter" class="btn  btn-outline-primary" >
+                          </li>
+                      </ul>
+                    </div>
+
+                    
+                  </div>
+
                     <div class="card">
-                        
+
                         <div class="card-body" style="padding: 2px">
                             
-                           
-                            <h5 class="mt-5">모델 정보</h5>
+                            <!-- --------------------------------------------------------------------------------- -->
+                            <!--  modal창  START -->
 
-                            <input type="button" style="margin-bottom:0.5rem; background-position: center;"  id="modal-filter" class="btn  btn-outline-primary" >
-
-
-                            
-                            <!-- active show 이용해서 정렬값 정렬하기. ==> 30일추천, 영상초이, 프로카운트 -->
-                            <div class="card-header" style="padding: 0px; padding-left:10px; padding-right:10px">
-                              
-                              <ul class="nav nav-pills nav-fill mt-3 border-bottom pb-3" id="pills-tab" role="tablist">
-                                  <li class="nav-item">
-                                      <a class="nav-link active" id="pills-home-tab" data-bs-toggle="pill" href="#pills-home" role="tab" aria-controls="pills-home" aria-selected="true"><i class="feather icon-film m-r-5"></i>30일 추천</a>
-                                  </li>
-                                  <li class="nav-item">
-                                      <a class="nav-link" id="pills-profile-tab" data-bs-toggle="pill" href="#pills-profile" role="tab" aria-controls="pills-profile" aria-selected="false"><i class="feather icon-file-text m-r-5"></i>영상초이</a>
-                                  </li>
-                                  <li class="nav-item">
-                                      <a class="nav-link" id="pills-contact-tab" data-bs-toggle="pill" href="#pills-contact" role="tab" aria-controls="pills-contact" aria-selected="false"><i class="feather icon-mail m-r-5"></i>프로카운트</a>
-                                  </li>
-                                 
-                              </ul>
-                            </div>
-
-                            <div class="card-body p-0">
-                              <div class="tab-content" id="pills-tabContent">
-                                  <div class="tab-pane fade show active" id="pills-home" role="tabpanel" aria-labelledby="pills-home-tab">
-                                  </div>
-                                </div>
-                              </div>
-
-                            <!--  -->
-
-
-                            <div class="modal-dialog inactive" role="document">
-                                <div class="modal-content">
+                            <div class="modal-dialog inactive"  role="document" >
+                                <div class="modal-content" style="overflow:auto; height:550px;">
                                     <div class="modal-header">
                                         <h5 class="modal-title" id="exampleModalPopoversLabel">검색 필터</h5>
                                     </div>
@@ -470,68 +487,152 @@ input[type="range"]::-webkit-slider-thumb_age {
 
                                         <!-- 알파모델료 End -->
 
-                                                                              <!-- 알파모델료 Start -->
+                                        <!-- 추천 Start -->
                                         <hr>
-                                        <h5 style="float: left;">알파모델료</h5>
-                                        <label style="float: left; margin-top: 0px; width: 90px;" class="styled__Label-sc-1z0qnhc-1 hYNqrz"><input type="checkbox" name="ready_fee"><span>상훈페이</span></label>
-                                        <label style="margin-top: 0px; margin-left: 0px; width: 90px;" class="styled__Label-sc-1z0qnhc-1 hYNqrz"><input type="checkbox" name="ready_auto"><span>레디자동</span></label>
-    
-                                        <P><span class="min_value">0</span>만원 - <span class="max_value">4100</span>만원</P>
-                                        <div class="middle">
-                                            <div  style="width: 100%;">
+                                        <h5 style="float: left;">추천</h5>
+                                        <p style="padding-left: 40px; font-size: 12px;">  필터를 선택해주세요</p>
 
-                                                
-                                              <!-- 진짜 슬라이더 -->
-                                              <input type="range" id="input-left" min="0" step="150" max="4100" value="0" />
-                                              <input type="range" id="input-right" min="0" step="150" max="4100" value="4100" />
-                                          
-                                              <!-- 커스텀 슬라이더 -->
-                                              <div class="slider">
-                                                <div class="track"></div>
-                                                <div class="range"></div>
-                                                <div class="thumb left"></div>
-                                                <div class="thumb right"></div>
-                                              </div>
-                                            </div>
-                                        </div>
+                                        <label style="width: 100px;" class="styled__Label-sc-1z0qnhc-1 hYNqrz"><input type="checkbox" name="short_lease"><span>이미지</span></label>
+                                        <label style="width: 100px;" class="styled__Label-sc-1z0qnhc-1 hYNqrz"><input type="checkbox" name="short_lease"><span>호감도</span></label>
+                                        <label style="width: 100px;" class="styled__Label-sc-1z0qnhc-1 hYNqrz"><input type="checkbox" name="short_lease"><span>연기력</span></label>
 
-                                        <!-- 알파모델료 End -->
+                                        <!-- 추천 End -->
+
+
+                                        
                                     </div>
-                                    <div class="modal-footer">
+                                    
+                                    <div class="modal-footer" style="position: sticky; bottom: 0;  z-index: 20; background-color: white;">
                                         <button type="button"  id = "modal-close" class="btn  btn-secondary" data-dismiss="modal">취소</button>
                                         <button style="width: 80%;" type="button" class="btn  btn-primary">적용하기</button>
                                     </div>
                                 </div>
                             </div>
+                            <!-- modal 창 END -->
+                            <!-- --------------------------------------------------------------------------------- -->
 
-                          
-                            <div class="bd-example-row" >
-                                    <div class="row">
-                                      
-                                        <!-- Force next columns to break to new line -->
-                                        <div class="w-100"></div>
 
-                                        {% for _ in range(10) %}
+
+                            <!-- Content 창 START -->
+
+                            <div class="card-body p-0">
+                              <div class="tab-content" id="pills-tabContent">
+        
+        
+                                  <!-- ------------------------ -->
+                                  <!-- 30일추천 모델 탭 -->
+                                    <div  class="tab-pane fade show active" id="pills-home" role="tabpanel" aria-labelledby="pills-home-tab">
+        
+                                      <div class="list-grid" >
+                                        <div class="row">
+                                          
+                                            <!-- Force next columns to break to new line -->
+                                          <div class="w-100"></div>
+        
+                                          {% for _ in range(100) %}
                                             <div class="col-4 col-sm-3" style="text-align : center; padding: 3px; background-color: #ffffff;">
-                                                <img src="http://pic2.readymodel.kr/mdpic/Y0X/Y0XD/Y0XD70ZZ8E02AC/sys_photo/model.jpg" style="width:110px; height:110px;">
+                                              <img src="http://pic2.readymodel.kr/mdpic/Y0X/Y0XD/Y0XD70ZZ8E02AC/sys_photo/model.jpg" style="width:110px; height:110px;">
                                                 <div class="info_position" style="padding-left:5%">
-                                                    <h6 class="card-text" style="margin-bottom:0px; color:rgb(0, 0, 0); display: inline;" >이름</h6> <h6 style="margin-bottom:3px; display: inline; font-size: small;">이름</h6>
-                                            
-                                                    <h6 class="card-text" style="margin-bottom:0px; color:rgb(0, 0, 0)">정보</h6>
-                                                    <h6 class="card-title" style="margin-bottom:3px; font-size: small;"> 나이 / 성별 / 키</h6>
-                                            
-                                                    <h6 class="card-text" style="margin-bottom:0px; color:rgb(0, 0, 0)">소속사</h6><h6 style="margin-bottom:2px; font-size: small;">33</h6>
+                                                  <h6 class="card-text" style="margin-bottom:0px; color:rgb(0, 0, 0); display: inline;" >이름</h6> <h6 style="margin-bottom:3px; display: inline; font-size: small;">이름</h6>
                                                 
-                                            
-                                                    <h6 class="card-text" style="margin-bottom:0px; color:rgb(0, 0, 0); display: inline;">모델료</h6> <h6 style="margin-bottom:0px; display: inline; font-size: small;">123</h6>
+                                                  <h6 class="card-text" style="margin-bottom:0px; color:rgb(0, 0, 0)">정보</h6>
+                                                  <h6 class="card-title" style="margin-bottom:3px; font-size: small;"> 나이 / 성별 / 키</h6>
+                                                
+                                                  <h6 class="card-text" style="margin-bottom:0px; color:rgb(0, 0, 0)">소속사</h6><h6 style="margin-bottom:2px; font-size: small;">33</h6>
                                                     
+                                                
+                                                  <h6 class="card-text" style="margin-bottom:0px; color:rgb(0, 0, 0); display: inline;">모델료</h6> <h6 style="margin-bottom:0px; display: inline; font-size: small;">123</h6>
+                                                        
                                                 </div>
-                                            </div>
-                                        {% endfor %}
-                                        
+                                              </div>
+                                          {% endfor %}
+                                            
+                                          </div>
+                                
+                                        </div>
                                     </div>
-                             
+                                  <!-- ------------------------------------->
+                                  <!-- ------------------------------------->
+        
+                               
+                                  <!-- ------------------------ -->
+                                  <!-- 영상초이 모델 탭 -->
+                                  <div class="tab-pane fade" id="pills-profile" role="tabpanel" aria-labelledby="pills-profile-tab">
+        
+                                    <div class="list-grid" >
+                                      <div class="row">
+                                        
+                                          <!-- Force next columns to break to new line -->
+                                        <div class="w-100"></div>
+      
+                                        {% for _ in range(100) %}
+                                          <div class="col-4 col-sm-3" style="text-align : center; padding: 3px; background-color: #ffffff;">
+                                            <img src="http://pic2.readymodel.kr/mdpic/965/9654/96540918800B/sys_photo/model.jpg" style="width:110px; height:110px;">
+                                              <div class="info_position" style="padding-left:5%">
+                                                <h6 class="card-text" style="margin-bottom:0px; color:rgb(0, 0, 0); display: inline;" >이름</h6> <h6 style="margin-bottom:3px; display: inline; font-size: small;">이름</h6>
+                                              
+                                                <h6 class="card-text" style="margin-bottom:0px; color:rgb(0, 0, 0)">정보</h6>
+                                                <h6 class="card-title" style="margin-bottom:3px; font-size: small;"> 나이 / 성별 / 키</h6>
+                                              
+                                                <h6 class="card-text" style="margin-bottom:0px; color:rgb(0, 0, 0)">소속사</h6><h6 style="margin-bottom:2px; font-size: small;">33</h6>
+                                                  
+                                              
+                                                <h6 class="card-text" style="margin-bottom:0px; color:rgb(0, 0, 0); display: inline;">모델료</h6> <h6 style="margin-bottom:0px; display: inline; font-size: small;">123</h6>
+                                                      
+                                              </div>
+                                          </div>
+                                        {% endfor %}
+                                          
+                                      </div>
+                              
+                                    </div>
+                                    
+                                  </div>
+                                  <!-- ------------------------------------->
+                                  <!-- ------------------------------------->
+        
+
+                                  <!-- ------------------------ -->
+                                  <!-- 프로카운트 모델 탭 -->
+                                  <div class="tab-pane fade" id="pills-contact" role="tabpanel" aria-labelledby="pills-contact-tab">
+
+                                    <div class="list-grid" >
+                                      <div class="row">
+                                        
+                                          <!-- Force next columns to break to new line -->
+                                        <div class="w-100"></div>
+      
+                                        {% for _ in range(1000) %}
+                                          <div class="col-4 col-sm-3" style="text-align : center; padding: 3px; background-color: #ffffff;">
+                                            <img src="http://pic2.readymodel.kr/mdpic/93C/93C2/93C20994A009/sys_photo/model.jpg" style="width:110px; height:110px;">
+                                              <div class="info_position" style="padding-left:5%">
+                                                <h6 class="card-text" style="margin-bottom:0px; color:rgb(0, 0, 0); display: inline;" >이름</h6> <h6 style="margin-bottom:3px; display: inline; font-size: small;">이름</h6>
+                                              
+                                                <h6 class="card-text" style="margin-bottom:0px; color:rgb(0, 0, 0)">정보</h6>
+                                                <h6 class="card-title" style="margin-bottom:3px; font-size: small;"> 나이 / 성별 / 키</h6>
+                                              
+                                                <h6 class="card-text" style="margin-bottom:0px; color:rgb(0, 0, 0)">소속사</h6><h6 style="margin-bottom:2px; font-size: small;">33</h6>
+                                                  
+                                              
+                                                <h6 class="card-text" style="margin-bottom:0px; color:rgb(0, 0, 0); display: inline;">모델료</h6> <h6 style="margin-bottom:0px; display: inline; font-size: small;">123</h6>
+                                                      
+                                              </div>
+                                          </div>
+                                        {% endfor %}
+                                          
+                                      </div>
+                              
+                                    </div>
+                                  </div>
+
+                                  <!-- ------------------------------------->
+                                  <!-- ------------------------------------->
+
+
+                              </div>
                             </div>
+        
+                            <!-- Content 창 END -->
                             
                         </div>
                     </div>
@@ -570,6 +671,8 @@ input[type="range"]::-webkit-slider-thumb_age {
             const modalclose = document.querySelector("#modal-close");
 
             function clickmodal(event){
+
+                // window.scrollTo(0,0);
                 event.preventDefault(); //페이지 새로고침 중지
                 
 
@@ -663,7 +766,7 @@ input[type="range"]::-webkit-slider-thumb_age {
                 let x = document.getElementsByClassName("max_value_age")[0];
                 x.innerText=_this.value; 
 
-                console.log(_this.value)
+                // console.log(_this.value)
             };
 
             inputLeft_age.addEventListener("input", setLeftValue_age);
@@ -730,5 +833,72 @@ input[type="range"]::-webkit-slider-thumb_age {
         </script>
 
         <!--  -->
+
+
+
+
+        <!-- 네비바 고정 -->
+
+        <script>
+
+          const nav = document.querySelector('.pcoded-content'); // 네비게이션 바
+          const filterBar = document.querySelector('#filter-bar'); // 네비게이션 바
+          // const grid = document.querySelector('.list-grid');
+          const grids = document.getElementsByClassName("list-grid")
+          
+          const navTop = nav.offsetTop;
+
+          
+          function fixNav() {
+            
+            // console.log('grid 목록 :: ', grids)
+            if (window.scrollY >= 21) {
+              filterBar.classList.add('fixed-nav');
+              nav.style.cssText  = 'padding-top: 0px;';
+
+              for (var i = 0; i < grids.length; i++){
+
+                grids[i].style.cssText = "padding-top: 165px;";
+
+              }
+            } else {
+              filterBar.classList.remove('fixed-nav');
+              nav.style.cssText  = 'padding-top: 15px;';
+
+
+              for (var i = 0; i < grids.length; i++){
+
+                grids[i].style.cssText = "padding-top: 0px;";
+
+              }
+            }
+          }
+
+          window.addEventListener('scroll', fixNav);
+
+        </script>
+        <!--  -->
+
+
+
+
+        <script>
+          const alignThiry = document.querySelector('#pills-contact-tab'); 
+          const alignMovchoi = document.querySelector('#pills-profile-tab'); 
+          const alignProcount = document.querySelector('#pills-home-tab'); 
+          var loc = document.querySelector(".tab-content").offsetTop;
+
+          function scrollToTop(){
+
+            window.scrollTo(0, 0)
+            // $(window).scrollTop(0);
+            
+          }; 
+
+          alignThiry.addEventListener('click', scrollToTop);
+          alignMovchoi.addEventListener('click', scrollToTop);
+          alignProcount.addEventListener('click', scrollToTop);
+
+        </script>
     {% endblock javascripts %}
     

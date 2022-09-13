@@ -417,13 +417,16 @@ input[type="range"]::-webkit-slider-thumb_age {
                     
                   </div>
 
+                    
                     <div class="card">
 
                         <div class="card-body" style="padding: 2px">
                             
                             <!-- --------------------------------------------------------------------------------- -->
                             <!--  modal창  START -->
-
+                            
+                            
+                            <form method="GET" action="/models">
                             <div class="modal-dialog inactive"  role="document" >
                                 <div class="modal-content" style="overflow:auto; height:550px;">
                                     <div class="modal-header">
@@ -433,13 +436,13 @@ input[type="range"]::-webkit-slider-thumb_age {
                                         <h5>성별</h5>
                                         
 
-                                        <label class="styled__Label-sc-1z0qnhc-1 hYNqrz"><input type="checkbox" name="short_lease"><span>남자</span></label>
-                                        <label class="styled__Label-sc-1z0qnhc-1 hYNqrz"><input type="checkbox" name="short_lease"><span>여자</span></label>
-
+                                        <label class="styled__Label-sc-1z0qnhc-1 hYNqrz"><input type="checkbox" class="gender" name="gender" value="m"><span>남자</span></label>
+                                        <label class="styled__Label-sc-1z0qnhc-1 hYNqrz"><input type="checkbox" class="gender" name="gender" value="w"><span>여자</span></label>
+                                        
                                         <!-- 연령 Start -->
                                         <hr>
                                         <h5>연령</h5>
-                                        <P><span class="min_value_age">0</span> - <span class="max_value_age">100</span></P>
+                                        <P><span  class="min_value_age">0</span> - <span name="max_age" class="max_value_age">100</span></P>
                                         <div class="middle_age">
                                             <div  style="width: 100%;">
 
@@ -447,7 +450,8 @@ input[type="range"]::-webkit-slider-thumb_age {
                                               <!-- 진짜 슬라이더 -->
                                               <input type="range" id="input-left_age" min="0" step="1" max="100" value="0" />
                                               <input type="range" id="input-right_age" min="0" step="1" max="100" value="100" />
-                                          
+                                              <input type="hidden" id="age" name="age" value="0" />
+
                                               <!-- 커스텀 슬라이더 -->
                                               <div class="slider">
                                                 <div class="track_age"></div>
@@ -504,13 +508,15 @@ input[type="range"]::-webkit-slider-thumb_age {
                                     
                                     <div class="modal-footer" style="position: sticky; bottom: 0;  z-index: 20; background-color: white;">
                                         <button type="button"  id = "modal-close" class="btn  btn-secondary" data-dismiss="modal">취소</button>
-                                        <button style="width: 80%;" type="button" class="btn  btn-primary">적용하기</button>
+                                        <button style="width: 80%;" type="submit" class="btn  btn-primary">적용하기</button>
                                     </div>
+                                    
                                 </div>
                             </div>
+                          </form>
                             <!-- modal 창 END -->
                             <!-- --------------------------------------------------------------------------------- -->
-
+                          
 
 
                             <!-- Content 창 START -->
@@ -665,6 +671,8 @@ input[type="range"]::-webkit-slider-thumb_age {
         <script src="/static/assets/js/pages/dashboard-main.js"></script>
     
 
+        
+
         <script>
             const modal = document.querySelector(".modal-dialog");
             const modalopen = document.querySelector("#modal-filter");
@@ -698,22 +706,16 @@ input[type="range"]::-webkit-slider-thumb_age {
 
 
         <script>
+<!-- 체크된 값 가지고 와서 넘기기 & 모델 검색 로직 진행. 09/14 -->
+
             const gender = document.querySelector(".gender");
-           
 
             function clickmodal(event){
-                event.preventDefault(); //페이지 새로고침 중지
                 
-
-                gender.checked = false;
+                console.log(event.target.value)
             }; 
 
 
-
-            function closemodal(event){
-                event.preventDefault(); //페이지 새로고침 중지
-                modal.classList.add("inactive");
-            }// 취소버튼 클릭이벤트 시 inactive 클래스 추가
 
 
 
@@ -732,6 +734,15 @@ input[type="range"]::-webkit-slider-thumb_age {
             const range_age = document.querySelector(".slider > .range_age");
 
             const setLeftValue_age = () => {
+
+                var minAge = inputLeft_age;
+                var maxAge = inputRight_age;
+                var age = minAge.value + "%" + maxAge.value;
+                
+                console.log(age);
+                $('#age').val(age);
+
+
                 const _this = inputLeft_age;
                 const [min, max] = [parseInt(_this.min), parseInt(_this.max)];
                 
@@ -755,6 +766,16 @@ input[type="range"]::-webkit-slider-thumb_age {
                 const _this = inputRight_age;
                 const [min, max] = [parseInt(_this.min), parseInt(_this.max)];
                 
+
+                var minAge = inputLeft_age;
+                var maxAge = inputRight_age;
+                
+                var age = minAge.value + "%" + maxAge.value;
+                
+                console.log(age);
+                $('#age').val(age);
+
+
                 // 교차되지 않게, 1을 더해준 건 완전히 겹치기보다는 어느 정도 간격을 남겨두기 위해.
                 _this.value = Math.max(parseInt(_this.value), parseInt(inputLeft_age.value) + 1);
                 

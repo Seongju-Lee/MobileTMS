@@ -26,11 +26,10 @@ class LoginForm:
         return False
 
     async def is_token(self):
-       
+
         print('확인 ')
         if not self.input_auth:
             self.errors.append("token is invaild")
             return False
         if not self.errors:
             return True
-        

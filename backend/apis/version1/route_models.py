@@ -4,8 +4,8 @@ from fastapi import APIRouter, Depends, Query
 from fastapi import Request
 from fastapi.responses import HTMLResponse
 from fastapi.templating import Jinja2Templates
-from db.repository.search import search_job,  chu_30, movchoi, proc, order_register, order_recommend, order_s_count, order_read, search_celeb
-from db.repository.search import order_realtime, models_info, proc_celeb, img_mov_info, cf_mov_info, act_mov_info, best_img, get_rd_contracts
+# from db.repository.search import search_job,  chu_30, movchoi, proc, order_register, order_recommend, order_s_count, order_read, search_celeb
+# from db.repository.search import order_realtime, models_info, proc_celeb, img_mov_info, cf_mov_info, act_mov_info, best_img, get_rd_contracts
 from sqlalchemy.orm import Session
 from db.session import get_db
 from fastapi.encoders import jsonable_encoder
@@ -21,35 +21,6 @@ router = APIRouter()
 access_time = datetime.now()
 
 
-@router.get("")
-def models(request: Request, gender: List[str] = Query(['m', 'w']), age: str = '0%100', mfee: List[str] = Query(['0', '4100', '0100', '']),
-           db: Session = Depends(get_db)):
-
-    now_year = datetime.today().year
-    years = [i for i in range(now_year-1, 1930, -1)]
-
-    print('성별 :: ', gender)
-    print('나이 :: ', age)
-    # print('나이 :: ', min_age, max_age)
-
-    try:
-
-        token: str = request.cookies.get("access_token")
-        user_id: str = request.cookies.get("usr")
-
-        if token is None:
-            return RedirectResponse('/user')
-
-        else:
-
-            # 30일추천, 영상초이, 프로카운트 세가지로 나누어서 res 보냄.
-            return templates.TemplateResponse(
-                "home/list-models.html", {"request": request,
-                                          "years": years,  "now_year": now_year}
-            )
-
-    except:
-        print('?')
 
 
 @router.post("/")
@@ -74,6 +45,20 @@ def home(request: Request, db: Session = Depends(get_db)):
 
     except:
         print('?')
+
+
+
+
+
+
+@ router.get("/search")
+def search_filter(req: Request, gender: str,
+                  db: Session = Depends(get_db)):
+
+    print('d', gender)
+
+
+
 
 
 ######################

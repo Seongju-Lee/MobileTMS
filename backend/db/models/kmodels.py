@@ -1,3 +1,4 @@
+from operator import index
 from sre_compile import MAXCODE
 from sqlalchemy import Column, Integer, String, Date, Boolean, ForeignKey, TIMESTAMP, column, desc, Text
 from sqlalchemy.orm import relationship
@@ -6,12 +7,13 @@ from db.base_class import Base
 
 
 # 추천2022_ 30일추천 테이블
-class Chu19(Base):
+class Recommendation_month(Base):
     __tablename__ = "chu19"
 
     rno = Column(Integer, primary_key=True)
     gubun = Column(String(20))
-    edit_time = Column(TIMESTAMP)
+    cdate = Column(String(20))
+    edit_time = Column(String(20))
     rdate = Column(String(20))
     jum = Column(Integer)
     mcode = Column(String(20), ForeignKey("people.codesys"))
@@ -41,14 +43,14 @@ class Mmeeting_proc(Base):
 class People(Base):
     __tablename__ = "people"
 
-    no = Column(Integer)
-    codesys = Column(String(20),  primary_key=True)
+    no = Column(Integer, primary_key=True, index=True)
+    codesys = Column(String(20), index=True)
     rdate =  Column(String(20))
     rdcode = Column(String(20))
     name = Column(String(20))
-    age = Column(String(20))
+    age = Column(String(20), index=True)
     height = Column(String(20))
-    sex = Column(String(20))
+    sex = Column(String(20), index=True)
     coname = Column(String(20))
     dam = Column(String(20))
     tel1 = Column(String(20))
@@ -59,7 +61,7 @@ class People(Base):
     ptel = Column(String(20))
     sns2 = Column(String(20))
     insta_flw_str = Column(String(20))
-    bun = Column(String(20))  # 학교
+    bun = Column(String(20), index=True)  # 학교
     mfee = Column(String(20))  # 모델료 (매칭 필요)
     isyeon = Column(String(20))
     image = Column(String(400))

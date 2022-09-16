@@ -500,9 +500,11 @@ input[type="range"]::-webkit-slider-thumb_age {
                                         <h5 style="float: left;">추천</h5>
                                         <p style="padding-left: 40px; font-size: 12px;">  필터를 선택해주세요</p>
 
-                                        <label style="width: 100px;" class="styled__Label-sc-1z0qnhc-1 hYNqrz"><input type="checkbox" name="reco"><span>이미지</span></label>
-                                        <label style="width: 100px;" class="styled__Label-sc-1z0qnhc-1 hYNqrz"><input type="checkbox" name="short_lease"><span>호감도</span></label>
-                                        <label style="width: 100px;" class="styled__Label-sc-1z0qnhc-1 hYNqrz"><input type="checkbox" name="short_lease"><span>연기력</span></label>
+                                        <label style="width: 80px; padding-left: 5px;" class="styled__Label-sc-1z0qnhc-1 hYNqrz"><input type="checkbox" class="chk_section"  id="chk_img" value="img"><span>이미지</span></label>
+                                        <label style="width: 80px; padding-left: 5px;" class="styled__Label-sc-1z0qnhc-1 hYNqrz"><input type="checkbox" class="chk_section"  id="chk_fav" value="fav"><span>호감도</span></label>
+                                        <label style="width: 80px; padding-left: 5px;" class="styled__Label-sc-1z0qnhc-1 hYNqrz"><input type="checkbox" class="chk_section"  id="chk_act" value="act"><span>연기력</span></label>
+                                        <label style="width: 80px; padding-left: 5px;" class="styled__Label-sc-1z0qnhc-1 hYNqrz"><input type="checkbox" class="chk_section"  id="chk_new" value="new"><span>뉴페이스</span></label>
+                                        <input type="hidden" id="recommendation_section" name="recommendation_section"/>
 
                                         <!-- 추천 End -->
 
@@ -522,37 +524,38 @@ input[type="range"]::-webkit-slider-thumb_age {
                             <!-- modal 창 END -->
                             <!-- --------------------------------------------------------------------------------- -->
                           
+                            <h6> {{ test | length }} 명 </h6>
 
 
                             <!-- Content 창 START -->
 
                             <div class="card-body p-0">
+
                               <div class="tab-content" id="pills-tabContent">
         
         
                                   <!-- ------------------------ -->
                                   <!-- 30일추천 모델 탭 -->
                                     <div  class="tab-pane fade show active" id="pills-home" role="tabpanel" aria-labelledby="pills-home-tab">
-        
                                       <div class="list-grid" >
                                         <div class="row">
                                           
                                             <!-- Force next columns to break to new line -->
                                           <div class="w-100"></div>
-        
-                                          {% for i in test[:100] %}
+                                          
+                                          {% for i in test[:] %}
                                             <div class="col-4 col-sm-3" style="text-align : center; padding: 3px; background-color: #ffffff;">
-                                              <img src="http://pic2.readymodel.kr/mdpic/{{i.codesys[0:3]}}/{{i.codesys[0:4]}}/{{i.codesys}}/sys_photo/model.jpg" style="width:110px; height:110px;">
+                                              <img src="http://pic2.readymodel.kr/mdpic/{{i.mcode[0:3]}}/{{i.mcode[0:4]}}/{{i.mcode}}/sys_photo/model.jpg" style="width:110px; height:110px;">
                                                 <div class="info_position" style="padding-left:5%">
-                                                  <h6 class="card-text" style="margin-bottom:0px; color:rgb(0, 0, 0); display: inline;" >이름</h6> <h6 style="margin-bottom:3px; display: inline; font-size: small;">이름</h6>
+                                                  <h6 class="card-text" style="margin-bottom:0px; color:rgb(0, 0, 0); display: inline;" >이름</h6> <h6 style="margin-bottom:3px; display: inline; font-size: small;">{{i.name}}</h6>
                                                 
                                                   <h6 class="card-text" style="margin-bottom:0px; color:rgb(0, 0, 0)">정보</h6>
-                                                  <h6 class="card-title" style="margin-bottom:3px; font-size: small;"> 나이 / 성별 / 키</h6>
+                                                  <h6 class="card-title" style="margin-bottom:3px; font-size: small;"> {{i.age}} / 성별 / 키</h6>
                                                 
                                                   <h6 class="card-text" style="margin-bottom:0px; color:rgb(0, 0, 0)">소속사</h6><h6 style="margin-bottom:2px; font-size: small;">33</h6>
                                                     
                                                 
-                                                  <h6 class="card-text" style="margin-bottom:0px; color:rgb(0, 0, 0); display: inline;">모델료</h6> <h6 style="margin-bottom:0px; display: inline; font-size: small;">123</h6>
+                                                  <h6 class="card-text" style="margin-bottom:0px; color:rgb(0, 0, 0); display: inline;">모델료</h6> <h6 style="margin-bottom:0px; display: inline; font-size: small;">{{i.mfee}}</h6>
                                                         
                                                 </div>
                                               </div>
@@ -576,9 +579,9 @@ input[type="range"]::-webkit-slider-thumb_age {
                                           <!-- Force next columns to break to new line -->
                                         <div class="w-100"></div>
       
-                                        {% for i in test[100:200] %}
+                                        {% for i in test[100:130] %}
                                           <div class="col-4 col-sm-3" style="text-align : center; padding: 3px; background-color: #ffffff;">
-                                            <img src="http://pic2.readymodel.kr/mdpic/{{i.codesys[0:3]}}/{{i.codesys[0:4]}}/{{i.codesys}}/sys_photo/model.jpg" style="width:110px; height:110px;">
+                                            <img src="http://pic2.readymodel.kr/mdpic/{{i.mcode[0:3]}}/{{i.mcode[0:4]}}/{{i.mcode}}/sys_photo/model.jpg" style="width:110px; height:110px;">
                                               <div class="info_position" style="padding-left:5%">
                                                 <h6 class="card-text" style="margin-bottom:0px; color:rgb(0, 0, 0); display: inline;" >이름</h6> <h6 style="margin-bottom:3px; display: inline; font-size: small;">이름</h6>
                                               
@@ -677,7 +680,7 @@ input[type="range"]::-webkit-slider-thumb_age {
        
         <script src="/static/assets/js/pages/dashboard-main.js"></script>
     
-        <script src="/static/assets/js/pages/modal-filter.js?gender={{preSelectValue.gender}}&age={{preSelectValue.age}}&mfee={{preSelectValue.mfee}}&alpha={{preSelectValue.alpha}}"></script>
+        <script src="/static/assets/js/pages/modal-filter.js?gender={{preSelectValue.gender}}&age={{preSelectValue.age}}&mfee={{preSelectValue.mfee}}&alpha={{preSelectValue.alpha}}&recommendation_section={{preSelectValue.recommendation_section}}"></script>
         
     {% endblock javascripts %}
     

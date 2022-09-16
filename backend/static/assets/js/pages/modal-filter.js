@@ -3,14 +3,23 @@ const modalopen = document.querySelector("#modal-filter");
 const modalclose = document.querySelector("#modal-close");
 const content = document.querySelector('.pcoded-content');
 
+
+//// 체크박스 관련
+// 성별
 const gender = document.querySelector("#gender");
 const chk_m = document.querySelector("#chk_m");
 const chk_w = document.querySelector("#chk_w");
-
-
+// 알파모델료
 const alpha = document.querySelector("#alpha");
 const chk_alpha = document.querySelector("#chk_auto");
 const chk_0100 = document.querySelector("#chk_0100");
+// 모델 추천점수 섹션
+const recommendation_section = document.querySelector("#recommendation_section");
+const chk_img = document.querySelector("#chk_img");
+const chk_fav = document.querySelector("#chk_fav");
+const chk_act = document.querySelector("#chk_act");
+const chk_new = document.querySelector("#chk_new");
+
 
 
 // 연령 범위선택 변수
@@ -54,6 +63,7 @@ console.log(params.gender.split('%').length)
 console.log(params.mfee)
 console.log(params.age)
 console.log(params.alpha)
+console.log(params.recommendation_section)
 
 
 // 모달창 열고 닫음
@@ -68,7 +78,7 @@ function clickmodal(event){
     //////// 모달창 open 전에 이전 데이터 불러옴. ///////////
 
 
-    ///// 성별 이전 선택 데이터로 설정.
+///// 성별 이전 선택 데이터로 설정.
     var preSelectGender = params.gender.split('%'); //이전에 선택한 성별 체크박스
     
     for(var i=0; i<preSelectGender.length; i++){
@@ -82,10 +92,11 @@ function clickmodal(event){
 
         }
     }
-    /////
+/////
 
     
-    ///// 알파모델료(상훈페이, 레디자동) 이전 선택 데이터로 설정.
+///// 알파모델료(상훈페이, 레디자동) 이전 선택 데이터로 설정.
+
     var preSelectAlpha = params.alpha.split('%'); //이전에 선택한 성별 체크박스
 
     for(var i=0; i<preSelectAlpha.length; i++){
@@ -98,7 +109,7 @@ function clickmodal(event){
             document.getElementById(preId).checked = true;
         }
     }
-    /////
+/////
 
 
 ///// 연령 범위 -> 이전 데이터로 선택
@@ -177,6 +188,22 @@ function clickmodal(event){
 /////
 
 
+///// 모델 추천점수 (호감도, 연기력, 이미지, 뉴페이스) -> 이전 선택 데이터로 설정.
+
+
+    var preSelectAlpha = params.recommendation_section.split('%'); 
+
+    for(var i=0; i<preSelectAlpha.length; i++){
+
+        if(!preSelectAlpha[i] | !(preSelectAlpha[i] == 'fav' | preSelectAlpha[i] == 'act' | preSelectAlpha[i] == 'img' |  preSelectAlpha[i] == 'new')){
+            break;
+        }
+        else{
+            var preId = 'chk_' + preSelectAlpha[i];
+            document.getElementById(preId).checked = true;
+        }
+    }
+/////
 
     // 모달창 close
     if(!modal.classList.contains('inactive')){
@@ -194,6 +221,7 @@ function clickmodal(event){
         setRightValue_age();
         setLeftValue();
         setRightValue();
+        // getChkRecSectionValue();
         content.style.cssText  = 'overflow: hidden;';
         modal.classList.remove("inactive");
 
@@ -255,6 +283,36 @@ function getChkMfeeValue()  {
   }
 
 
+
+////////////////////////////////
+// 모델 추천 점수 섹션 선택 -> 이미지, 호감도, 연기력, 뉴페이스
+
+function getChkRecSectionValue()  {
+    // 선택된 목록 가져오기
+    const query = 'input[class="chk_section"]:checked';
+
+    const selectedEls = 
+        document.querySelectorAll(query);
+    
+
+    console.log(selectedEls)
+    // 선택된 목록에서 value 찾기
+    let result = '';
+    selectedEls.forEach((el) => {
+      result += el.value + ' ';
+      console.log(el.value)
+    });
+    
+    
+    console.log('섹션 체크 목록1 :: ' , result)
+    result = result.replace(/ /g, '%')
+
+    console.log('섹션 체크 목록2 :: ' , result)
+    document.getElementById("recommendation_section").value = result; 
+  
+  }
+
+
 /////////////////////////////////////////////// 주석 체크 진행하기 
 
 
@@ -268,7 +326,10 @@ chk_w.addEventListener("click", getChkGenderValue);
 chk_0100.addEventListener("click", getChkMfeeValue);
 chk_alpha.addEventListener("click", getChkMfeeValue);
 
-
+chk_img.addEventListener("click", getChkRecSectionValue);
+chk_fav.addEventListener("click", getChkRecSectionValue);
+chk_act.addEventListener("click", getChkRecSectionValue);
+chk_new.addEventListener("click", getChkRecSectionValue);
 
 
 const setLeftValue_age = () => {
@@ -332,15 +393,6 @@ const setRightValue_age = () => {
 
 inputLeft_age.addEventListener("input", setLeftValue_age);
 inputRight_age.addEventListener("input", setRightValue_age);
-
-
-
-
-
-
-
-
-
 
 
 

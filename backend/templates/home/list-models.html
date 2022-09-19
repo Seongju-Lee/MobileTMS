@@ -474,14 +474,14 @@ input[type="range"]::-webkit-slider-thumb_age {
                                         <label style="margin-top: 0px; margin-left: 0px; width: 90px;" class="styled__Label-sc-1z0qnhc-1 hYNqrz"><input type="checkbox" class="chk_alpha" id="chk_auto" value="auto"><span>레디자동</span></label>
                                         <input type="hidden" id="alpha" name="alpha" />
 
-                                        <P><span class="min_value">0</span>만원 - <span class="max_value">4100</span>만원</P>
+                                        <P><span class="min_value">0</span> - <span class="max_value">4100</span></P>
                                         <div class="middle">
                                           <div  style="width: 100%;">
 
                                               
                                             <!-- 진짜 슬라이더 -->
-                                            <input type="range" id="input-left" min="0" step="150" max="4100" value="0" />
-                                            <input type="range" id="input-right" min="0" step="150" max="4100" value="4100" />
+                                            <input type="range" id="input-left" min="150" step="200" max="4100" value="150" />
+                                            <input type="range" id="input-right" min="150" step="200" max="4100" value="4100" />
                                             <input type="hidden" id="mfee" name="mfee" value="0%4100" >
                                             <!-- 커스텀 슬라이더 -->
                                             <div class="slider">
@@ -545,8 +545,14 @@ input[type="range"]::-webkit-slider-thumb_age {
                                           
                                           {% for i in test[:] %}
                                             <div class="col-4 col-sm-3" style="text-align : center; padding: 3px; background-color: #ffffff;">
-                                              <img src="http://pic2.readymodel.kr/mdpic/{{i.mcode[0:3]}}/{{i.mcode[0:4]}}/{{i.mcode}}/sys_photo/model.jpg" style="width:110px; height:110px;">
+                                              <h4 style="z-index: 2; position:absolute; color: #4099ff;">{{i.sum_jum}}</h4>
+                                                
+                                              <div style="text-align: center; "> 
+                                                <img src="http://pic2.readymodel.kr/mdpic/{{i.mcode[0:3]}}/{{i.mcode[0:4]}}/{{i.mcode}}/sys_photo/model.jpg" style="width:110px; height:110px;">
+                                              </div>
+                                                
                                                 <div class="info_position" style="padding-left:5%">
+
                                                   <h6 class="card-text" style="margin-bottom:0px; color:rgb(0, 0, 0); display: inline;" >이름</h6> <h6 style="margin-bottom:3px; display: inline; font-size: small;">{{i.name}}</h6>
                                                 
                                                   <h6 class="card-text" style="margin-bottom:0px; color:rgb(0, 0, 0)">정보</h6>

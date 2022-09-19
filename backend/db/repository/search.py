@@ -39,18 +39,26 @@ def common_filter(db, gender: list, age: list, mfee:list):
         list_model_fee = [x.split('~') for x in dict_model_fee['model_fee'].values()]
 
     for i in range(len(list_model_fee)):
-        
         try:
             if ((int(mfee[0]) >= int(list_model_fee[i][0]) and int(mfee[0]) <= int(list_model_fee[i][1])) or 
-            (int(mfee[1]) >= int(list_model_fee[i][0]) and int(mfee[1]) <= int(list_model_fee[i][1]))):
+            (int(mfee[1]) >= int(list_model_fee[i][0]) and ((int(mfee[1]) <= int(list_model_fee[i][1]))))
+            or (list_model_fee[i][1] == '0')
+            ):
                 
                 key_alpha_fee.append(i)
             
         except:
+            
             continue
     # 알파모델료에 해당하는 DB key값 추출
-    key_alpha_fee = list(dict_model_fee['model_fee'].keys())[key_alpha_fee[0]: key_alpha_fee[1]+1]
+
     
+    if len(key_alpha_fee) == 2:
+        key_alpha_fee = list(dict_model_fee['model_fee'].keys())[key_alpha_fee[0]: key_alpha_fee[1]+1]
+    else:
+        
+        key_alpha_fee.append(list(dict_model_fee['model_fee'].keys())[key_alpha_fee[0]])
+        key_alpha_fee.pop(0)
     # 상훈페이는 체크박스 -> 선택 되었으면 별도로 리스트에 추가
     if '0100' in mfee:
         key_alpha_fee.append('0100')
@@ -67,20 +75,22 @@ def common_filter(db, gender: list, age: list, mfee:list):
     return models
 
 
-# 30일 추천모델 리스트
+# 30일추천 모델 리스트
 def search_recommendation_month(db: Session, gender: list, age: list, mfee: list, recommendation_section: list):
 
 
-    # models = models
-    models = db.query(Recommendation_month.mcode, Recommendation_month.gubun, func.sum(Recommendation_month.jum), Recommendation_month.edit_time, People.mfee, People.name, People.sex, People.coname,  People.height, People.age, People.isyeon, People.image ).join(
-        People, Recommendation_month.mcode == People.codesys).filter((Recommendation_month.edit_time >= (datetime.today() - relativedelta(months=1))) & (not_(Recommendation_month.jum == 0))).group_by(People.name, Recommendation_month.gubun).order_by(desc(func.sum(Recommendation_month.jum)))
+    print(recommendation_section)
+    models = db.query(Recommendation_month.mcode, Recommendation_month.gubun, func.sum(Recommendation_month.jum).label('sum_jum') , Recommendation_month.edit_time, People.mfee, People.name, People.sex, People.coname,  People.height, People.age, People.isyeon, People.image ).join(
+        People, Recommendation_month.mcode == People.codesys).filter( (Recommendation_month.gubun.in_(recommendation_section)) & (Recommendation_month.edit_time >= (datetime.today() - relativedelta(months=1))) & (not_(Recommendation_month.jum == 0))).group_by(People.name).order_by(desc(func.sum(Recommendation_month.jum)))
 
     models = common_filter(models, gender, age, mfee)
-
     res_model = jsonable_encoder(models[:])
-
-    for model in res_model:
-        print(model)
 
 
     return res_model
+
+
+# 영상초이 모델 리스트
+def search_mov_choi(db: Session, gender: list, age: list, mfee:list):
+
+    return 1;

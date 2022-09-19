@@ -42,7 +42,10 @@ def search_celeb(request: Request, gender: str = 'm%w', age: str = '0%100', mfee
         
     for model in filter_models:
         if not model['mfee'] == '':
-            model['mfee'] = dict_model_fee['model_fee'][model['mfee']]
+            if dict_model_fee['model_fee'][model['mfee']] == "4100~0":
+                model['mfee'] = "4100~"
+            else:
+                model['mfee'] = dict_model_fee['model_fee'][model['mfee']]
 
     print('성별 :: ', gender.strip(), len(gender.strip()))
     print('나이 :: ', age.strip())

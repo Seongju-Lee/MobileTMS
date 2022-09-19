@@ -221,7 +221,7 @@ function clickmodal(event){
         setRightValue_age();
         setLeftValue();
         setRightValue();
-        // getChkRecSectionValue();
+        getChkRecSectionValue();
         content.style.cssText  = 'overflow: hidden;';
         modal.classList.remove("inactive");
 
@@ -403,8 +403,14 @@ const setLeftValue = () => {
     
 
     var mfee = inputLeft.value + "%" + inputRight.value;
-    // console.log(mfee);
-    $('#mfee').val(mfee);
+
+    console.log(inputRight.value);
+
+    if(inputLeft.value == '3950'){
+        $('#mfee').val("4100%4100");
+    }
+    else
+        $('#mfee').val(mfee);
 
 
     // 교차되지 않게, 1을 빼준 건 완전히 겹치기보다는 어느 정도 간격을 남겨두기 위해.
@@ -417,7 +423,12 @@ const setLeftValue = () => {
 
 
     let x = document.getElementsByClassName("min_value")[0];
-    x.innerText=_this.value; 
+    
+
+    if(_this.value == 3950){
+        x.innerText = '4100~'
+    }else
+        x.innerText= String(_this.value) + '만원'; 
 
     // $(".min_value").text(_this.value);
 
@@ -428,8 +439,14 @@ const setRightValue = () => {
     const [min, max] = [parseInt(_this.min), parseInt(_this.max)];
     
     var mfee = inputLeft.value + "%" + inputRight.value;
-    // console.log(mfee);
-    $('#mfee').val(mfee);
+
+    console.log(inputRight.value);
+
+    if(inputRight.value == '3950'){
+        $('#mfee').val(inputLeft.value + "%4100");
+    }
+    else
+        $('#mfee').val(mfee);
 
     // 교차되지 않게, 1을 더해준 건 완전히 겹치기보다는 어느 정도 간격을 남겨두기 위해.
     _this.value = Math.max(parseInt(_this.value), parseInt(inputLeft.value) + 1);
@@ -440,7 +457,12 @@ const setRightValue = () => {
     range.style.right = 100 - percent + "%";
 
     let x = document.getElementsByClassName("max_value")[0];
-    x.innerText=_this.value; 
+    
+    console.log('ss', _this.value)
+    if(_this.value == 3950){
+        x.innerText = '4100~'
+    }else
+        x.innerText= String(_this.value) + '만원'; 
 };
 
 inputLeft.addEventListener("input", setLeftValue);

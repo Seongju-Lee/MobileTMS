@@ -445,14 +445,14 @@ input[type="range"]::-webkit-slider-thumb_age {
                                         <!-- 연령 Start -->
                                         <hr>
                                         <h5>연령</h5>
-                                        <P><span  class="min_value_age">0</span> - <span name="max_age" class="max_value_age">100</span></P>
+                                        <P><span  class="min_value_age">1</span> - <span name="max_age" class="max_value_age">100</span></P>
                                         <div class="middle_age">
                                           <div  style="width: 100%;">
 
                                               
                                             <!-- 진짜 슬라이더 -->
-                                            <input type="range" id="input-left_age" min="0" step="1" max="100" value="0" />
-                                            <input type="range" id="input-right_age" min="0" step="1" max="100" value="100" />
+                                            <input type="range" id="input-left_age" min="1" step="1" max="100" value="1" />
+                                            <input type="range" id="input-right_age" min="1" step="1" max="100" value="100" />
                                             <input type="hidden" id="age" name="age"  />
 
                                             <!-- 커스텀 슬라이더 -->
@@ -482,7 +482,7 @@ input[type="range"]::-webkit-slider-thumb_age {
                                             <!-- 진짜 슬라이더 -->
                                             <input type="range" id="input-left" min="150" step="200" max="4100" value="150" />
                                             <input type="range" id="input-right" min="150" step="200" max="4100" value="4100" />
-                                            <input type="hidden" id="mfee" name="mfee" value="0%4100" >
+                                            <input type="hidden" id="mfee" name="mfee" value="150%4100" >
                                             <!-- 커스텀 슬라이더 -->
                                             <div class="slider">
                                               <div class="track"></div>
@@ -524,7 +524,7 @@ input[type="range"]::-webkit-slider-thumb_age {
                             <!-- modal 창 END -->
                             <!-- --------------------------------------------------------------------------------- -->
                           
-                            <h6> {{ test | length }} 명 </h6>
+                            
 
 
                             <!-- Content 창 START -->
@@ -542,9 +542,11 @@ input[type="range"]::-webkit-slider-thumb_age {
                                           
                                             <!-- Force next columns to break to new line -->
                                           <div class="w-100"></div>
+                                          <h6> {{ test | length }} 명 </h6>
                                           
                                           {% for i in test[:] %}
                                             <div class="col-4 col-sm-3" style="text-align : center; padding: 3px; background-color: #ffffff;">
+
                                               <h4 style="z-index: 2; position:absolute; color: #4099ff;">{{i.sum_jum}}</h4>
                                                 
                                               <div style="text-align: center; "> 
@@ -556,7 +558,7 @@ input[type="range"]::-webkit-slider-thumb_age {
                                                   <h6 class="card-text" style="margin-bottom:0px; color:rgb(0, 0, 0); display: inline;" >이름</h6> <h6 style="margin-bottom:3px; display: inline; font-size: small;">{{i.name}}</h6>
                                                 
                                                   <h6 class="card-text" style="margin-bottom:0px; color:rgb(0, 0, 0)">정보</h6>
-                                                  <h6 class="card-title" style="margin-bottom:3px; font-size: small;"> {{i.age}} / 성별 / 키</h6>
+                                                  <h6 class="card-title" style="margin-bottom:3px; font-size: small;"> {{i.age}} / {{i.mcode}} / 키</h6>
                                                 
                                                   <h6 class="card-text" style="margin-bottom:0px; color:rgb(0, 0, 0)">소속사</h6><h6 style="margin-bottom:2px; font-size: small;">33</h6>
                                                     
@@ -584,12 +586,17 @@ input[type="range"]::-webkit-slider-thumb_age {
                                         
                                           <!-- Force next columns to break to new line -->
                                         <div class="w-100"></div>
-      
-                                        {% for i in test[100:130] %}
+                                        <h6> {{ mov_choi | length }} 명 </h6>
+                                        {% for model in mov_choi[:] %}
                                           <div class="col-4 col-sm-3" style="text-align : center; padding: 3px; background-color: #ffffff;">
-                                            <img src="http://pic2.readymodel.kr/mdpic/{{i.mcode[0:3]}}/{{i.mcode[0:4]}}/{{i.mcode}}/sys_photo/model.jpg" style="width:110px; height:110px;">
+
+                                            <h4 style="z-index: 2; position:absolute; color: #4099ff;">{{model.choi_count}}</h4>
+                                                
+                                              <div style="text-align: center; "> 
+                                                <img src="http://pic2.readymodel.kr/mdpic/{{model.mcode[0:3]}}/{{model.mcode[0:4]}}/{{model.mcode}}/sys_photo/model.jpg" style="width:110px; height:110px;">
+                                              </div>
                                               <div class="info_position" style="padding-left:5%">
-                                                <h6 class="card-text" style="margin-bottom:0px; color:rgb(0, 0, 0); display: inline;" >이름</h6> <h6 style="margin-bottom:3px; display: inline; font-size: small;">이름</h6>
+                                                <h6 class="card-text" style="margin-bottom:0px; color:rgb(0, 0, 0); display: inline;" >이름</h6> <h6 style="margin-bottom:3px; display: inline; font-size: small;">{{model.name}}</h6>
                                               
                                                 <h6 class="card-text" style="margin-bottom:0px; color:rgb(0, 0, 0)">정보</h6>
                                                 <h6 class="card-title" style="margin-bottom:3px; font-size: small;"> 나이 / 성별 / 키</h6>
@@ -597,7 +604,7 @@ input[type="range"]::-webkit-slider-thumb_age {
                                                 <h6 class="card-text" style="margin-bottom:0px; color:rgb(0, 0, 0)">소속사</h6><h6 style="margin-bottom:2px; font-size: small;">33</h6>
                                                   
                                               
-                                                <h6 class="card-text" style="margin-bottom:0px; color:rgb(0, 0, 0); display: inline;">모델료</h6> <h6 style="margin-bottom:0px; display: inline; font-size: small;">123</h6>
+                                                <h6 class="card-text" style="margin-bottom:0px; color:rgb(0, 0, 0); display: inline;">모델료</h6> <h6 style="margin-bottom:0px; display: inline; font-size: small;">{{model.mfee}}</h6>
                                                       
                                               </div>
                                           </div>
@@ -621,10 +628,14 @@ input[type="range"]::-webkit-slider-thumb_age {
                                         
                                           <!-- Force next columns to break to new line -->
                                         <div class="w-100"></div>
-      
-                                        {% for _ in range(1000) %}
+                                        <h6> {{ mov_choi | length }} 명 </h6>
+                                        {% for model in procount[:] %}
                                           <div class="col-4 col-sm-3" style="text-align : center; padding: 3px; background-color: #ffffff;">
-                                            <img src="http://pic2.readymodel.kr/mdpic/93C/93C2/93C20994A009/sys_photo/model.jpg" style="width:110px; height:110px;">
+                                            <h4 style="z-index: 2; position:absolute; color: #4099ff;">{{model.project_count}}</h4>
+                                                
+                                              <div style="text-align: center; "> 
+                                                <img src="http://pic2.readymodel.kr/mdpic/{{model.mcode[0:3]}}/{{model.mcode[0:4]}}/{{model.mcode}}/sys_photo/model.jpg" style="width:110px; height:110px;">
+                                              </div>
                                               <div class="info_position" style="padding-left:5%">
                                                 <h6 class="card-text" style="margin-bottom:0px; color:rgb(0, 0, 0); display: inline;" >이름</h6> <h6 style="margin-bottom:3px; display: inline; font-size: small;">이름</h6>
                                               

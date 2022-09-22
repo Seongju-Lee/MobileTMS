@@ -19,22 +19,35 @@ class Recommendation_month(Base):
     mcode = Column(String(20), ForeignKey("people.codesys"))
 
 
-# 추천2022_ 30일추천 테이블
+# 추천2022_ 영상초이
 class Movsel(Base):
     __tablename__ = "movsel"
 
     rno = Column(Integer, primary_key=True)
     edit_time = Column(TIMESTAMP)
     mcode = Column(String(20), ForeignKey("people.codesys"))
+    frcode = Column(String(20))
+    worksss = Column(String(20))
+
+# 추천2022_ 영상초이_프로젝트 정보
+class Movsel_box(Base):
+    __tablename__ = "movselbox"
+
+    rno = Column(Integer, primary_key=True)
+    edit_time = Column(TIMESTAMP)
+    projname = Column(String(20))
+    rcode = Column(String(20))
 
 
 # 추천2022_프로카운트 테이블
-class Mmeeting_proc(Base):
+class Procount(Base):
     __tablename__ = "mmeeting_proc"
 
     rno = Column(Integer, primary_key=True)
     edit_time = Column(TIMESTAMP)
+    title = Column(String(300))
     projcode = Column(String(20))
+    idate = Column(String(20))
     mcode = Column(String(20), ForeignKey("people.codesys"))
     s_mcode = Column(String(20), ForeignKey("yeon.codesys"))
 

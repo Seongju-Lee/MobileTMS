@@ -5,7 +5,7 @@ from sqlalchemy import not_
 from sqlalchemy.orm import Session
 from db.projects.project import ProjectTable, ProjectMemo, ProjectContract
 from db.models.kmodels import People
-from db.models.users import Users, RUsers
+from db.models.users import Users, Rusers
 
 from datetime import datetime
 from dateutil.relativedelta import relativedelta

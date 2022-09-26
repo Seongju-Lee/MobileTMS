@@ -59,12 +59,13 @@ function scriptQuery(){
 }
 
 const params = scriptQuery();
-console.log(params.gender.split('%').length)
-console.log(params.mfee)
-console.log(params.age)
-console.log(params.alpha)
-console.log(params.recommendation_section)
-
+if (params.gender){
+    console.log(params.gender.split('%').length)
+    console.log(params.mfee)
+    console.log(params.age)
+    console.log(params.alpha)
+    console.log(params.recommendation_section)
+}
 
 // 모달창 열고 닫음
 function clickmodal(event){

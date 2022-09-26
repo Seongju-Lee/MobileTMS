@@ -1,20 +1,12 @@
-from cgi import test
 from datetime import datetime, timedelta
 import json
-from statistics import mode
 from fastapi import APIRouter, Depends
-from fastapi import Request, Query
-from fastapi.responses import HTMLResponse
+from fastapi import Request
 from fastapi.templating import Jinja2Templates
-from pandas import array
-# from db.repository.search import search_job,  chu_30, movchoi, proc, order_register, order_recommend, order_s_count, order_read, search_celeb
-# from db.repository.search import   order_realtime, models_info, proc_celeb, img_mov_info, cf_mov_info, act_mov_info, best_img, get_rd_contracts
 
 from db.repository.search import search_recommendation_month, search_mov_choi, search_procount
-from sqlalchemy.orm import Session
 from db.session import get_db
-from fastapi.encoders import jsonable_encoder
-from striprtf.striprtf import rtf_to_text
+from sqlalchemy.orm import Session
 from starlette.responses import RedirectResponse
 
 
@@ -38,7 +30,7 @@ def code_to_mfee(models):
 
 
 @router.get("")
-def search_models(request: Request, gender: str = 'm%w', age: str = '1%100', mfee: str = '150%4100', alpha: str = '0100%auto', recommendation_section: str = 'img%fav%act%new',
+def get_search_models(request: Request, gender: str = 'm%w', age: str = '1%100', mfee: str = '150%4100', alpha: str = '0100%auto', recommendation_section: str = 'img%fav%act%new',
            db: Session = Depends(get_db)):
 
     # 유저 token 유효성
@@ -49,25 +41,16 @@ def search_models(request: Request, gender: str = 'm%w', age: str = '1%100', mfe
     list_gender, list_age, list_mfee, list_recommendation_section = gender.strip().split('%'), age.split('%'), mfee.strip().split('%') + alpha.strip().split('%'), recommendation_section.strip().split('%')
     
 
-    filter_models = search_recommendation_month(db=db, gender=list_gender, age=list_age, mfee=list_mfee, recommendation_section=list_recommendation_section)
+    month_models = search_recommendation_month(db=db, gender=list_gender, age=list_age, mfee=list_mfee, recommendation_section=list_recommendation_section)
     mov_choi_models = search_mov_choi(db=db, gender=list_gender, age=list_age, mfee=list_mfee)
     procount_models =  search_procount(db=db, gender=list_gender, age=list_age, mfee=list_mfee)
 
-    code_to_mfee(filter_models)
+    code_to_mfee(month_models)
     code_to_mfee(mov_choi_models)    
     code_to_mfee(procount_models)
 
-
-    # print('성별 :: ', gender.strip(), len(gender.strip()))
-    # print('나이 :: ', age.strip())
-    # print('모델료 :: ', mfee.strip())
-    # print('모델료 옵션 선택 :: ', alpha.strip())
-    # print('추천 점수 옵션 선택 :: ', recommendation_section.strip())
-    
    
     # try:
-
-   
 
     if token:
        
@@ -75,7 +58,7 @@ def search_models(request: Request, gender: str = 'm%w', age: str = '1%100', mfe
         return templates.TemplateResponse(
             "home/list-models.html", {"request": request,
                                         "preSelectValue": {"gender" : gender, "age" : age, "mfee": mfee, "alpha" : alpha, "recommendation_section" : recommendation_section},
-                                        "test": filter_models,
+                                        "recommendation_month": month_models,
                                         "mov_choi": mov_choi_models,
                                         "procount": procount_models}
         )

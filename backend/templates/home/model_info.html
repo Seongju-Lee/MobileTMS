@@ -1,0 +1,690 @@
+{% extends "layouts/base.html" %}
+
+{% block title %} Dashboard {% endblock %} 
+
+<!-- Specific Page CSS goes HERE  -->
+{% block stylesheets %}
+
+<style>
+
+.inactive{
+  display: none;
+}
+
+.modal-dialog{
+  position: fixed;
+  top:185px; 
+  left: 0; 
+  bottom: 0; 
+  right: 0;
+  /* background: rgba(0, 0, 0, 0.8); */
+  z-index: 998;
+}
+
+.modal-container{
+  width: 350px;
+  height: 410px;
+  margin: 150px auto;
+  border-radius: 10px;
+  background-color: #f8f8f8;
+  position: absolute;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  z-index: 999;
+}
+
+.modal-title{
+  text-align: left;
+  padding: 16px;
+}
+
+.modal-input{
+  text-align: center;
+  width: 100%;
+  margin-top: 30px;
+}
+form  input, textarea{
+  border: 1px solid #e5e5e5;
+}
+.modal-input input{
+  width: 250px;
+  height: 40px;
+}
+
+.modal-text{
+  text-align: center;
+  margin-top: 30px;
+  width: 100%;
+}
+
+.modal-text textarea{
+  width: 250px;
+}
+
+
+.modal-screen{
+  text-align: center;
+  width: 100%;
+  height: 100px;
+}
+
+.modal-screen p{
+  text-align: left;
+  padding: 16px;
+}
+.fileUploadSize{
+  width: 250px;
+  height: 40px;
+  border: 1px solid #e5e5e5;
+  margin: 0 auto;
+  line-height: 40px;
+}
+
+.fileUploadSize label{
+  justify-content: space-between;
+}
+
+.modal-bnt{
+  text-align: center;
+  margin-top: 20px;
+}
+
+.modal-send-bnt,
+.modal-close{
+  width: 80px;
+  height: 30px;
+}
+
+.modal-send-bnt{
+  background: black;
+  color: #fff;
+}
+
+
+
+#modal-filter{
+    	background-image : url('/static/assets/images/icon-filter.png');
+        background-repeat : no-repeat;
+        background-size : 25px;
+}
+
+
+
+
+label {
+display: inline-block;
+padding: 5px;
+position: relative;
+padding-left: 20px;
+}
+
+label input {
+display: none;
+}
+
+label span {
+border: 1px solid #ccc;
+width: 100%;
+height: 100%;
+
+line-height: 1;
+text-align: center;
+left: 0;
+top: 50%;
+margin-top: -7.5px;
+display: flex;
+justify-content: center;
+
+border: 1px solid rgb(223, 223, 223);
+border-radius: 30px;
+background-color: rgb(255, 255, 255);
+
+font-size: 14px;
+font-weight: 400;
+
+/* -webkit-box-align: center; */
+align-items: center;
+/* -webkit-box-pack: center; */
+user-select: none;
+
+}
+
+input:checked+span {
+background: rgb(50, 108, 249);
+border-color: rgb(50, 108, 249);
+color: rgb(255, 255, 255);
+}
+
+
+.hYNqrz {
+    width: 116px;
+    height: 38px;
+    margin-top: 8px;
+    margin-left: 8px;
+    position: relative;
+}
+
+/* .hYNqrz > input[type="checkbox"] {
+    width: 0px;
+    height: 0px;
+    opacity: 0;
+    position: absolute;
+    top: 0px;
+    left: 0px;
+} */
+
+
+.hYNqrz > p {
+    color: rgb(101, 101, 101);
+    font-size: 14px;
+    font-weight: 400;
+    display: flex;
+    -webkit-box-align: center;
+    align-items: center;
+    -webkit-box-pack: center;
+    justify-content: center;
+    width: 100%;
+    height: 100%;
+    border: 1px solid rgb(223, 223, 223);
+    border-radius: 3px;
+    background-color: rgb(255, 255, 255);
+    user-select: none;
+}
+
+input[type="checkbox" i] {
+    background-color: initial;
+    cursor: default;
+    appearance: auto;
+    box-sizing: border-box;
+    margin: 3px 3px 3px 4px;
+    padding: initial;
+    border: initial;
+}
+
+
+
+
+/* 99999999999990000000000000000 */
+
+
+.middle {
+  position: relative;
+  width: 100%;
+  max-width: 500px;
+}
+
+
+.slider {
+  position: relative;
+  z-index: 1;
+  height: 10px;
+  margin: 0 15px;
+}
+
+.slider > .track {
+  position: absolute;
+  z-index: 1;
+  left: 0;
+  right: 0;
+  top: 0;
+  bottom: 0;
+  border-radius: 5px;
+  background-color: #c6c6c6;
+}
+
+.slider > .range {
+  position: absolute;
+  z-index: 2;
+  left: 0%;
+  right: 0%;
+  top: 0;
+  bottom: 0;
+  border-radius: 5px;
+  background-color: rgb(50, 108, 249);
+}
+
+.slider > .thumb {
+  position: absolute;
+  z-index: 3;
+  width: 30px;
+  height: 30px;
+  background-color: #ffffff;
+  border-radius: 50%;
+  box-shadow: rgb(157 157 157 / 20%) 0px 2px 5px 0px;
+  border: 1px solid rgb(237, 237, 237);
+}
+
+.slider > .thumb.left {
+  left: 0%;
+  transform: translate(-15px, -10px);
+}
+.slider > .thumb.right {
+  right: 0%;
+  transform: translate(15px, -10px);
+}
+
+input[type="range"] {
+  position: absolute;
+  /* opacity로 가린 것을 이벤트도 비활성화하기 위해 */
+  pointer-events: none;
+  -webkit-appearance: none;
+  z-index: 2;
+  height: 10px;
+  width: 100%;
+  opacity: 0;
+}
+
+input[type="range"]::-webkit-slider-thumb {
+  /* 겹쳐진 두 thumb를 모두 활성화 */
+  pointer-events: all;
+  width: 30px;
+  height: 30px;
+  border-radius: 0;
+  border: 0 none;
+  background-color: red;
+  cursor: pointer;
+  /* appearance를 해야 위의 스타일들을 볼 수 있음 */
+  -webkit-appearance: none;
+}
+
+
+
+.middle_age {
+  position: relative;
+  width: 100%;
+  max-width: 500px;
+}
+
+.slider > .track_age {
+  position: absolute;
+  z-index: 1;
+  left: 0;
+  right: 0;
+  top: 0;
+  bottom: 0;
+  border-radius: 5px;
+  background-color: #c6c6c6;
+}
+
+.slider > .range_age {
+  position: absolute;
+  z-index: 2;
+  left: 0%;
+  right: 0%;
+  top: 0;
+  bottom: 0;
+  border-radius: 5px;
+  background-color: rgb(50, 108, 249);
+}
+
+.slider > .thumb_age {
+  position: absolute;
+  z-index: 3;
+  width: 30px;
+  height: 30px;
+  background-color: #ffffff;
+  border-radius: 50%;
+  box-shadow: rgb(157 157 157 / 20%) 0px 2px 5px 0px;
+  border: 1px solid rgb(237, 237, 237);
+}
+
+.slider > .thumb_age.left_age {
+  left: 0%;
+  transform: translate(-15px, -10px);
+}
+.slider > .thumb_age.right_age {
+  right: 0%;
+  transform: translate(15px, -10px);
+}
+
+input[type="range"]::-webkit-slider-thumb_age {
+  /* 겹쳐진 두 thumb를 모두 활성화 */
+  pointer-events: all;
+  width: 30px;
+  height: 30px;
+  border-radius: 0;
+  border: 0 none;
+  background-color: red;
+  cursor: pointer;
+  /* appearance를 해야 위의 스타일들을 볼 수 있음 */
+  -webkit-appearance: none;
+}
+
+
+
+.fixed-nav {
+    position: fixed;
+    z-index: 4;
+    width: 96.2%;
+    /* box-shadow: 0 5px rgba(0, 0, 0, 0.1); */
+  }
+
+/* PC */
+@media only screen and (min-width: 514px)
+{
+ 
+  .icon-sns {
+    
+    width: 4%;
+    /* box-shadow: 0 5px rgba(0, 0, 0, 0.1); */
+  }
+
+  .img-radius.model_info_img {
+
+    margin: 1.3rem;
+    margin-top: 1.8rem;
+    width: 120px;
+    height: 100px;
+  }
+  
+
+  .card-info-header {
+    margin-bottom: 0.6rem;
+  }
+  
+  .info-flex {
+    display: flex;
+    margin-left: 1.3rem;
+  }
+
+}
+
+/* 모바일 */
+@media only screen and (max-width: 514px)
+{
+ 
+  .icon-sns {
+    width: 5%;
+    /* box-shadow: 0 5px rgba(0, 0, 0, 0.1); */
+  }
+
+  .img-radius.model_info_img {
+
+    margin-top: 1.8rem;
+    width: 110px;
+    height: 90px;
+  }
+
+  .card-info-header {
+    margin-bottom: 0.3rem;
+    display: inline-flex;
+  }
+
+  
+}
+
+
+
+/* PC */
+@media only screen and (min-width: 389px)
+{
+ 
+  .info-flex {
+    display: flex;
+    padding-left: 1.3rem;
+  }
+  
+  
+  .info-flex_ {
+    display: flex;
+    padding-top: 1.5rem;
+    padding-left: 1.3rem;
+  }
+
+}
+
+/* 모바일 */
+@media only screen and (max-width: 389px)
+{
+ 
+  .info-flex {
+    display: inline-flex;
+    padding-left: 1.0rem;
+  }
+
+  .info-flex_ {
+    display: inline-flex;
+    padding-top: 1.5rem;
+    margin-right: 7.39rem;
+    padding-left: 1.0rem;
+  }
+}
+
+
+
+</style>
+
+{% endblock stylesheets %}
+
+{% block content %}
+
+
+    <!-- [ Main Content ] start -->
+    <div class="pcoded-main-container">
+        <div class="pcoded-content">
+           
+            <!-- [ Main Content ] start -->
+            <div class="row">
+                <!-- [ grid ] start -->
+                <div class="col-sm-12">
+                    
+                    
+                    
+                  <div id="filter-bar" class="card" style="text-align: center;">
+                    <label style="font-size: 15px;">
+                      <h5 class="mt-5">모델 상세</h5>
+                    </label>
+                  
+                    <!-- active show 이용해서 정렬값 정렬하기. ==> 30일추천, 영상초이, 프로카운트 -->
+                    <div class="card-header" style="padding: 0px; padding-left:10px; padding-right:10px; float: left; text-align: left;">
+                              
+                      <div class="card-info-header">
+                        <h5>이름:</h5> <h5 style="color: #848484;">{{model_detail_info.name}}</h5> <h5>나이:</h5> <h5 style="color: #848484;">{{model_detail_info.age}}년생</h5> <h5>키:</h5> <h5 style="color: #848484;">{{model_detail_info.height}}CM</h5>
+                      </div>
+                      <div class="card-info-header">
+                        <h5>소속사:</h5> <h5 style="color: #848484;">{{model_detail_info.coname}}</h5> 
+                      </div>
+                      <div class="card-info-header">
+                        <h5 >직업/학교:</h5><h5 style="color: #848484;">{{model_detail_info.bun}}</h5>
+                      </div>
+                      <div >
+                        <h5>모델료:</h5> <h5  style="color: #848484;">{{model_detail_info.mfee }}</h5> 
+                        <div class="card-info-header" style="text-align: right; margin-bottom: 0.4rem;">
+                          <h6>
+                          <img class="icon-sns" src="/static/assets/images/icon-instagram.png">
+                          {% if model_detail_info.sns2 %}
+                            <a style="color: black;" href="https://www.instagram.com/{{model_detail_info.sns2}}" target="_blank"> ID:{{model_detail_info.sns2}} / Follow: {{model_detail_info.insta_flw_str}} </h6></a>
+                          {% else %}
+                             미입력 </h6>
+                          {% endif %}
+                        </div>
+                      </div>
+                    </div>
+
+                    
+                  </div>
+
+                    
+                    <div class="card">
+                      <div class="list-grid" >
+
+                        <!--  모델 이미지 & 연락처 START -->
+                        <div class="card-body" style="padding: 2px; margin:1.3rem; margin-top: 0;">
+
+                          <div class="feed-user-img">
+                            <div style="float: left;">
+                              <img  src="http://pic2.readymodel.kr/mdpic/{{model_detail_info.codesys[0:3]}}/{{model_detail_info.codesys[0:4]}}/{{model_detail_info.codesys}}/sys_photo/model.jpg"" class="img-radius model_info_img" alt="User-Profile-Image">
+                            </div>
+                            <div>
+                              <h5></h5>
+
+                              <div class="info-flex_">
+                                <h5 style="font-size: 18px;  margin-top: 0.3rem;">연락처</h5>
+                              </div>
+                              <div class="info-flex">
+                                <h6>{{model_detail_info.dam}} </h6> <h6  style="color: #848484;">&nbsp; {{model_detail_info.tel1}}</h6> 
+                              </div>
+                              <div class="info-flex">
+                                <h6 >{{model_detail_info.dam2}} </h6> <h6 style="color: #848484;">&nbsp; {{model_detail_info.dam2tel}}</h6> 
+                              </div>
+                            </div>
+                          </div>
+                        </div> 
+                        <!--  모델 이미지 & 연락처 END -->
+
+                        <!-- 포인트 START -->
+                        <div class="card-body" style="padding: 2px; margin:1.3rem; margin-top: 2rem">
+
+                          <div style="margin: 1.3rem;">
+                            <h5>포인트 </h5>
+                            </div>
+                            
+                            <div>
+                            
+                              <ul class="feed-blog ps-0">
+
+                                
+
+                                {% for memo in model_detail_info.point2 %}
+                                 
+                                  <p class="m-b-15 m-t-15">{{memo}}</p>
+                            
+                                {% endfor %}
+
+                                <!-- {% for i in range(model_detail_info.point2 | length) %}
+                                <li class="active-feed">
+                                    
+                                  <h6><span class="badge bg-danger">{{model_detail_info.point2[i].split('-')[-2]}}</span>
+                                    &nbsp </h6>
+                                  <p class="m-b-15 m-t-15">{{"".join(model_detail_info.point2[i])}}</p>
+                            
+                                </li>
+                               
+                                {% endfor %} -->
+                                
+                            </ul>
+                            
+                          </div>
+
+
+
+                          <!-- 첨부파일 START -->
+                          <div style="margin: 1.3rem; margin-top: 2.6rem;">
+                            <h5 style="float: left;">첨부파일 </h5>
+                            <span style="margin-left: 10px" class="badge bg-danger">존재안함</span>
+                            <span class="badge bg-primary">존재</span>
+                          </div>
+                            
+                          <div>
+                              
+                            <ul class="feed-blog ps-0">
+
+                              
+                                
+                              
+                              <li class="active-feed">
+                                <h6>영상</h6>
+                                <a style="margin-top: 10px;" target="_blank" rel="noopener noreferrer"
+                                href="http://localhost:8000/models/{{model_detail_info.codesys}}/img"
+                                class="btn btn-{{is_existed_img}} btn-sm text-white">이미지영상</a>
+                          
+                                  
+                                <a style="margin-top: 10px;" target="_blank" rel="noopener noreferrer"
+                                href="http://localhost:8000/models/{{model_detail_info.codesys}}/act"
+                                class="btn btn-{{is_existed_act}} btn-sm text-white">연기영상</a>
+                          
+                                  
+                                <a style="margin-top: 10px;" target="_blank" rel="noopener noreferrer"
+                                href="http://localhost:8000/models/{{model_detail_info.codesys}}/cf"
+                                class="btn btn-{{is_existed_cf}} btn-sm text-white ">광고영상</a>
+
+                              </li>
+
+                              <li class="active-feed">
+                                <h6>사진</h6>
+                                <a style="margin-top: 10px;" target="_blank" rel="noopener noreferrer"
+                                href="http://localhost:8000/models/{{model_detail_info.codesys}}/b"
+                                class="btn btn-{{is_existed_best}} btn-sm text-white m-0">베스트사진</a>
+
+                                <a style="margin-top: 10px;" target="_blank" rel="noopener noreferrer"
+                                href="http://localhost:8000/models/{{model_detail_info.codesys}}/r"
+                                class="btn btn-{{is_existed_refer}} btn-sm text-white m-0">참고사진</a>
+                          
+                              </li>
+
+                              
+                              
+                            </ul>
+                            
+                          </div>
+                          <!-- 첨부파일 END -->
+
+
+
+                          
+
+                          <!-- 첨부파일 START -->
+                          <div style="margin: 1.3rem; margin-top: 2.6rem;">
+                            <h5 style="float: left;">레디진행 </h5>
+                            <div style="margin-left: 70px;" class="custom-control custom-switch">
+
+                              <input type="checkbox" id="toggle" hidden> 
+
+                              <label for="toggle" class="toggleSwitch">
+                                <span class="toggleButton"></span>
+                              </label>
+                              
+                          </div>
+                          </div>
+                            
+                          <div>
+                              
+                            
+                          </div>
+                          <!-- 첨부파일 END -->
+
+                        </div>
+
+
+
+
+                      </div>
+                      
+                      </div>
+                    </div>
+                   
+
+                         
+                            
+                        </div>
+                    </div>
+                </div>
+                <!-- [ grid ] end -->
+            </div>
+            <!-- [ Main Content ] end -->
+        </div>
+    </div>
+    <!-- [ Main Content ] end -->
+
+
+
+
+    {% endblock content %}
+
+    <!-- Specific Page JS goes HERE  -->
+    {% block javascripts %}
+    
+        <!-- Apex Chart -->
+        <!-- <script src="/static/assets/js/plugins/apexcharts.min.js"></script> -->
+    
+        <!-- custom-chart js -->
+
+       
+        <script src="/static/assets/js/pages/dashboard-main.js"></script>
+        <script src="/static/assets/js/pages/fixed-nav.js"></script>
+        <script src="/static/assets/js/pages/switch.js"></script>
+        
+    {% endblock javascripts %}
+    

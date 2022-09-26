@@ -8,7 +8,7 @@ from sqlalchemy.sql import func
 from sqlalchemy.orm import Session
 
 from db.models.kmodels import People, Recommendation_month, Movsel, Movsel_box, Procount
-from db.projects.project import ProjectContract
+from db.models.users import Rusers
 
 from dateutil.relativedelta import relativedelta
  
@@ -47,10 +47,9 @@ def common_filter(db, gender: list, age: list, mfee:list):
                 key_alpha_fee.append(i)
             
         except:
-            
             continue
-    # 알파모델료에 해당하는 DB key값 추출
 
+    # 알파모델료에 해당하는 DB key값 추출
     if len(key_alpha_fee) == 2:
         key_alpha_fee = list(dict_model_fee['model_fee'].keys())[key_alpha_fee[0]: key_alpha_fee[1]+1]
     else:
@@ -61,11 +60,6 @@ def common_filter(db, gender: list, age: list, mfee:list):
     if '0100' in mfee:
         key_alpha_fee.append('0100')
 
-    
-
-    print('알파모델료 :: ', key_alpha_fee)
-    print('나이 구간 :: ', max_age_year, min_age_year)
-    print('성별 :: ', gender)
     # 연령 필터링
     models = db.filter((People.age >= max_age_year) & (People.age <= min_age_year))
     # 성별 필터링
@@ -85,13 +79,17 @@ def search_recommendation_month(db: Session, gender: list, age: list, mfee: list
     models = db.query(Recommendation_month.mcode, Recommendation_month.gubun, func.sum(Recommendation_month.jum).label('sum_jum') , Recommendation_month.edit_time, People.mfee, People.name, People.sex, People.coname,  People.height, People.age, People.isyeon, People.image
     ).join(
         People, Recommendation_month.mcode == People.codesys
+    ).join(
+        Rusers, Rusers.uid == Recommendation_month.sawon
     ).filter(
-        (Recommendation_month.gubun.in_(recommendation_section)) & (Recommendation_month.edit_time >= (datetime.today() - relativedelta(months=1))) & (not_(Recommendation_month.jum == 0))).group_by(People.codesys).order_by(desc(func.sum(Recommendation_month.jum))
+        (Recommendation_month.gubun.in_(recommendation_section)) & (Recommendation_month.edit_time >= (datetime.today() - relativedelta(months=1))) & (not_(Recommendation_month.jum == 0)) & (not_(Rusers.power8.contains('/GTX/') & (func.length(Rusers.power8)< 20)))
+    ).group_by(
+        People.codesys
+    ).order_by(
+        desc(func.sum(Recommendation_month.jum))
     )
 
     models = common_filter(models, gender, age, mfee)
-
-    
     res_model = jsonable_encoder(models[:])
 
 
@@ -136,8 +134,6 @@ def search_procount(db:Session, gender: list, age: list, mfee: list):
         desc(func.count(Procount.projcode))
     )
 
-
-    print('프로카운트 :: ', str((datetime.today() - relativedelta(months=12)).date()))
 
     models = common_filter(models, gender, age, mfee)
 

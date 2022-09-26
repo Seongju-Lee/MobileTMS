@@ -542,31 +542,35 @@ input[type="range"]::-webkit-slider-thumb_age {
                                           
                                             <!-- Force next columns to break to new line -->
                                           <div class="w-100"></div>
-                                          <h6> {{ test | length }} 명 </h6>
+                                          <h6> {{ recommendation_month | length }} 명 </h6>
                                           
-                                          {% for i in test[:] %}
+                                          {% for model in recommendation_month[:] %}
                                             <div class="col-4 col-sm-3" style="text-align : center; padding: 3px; background-color: #ffffff;">
-
-                                              <h4 style="z-index: 2; position:absolute; color: #4099ff;">{{i.sum_jum}}</h4>
+                                              <a href="/models/{{model.mcode}}" style="color: #000000;">
+                                              
+                                              <h4 style="z-index: 2; position:absolute; color: #4099ff;">{{model.sum_jum}}</h4>
                                                 
                                               <div style="text-align: center; "> 
-                                                <img src="http://pic2.readymodel.kr/mdpic/{{i.mcode[0:3]}}/{{i.mcode[0:4]}}/{{i.mcode}}/sys_photo/model.jpg" style="width:110px; height:110px;">
+                                                <img src="http://pic2.readymodel.kr/mdpic/{{model.mcode[0:3]}}/{{model.mcode[0:4]}}/{{model.mcode}}/sys_photo/model.jpg" style="width:110px; height:110px;">
                                               </div>
-                                                
+                                              
                                                 <div class="info_position" style="padding-left:5%">
 
-                                                  <h6 class="card-text" style="margin-bottom:0px; color:rgb(0, 0, 0); display: inline;" >이름</h6> <h6 style="margin-bottom:3px; display: inline; font-size: small;">{{i.name}}</h6>
+                                                  <h6 class="card-text" style="margin-bottom:0px; color:rgb(0, 0, 0); display: inline;" >이름</h6> <span style="margin-bottom:3px; display: inline; font-size: small;">{{model.name}}</span>
                                                 
                                                   <h6 class="card-text" style="margin-bottom:0px; color:rgb(0, 0, 0)">정보</h6>
-                                                  <h6 class="card-title" style="margin-bottom:3px; font-size: small;"> {{i.age}} / {{i.mcode}} / 키</h6>
+                                                  <span class="card-title" style="margin-bottom:3px; font-size: small;"> {{model.age}} / {{model.height}} / {{model.sex}}</span>
                                                 
-                                                  <h6 class="card-text" style="margin-bottom:0px; color:rgb(0, 0, 0)">소속사</h6><h6 style="margin-bottom:2px; font-size: small;">33</h6>
+                                                  <h6 class="card-text" style="margin-bottom:0px; color:rgb(0, 0, 0)">소속사</h6><span style="margin-bottom:2px; font-size: small;">{{model.coname}}</span>
                                                     
                                                 
-                                                  <h6 class="card-text" style="margin-bottom:0px; color:rgb(0, 0, 0); display: inline;">모델료</h6> <h6 style="margin-bottom:0px; display: inline; font-size: small;">{{i.mfee}}</h6>
+                                                  <h6 class="card-text" style="margin-bottom:0px; color:rgb(0, 0, 0);">모델료</h6> <span style="margin-bottom:0px; display: inline; font-size: small;">{{model.mfee}}</span>
                                                         
                                                 </div>
+
+                                                </a>
                                               </div>
+
                                           {% endfor %}
                                             
                                           </div>

@@ -18,7 +18,7 @@ class Users(Base):
 
 
 
-class RUsers(Base):
+class Rusers(Base):
     __tablename__ = "ruser"
 
     uid = Column(Integer, primary_key=True)

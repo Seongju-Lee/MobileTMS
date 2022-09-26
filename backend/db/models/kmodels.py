@@ -16,6 +16,7 @@ class Recommendation_month(Base):
     edit_time = Column(String(20))
     rdate = Column(String(20))
     jum = Column(Integer)
+    sawon = Column(String(30))
     mcode = Column(String(20), ForeignKey("people.codesys"))
 
 
@@ -81,6 +82,31 @@ class People(Base):
     # people = relationship("Chu19", back_populates="chu")
     # chu = Chu19
 
+# 통화메모 테이블
+class Mtel(Base):
+    __tablename__ = "mtel"
+
+    no = Column(Integer,  primary_key=True)
+    name = Column(String(20))
+    edit_time = Column(TIMESTAMP)
+    
+    mcode = Column(String(20), ForeignKey("people.codesys"))
+    point2 = Column(Text)
+
+
+# 첨부파일 테이블
+class ModelMov(Base):
+    __tablename__ = "subfile_model"
+
+    rno = Column(Integer,  primary_key=True)
+    edit_time = Column(TIMESTAMP)
+    mcode = Column(String(20))
+    fname = Column(String(50))
+    fext = Column(String(20))
+    fpath = Column(String(50))
+    fdate = Column(String(50))
+
+
 
 class People2(Base):
     no = Column(Integer,  primary_key=True)
@@ -104,13 +130,7 @@ class Yeon(Base):
     a_12 = Column(Integer)
 
 
-class Mtel(Base):
-    __tablename__ = "mtel"
 
-    no = Column(Integer,  primary_key=True)
-    name = Column(String(20))
-    mcode = Column(String(20), ForeignKey("people.codesys"))
-    point2 = Column(Text)
 
 
 class SunokStar(Base):
@@ -192,13 +212,3 @@ class ModelCF(Base):
     wrdate = Column(String(20))
 
 
-
-class ModelMov(Base):
-    __tablename__ = "subfile_model"
-
-    rno = Column(Integer,  primary_key=True)
-    edit_time = Column(TIMESTAMP)
-    mcode = Column(String(20))
-    fname = Column(String(50))
-    fext = Column(String(20))
-    fpath = Column(String(50))

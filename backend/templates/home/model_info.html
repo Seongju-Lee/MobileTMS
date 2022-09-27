@@ -640,6 +640,9 @@ input[type="range"]::-webkit-slider-thumb_age {
                             
                           </div>
                           <!-- 첨부파일 END -->
+
+
+
                           <!-- 레디진행 START -->
                           <div style="margin: 1.3rem; margin-top: 2.6rem;">
                             <h5 style="float: left;">레디진행 </h5>
@@ -690,8 +693,6 @@ input[type="range"]::-webkit-slider-thumb_age {
 
                           </div>
                           <!-- 레디진행 END -->
-
-
 
 
                           <!-- 광고이력 START -->
@@ -761,6 +762,48 @@ input[type="range"]::-webkit-slider-thumb_age {
                             </div>
                           </div>
                           <!-- 광고이력 END -->
+
+
+
+
+
+
+                          <!-- 통화메모 START -->
+                          <div style="margin: 1.3rem; margin-top: 2.6rem;">
+                            <h5 style="float: left;">통화메모 </h5>
+                            <div style="margin-left: 70px; margin-bottom: 10px;" class="custom-control custom-switch">
+                          
+                              <input type="checkbox" id="toggle" hidden>
+                          
+                              <label for="toggle" class="toggleSwitch_memo active">
+                                <span class="toggleButton"></span>
+                              </label>
+                              
+                            </div>
+
+
+                            <div id="memo-div" style="padding-left:10px; padding-right:10px;" class="card-body table-border-style">
+
+
+                              {% for m in model_detail_info.tel_memo %}
+                                <input name="telButton" id="{{m.title[0:4]}}" type="button" class="btn btn-outline-primary" onclick="telMemo(this.id)" value="{{m.title[0:4]}}" />
+                              {% endfor %}
+
+                              {% for tel in model_detail_info.tel_memo %}
+                                <div id="_{{tel.title[0:4]}}" style="overflow: auto; margin-top: 10px;">
+                                  {%for m in tel.memo%}
+                                    {{m}}
+                                    <br>
+                                  {%endfor%}
+                                </div>
+                                
+                              {% endfor %}
+                            </div>
+                          
+                           
+                          </div>
+                          <!-- 통화메모 END -->
+
 
 
 

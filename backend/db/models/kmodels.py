@@ -82,7 +82,7 @@ class People(Base):
     # people = relationship("Chu19", back_populates="chu")
     # chu = Chu19
 
-# 통화메모 테이블
+# 포인트 메모 테이블
 class Mtel(Base):
     __tablename__ = "mtel"
 
@@ -125,6 +125,21 @@ class ModelCF(Base):
     nation = Column(String(20))
     writer = Column(String(20))
     wrdate = Column(String(20))
+
+
+
+# 모델 통화메모
+class Memo(Base):
+    __tablename__ = "memo5"
+
+    no = Column(Integer,  primary_key=True)
+    edit_time = Column(TIMESTAMP)
+    code = Column(String(20), ForeignKey("people.codesys"))
+    rcode = Column(String(20))
+    code2 = Column(String(20))
+    code3 = Column(String(20))
+    title = Column(String(20))
+    memo = Column(String(20))
 
 
 class People2(Base):
@@ -186,20 +201,6 @@ class Read(Base):
     edit_time = Column(TIMESTAMP)
     rdate = Column(String(20))
     mcode = Column(String(20), ForeignKey("yeon.codesys"))
-
-
-class Memo(Base):
-    __tablename__ = "memo5"
-
-    no = Column(Integer,  primary_key=True)
-    edit_time = Column(TIMESTAMP)
-    code = Column(String(20), ForeignKey("people.codesys"))
-    rcode = Column(String(20))
-    code2 = Column(String(20))
-    code3 = Column(String(20))
-    title = Column(String(20))
-    memo = Column(String(20))
-    # mcode = Column(String(20), ForeignKey("yeon.codesys"))
 
 
 class Section(Base):

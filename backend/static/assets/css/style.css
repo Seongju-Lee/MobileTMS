@@ -29503,6 +29503,57 @@ background: #fff;
 .toggleSwitch_cf, .toggleButton {
 transition: all 0.2s ease-in;
 }
+
+
+
+
+/* ************* */
+
+
+
+
+.toggleSwitch_memo {
+    width: 3rem;
+    height: 1.5rem;
+    display: block;
+    position: relative;
+    border-radius: 2rem;
+    background-color: #fff;
+    box-shadow: 0 0 1rem 3px rgba(0 0 0 / 15%);
+    cursor: pointer;
+  }
+  
+   /* 토글 버튼 */
+  .toggleSwitch_memo .toggleButton {
+    /* 버튼은 토글보다 작아야함  */
+    margin-top: 0px;
+    width: 1.5rem;
+    height: 1.5rem;
+    position: absolute;
+    top: 50%;
+    left: .2rem;
+    transform: translateY(-50%);
+    border-radius: 50%;
+    background: #4099ff;
+  }
+
+
+  /* 체크박스가 체크되면 변경 이벤트 */
+.toggleSwitch_memo.active {
+    background: #4099ff;
+  }
+  
+.toggleSwitch_memo.active .toggleButton {
+left: calc(100% - 1.5rem);
+background: #fff;
+}
+  
+.toggleSwitch_memo, .toggleButton {
+transition: all 0.2s ease-in;
+}
+
+
+
 /**====== Icon layouts css end ======**/
 
 

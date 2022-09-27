@@ -2,12 +2,13 @@ from datetime import date, datetime, timedelta
 import json
 from math import dist
 from fastapi.encoders import jsonable_encoder
+from requests import session
 from sqlalchemy import between, desc, distinct, not_ 
 from sqlalchemy.sql import func
 
 from sqlalchemy.orm import Session
 
-from db.models.kmodels import People, Mtel, ModelMov, ModelCF
+from db.models.kmodels import People, Mtel, ModelMov, ModelCF, Memo
 
 from dateutil.relativedelta import relativedelta
  
@@ -24,8 +25,8 @@ def model_info(db: Session, codesys: str = ''):
 
 
 
-# 모델 통화내용 정보
-def model_tel_memo(db: Session, codesys: str = ''):
+# 모델 포인트 정보
+def model_point_memo(db: Session, codesys: str = ''):
 
     memo = db.query(
             Mtel.mcode, Mtel.edit_time ,Mtel.point2
@@ -80,3 +81,16 @@ def get_model_cf(db: Session, codesys):
 
 
     return jsonable_encoder(cf_list[:])
+
+
+
+# 모델 통화메모
+def get_tel_memo(db: Session, codesys):
+    memo_list = db.query(Memo
+                ).filter(
+                    Memo.code == codesys
+                ).order_by(
+                    desc(Memo.title)
+                )
+
+    return jsonable_encoder(memo_list[:])

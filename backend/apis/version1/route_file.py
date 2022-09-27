@@ -8,7 +8,7 @@ from fastapi.templating import Jinja2Templates
 # from db.repository.search import order_realtime, models_info, proc_celeb, img_mov_info, cf_mov_info, act_mov_info, best_img, get_rd_contracts
 from sqlalchemy.orm import Session
 from db.session import get_db
-from db.repository.model import model_info, model_tel_memo
+from db.repository.model import model_info, model_point_memo
 from fastapi.encoders import jsonable_encoder
 from striprtf.striprtf import rtf_to_text
 from starlette.responses import RedirectResponse

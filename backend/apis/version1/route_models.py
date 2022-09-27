@@ -11,7 +11,7 @@ from sqlalchemy import false
 # from db.repository.search import order_realtime, models_info, proc_celeb, img_mov_info, cf_mov_info, act_mov_info, best_img, get_rd_contracts
 from sqlalchemy.orm import Session
 from db.session import get_db
-from db.repository.model import model_info, model_tel_memo, mov_list, get_model_cf
+from db.repository.model import model_info, model_point_memo, mov_list, get_model_cf, get_tel_memo
 from db.repository.project import get_kmodel_project
 from fastapi.encoders import jsonable_encoder
 from striprtf.striprtf import rtf_to_text
@@ -80,22 +80,27 @@ def get_model_info(request: Request, codesys: str = '', db: Session = Depends(ge
 
 
     model = model_info(db, codesys)
-    tel_memo = model_tel_memo(db, codesys)
+    point_memo_list = model_point_memo(db, codesys)
     project_list = get_kmodel_project(db, codesys)
     cf_list = get_model_cf(db, codesys)
+    tel_memo_list = get_tel_memo(db, codesys)
 
     code_to_mfee(model)
 
     print('##############################\n')
-    for pr in cf_list:
-        print(pr)
+   
+    for tel_memo in tel_memo_list:
+        print(tel_memo['memo'])
+        tel_memo['memo'] = tel_memo['memo'].split('\r\n')
+        print('\n-----------------------------------\n')
     
     for constract in project_list[:]:
         constract['modelfee'] = format(constract['modelfee'], ',')
 
     model[0]['project_list'] = project_list
     model[0]['cf_list'] = cf_list
-    model[0]['point2'] = rtf_to_text(tel_memo[0]['point2'])
+    model[0]['tel_memo'] = tel_memo_list
+    model[0]['point2'] = rtf_to_text(point_memo_list[0]['point2'])
     model[0]['point2'] = model[0]['point2'].split('\n')
 
     print(model[0])

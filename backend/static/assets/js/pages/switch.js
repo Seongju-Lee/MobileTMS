@@ -1,7 +1,12 @@
 const $toggle = document.querySelector(".toggleSwitch");
 const $toggleCf = document.querySelector(".toggleSwitch_cf");
+const $toggleMemo = document.querySelector(".toggleSwitch_memo");
+
 const $contractTable = document.querySelector("#contract-table");
 const $cfTable = document.querySelector("#cf-table");
+const $memoDiv = document.querySelector("#memo-div");
+
+
 
 $toggle.onclick = () => {
   $toggle.classList.toggle('active');
@@ -30,4 +35,49 @@ $toggleCf.onclick = () => {
     }
   
   
-  }
+}
+
+
+$toggleMemo.onclick = () => {
+    $toggleMemo.classList.toggle('active');
+  
+  
+    if(!$toggleMemo.classList.contains('active')){
+      $memoDiv.style.display = "none";
+    }
+    else{
+      $memoDiv.style.display = "block";
+    }
+  
+  
+}
+
+
+
+telMemo = (clickedId) => {
+
+
+    console.log('ssiibb', clickedId);
+
+
+    var lenButton = $("input[name=telButton]").length;
+  
+    //배열 생성
+    var telMemoarr = new Array(lenButton);
+    //배열에 값 주입
+    for(var i=0; i<lenButton; i++){                          
+        // telMemoarr[i] = $("input[name=telButton]").eq(i).val();
+
+        if($("input[name=telButton]").eq(i).val() == clickedId){
+            document.getElementById("_" + clickedId).style.display = "block" ;
+            console.log('123')
+        }
+        else{
+            document.getElementById("_" + $("input[name=telButton]").eq(i).val()).style.display = "none" ;
+            console.log('456')
+        }
+    }
+
+    console.log(telMemoarr)
+    
+}

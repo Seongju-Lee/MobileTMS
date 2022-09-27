@@ -789,13 +789,22 @@ input[type="range"]::-webkit-slider-thumb_age {
                                 <input name="telButton" id="{{m.title[0:4]}}" type="button" class="btn btn-outline-primary" onclick="telMemo(this.id)" value="{{m.title[0:4]}}" />
                               {% endfor %}
 
-                              {% for tel in model_detail_info.tel_memo %}
-                                <div id="_{{tel.title[0:4]}}" style="overflow: auto; margin-top: 10px;">
-                                  {%for m in tel.memo%}
-                                    {{m}}
-                                    <br>
-                                  {%endfor%}
-                                </div>
+                              {% for i in range(model_detail_info.tel_memo | length) %}
+                                {% if i == 0 %}
+                                  <div id="_{{model_detail_info.tel_memo[i].title[0:4]}}" style="overflow: auto; margin-top: 10px; ">
+                                    {%for m in model_detail_info.tel_memo[i].memo%}
+                                      {{m}}
+                                      <br>
+                                    {%endfor%}
+                                  </div>
+                                {% else %}
+                                  <div id="_{{model_detail_info.tel_memo[i].title[0:4]}}" style="overflow: auto; margin-top: 10px; display: none;">
+                                    {%for m in model_detail_info.tel_memo[i].memo%}
+                                      {{m}}
+                                      <br>
+                                    {%endfor%}
+                                  </div>
+                                {% endif %}
                                 
                               {% endfor %}
                             </div>

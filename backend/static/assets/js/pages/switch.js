@@ -70,14 +70,11 @@ telMemo = (clickedId) => {
 
         if($("input[name=telButton]").eq(i).val() == clickedId){
             document.getElementById("_" + clickedId).style.display = "block" ;
-            console.log('123')
         }
         else{
             document.getElementById("_" + $("input[name=telButton]").eq(i).val()).style.display = "none" ;
-            console.log('456')
         }
     }
 
-    console.log(telMemoarr)
     
 }

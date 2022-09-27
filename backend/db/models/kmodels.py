@@ -106,6 +106,25 @@ class ModelMov(Base):
     fpath = Column(String(50))
     fdate = Column(String(50))
 
+# 모델 광고이력
+class ModelCF(Base):
+    __tablename__ = "modelcf"
+
+    rno = Column(Integer,  primary_key=True)
+    edit_time = Column(TIMESTAMP)
+    rcode = Column(String(20))
+    codesys = Column(String(20))
+    rdjin = Column(String(20))
+    indefin = Column(String(20))
+    brand = Column(String(20))
+    poom = Column(String(20))
+    imonth = Column(Integer)
+    fee = Column(Integer)
+    dstart = Column(String(20))
+    dend = Column(String(20))
+    nation = Column(String(20))
+    writer = Column(String(20))
+    wrdate = Column(String(20))
 
 
 class People2(Base):
@@ -192,23 +211,6 @@ class Section(Base):
     title = Column(String(20))
 
 
-class ModelCF(Base):
-    __tablename__ = "modelcf"
 
-    rno = Column(Integer,  primary_key=True)
-    edit_time = Column(TIMESTAMP)
-    rcode = Column(String(20))
-    codesys = Column(String(20))
-    rdjin = Column(String(20))
-    indefin = Column(String(20))
-    brand = Column(String(20))
-    poom = Column(String(20))
-    imonth = Column(Integer)
-    fee = Column(Integer)
-    dstart = Column(String(20))
-    dend = Column(String(20))
-    nation = Column(String(20))
-    writer = Column(String(20))
-    wrdate = Column(String(20))
 
 

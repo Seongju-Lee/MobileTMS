@@ -7,7 +7,7 @@ from sqlalchemy.sql import func
 
 from sqlalchemy.orm import Session
 
-from db.models.kmodels import People, Mtel, ModelMov
+from db.models.kmodels import People, Mtel, ModelMov, ModelCF
 
 from dateutil.relativedelta import relativedelta
  
@@ -70,35 +70,13 @@ def mov_list(db: Session, codesys, mov_section: str):
     except:
         pass
 
-# def img_mov_info(db: Session, codesys, ):
-    
-#     try:
-#         return db.query(ModelMov.edit_time, ModelMov.mcode, ModelMov.fname, ModelMov.fext, ModelMov.fpath).filter(ModelMov.mcode == codesys).filter(ModelMov.fpath.contains('AA영상')).filter(ModelMov.fext.contains('mp4'))
-#     except:
-#         pass
 
-## 연기영상
-def act_mov_info(db: Session, codesys):
-    
-    try:
-        return db.query(ModelMov.edit_time, ModelMov.mcode, ModelMov.fname, ModelMov.fext, ModelMov.fpath).filter(ModelMov.mcode == codesys).filter(ModelMov.fpath.contains('AA연기')).filter(ModelMov.fext.contains('mp4'))
-    except:
-        pass
+# 모델 광고이력
+def get_model_cf(db: Session, codesys):
+    cf_list = db.query(ModelCF
+            ).filter(
+                ModelCF.codesys == codesys
+            ).order_by(desc(ModelCF.wrdate))
 
-## 연기영상
-def cf_mov_info(db: Session, codesys):
-    
-    try:
-        return db.query(ModelMov.edit_time, ModelMov.mcode, ModelMov.fname, ModelMov.fext, ModelMov.fpath).filter(ModelMov.mcode == codesys).filter(ModelMov.fpath.contains('AA광고')).filter(ModelMov.fext.contains('mp4'))
 
-    except:
-        pass
-
-## 베스트사진
-def best_img(db: Session, codesys):
-    
-    try:
-        return db.query(ModelMov.edit_time, ModelMov.mcode, ModelMov.fname, ModelMov.fext, ModelMov.fpath).filter(ModelMov.mcode == codesys).filter(ModelMov.fpath.contains('AA베스트사진')).filter(ModelMov.fext.contains('jpg'))
-
-    except:
-        pass
+    return jsonable_encoder(cf_list[:])

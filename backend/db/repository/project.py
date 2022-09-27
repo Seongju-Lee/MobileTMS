@@ -1,6 +1,6 @@
 from datetime import datetime, timedelta
 from fastapi.encoders import jsonable_encoder
-from sqlalchemy import not_
+from sqlalchemy import desc, not_
 
 from sqlalchemy.orm import Session
 from db.projects.project import ProjectTable, ProjectMemo, ProjectContract
@@ -11,6 +11,14 @@ from datetime import datetime
 from dateutil.relativedelta import relativedelta
 
  
+# kmodel 상세정보: 레디진행 프로젝트 목록 
+def get_kmodel_project(db: Session, mcode : str = ''):
+    project_list = db.query(ProjectContract).filter(ProjectContract.code == mcode).order_by(desc(ProjectContract.cdate))
+
+    return jsonable_encoder(project_list[:])
+
+
+
 def get_project(db: Session):
     
     a_project = db.query(ProjectTable).order_by(ProjectTable.date.desc()).limit(300)

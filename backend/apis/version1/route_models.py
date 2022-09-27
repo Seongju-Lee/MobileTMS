@@ -1,15 +1,18 @@
 from datetime import datetime, timedelta
 from typing import List
+from wsgiref.util import request_uri
 from fastapi import APIRouter, Depends, Query
 from fastapi import Request
 from fastapi.responses import HTMLResponse
 from fastapi.templating import Jinja2Templates
+from requests import request
 from sqlalchemy import false
 # from db.repository.search import search_job,  chu_30, movchoi, proc, order_register, order_recommend, order_s_count, order_read, search_celeb
 # from db.repository.search import order_realtime, models_info, proc_celeb, img_mov_info, cf_mov_info, act_mov_info, best_img, get_rd_contracts
 from sqlalchemy.orm import Session
 from db.session import get_db
-from db.repository.model import model_info, model_tel_memo, mov_list
+from db.repository.model import model_info, model_tel_memo, mov_list, get_model_cf
+from db.repository.project import get_kmodel_project
 from fastapi.encoders import jsonable_encoder
 from striprtf.striprtf import rtf_to_text
 from starlette.responses import RedirectResponse
@@ -46,8 +49,9 @@ def get_mov_file(req: Request, codesys: str = '', mov_section: str = '',db: Sess
     res_mov = mov_list(db=db, codesys=codesys, mov_section=mov_section)
     res_mov = jsonable_encoder(res_mov[:])
 
-    print('ghhhh', res_mov)
+    print('ghhhh', req.url.hostname)
 
+    
     for mov in res_mov:
         print(mov)
 
@@ -77,13 +81,20 @@ def get_model_info(request: Request, codesys: str = '', db: Session = Depends(ge
 
     model = model_info(db, codesys)
     tel_memo = model_tel_memo(db, codesys)
+    project_list = get_kmodel_project(db, codesys)
+    cf_list = get_model_cf(db, codesys)
 
     code_to_mfee(model)
 
     print('##############################\n')
-
+    for pr in cf_list:
+        print(pr)
     
+    for constract in project_list[:]:
+        constract['modelfee'] = format(constract['modelfee'], ',')
 
+    model[0]['project_list'] = project_list
+    model[0]['cf_list'] = cf_list
     model[0]['point2'] = rtf_to_text(tel_memo[0]['point2'])
     model[0]['point2'] = model[0]['point2'].split('\n')
 
@@ -108,6 +119,7 @@ def get_model_info(request: Request, codesys: str = '', db: Session = Depends(ge
         return templates.TemplateResponse(
             "home/model_info.html", {"request": request,
                                     "model_detail_info": model[0],
+                                    "host" : request.url.hostname + ":8000",
                                     "is_existed_img": is_existed_img,
                                     "is_existed_act": is_existed_act,
                                     "is_existed_cf": is_existed_cf,

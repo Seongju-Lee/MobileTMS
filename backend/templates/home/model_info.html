@@ -452,8 +452,37 @@ input[type="range"]::-webkit-slider-thumb_age {
   }
 }
 
+/* 모바일 */
+@media only screen and (max-width: 550px){
+  .table-striped {
+      width: 200%;
+      
+  }
+}
+/* PC */
+@media only screen and (min-width: 550px){
+  .table-striped {
+      width: 100%;
+      
+  }
+}
 
 
+
+/* 모바일 */
+@media only screen and (max-width: 550px){
+  .table-striped.cf {
+      width: 330%;
+      
+  }
+}
+/* PC */
+@media only screen and (min-width: 550px){
+  .table-striped.cf {
+      width: 100%;
+      
+  }
+}
 </style>
 
 {% endblock stylesheets %}
@@ -549,20 +578,11 @@ input[type="range"]::-webkit-slider-thumb_age {
 
                                 {% for memo in model_detail_info.point2 %}
                                  
-                                  <p class="m-b-15 m-t-15">{{memo}}</p>
+                                  <p style="margin-left: 20px;" class="m-b-15 m-t-15">{{memo}}</p>
                             
                                 {% endfor %}
 
-                                <!-- {% for i in range(model_detail_info.point2 | length) %}
-                                <li class="active-feed">
-                                    
-                                  <h6><span class="badge bg-danger">{{model_detail_info.point2[i].split('-')[-2]}}</span>
-                                    &nbsp </h6>
-                                  <p class="m-b-15 m-t-15">{{"".join(model_detail_info.point2[i])}}</p>
-                            
-                                </li>
-                               
-                                {% endfor %} -->
+                                
                                 
                             </ul>
                             
@@ -587,17 +607,17 @@ input[type="range"]::-webkit-slider-thumb_age {
                               <li class="active-feed">
                                 <h6>영상</h6>
                                 <a style="margin-top: 10px;" target="_blank" rel="noopener noreferrer"
-                                href="http://localhost:8000/models/{{model_detail_info.codesys}}/img"
+                                href="http://{{host}}/models/{{model_detail_info.codesys}}/img"
                                 class="btn btn-{{is_existed_img}} btn-sm text-white">이미지영상</a>
                           
                                   
                                 <a style="margin-top: 10px;" target="_blank" rel="noopener noreferrer"
-                                href="http://localhost:8000/models/{{model_detail_info.codesys}}/act"
+                                href="http://{{host}}/models/{{model_detail_info.codesys}}/act"
                                 class="btn btn-{{is_existed_act}} btn-sm text-white">연기영상</a>
                           
                                   
                                 <a style="margin-top: 10px;" target="_blank" rel="noopener noreferrer"
-                                href="http://localhost:8000/models/{{model_detail_info.codesys}}/cf"
+                                href="http://{{host}}/models/{{model_detail_info.codesys}}/cf"
                                 class="btn btn-{{is_existed_cf}} btn-sm text-white ">광고영상</a>
 
                               </li>
@@ -605,11 +625,11 @@ input[type="range"]::-webkit-slider-thumb_age {
                               <li class="active-feed">
                                 <h6>사진</h6>
                                 <a style="margin-top: 10px;" target="_blank" rel="noopener noreferrer"
-                                href="http://localhost:8000/models/{{model_detail_info.codesys}}/b"
+                                href="http://{{host}}/models/{{model_detail_info.codesys}}/b"
                                 class="btn btn-{{is_existed_best}} btn-sm text-white m-0">베스트사진</a>
 
                                 <a style="margin-top: 10px;" target="_blank" rel="noopener noreferrer"
-                                href="http://localhost:8000/models/{{model_detail_info.codesys}}/r"
+                                href="http://{{host}}/models/{{model_detail_info.codesys}}/r"
                                 class="btn btn-{{is_existed_refer}} btn-sm text-white m-0">참고사진</a>
                           
                               </li>
@@ -620,30 +640,130 @@ input[type="range"]::-webkit-slider-thumb_age {
                             
                           </div>
                           <!-- 첨부파일 END -->
-
-
-
-                          
-
-                          <!-- 첨부파일 START -->
+                          <!-- 레디진행 START -->
                           <div style="margin: 1.3rem; margin-top: 2.6rem;">
                             <h5 style="float: left;">레디진행 </h5>
                             <div style="margin-left: 70px;" class="custom-control custom-switch">
 
-                              <input type="checkbox" id="toggle" hidden> 
+                              <input type="checkbox" id="toggle" hidden>
 
-                              <label for="toggle" class="toggleSwitch">
+                              <label for="toggle" class="toggleSwitch active">
                                 <span class="toggleButton"></span>
                               </label>
-                              
+
+                            </div>
+
+                            <!-- [ Hover-table ] start -->
+
+                            <div id="contract-table" style="padding-left:10px; padding-right:10px;" class="card-body table-border-style">
+                              <div style="overflow: auto; ">
+
+
+                                <table style="white-space: nowrap;" class="table table-striped">
+                                  <thead>
+                                    <tr>
+                                      <th style="padding-left: 0.1rem; padding-right: 0.1rem;">촬영일</th>
+                                      <th style="padding-left: 0.1rem; padding-right: 0.1rem;">프로젝트</th>
+                                      <th style="padding-left: 0.1rem; padding-right: 0.1rem;">모델료</th>
+                                      <th>비고</th>
+                                      <th>지급일??</th>
+                                    </tr>
+                                  </thead>
+                                  <tbody>
+                                    {% for project in model_detail_info.project_list %}
+                                    <tr>
+                                      <td style="padding-left: 0.1rem; padding-right: 0.1rem;">{{project.cdate}}</td>
+                                      <td style="padding-left: 0.1rem; padding-right: 0.1rem;">{{project.poom}}</td>
+                                      <td>{{project.modelfee}}</td>
+                                      <td>{{project.etc}}</td>
+                                      <td>프로젝트에서 지급일이 어떤 컬럼인지</td>
+                                    </tr>
+                                    {% endfor %}
+
+                                  </tbody>
+
+                                </table>
+
+                              </div>
+                            </div>
+                            <!-- [ Hover-table ] end -->
+
                           </div>
+                          <!-- 레디진행 END -->
+
+
+
+
+                          <!-- 광고이력 START -->
+                          <div style="margin: 1.3rem; margin-top: 2.6rem;">
+                            <h5 style="float: left;">광고이력 </h5>
+                            <div style="margin-left: 70px;" class="custom-control custom-switch">
+
+                              <input type="checkbox" id="toggle" hidden>
+
+                              <label for="toggle" class="toggleSwitch_cf active">
+                                <span class="toggleButton"></span>
+                              </label>
+
+                            </div>
+
+                            <!-- [ Hover-table ] start -->
+
+                            <div id="cf-table" style="padding-left:10px; padding-right:10px;" class="card-body table-border-style">
+                              <div style="overflow: auto; ">
+
+
+                                <table style="white-space: nowrap;" class="table table-striped cf">
+                                  <thead>
+                                    <tr>
+                                      <th style="padding-left: 0.1rem; padding-right: 0.1rem;">브랜드명</th>
+                                      <th style="padding-left: 0.1rem; padding-right: 0.1rem;">계약품목</th>
+                                      <th style="padding-left: 0.1rem; padding-right: 0.1rem;">기간</th>
+                                      <th style="padding-left: 0.1rem; padding-right: 0.1rem;">모델료</th>
+                                      <th style="padding-left: 0.1rem; padding-right: 0.1rem;">ON-AIR</th>
+                                      <th >계약중</th>
+                                      <th >레디</th>
+                                      <th style="padding-left: 0.1rem; padding-right: 0.1rem;">불명</th>
+                                      <th style="padding-left: 0.1rem; padding-right: 0.1rem;">국가</th>
+                                      <th style="padding-left: 0.1rem; padding-right: 0.1rem;">입력자</th>
+                                      <th >입력일</th>
+                                      <th >종료일</th>
+                                     
+                                    </tr>
+                                  </thead>
+
+
+
+                                  <tbody>
+                                    {% for cf in model_detail_info.cf_list %}
+                                    <tr>
+                                      <td style="padding-left: 0.1rem; padding-right: 0.1rem;">{{cf.brand}}</td>
+                                      <td style="padding-left: 0.1rem; padding-right: 0.1rem;">{{cf.poom}}</td>
+                                      <td style="padding-left: 0.1rem; padding-right: 0.1rem;">{{cf.imonth}}</td>
+                                      <td style="padding-left: 0.1rem; padding-right: 0.1rem;">{{cf.fee}}</td>
+                                      <td style="padding-left: 0.1rem; padding-right: 0.1rem;">{{cf.dstart}}</td>
+                                      <td >계약중?</td>
+                                      <td >{{cf.rdjin}}</td>
+                                      <td style="padding-left: 0.1rem; padding-right: 0.1rem;">{{cf.indefin}}</td>
+                                      <td style="padding-left: 0.1rem; padding-right: 0.1rem;">{{cf.nation}}</td>
+                                      <td style="padding-left: 0.1rem; padding-right: 0.1rem;">{{cf.writer}}</td>
+                                      <td >{{cf.wrdate}}</td>
+                                      <td >{{cf.dend}}</td>
+                                    
+                                    </tr>
+                                    {% endfor %}
+
+                                  </tbody>
+
+                                </table>
+
+                              </div>
+                            </div>
                           </div>
-                            
-                          <div>
-                              
-                            
-                          </div>
-                          <!-- 첨부파일 END -->
+                          <!-- 광고이력 END -->
+
+
+
 
                         </div>
 

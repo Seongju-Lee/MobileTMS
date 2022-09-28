@@ -37,12 +37,16 @@ def common_filter(db, gender: list, age: list, mfee:list):
         dict_model_fee = json.load(json_file)
         list_model_fee = [x.split('~') for x in dict_model_fee['model_fee'].values()]
 
+
+    # print('mfee ::: ', mfee)
     for i in range(len(list_model_fee)):
         try:
+            # print('iiii -- :: ' ,  list_model_fee[i][0], list_model_fee[i][1])
             if ((int(mfee[0]) >= int(list_model_fee[i][0]) and int(mfee[0]) <= int(list_model_fee[i][1])) or 
             (int(mfee[1]) >= int(list_model_fee[i][0]) and ((int(mfee[1]) <= int(list_model_fee[i][1]))))
-            or (list_model_fee[i][1] == '0')
+            or (list_model_fee[i][1] == '0' and int(mfee[1]) >= 4100 )
             ):
+                # print('iiii ++  :: ' , list_model_fee[i][0] ,list_model_fee[i][1])
                 
                 key_alpha_fee.append(i)
             
@@ -50,16 +54,21 @@ def common_filter(db, gender: list, age: list, mfee:list):
             continue
 
     # 알파모델료에 해당하는 DB key값 추출
+    # 범위지정
     if len(key_alpha_fee) == 2:
         key_alpha_fee = list(dict_model_fee['model_fee'].keys())[key_alpha_fee[0]: key_alpha_fee[1]+1]
+    # 하나의 값 지정
     else:
-        
+        # print('key_alpha_fee-- :: ', key_alpha_fee)
         key_alpha_fee.append(list(dict_model_fee['model_fee'].keys())[key_alpha_fee[0]])
         key_alpha_fee.pop(0)
+
     # 상훈페이는 체크박스 -> 선택 되었으면 별도로 리스트에 추가
     if '0100' in mfee:
         key_alpha_fee.append('0100')
 
+
+    # print('key_alpha_fee++ :: ', key_alpha_fee)
     # 연령 필터링
     models = db.filter((People.age >= max_age_year) & (People.age <= min_age_year))
     # 성별 필터링

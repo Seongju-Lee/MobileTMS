@@ -544,7 +544,7 @@ input[type="range"]::-webkit-slider-thumb_age {
 
                           <div class="feed-user-img">
                             <div style="float: left;">
-                              <img  src="http://pic2.readymodel.kr/mdpic/{{model_detail_info.codesys[0:3]}}/{{model_detail_info.codesys[0:4]}}/{{model_detail_info.codesys}}/sys_photo/model.jpg"" class="img-radius model_info_img" alt="User-Profile-Image">
+                              <img  src="http://pic2.readymodel.kr/mdpic/{{model_detail_info.codesys[0:3]}}/{{model_detail_info.codesys[0:4]}}/{{model_detail_info.codesys}}/sys_photo/model.jpg" class="img-radius model_info_img" alt="User-Profile-Image">
                             </div>
                             <div>
                               <h5></h5>
@@ -791,14 +791,14 @@ input[type="range"]::-webkit-slider-thumb_age {
 
                               {% for i in range(model_detail_info.tel_memo | length) %}
                                 {% if i == 0 %}
-                                  <div id="_{{model_detail_info.tel_memo[i].title[0:4]}}" style="overflow: auto; margin-top: 10px; ">
+                                  <div id="_{{model_detail_info.tel_memo[i].title[0:4]}}" style="overflow: auto; margin-top: 20px; ">
                                     {%for m in model_detail_info.tel_memo[i].memo%}
                                       {{m}}
                                       <br>
                                     {%endfor%}
                                   </div>
                                 {% else %}
-                                  <div id="_{{model_detail_info.tel_memo[i].title[0:4]}}" style="overflow: auto; margin-top: 10px; display: none;">
+                                  <div id="_{{model_detail_info.tel_memo[i].title[0:4]}}" style="overflow: auto; margin-top: 20px; display: none;">
                                     {%for m in model_detail_info.tel_memo[i].memo%}
                                       {{m}}
                                       <br>

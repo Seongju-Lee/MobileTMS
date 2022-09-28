@@ -18,6 +18,7 @@ access_time = datetime.now()
 
 def code_to_mfee(models):
 
+
     with open("model.json", 'r', encoding='utf-8') as json_file:
         dict_model_fee = json.load(json_file)
 
@@ -30,13 +31,34 @@ def code_to_mfee(models):
 
 
 @router.get("")
-def get_search_models(request: Request, gender: str = 'm%w', age: str = '1%100', mfee: str = '150%4100', alpha: str = '0100%auto', recommendation_section: str = 'img%fav%act%new',
+def get_search(request: Request, category: str, gender: str = 'm%w', age: str = '1%100', mfee: str = '150%4100', alpha: str = '0100%auto', recommendation_section: str = 'img%fav%act%new',
            db: Session = Depends(get_db)):
 
-    # 유저 token 유효성
+    print('category 확인 :: ', category)
+
     token: str = request.cookies.get("access_token")
     if token is None:
         return RedirectResponse('/user')
+
+    # K모델
+    if category == 'kmodels' and token:
+        
+        return templates.TemplateResponse(
+            "home/list-models.html", get_search_models(request, gender, age, mfee, alpha, recommendation_section, db)
+        )
+
+    if category == 'celeb' and token:
+        
+        return templates.TemplateResponse(
+            "home/list-celeb.html", get_search_models(request, gender, age, mfee, alpha, recommendation_section, db)
+        )
+
+
+
+def get_search_models(request: Request, gender: str = 'm%w', age: str = '1%100', mfee: str = '150%4100', alpha: str = '0100%auto', recommendation_section: str = 'img%fav%act%new',
+           db: Session = Depends(get_db)):
+
+    
 
     list_gender, list_age, list_mfee, list_recommendation_section = gender.strip().split('%'), age.split('%'), mfee.strip().split('%') + alpha.strip().split('%'), recommendation_section.strip().split('%')
     
@@ -49,22 +71,11 @@ def get_search_models(request: Request, gender: str = 'm%w', age: str = '1%100',
     code_to_mfee(mov_choi_models)    
     code_to_mfee(procount_models)
 
-   
-    # try:
-
-    if token:
-       
-        # 30일추천, 영상초이, 프로카운트 세가지로 나누어서 res 보냄.
-        return templates.TemplateResponse(
-            "home/list-models.html", {"request": request,
-                                        "preSelectValue": {"gender" : gender, "age" : age, "mfee": mfee, "alpha" : alpha, "recommendation_section" : recommendation_section},
+    
+    return {"request": request, "preSelectValue": {"gender" : gender, "age" : age, "mfee": mfee, "alpha" : alpha, "recommendation_section" : recommendation_section},
                                         "recommendation_month": month_models,
                                         "mov_choi": mov_choi_models,
                                         "procount": procount_models}
-        )
-
-    # except:
-    #     print('?')
 
 
 

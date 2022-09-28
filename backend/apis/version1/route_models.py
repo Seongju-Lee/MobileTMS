@@ -29,6 +29,8 @@ access_time = datetime.now()
 ##### 모델료 코드 - >값
 def code_to_mfee(models):
     
+
+    
     with open("model.json", 'r', encoding='utf-8') as json_file:
         dict_model_fee = json.load(json_file)
 
@@ -88,10 +90,10 @@ def get_model_info(request: Request, codesys: str = '', db: Session = Depends(ge
     code_to_mfee(model)
 
     print('##############################\n')
-   
+    print('안녕 :: ', tel_memo_list)
     for tel_memo in tel_memo_list:
         print(tel_memo['memo'])
-        tel_memo['memo'] = tel_memo['memo'].split('\r\n')
+        tel_memo['memo'] = tel_memo['memo'].split('\r\n') if tel_memo['memo'] else ['등록된 통화메모가 없습니다.']
         print('\n-----------------------------------\n')
     
     for constract in project_list[:]:

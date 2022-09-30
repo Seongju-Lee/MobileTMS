@@ -37,6 +37,14 @@ const thumbRight = document.querySelector(".slider > .thumb.right");
 const range = document.querySelector(".slider > .range");
 
 
+// 셀럽모델료 범위선택 변수
+const inputLeft_cfee = document.getElementById("input-left_cfee");
+const inputRight_cfee = document.getElementById("input-right_cfee");
+const thumbLeft_cfee = document.querySelector(".slider > .thumb_cfee.left_cfee");
+const thumbRight_cfee = document.querySelector(".slider > .thumb_cfee.right_cfee");
+const range_cfee = document.querySelector(".slider > .range_cfee");
+
+
 function scriptQuery(){
     var script = document.getElementsByTagName('script');
 
@@ -66,6 +74,9 @@ if (params.gender){
     console.log(params.alpha)
     console.log(params.recommendation_section)
 }
+
+
+
 
 // 모달창 열고 닫음
 function clickmodal(event){
@@ -230,6 +241,8 @@ function clickmodal(event){
   }
 
 
+
+
 /////////////////////////////?
 // 모달창 -> 취소버튼
 function closemodal(event){
@@ -333,7 +346,7 @@ chk_act.addEventListener("click", getChkRecSectionValue);
 chk_new.addEventListener("click", getChkRecSectionValue);
 
 
-const setLeftValue_age = () => {
+function setLeftValue_age() {
 
     var minAge = inputLeft_age;
     var maxAge = inputRight_age;
@@ -364,7 +377,7 @@ const setLeftValue_age = () => {
 
 };
 
-const setRightValue_age = () => {
+function setRightValue_age() {
     const _this = inputRight_age;
     const [min, max] = [parseInt(_this.min), parseInt(_this.max)];
     
@@ -398,7 +411,7 @@ inputRight_age.addEventListener("input", setRightValue_age);
 
 
 
-const setLeftValue = () => {
+function setLeftValue() {
     const _this = inputLeft;
     const [min, max] = [parseInt(_this.min), parseInt(_this.max)];
     
@@ -435,7 +448,7 @@ const setLeftValue = () => {
 
 };
 
-const setRightValue = () => {
+function setRightValue() {
     const _this = inputRight;
     const [min, max] = [parseInt(_this.min), parseInt(_this.max)];
     
@@ -472,6 +485,9 @@ inputRight.addEventListener("input", setRightValue);
 
 
 
+
+
+///////////////////////////////////////////////////////////////
 
 const nav = document.querySelector('.pcoded-content'); // 네비게이션 바
 const filterBar = document.querySelector('#filter-bar'); // 네비게이션 바

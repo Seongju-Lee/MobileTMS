@@ -8,6 +8,7 @@ from sqlalchemy.sql import func
 from sqlalchemy.orm import Session
 
 from db.models.kmodels import People, Recommendation_month, Movsel, Movsel_box, Procount
+from db.models.yeons import RealTime
 from db.models.users import Rusers
 
 from dateutil.relativedelta import relativedelta
@@ -38,10 +39,12 @@ def common_filter(db, gender: list, age: list, mfee:list):
         list_model_fee = [x.split('~') for x in dict_model_fee['model_fee'].values()]
 
 
-    # print('mfee ::: ', mfee)
+    print('mfee ::: ', mfee)
     for i in range(len(list_model_fee)):
         try:
             # print('iiii -- :: ' ,  list_model_fee[i][0], list_model_fee[i][1])
+            if '1550' in mfee:
+                mfee[mfee.index('1550')] = '1500'
             if ((int(mfee[0]) >= int(list_model_fee[i][0]) and int(mfee[0]) <= int(list_model_fee[i][1])) or 
             (int(mfee[1]) >= int(list_model_fee[i][0]) and ((int(mfee[1]) <= int(list_model_fee[i][1]))))
             or (list_model_fee[i][1] == '0' and int(mfee[1]) >= 4100 )
@@ -53,6 +56,7 @@ def common_filter(db, gender: list, age: list, mfee:list):
         except:
             continue
 
+    print('key_alpha_fee ;::: ', key_alpha_fee)
     # 알파모델료에 해당하는 DB key값 추출
     # 범위지정
     if len(key_alpha_fee) == 2:
@@ -147,3 +151,14 @@ def search_procount(db:Session, gender: list, age: list, mfee: list):
     models = common_filter(models, gender, age, mfee)
 
     return jsonable_encoder(models[:])
+
+
+
+
+
+### 셀럽 STRART #######
+
+# 실베스타
+def search_real_time(db: Session, gender: list, age: list, cfee: list, section: list):
+
+    models = db.query(RealTime)

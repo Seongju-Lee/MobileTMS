@@ -8,18 +8,19 @@ from sqlalchemy.sql import func
 
 from sqlalchemy.orm import Session
 
-from db.models.kmodels import People, Mtel, ModelMov, ModelCF, Memo
-
+from db.models.kmodels import People, Mtel, ModelMov, ModelCF, Memo, Yeon
+from db.models.yeons import YeonCF
+# from db.models.yeons import 
 from dateutil.relativedelta import relativedelta
  
-# 모델 기본 상세정보
-def model_info(db: Session, codesys: str = ''):
+# 셀럽 기본 상세정보
+def celeb_info(db: Session, codesys: str = ''):
     print('before DB Access :: ' , codesys)
 
     model = db.query(
-            People
+            Yeon
         ).filter(
-            People.codesys == codesys
+            Yeon.codesys == codesys
         )
     return jsonable_encoder(model[:])
 
@@ -72,27 +73,26 @@ def mov_list(db: Session, codesys, mov_section: str):
         pass
 
 
-# 모델 광고이력
-def get_model_cf(db: Session, codesys):
-    cf_list = db.query(ModelCF
+# 셀럽 광고이력
+def get_celeb_cf(db: Session, codesys):
+
+    cf_list = db.query(YeonCF
             ).filter(
-                ModelCF.codesys == codesys
+                YeonCF.codesys == codesys
             ).filter(
-                ModelCF.dend >= str(datetime.today().date()).replace('-', '.')
+                YeonCF.dend >= str(datetime.today().date()).replace('-', '.')
             ).order_by(
-                desc(ModelCF.wrdate)
+                desc(YeonCF.wrdate)
             )
 
-
-    cf_list_end = db.query(ModelCF
+    cf_list_end = db.query(YeonCF
             ).filter(
-                ModelCF.codesys == codesys
+                YeonCF.codesys == codesys
             ).filter(
-                ModelCF.dend < str(datetime.today().date()).replace('-', '.')
+                YeonCF.dend < str(datetime.today().date()).replace('-', '.')
             ).order_by(
-                desc(ModelCF.wrdate)
+                desc(YeonCF.wrdate)
             )
-
 
     return jsonable_encoder(cf_list[:]), jsonable_encoder(cf_list_end[:])
 
@@ -104,7 +104,7 @@ def get_tel_memo(db: Session, codesys):
                 ).filter(
                     Memo.code == codesys
                 ).order_by(
-                    desc(Memo.rcode)
+                    desc(Memo.title)
                 )
 
-    return memo_list
+    return jsonable_encoder(memo_list[:])

@@ -209,7 +209,7 @@ input[type="checkbox" i] {
 /* 99999999999990000000000000000 */
 
 
-.middle {
+.middle_cfee {
   position: relative;
   width: 100%;
   max-width: 500px;
@@ -223,7 +223,7 @@ input[type="checkbox" i] {
   margin: 0 15px;
 }
 
-.slider > .track {
+.slider > .track_cfee {
   position: absolute;
   z-index: 1;
   left: 0;
@@ -234,7 +234,7 @@ input[type="checkbox" i] {
   background-color: #c6c6c6;
 }
 
-.slider > .range {
+.slider > .range_cfee {
   position: absolute;
   z-index: 2;
   left: 0%;
@@ -245,7 +245,7 @@ input[type="checkbox" i] {
   background-color: rgb(50, 108, 249);
 }
 
-.slider > .thumb {
+.slider > .thumb_cfee {
   position: absolute;
   z-index: 3;
   width: 30px;
@@ -256,11 +256,11 @@ input[type="checkbox" i] {
   border: 1px solid rgb(237, 237, 237);
 }
 
-.slider > .thumb.left {
+.slider > .thumb_cfee.left_cfee {
   left: 0%;
-  transform: translate(-15px, -10px);
+  transform: translate(-5px, -10px);
 }
-.slider > .thumb.right {
+.slider > .thumb_cfee.right_cfee {
   right: 0%;
   transform: translate(15px, -10px);
 }
@@ -379,7 +379,7 @@ input[type="range"]::-webkit-slider-thumb_age {
 
     <!-- [ Main Content ] start -->
     <div class="pcoded-main-container">
-        <div class="pcoded-content" style="overflow-x: hidden;">
+        <div class="pcoded-content">
            
             <!-- [ Main Content ] start -->
             <div class="row">
@@ -400,20 +400,16 @@ input[type="range"]::-webkit-slider-thumb_age {
                       <ul class="nav nav-pills nav-fill mt-3 border-bottom pb-3" id="pills-tab" role="tablist">
                           
                           <li class="nav-item">
-                              <a class="nav-link active" id="pills-home-tab" data-bs-toggle="pill" href="#pills-home" role="tab" aria-controls="pills-home" aria-selected="true"><i class="feather icon-film m-r-5"></i>30일 추천</a>
+                              <a class="nav-link active" id="pills-home-tab" data-bs-toggle="pill" href="#pills-home" role="tab" aria-controls="pills-home" aria-selected="true"><i class="feather icon-film m-r-5"></i>S카운트순</a>
                           </li>
                           <li class="nav-item">
-                              <a class="nav-link" id="pills-profile-tab" data-bs-toggle="pill" href="#pills-profile" role="tab" aria-controls="pills-profile" aria-selected="false"><i class="feather icon-file-text m-r-5"></i>영상초이</a>
-                          </li>
-                          <li class="nav-item">
-                              <a class="nav-link" id="pills-contact-tab" data-bs-toggle="pill" href="#pills-contact" role="tab" aria-controls="pills-contact" aria-selected="false"><i class="feather icon-mail m-r-5"></i>프로카운트</a>
+                              <a class="nav-link" id="pills-profile-tab" data-bs-toggle="pill" href="#pills-profile" role="tab" aria-controls="pills-profile" aria-selected="false"><i class="feather icon-file-text m-r-5"></i>추천순</a>
                           </li>
                          
-                          <!-- <input type="button" style="margin-right: 20px; margin-bottom:0.5rem; background-position: center; border-color: #000000;"  id="modal-filter" class="btn  btn-outline-primary" > -->
+                          <input type="button" style="margin-right: 20px; margin-left: 10px; margin-bottom:0.5rem; background-position: center; border-color: #000000;"  id="modal-filter" class="btn  btn-outline-primary" >
                          
-                          <li class="nav-item">
-                            <input type="button" style="margin-bottom:0.5rem; margin-right: 20px; margin-left: 10px; background-position: center; border-color: #000000;"  id="modal-filter" class="btn  btn-outline-primary" >
-                          </li>
+                          <!-- <li class="nav-item">
+                          </li> -->
                       </ul>
                     </div>
 
@@ -428,10 +424,11 @@ input[type="range"]::-webkit-slider-thumb_age {
                             <!-- --------------------------------------------------------------------------------- -->
                             <!--  modal창  START -->
                             
+                            
                             <form method="GET" action="/search">
                             <div class="modal-dialog inactive"  role="document" >
                               <form method="GET" action="/search">
-                                <input type=hidden name=category value='kmodels'>
+                                <input type=hidden name=category value='sunok'>
                                 <div class="modal-content" style="overflow:auto; height:550px;">
                                     <div class="modal-header">
                                         <h5 class="modal-title" id="exampleModalPopoversLabel">검색 필터</h5>
@@ -471,47 +468,60 @@ input[type="range"]::-webkit-slider-thumb_age {
                                         <!-- 연령 End -->
 
 
-                                        <!-- 알파모델료 Start -->
+                                        <!-- 셀럽 모델료 Start -->
                                         <hr>
-                                        <h5 style="float: left;">알파모델료</h5>
-                                        <label style="float: left; margin-top: 0px; width: 90px;" class="styled__Label-sc-1z0qnhc-1 hYNqrz"><input type="checkbox" class="chk_alpha" id="chk_0100" value="0100"><span>상훈페이</span></label>
-                                        <label style="margin-top: 0px; margin-left: 0px; width: 90px;" class="styled__Label-sc-1z0qnhc-1 hYNqrz"><input type="checkbox" class="chk_alpha" id="chk_auto" value="auto"><span>레디자동</span></label>
-                                        <input type="hidden" id="alpha" name="alpha" />
+                                        <h5 style="float: left;">셀럽 모델료</h5>
 
-                                        <P><span class="min_value">0</span> - <span class="max_value">4100</span></P>
-                                        <div class="middle">
+                                        <select id="period_"  class="btn  btn-outline-primary dropdown-toggle" style="margin-left: 20px;" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                          <option value="a_3">3개월</option>
+                                          <option value="a_6">6개월</option>
+                                          <option value="a_12">1년</option>
+                                        </select>
+                                        <input type="hidden" id="period_cfee" name="period" value=""/>
+                                        
+                                        <input type="hidden" id="alpha" name="alpha" />
+                                        
+                                        <P><span id="min_left_cfee" class="min_value_cfee">0</span> <span id="max_right_cfee" class="max_value_cfee">10</span></P>
+                                        <div class="middle_cfee">
                                           <div  style="width: 100%;">
 
                                               
                                             <!-- 진짜 슬라이더 -->
-                                            <input type="range" id="input-left" min="150" step="200" max="4100" value="150" />
-                                            <input type="range" id="input-right" min="150" step="200" max="4100" value="4100" />
-                                            <input type="hidden" id="mfee" name="mfee" value="150%4100" >
+                                            <input type="range" id="input-left_cfee" min="0" step="0.5" max="10" value="0" />
+                                            <input type="range" id="input-right_cfee" min="0" step="0.5" max="10" value="10" />
+                                            <input type="hidden" id="cfee" name="cfee" value="0%10" >
                                             <!-- 커스텀 슬라이더 -->
                                             <div class="slider">
-                                              <div class="track"></div>
-                                              <div class="range"></div>
-                                              <div class="thumb left"></div>
-                                              <div class="thumb right"></div>
+                                              <div class="track_cfee"></div>
+                                              <div class="range_cfee"></div>
+                                              <div class="thumb_cfee left_cfee"></div>
+                                              <div class="thumb_cfee right_cfee"></div>
                                             </div>
                                           </div>
                                         </div>
 
-                                        <!-- 알파모델료 End -->
+                                        <!-- 셀럽 모델료 End -->
 
-                                        <!-- 추천 Start -->
+
+
+                                        <!-- 셀럽 섹션 Start -->
                                         <hr>
-                                        <h5 style="float: left;">추천</h5>
-                                        <p style="padding-left: 40px; font-size: 12px;">  필터를 선택해주세요</p>
-
-                                        <label style="width: 80px; padding-left: 5px;" class="styled__Label-sc-1z0qnhc-1 hYNqrz"><input type="checkbox" class="chk_section"  id="chk_img" value="img"><span>이미지</span></label>
-                                        <label style="width: 80px; padding-left: 5px;" class="styled__Label-sc-1z0qnhc-1 hYNqrz"><input type="checkbox" class="chk_section"  id="chk_fav" value="fav"><span>호감도</span></label>
-                                        <label style="width: 80px; padding-left: 5px;" class="styled__Label-sc-1z0qnhc-1 hYNqrz"><input type="checkbox" class="chk_section"  id="chk_act" value="act"><span>연기력</span></label>
-                                        <label style="width: 80px; padding-left: 5px;" class="styled__Label-sc-1z0qnhc-1 hYNqrz"><input type="checkbox" class="chk_section"  id="chk_new" value="new"><span>뉴페이스</span></label>
-                                        <input type="hidden" id="recommendation_section" name="recommendation_section"/>
-
-                                        <!-- 추천 End -->
-
+                                        <h5 style="float: left;">셀럽 섹션</h5>
+                                        <br><br>
+                                        <div class="middle_cfee">
+                                          <div  style="width: 100%;">
+                                            
+                                              <label class="styled__Label-sc-1z0qnhc-1 hYNqrz"><input type="checkbox" class="model_section" id="section_singer" value="singer"><span>가수</span></label>
+                                              <label class="styled__Label-sc-1z0qnhc-1 hYNqrz"><input type="checkbox" class="model_section" id="section_actor"  value="actor"><span>연기자</span></label>
+                                              <label class="styled__Label-sc-1z0qnhc-1 hYNqrz"><input type="checkbox" class="model_section" id="section_idol" value="idol"><span>아이돌</span></label>
+                                              <label class="styled__Label-sc-1z0qnhc-1 hYNqrz"><input type="checkbox" class="model_section" id="section_entertainment"  value="entertainment"><span>예능인</span></label>
+                                              <label class="styled__Label-sc-1z0qnhc-1 hYNqrz"><input type="checkbox" class="model_section" id="section_broadcast" value="broadcast"><span>방송인</span></label>
+                                              <label class="styled__Label-sc-1z0qnhc-1 hYNqrz"><input type="checkbox" class="model_section" id="section_celeb"  value="celeb"><span>유명인</span></label>
+                                              <label class="styled__Label-sc-1z0qnhc-1 hYNqrz"><input type="checkbox" class="model_section" id="section_youtube"  value="youtube"><span>셀럽유튜버</span></label>
+                                          </div>
+                                        </div>
+                                        <input type="hidden" id="section" name="section" />
+                                        <!-- 셀럽섹션 End -->
 
                                         
                                     </div>
@@ -546,40 +556,74 @@ input[type="range"]::-webkit-slider-thumb_age {
                                           
                                             <!-- Force next columns to break to new line -->
                                           <div class="w-100"></div>
-                                          <h6> {{ recommendation_month | length }} 명 </h6>
                                           
-                                          {% for model in recommendation_month[:] %}
+                                          <h6> {{ scount_models | length }} 명 </h6>
+                                          
+                                          {% for model in scount_models[:] %}
                                             <div class="col-4 col-sm-3" style="text-align : center; padding: 3px; background-color: #ffffff;">
-                                              <a href="/models/{{model.mcode}}" style="color: #000000;">
+                                              <a href="/celebs/{{model.codesys}}" style="color: #000000;">
                                               
-                                              <h4 style="z-index: 2; position:absolute; color: #4099ff;">{{model.sum_jum}}</h4>
+                                              <!-- <h4 style="z-index: 2; position:absolute; color: #4099ff;">{{model.sum_jum}}</h4> -->
                                                 
-                                              <div style="text-align: center; "> 
-                                                <img src="http://pic2.readymodel.kr/mdpic/{{model.mcode[0:3]}}/{{model.mcode[0:4]}}/{{model.mcode}}/sys_photo/model.jpg" style="width:110px; height:110px;">
+                                              <div style="text-align: center;"> 
+                                                 
+                                                {% if model.mea >= 2 %}
+                                                  {% for i in range(1,model.mea+1) %}
+                                                    {% if i == 1 %}
+                                                      {% set src_ = "http://pic2.readymodel.kr/mdpic/"+ model.mcode[0:3] + "/" + model.mcode[0:4] + "/" + model.mcode + "/sys_photo/model.jpg" %}
+                                                    {% elif i == 2 %}
+                                                      {% set src_ = "http://pic2.readymodel.kr/mdpic/"+ model.mcode2[0:3] + "/" + model.mcode2[0:4] + "/" + model.mcode2 + "/sys_photo/model.jpg" %}
+                                                    {% elif i == 3 %}
+                                                      {% set src_ = "http://pic2.readymodel.kr/mdpic/"+ model.mcode3[0:3] + "/" + model.mcode3[0:4] + "/" + model.mcode3 + "/sys_photo/model.jpg" %}
+                                                    {% elif i == 4 %}
+                                                      {% set src_ = "http://pic2.readymodel.kr/mdpic/"+ model.mcode3[0:3] + "/" + model.mcode3[0:4] + "/" + model.mcode3 + "/sys_photo/model.jpg" %}
+                                                    
+                                                    
+                                                    {% endif %}
+                                                    <div style="float:left;width:50%;height:50%;">
+                                                      <img src={{src_}} style="width:100%; height:110px;">
+                                                    </div>
+                                                  {% endfor %}
+
+                                                  {% if not (model.mea % 2 == 0) %}
+                                                  <div style="float:left;width:50%;height:50%;">
+                                                    <img  style="width:100%; height:110px;">
+                                                  </div>
+                                                  {%endif%}
+                                                    
+                                                {% else %}
+                                                  <img src="http://pic2.readymodel.kr/mdpic/{{model.codesys[0:3]}}/{{model.codesys[0:4]}}/{{model.codesys}}/sys_photo/model.jpg" style="width:110px; height:110px;">
+                                                {%endif%}
                                               </div>
                                               
-                                                <div class="info_position" style="padding-left:5%">
+                                              <div class="info_position" style="padding-left:5%">
+                                                {% if model.mea >= 2 %}
+                                                  <h6 style="padding-top: 130px;">{{model.suntitle}}</h6>
 
-                                                  <h6 class="card-text" style="margin-bottom:0px; color:rgb(0, 0, 0); display: inline;" >이름</h6> <span style="margin-bottom:3px; display: inline; font-size: small;">{{model.name}}</span>
+                                                {% else %}
+                                                  <h6 class="card-text" style="margin-bottom:0px; color:rgb(0, 0, 0); display: inline;" >이름</h6> <span style="margin-bottom:3px; display: inline; font-size: small;">{{model.name.split('(')[0]}}</span>
                                                 
                                                   <h6 class="card-text" style="margin-bottom:0px; color:rgb(0, 0, 0)">정보</h6>
                                                   <span class="card-title" style="margin-bottom:3px; font-size: small;"> {{model.age}} / {{model.height}} / {{model.sex}}</span>
                                                 
+                                                  <h6 class="card-text" style="margin-bottom:0px; color:rgb(0, 0, 0)">모데료</h6><span style="margin-bottom:2px; font-size: small;">{{model.a_3}} / {{model.a_6}} / {{model.a_12}}</span>
                                                   <h6 class="card-text" style="margin-bottom:0px; color:rgb(0, 0, 0)">소속사</h6><span style="margin-bottom:2px; font-size: small;">{{model.coname}}</span>
-                                                    
-                                                
-                                                  <h6 class="card-text" style="margin-bottom:0px; color:rgb(0, 0, 0);">모델료</h6> <span style="margin-bottom:0px; display: inline; font-size: small;">{{model.mfee}}</span>
-                                                        
-                                                </div>
+                                                {% endif %}
+                                              
+                                                <!-- <h6 class="card-text" style="margin-bottom:0px; color:rgb(0, 0, 0);">모델료</h6> <span style="margin-bottom:0px; display: inline; font-size: small;">{{model.mfee}}</span> -->
+                                                      
+                                              </div>
 
                                                 </a>
                                               </div>
 
                                           {% endfor %}
+
+
                                             
-                                          </div>
-                                
                                         </div>
+                                
+                                      </div>
                                     </div>
                                   <!-- ------------------------------------->
                                   <!-- ------------------------------------->
@@ -594,33 +638,41 @@ input[type="range"]::-webkit-slider-thumb_age {
                                         
                                           <!-- Force next columns to break to new line -->
                                         <div class="w-100"></div>
-                                        <h6> {{ mov_choi | length }} 명 </h6>
-                                        {% for model in mov_choi[:] %}
+                                       
+                                        <h6> {{ recommend_models | length }} 명 </h6>
+                                          
+                                        {% for model in recommend_models[:] %}
                                           <div class="col-4 col-sm-3" style="text-align : center; padding: 3px; background-color: #ffffff;">
-                                            <a href="/models/{{model.mcode}}" style="color: #000000;">
-
-                                            <h4 style="z-index: 2; position:absolute; color: #4099ff;">{{model.choi_count}}</h4>
-                                                
-                                              <div style="text-align: center; "> 
-                                                <img src="http://pic2.readymodel.kr/mdpic/{{model.mcode[0:3]}}/{{model.mcode[0:4]}}/{{model.mcode}}/sys_photo/model.jpg" style="width:110px; height:110px;">
-                                              </div>
+                                            <a href="/celebs/{{model.codesys}}" style="color: #000000;">
+                                            
+                                            <!-- <h4 style="z-index: 2; position:absolute; color: #4099ff;">{{model.sum_jum}}</h4> -->
+                                              
+                                            <div style="text-align: center; "> 
+                                              <img src="http://pic2.readymodel.kr/mdpic/{{model.codesys[0:3]}}/{{model.codesys[0:4]}}/{{model.codesys}}/sys_photo/model.jpg" style="width:110px; height:110px;">
+                                            </div>
+                                            
                                               <div class="info_position" style="padding-left:5%">
-                                                <h6 class="card-text" style="margin-bottom:0px; color:rgb(0, 0, 0); display: inline;" >이름</h6> <h6 style="margin-bottom:3px; display: inline; font-size: small;">{{model.name}}</h6>
+
+                                                <h6 class="card-text" style="margin-bottom:0px; color:rgb(0, 0, 0); display: inline;" >이름</h6> <span style="margin-bottom:3px; display: inline; font-size: small;">{{model.name.split('(')[0]}}</span>
                                               
                                                 <h6 class="card-text" style="margin-bottom:0px; color:rgb(0, 0, 0)">정보</h6>
-                                                <h6 class="card-title" style="margin-bottom:3px; font-size: small;"> 나이 / 성별 / 키</h6>
+                                                <span class="card-title" style="margin-bottom:3px; font-size: small;"> {{model.age}} / {{model.height}} / {{model.sex}}</span>
                                               
-                                                <h6 class="card-text" style="margin-bottom:0px; color:rgb(0, 0, 0)">소속사</h6><h6 style="margin-bottom:2px; font-size: small;">33</h6>
+                                                <h6 class="card-text" style="margin-bottom:0px; color:rgb(0, 0, 0)">모데료</h6><span style="margin-bottom:2px; font-size: small;">{{model.a_3}} / {{model.a_6}} / {{model.a_12}}</span>
+                                                <h6 class="card-text" style="margin-bottom:0px; color:rgb(0, 0, 0)">소속사</h6><span style="margin-bottom:2px; font-size: small;">{{model.coname}}</span>
                                                   
                                               
-                                                <h6 class="card-text" style="margin-bottom:0px; color:rgb(0, 0, 0); display: inline;">모델료</h6> <h6 style="margin-bottom:0px; display: inline; font-size: small;">{{model.mfee}}</h6>
+                                                <!-- <h6 class="card-text" style="margin-bottom:0px; color:rgb(0, 0, 0);">모델료</h6> <span style="margin-bottom:0px; display: inline; font-size: small;">{{model.mfee}}</span> -->
                                                       
                                               </div>
 
-                                            </a>
-                                          </div>
+                                              </a>
+                                            </div>
+
                                         {% endfor %}
-                                          
+
+
+
                                       </div>
                               
                                     </div>
@@ -639,32 +691,7 @@ input[type="range"]::-webkit-slider-thumb_age {
                                         
                                           <!-- Force next columns to break to new line -->
                                         <div class="w-100"></div>
-                                        <h6> {{ procount | length }} 명 </h6>
-                                        {% for model in procount[:] %}
-                                          <div class="col-4 col-sm-3" style="text-align : center; padding: 3px; background-color: #ffffff;">
-                                            <a href="/models/{{model.mcode}}" style="color: #000000;">
-
-                                              <h4 style="z-index: 2; position:absolute; color: #4099ff;">{{model.project_count}}</h4>
-                                                  
-                                                <div style="text-align: center; "> 
-                                                  <img src="http://pic2.readymodel.kr/mdpic/{{model.mcode[0:3]}}/{{model.mcode[0:4]}}/{{model.mcode}}/sys_photo/model.jpg" style="width:110px; height:110px;">
-                                                </div>
-                                                <div class="info_position" style="padding-left:5%">
-                                                  <h6 class="card-text" style="margin-bottom:0px; color:rgb(0, 0, 0); display: inline;" >이름</h6> <h6 style="margin-bottom:3px; display: inline; font-size: small;">{{model.name}}</h6>
-                                                
-                                                  <h6 class="card-text" style="margin-bottom:0px; color:rgb(0, 0, 0)">정보</h6>
-                                                  <h6 class="card-title" style="margin-bottom:3px; font-size: small;"> 나이 / 성별 / 키</h6>
-                                                
-                                                  <h6 class="card-text" style="margin-bottom:0px; color:rgb(0, 0, 0)">소속사</h6><h6 style="margin-bottom:2px; font-size: small;">33</h6>
-                                                    
-                                                
-                                                  <h6 class="card-text" style="margin-bottom:0px; color:rgb(0, 0, 0); display: inline;">모델료</h6> <h6 style="margin-bottom:0px; display: inline; font-size: small;">{{model.mfee}}</h6>
-                                                        
-                                                </div>
-  
-                                              </a>
-                                          </div>
-                                        {% endfor %}
+                                        
                                           
                                       </div>
                               
@@ -712,7 +739,15 @@ input[type="range"]::-webkit-slider-thumb_age {
        
         <script src="/static/assets/js/pages/dashboard-main.js"></script>
     
-        <script src="/static/assets/js/pages/modal-filter.js?gender={{preSelectValue.gender}}&age={{preSelectValue.age}}&mfee={{preSelectValue.mfee}}&alpha={{preSelectValue.alpha}}&recommendation_section={{preSelectValue.recommendation_section}}"></script>
+        <script src="/static/assets/js/pages/modal-filter-celeb.js?gender={{preSelectValue.gender}}&age={{preSelectValue.age}}&cfee={{preSelectValue.cfee}}&section={{preSelectValue.section}}&period={{preSelectValue.period}}"></script>
         
+        <script>
+        $('select[id="period_"]' ).change(function(){
+          var month = $('select[id="period_"]').val();
+          console.log(month)
+          $("#period_cfee").val(month)
+
+        });
+        </script>
     {% endblock javascripts %}
     

@@ -11,7 +11,8 @@ from sqlalchemy import false
 # from db.repository.search import order_realtime, models_info, proc_celeb, img_mov_info, cf_mov_info, act_mov_info, best_img, get_rd_contracts
 from sqlalchemy.orm import Session
 from db.session import get_db
-from db.repository.model import model_info, model_point_memo, mov_list, get_model_cf, get_tel_memo
+from db.repository.model import model_info, model_point_memo, mov_list, get_tel_memo
+from db.repository.celeb import celeb_info, get_celeb_cf
 from db.repository.project import get_kmodel_project
 from fastapi.encoders import jsonable_encoder
 from striprtf.striprtf import rtf_to_text
@@ -25,22 +26,6 @@ router = APIRouter()
 
 access_time = datetime.now()
 
-
-##### 모델료 코드 - >값
-def code_to_mfee(model):
-    
-
-    
-    with open("model.json", 'r', encoding='utf-8') as json_file:
-        dict_model_fee = json.load(json_file)
-
-    print(model)
-    if not model['mfee'] == '':
-        if dict_model_fee['model_fee'][model['mfee']] == "4100~0":
-            model['mfee'] = "4100~"
-        else:
-            model['mfee'] = dict_model_fee['model_fee'][model['mfee']]
-#######
 
 
 
@@ -82,55 +67,63 @@ def get_model_info(request: Request, codesys: str = '', db: Session = Depends(ge
 
 
     model = model_info(db, codesys)[0]
+    celeb = celeb_info(db, codesys)[0]
     point_memo_list = model_point_memo(db, codesys)
     project_list = get_kmodel_project(db, codesys)
-    cf_list, cf_list_end = get_model_cf(db, codesys)
+    cf_list, cf_list_end = get_celeb_cf(db, codesys)
     tel_memo_list = get_tel_memo(db, codesys)
     tel_memo_list = jsonable_encoder(tel_memo_list[:])
 
-    code_to_mfee(model)
+    model['celeb_manager'] =  {'manager_name': [model['dam'], model['dam2'], model['dam3']], 'tel' : [model['tel1'], model['dam2tel'], model['dam3tel']]}
+    model['cfee'] = {'a_3' : celeb['a_3'], 'a_6' : celeb['a_6'], 'a_12' : celeb['a_12']}
+    
+    print('##############################\n')
 
-
+   
     for m in tel_memo_list:
+       
         if m['memo']:
             m['memo'] = m['memo'].split('\r\n\r\n20')
+    # print('안녕 :: ', tel_memo_list)
+    # for tel_memo in tel_memo_list:
+    #     print(tel_memo['memo'])
+    #     tel_memo['memo'] = tel_memo['memo'].split('\r\n') if tel_memo['memo'] else ['등록된 통화메모가 없습니다.']
+    #     print('\n-----------------------------------\n')
+    
 
-    for constract in project_list[:]:
-        constract['modelfee'] = format(constract['modelfee'], ',')
+    # for m in model['tel_memo']:
+    #     print(m)
 
+    for contract in project_list[:]:
+        contract['modelfee'] = format(contract['modelfee'], ',')
+        
+
+    # for p in project_list:
+    #     print(p) 
+        
     model['project_list'] = project_list
     model['cf_list'] = cf_list
     model['cf_list_end'] = cf_list_end
-    model['tel_memo'] = tel_memo_list
+    model['tel_memo'] = (tel_memo_list[:])
     model['point2'] = rtf_to_text(point_memo_list[0]['point2'])
     model['point2'] = model['point2'].split('\n')
 
-    # print(model)
+    # print(model[0])
 
 
-   
-    is_existed_img = 'primary' if jsonable_encoder(mov_list(db=db, codesys=codesys, mov_section='img')[:]) else 'danger'
+    # for m in model['tel_memo']:
+    #     print('\n----------------------------\n')
 
-    is_existed_act = 'primary' if jsonable_encoder(mov_list(db=db, codesys=codesys, mov_section='act')[:]) else 'danger'
-
-    is_existed_cf = 'primary' if jsonable_encoder(mov_list(db=db, codesys=codesys, mov_section='cf')[:]) else 'danger'
-
-    is_existed_best = 'primary' if jsonable_encoder(mov_list(db=db, codesys=codesys, mov_section='b')[:]) else 'danger'
-
-    is_existed_refer = 'primary' if jsonable_encoder(mov_list(db=db, codesys=codesys, mov_section='r')[:]) else 'danger'
-
+    #     print(m)
+  
     if token:
            
         # 30일추천, 영상초이, 프로카운트 세가지로 나누어서 res 보냄.
         return templates.TemplateResponse(
-            "home/model_info.html", {"request": request,
+            "home/celeb_info.html", {"request": request,
                                     "model_detail_info": model,
                                     "host" : request.url.hostname + ":8000",
-                                    "is_existed_img": is_existed_img,
-                                    "is_existed_act": is_existed_act,
-                                    "is_existed_cf": is_existed_cf,
-                                    "is_existed_best" : is_existed_best,
-                                    "is_existed_refer" : is_existed_refer}
+                                    }
         )
 
 

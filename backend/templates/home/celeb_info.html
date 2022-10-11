@@ -510,16 +510,26 @@ input[type="range"]::-webkit-slider-thumb_age {
                     <div class="card-header" style="padding: 0px; padding-left:10px; padding-right:10px; float: left; text-align: left;">
                               
                       <div class="card-info-header">
-                        <h5>이름:</h5> <h5 style="color: #848484;">{{model_detail_info.name.split('(')[0]}}</h5> <h5>나이:</h5> <h5 style="color: #848484;">{{model_detail_info.age}}년생</h5> <h5>키:</h5> <h5 style="color: #848484;">{{model_detail_info.height}}CM</h5>
+                        <h5>이름:</h5> <h5 style="color: #848484;">{{model_detail_info.name.split('(')[0]}}</h5>
+
+                        {% if model_detail_info.age%}
+                          <h5>나이:</h5> <h5 style="color: #848484;">{{model_detail_info.age}}년생</h5>
+                        {% else %}
+                          <h5>나이:</h5> <h5 style="color: #848484;">미입력</h5>
+                        {%endif%}
+
+                        {% if model_detail_info.height%}
+                          <h5>키:</h5> <h5 style="color: #848484;">{{model_detail_info.height}}CM</h5>
+                        {% else %}
+                          <h5>키:</h5> <h5 style="color: #848484;">미입력</h5>
+                        {%endif%}
+
                       </div>
                       <div class="card-info-header">
                         <h5>소속사:</h5> <h5 style="color: #848484;">{{model_detail_info.coname}}</h5> 
                       </div>
-                      <div class="card-info-header">
-                        <h5 >직업/학교:</h5><h5 style="color: #848484;">{{model_detail_info.bun}}</h5>
-                      </div>
                       <div >
-                        <h5>모델료:</h5> <h5  style="color: #848484;">{{model_detail_info.mfee }}</h5> 
+                        <h5>모델료:</h5> <h5  style="color: #848484;">{{model_detail_info.cfee.a_3}} / {{model_detail_info.cfee.a_6}} / {{model_detail_info.cfee.a_12}}</h5> 
                         <div class="card-info-header" style="text-align: right; margin-bottom: 0.4rem;">
                           <h6>
                           <img class="icon-sns" src="/static/assets/images/icon-instagram.png">
@@ -552,12 +562,11 @@ input[type="range"]::-webkit-slider-thumb_age {
                               <div class="info-flex_">
                                 <h5 style="font-size: 18px;  margin-top: 0.3rem;">연락처</h5>
                               </div>
-                              <div class="info-flex">
-                                <h6>{{model_detail_info.dam}} </h6> <h6  style="color: #848484;">&nbsp; {{model_detail_info.tel1}}</h6> 
-                              </div>
-                              <div class="info-flex">
-                                <h6 >{{model_detail_info.dam2}} </h6> <h6 style="color: #848484;">&nbsp; {{model_detail_info.dam2tel}}</h6> 
-                              </div>
+                              {% for i in range(model_detail_info.celeb_manager.manager_name | length) %}
+                                <div class="info-flex">
+                                  <h6>{{model_detail_info.celeb_manager.manager_name[i]}} </h6> <h6  style="color: #848484;">&nbsp; {{model_detail_info.celeb_manager.tel[i]}}</h6> 
+                                </div>
+                              {% endfor %}
                             </div>
                           </div>
                         </div> 
@@ -588,61 +597,7 @@ input[type="range"]::-webkit-slider-thumb_age {
                             
                           </div>
 
-
-
-                          <!-- 첨부파일 START -->
-                          <div style="margin: 1.3rem; margin-top: 2.6rem;">
-                            <h5 style="float: left;">첨부파일 </h5>
-                            <span style="margin-left: 10px" class="badge bg-danger">존재안함</span>
-                            <span class="badge bg-primary">존재</span>
-                          </div>
-                            
-                          <div>
-                              
-                            <ul class="feed-blog ps-0">
-
-                              
-                                
-                              
-                              <li class="active-feed">
-                                <h6>영상</h6>
-                                <a style="margin-top: 10px;" target="_blank" rel="noopener noreferrer"
-                                href="http://{{host}}/models/{{model_detail_info.codesys}}/img"
-                                class="btn btn-{{is_existed_img}} btn-sm text-white">이미지영상</a>
                           
-                                  
-                                <a style="margin-top: 10px;" target="_blank" rel="noopener noreferrer"
-                                href="http://{{host}}/models/{{model_detail_info.codesys}}/act"
-                                class="btn btn-{{is_existed_act}} btn-sm text-white">연기영상</a>
-                          
-                                  
-                                <a style="margin-top: 10px;" target="_blank" rel="noopener noreferrer"
-                                href="http://{{host}}/models/{{model_detail_info.codesys}}/cf"
-                                class="btn btn-{{is_existed_cf}} btn-sm text-white ">광고영상</a>
-
-                              </li>
-
-                              <li class="active-feed">
-                                <h6>사진</h6>
-                                <a style="margin-top: 10px;" target="_blank" rel="noopener noreferrer"
-                                href="http://{{host}}/models/{{model_detail_info.codesys}}/b"
-                                class="btn btn-{{is_existed_best}} btn-sm text-white m-0">베스트사진</a>
-
-                                <a style="margin-top: 10px;" target="_blank" rel="noopener noreferrer"
-                                href="http://{{host}}/models/{{model_detail_info.codesys}}/r"
-                                class="btn btn-{{is_existed_refer}} btn-sm text-white m-0">참고사진</a>
-                          
-                              </li>
-
-                              
-                              
-                            </ul>
-                            
-                          </div>
-                          <!-- 첨부파일 END -->
-
-
-
                           <!-- 레디진행 START -->
                           <div style="margin: 1.3rem; margin-top: 2.6rem;">
                             <h5 style="float: left;">레디진행 </h5>
@@ -661,14 +616,13 @@ input[type="range"]::-webkit-slider-thumb_age {
                             <div id="contract-table" style="padding-left:10px; padding-right:10px; display: none;" class="card-body table-border-style">
                               <div style="overflow: auto; ">
 
-
                                 {% for project in model_detail_info.project_list %}
                                   <div>
                                       <p rowspan="3" style="padding-left: 0.1rem; padding-right: 0.1rem;  margin-bottom: 1px;"><b style="font-weight: 700;">촬영일</b> {{project.cdate}}</p>
-                                      <p style="padding-left: 0.1rem; padding-right: 0.1rem; margin-bottom: 5px;"> {{project.poom}}</p>
-                                      <p style="padding-left: 0.1rem; padding-right: 0.1rem; color: #a2a1a1; margin-bottom: 2.5rem;">{{project.etc}}</p>
+                                      <p style="padding-left: 0.1rem; padding-right: 0.1rem; margin-bottom: 5px;">{{project.poom}}</p>
+                                      <p style="padding-left: 0.1rem; padding-right: 0.1rem; color: #a2a1a1;">{{project.etc}}</p>
 
-                                      <p style="text-align: right; margin-bottom: 5px;"><b style="font-weight: 700;">모델료</b> {{project.modelfee}}</p>
+                                      <p style="text-align: right;"><b style="font-weight: 700;">모델료</b> {{project.modelfee}}</p>
                                       <p style="text-align: right;"><b style="font-weight: 700;">지급일</b> {{project.moutdate}}</p>
                                        <!--
                                       <td>{{project.etc}}</td>
@@ -676,6 +630,7 @@ input[type="range"]::-webkit-slider-thumb_age {
                                   </div>
                                   <hr>
                                   {% endfor %}
+
                                 <!-- <table style="white-space: nowrap;" class="table table-striped">
                                   <thead>
                                     <tr>
@@ -689,9 +644,9 @@ input[type="range"]::-webkit-slider-thumb_age {
                                   <tbody>
                                     {% for project in model_detail_info.project_list %}
                                     <tr>
-                                      <td style="padding-left: 0.1rem; padding-right: 0.1rem;">{{project.cdate}}</td>
+                                      <td rowspan="3" style="padding-left: 0.1rem; padding-right: 0.1rem;">{{project.cdate}}</td>
                                       <td style="padding-left: 0.1rem; padding-right: 0.1rem;">{{project.poom}}</td>
-                                      <td>{{project.modelfee}}</td>
+                                       <td>{{project.modelfee}}</td>
                                       <td>{{project.etc}}</td>
                                       <td>프로젝트에서 지급일이 어떤 컬럼인지</td>
                                     </tr>
@@ -711,7 +666,7 @@ input[type="range"]::-webkit-slider-thumb_age {
 
                           <!-- 광고이력 START -->
                           <div style="margin: 1.3rem; margin-top: 2.6rem;">
-                            <h5 style="float: left;">광고이력 </h5>
+                            <h5 style="float: left;">계약현황</h5>
                             <div style="margin-left: 5rem;" class="custom-control custom-switch">
 
                               <input type="checkbox" id="toggle" hidden>
@@ -727,7 +682,7 @@ input[type="range"]::-webkit-slider-thumb_age {
                             <div id="cf-table" style="padding-left:10px; padding-right:10px; display: none;" class="card-body table-border-style">
                               <div style="overflow: auto; ">
 
-                               
+
                                 <table style="white-space: nowrap;" class="table table-striped cf">
                                   <thead>
                                     <tr>
@@ -748,8 +703,6 @@ input[type="range"]::-webkit-slider-thumb_age {
                                   </thead>
 
 
-
-                                  
 
                                   <tbody>
                                     {% for cf in model_detail_info.cf_list %}
@@ -790,8 +743,6 @@ input[type="range"]::-webkit-slider-thumb_age {
 
                                   </tbody>
 
-
-
                                 </table>
 
                               </div>
@@ -820,6 +771,7 @@ input[type="range"]::-webkit-slider-thumb_age {
 
                             <div id="memo-div" style="padding-left:10px; padding-right:10px; display: none;" class="card-body table-border-style">
 
+
                               {% for m in model_detail_info.tel_memo %}
                                 <input name="telButton" id="{{m.rcode}}" type="button" class="btn btn-outline-primary" style="margin: 0.2rem 0.1rem; padding: 6px 12px;" onclick="telMemo(this.id)" value="{{m.title[:].split('통화')[0]}}" />
                               {% endfor %}
@@ -844,9 +796,6 @@ input[type="range"]::-webkit-slider-thumb_age {
                                   {% endif %}
                                 {%endif%}
                               {% endfor %}
-
-                              
-
 
                             </div>
                           

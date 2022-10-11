@@ -12,20 +12,38 @@ const chk_w = document.querySelector("#chk_w");
 
 
 // 연령 범위선택 변수
+const textLeft_age = document.getElementById("min_left_age");
+const textRight_age = document.getElementById("max_right_age");
 const inputLeft_age = document.getElementById("input-left_age");
 const inputRight_age = document.getElementById("input-right_age");
 const thumbLeft_age = document.querySelector(".slider > .thumb_age.left_age");
 const thumbRight_age = document.querySelector(".slider > .thumb_age.right_age");
 const range_age = document.querySelector(".slider > .range_age");
 
-console.log(inputLeft_age, inputRight_age)
 
 // 셀럽모델료 범위선택 변수
+const textLeft_cfee = document.getElementById("min_left_cfee");
+const textRight_cfee = document.getElementById("max_right_cfee");
 const inputLeft = document.getElementById("input-left_cfee");
 const inputRight = document.getElementById("input-right_cfee");
 const thumbLeft = document.querySelector(".slider > .thumb_cfee.left_cfee");
 const thumbRight = document.querySelector(".slider > .thumb_cfee.right_cfee");
 const range = document.querySelector(".slider > .range_cfee");
+
+
+// 셀럽 섹션선택 변수
+const buttonSinger = document.getElementById("section_singer");
+const buttonActor = document.getElementById("section_actor");
+const buttonIdol = document.getElementById("section_idol");
+const buttonEntertainment = document.getElementById("section_entertainment");
+const buttonBroadcast = document.getElementById("section_broadcast");
+const buttonCeleb = document.getElementById("section_celeb");
+const buttonYoutube = document.getElementById("section_youtube");
+
+
+//
+const inputPeriodCfee = document.getElementById("period_cfee");
+const selectPeriodCfee = document.getElementById("period_");
 
 
 function scriptQuery(){
@@ -54,7 +72,10 @@ if (params.gender){
     console.log(params.gender.split('%').length)
     console.log(params.cfee)
     console.log(params.age)
+    console.log(params.section)
+    console.log(params.period)
 }
+
 
 // 모달창 열고 닫음
 function clickmodal(event){
@@ -66,6 +87,10 @@ function clickmodal(event){
 
     /////////////////////////////////////////////////
     //////// 모달창 open 전에 이전 데이터 불러옴. ///////////
+
+
+
+
 
 
 ///// 성별 이전 선택 데이터로 설정.
@@ -125,85 +150,72 @@ function clickmodal(event){
 
 /////
 
+///// 셀럽모델료 범위 -> 이전 데이터로 선택
 
-// ///// 셀럽 모델료 범위 -> 이전 데이터로 선택
-
-// var preRangeMfee = params.mfee.split('%');
-    
-// let minPreAlpha = preRangeMfee[0];
-// let maxPreAlpha = preRangeMfee[1];
-// console.log(preRangeMfee, ' ::  셀럽모델료')
-
-
-// // 왼쪽
-// const [minLeftAlpha, maxLeftAlpha] = [parseInt(inputLeft_cfee.min), parseInt(inputLeft_cfee.max)];
-// minPreAlpha = Math.min(parseInt(minPreAlpha), parseInt(inputRight_cfee.value) - 1);
-
-// const percentAlphaLeft = ((minPreAlpha - minLeftAlpha) / (maxLeftAlpha - minLeftAlpha)) * 100;
-// thumbLeft_cfee.style.left = percentAlphaLeft + "%";
-// range_cfee.style.left = percentAlphaLeft + "%";
+    var preRangeMfee = params.cfee.split('%');
+        
+    let minPreAlpha = preRangeMfee[0];
+    let maxPreAlpha = preRangeMfee[1];
+    console.log(preRangeMfee, ' :: 셀럽모델료')
 
 
-// let minAlpha = document.getElementsByClassName("min_value_cfee")[0];
-// minAlpha.innerText=minPreAlpha;
-// inputLeft_cfee.value = minPreAlpha;
+    // 왼쪽
+    const [minLeftAlpha, maxLeftAlpha] = [parseFloat(inputLeft.min), parseFloat(inputLeft.max)];
+    minPreAlpha = Math.min(parseFloat(minPreAlpha), parseFloat(inputRight.value) - 1);
+
+    const percentAlphaLeft = ((minPreAlpha - minLeftAlpha) / (maxLeftAlpha - minLeftAlpha)) * 100;
+    thumbLeft.style.left = percentAlphaLeft + "%";
+    range.style.left = percentAlphaLeft + "%";
 
 
-// // 오른쪽
-// const [minRightAlpha, maxRightAlpha] = [parseInt(inputRight_cfee.min), parseInt(inputRight_cfee.max)];
-// maxPreAlpha = Math.max(parseInt(maxPreAlpha), parseInt(inputLeft_cfee.value) - 1);
+    let minAlpha = document.getElementsByClassName("min_value_cfee")[0];
+    minAlpha.innerText=minPreAlpha;
+    inputLeft.value = minPreAlpha;
 
-// const percentAlphaRight = ((maxPreAlpha - minRightAlpha) / (maxRightAlpha - minRightAlpha)) * 100;
-// thumbRight_cfee.style.right = 100 - percentAlphaRight + "%";
-// range_cfee.style.right = 100 - percentAlphaRight + "%";
 
-// let maxAlpha = document.getElementsByClassName("max_value_cfee")[0];
-// maxAlpha.innerText=maxPreAlpha;
-// inputRight_cfee.value = maxPreAlpha;
+    // 오른쪽
+    const [minRightAlpha, maxRightAlpha] = [parseFloat(inputRight.min), parseFloat(inputRight.max)];
+    maxPreAlpha = Math.max(parseFloat(maxPreAlpha), parseFloat(inputLeft.value) + 1);
 
+    const percentAlphaRight = ((maxPreAlpha - minRightAlpha) / (maxRightAlpha - minRightAlpha)) * 100;
+    thumbRight.style.right = 100 - percentAlphaRight + "%";
+    range.style.right = 100 - percentAlphaRight + "%";
+
+    let maxAlpha = document.getElementsByClassName("max_value_cfee")[0];
+    maxAlpha.innerText=maxPreAlpha;
+    inputRight.value = maxPreAlpha;
+
+    /////
+
+    ///// 셀럽섹션 이전 선택 데이터로 설정.
+    console.log(params.section)
+    var preSelectSection = params.section.split('%'); //이전에 선택한 성별 체크박스
+        
+    for(var i=0; i<preSelectSection.length -1; i++){
+
+
+        var preId = 'section_' + preSelectSection[i];
+        console.log(preId);
+        document.getElementById(preId).checked = true;
+
+    }
 /////
 
 
+///// 셀럽 모델료 기간 이전 데이터로 설정
 
-///// 알파모델료 범위 -> 이전 데이터로 선택
+    console.log(params.period);
+    inputPeriodCfee.value = params.period;
 
-var preRangeMfee = params.cfee.split('%');
-    
-let minPreAlpha = preRangeMfee[0];
-let maxPreAlpha = preRangeMfee[1];
-console.log(preRangeMfee, ' :: 셀럽모델료')
-
-
-// 왼쪽
-const [minLeftAlpha, maxLeftAlpha] = [parseFloat(inputLeft.min), parseFloat(inputLeft.max)];
-minPreAlpha = Math.min(parseFloat(minPreAlpha), parseFloat(inputRight.value) - 1);
-
-const percentAlphaLeft = ((minPreAlpha - minLeftAlpha) / (maxLeftAlpha - minLeftAlpha)) * 100;
-thumbLeft.style.left = percentAlphaLeft + "%";
-range.style.left = percentAlphaLeft + "%";
-
-
-let minAlpha = document.getElementsByClassName("min_value_cfee")[0];
-minAlpha.innerText=minPreAlpha;
-inputLeft.value = minPreAlpha;
-
-
-// 오른쪽
-const [minRightAlpha, maxRightAlpha] = [parseFloat(inputRight.min), parseFloat(inputRight.max)];
-maxPreAlpha = Math.max(parseFloat(maxPreAlpha), parseFloat(inputLeft.value) - 1);
-
-const percentAlphaRight = ((maxPreAlpha - minRightAlpha) / (maxRightAlpha - minRightAlpha)) * 100;
-thumbRight.style.right = 100 - percentAlphaRight + "%";
-range.style.right = 100 - percentAlphaRight + "%";
-
-let maxAlpha = document.getElementsByClassName("max_value_cfee")[0];
-maxAlpha.innerText=maxPreAlpha;
-inputRight.value = maxPreAlpha;
+    for (let i=0; i<selectPeriodCfee.options.length; i++){  
+        //select box의 option value가 입력 받은 value의 값과 일치할 경우 selected
+      if(selectPeriodCfee.options[i].value == params.period){
+        selectPeriodCfee.options[i].selected = true;
+      }
+    }  
+    // selectPeriodCfee.selected = true;
 
 /////
-
-
-
 
 
 
@@ -211,19 +223,19 @@ inputRight.value = maxPreAlpha;
     if(!modal.classList.contains('inactive')){
         modal.classList.add("inactive");
 
-        content.style.cssText  = 'overflow: auto;';
+        content.style.cssText  = 'overflow: auto; padding-top:0px;';
         
     }
     // 모달창 open
     else{
 
-        getChkGenderValue();
         setLeftValue_age();
         setRightValue_age();
         setLeftValue_();
         setRightValue_();
+        setCelebSection();
         // getChkRecSectionValue();
-        content.style.cssText  = 'overflow: hidden;';
+        content.style.cssText  = 'overflow: hidden; padding-top:0px;';
         modal.classList.remove("inactive");
 
     }
@@ -267,46 +279,14 @@ inputRight_age.addEventListener("input", setRightValue_age);
 inputLeft.addEventListener("input", setLeftValue_);
 inputRight.addEventListener("input", setRightValue_);
 
-////////////////////////////////
-// 모델 추천 점수 섹션 선택 -> 이미지, 호감도, 연기력, 뉴페이스
-
-function getChkRecSectionValue()  {
-    // 선택된 목록 가져오기
-    const query = 'input[class="chk_section"]:checked';
-
-    const selectedEls = 
-        document.querySelectorAll(query);
-    
-
-    console.log(selectedEls)
-    // 선택된 목록에서 value 찾기
-    let result = '';
-    selectedEls.forEach((el) => {
-      result += el.value + ' ';
-      console.log(el.value)
-    });
-    
-    
-    console.log('섹션 체크 목록1 :: ' , result)
-    result = result.replace(/ /g, '%')
-
-    console.log('섹션 체크 목록2 :: ' , result)
-    // document.getElementById("recommendation_section").value = result; 
-  
-  }
 
 
 /////////////////////////////////////////////// 주석 체크 진행하기 
 
 function setLeftValue_age() {
 
-    console.log('1222222222222222222222222222222')
 
-    var minAge = inputLeft_age;
-    var maxAge = inputRight_age;
-    var age = minAge.value + "%" + maxAge.value;
-    
-
+    var age = textLeft_age.innerText + "%" + textRight_age.innerText;
     
     console.log(age);
     $('#age').val(age);
@@ -320,6 +300,7 @@ function setLeftValue_age() {
     
     // input, thumb 같이 움직이도록
     const percent = ((_this.value - min) / (max - min)) * 100;
+    
     thumbLeft_age.style.left = percent + "%";
     range_age.style.left = percent + "%";
 
@@ -336,10 +317,7 @@ function setRightValue_age() {
     const [min, max] = [parseInt(_this.min), parseInt(_this.max)];
     
 
-    var minAge = inputLeft_age;
-    var maxAge = inputRight_age;
-    
-    var age = minAge.value + "%" + maxAge.value;
+    var age = textLeft_age.innerText + "%" + textRight_age.innerText;
     
     console.log(age);
     $('#age').val(age);
@@ -360,20 +338,16 @@ function setRightValue_age() {
 };
 
 
+
+
+// 셀럽 모델료 
 function setLeftValue_() {
     const _this = inputLeft;
     const [min, max] = [parseFloat(_this.min), parseFloat(_this.max)];
     
-
-    var mfee = inputLeft.value + "%" + inputRight.value;
-
-    console.log(inputRight.value);
-
-    $('#cfee').val(mfee);
-
-
+    
     // 교차되지 않게, 1을 빼준 건 완전히 겹치기보다는 어느 정도 간격을 남겨두기 위해.
-    _this.value = Math.min(parseFloat(_this.value), parseFloat(inputRight.value) - 0.1);
+    _this.value = Math.min(parseFloat(_this.value), parseFloat(inputRight.value) - 0.5);
     
     // input, thumb 같이 움직이도록
     const percent = ((_this.value - min) / (max - min)) * 100;
@@ -383,7 +357,6 @@ function setLeftValue_() {
 
     let x = document.getElementsByClassName("min_value_cfee")[0];
     
-
     x.innerText= String(_this.value) + '억'; 
 
 
@@ -391,7 +364,6 @@ function setLeftValue_() {
         document.getElementsByClassName("min_value_cfee")[0].innerText =  'X';
         x.innerText= " ";
     }else if(inputLeft.value == _this.value){
-        console.log(_this)
         document.getElementsByClassName("min_value_cfee")[0].innerText = ''
         x.innerText= String(_this.value) + '억'; 
     }else{
@@ -399,20 +371,21 @@ function setLeftValue_() {
         x.innerText= " - " + String(_this.value) + '억'; 
     }
 
+    var cfee = textLeft_cfee.innerText.split('억')[0] + "%" + textRight_cfee.innerText.split('억')[0].substring(2, textRight_cfee.innerText.lastIndexOf('억'));
+
+    $('#cfee').val(cfee);
+    console.log(cfee);
+
 };
 
 function setRightValue_() {
     const _this = inputRight;
     const [min, max] = [parseFloat(_this.min), parseFloat(_this.max)];
     
-    var mfee = inputLeft.value + "%" + inputRight.value;
-
-    console.log(inputRight.value);
-
-    $('#cfee').val(mfee);
-
+    
+    
     // 교차되지 않게, 1을 더해준 건 완전히 겹치기보다는 어느 정도 간격을 남겨두기 위해.
-    _this.value = Math.max(parseFloat(_this.value), parseFloat(inputLeft.value) + 0.1);
+    _this.value = Math.max(parseFloat(_this.value), parseFloat(inputLeft.value) + 0.5);
     
     // input, thumb 같이 움직이도록
     const percent = ((_this.value - min) / (max - min)) * 100;
@@ -432,8 +405,15 @@ function setRightValue_() {
     }else{
         document.getElementsByClassName("min_value_cfee")[0].innerText = String(Math.min(parseFloat(inputLeft.value), parseFloat(inputRight.value) - 0.1)) + '억';
         x.innerText= " - " + String(_this.value) + '억'; 
+
+        console.log('LEFT :: ', String(Math.min(parseFloat(inputLeft.value), parseFloat(inputRight.value) - 0.1)))
+        console.log('RIGHT :: ', String(_this.value))
     }
     
+    var cfee = textLeft_cfee.innerText.split('억')[0] + "%" + textRight_cfee.innerText.split('억')[0].substring(2, textRight_cfee.innerText.lastIndexOf('억'));
+
+    $('#cfee').val(cfee);
+    console.log(textRight_cfee.innerText)
 
 };
 
@@ -445,15 +425,41 @@ chk_m.addEventListener("click", getChkGenderValue);
 chk_w.addEventListener("click", getChkGenderValue);
 
 
-// chk_img.addEventListener("click", getChkRecSectionValue);
-// chk_fav.addEventListener("click", getChkRecSectionValue);
-// chk_act.addEventListener("click", getChkRecSectionValue);
-// chk_new.addEventListener("click", getChkRecSectionValue);
-
-
-
 
 ///////////////////////////////////////////////////////////////
+
+
+
+// 셀럽 섹션 선택
+function setCelebSection() {
+    
+    
+    const query = 'input[class="model_section"]:checked';
+    const selectedEls = 
+        document.querySelectorAll(query);
+    
+    let result = '';
+    selectedEls.forEach((el) => {
+      result += el.value + ' ';
+    });
+    
+    
+    result = result.replace(/ /g, '%')
+
+    console.log('셀럽 섹션 확인 :: ', result)
+    document.getElementById("section").value = result; 
+    
+
+};
+
+buttonSinger.addEventListener("click", setCelebSection);
+buttonActor.addEventListener("click", setCelebSection);
+buttonIdol.addEventListener("click", setCelebSection);
+buttonEntertainment.addEventListener("click", setCelebSection);
+buttonBroadcast.addEventListener("click", setCelebSection);
+buttonCeleb.addEventListener("click", setCelebSection);
+buttonYoutube.addEventListener("click", setCelebSection);
+
 
 
 

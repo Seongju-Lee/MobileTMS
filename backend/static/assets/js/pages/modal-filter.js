@@ -23,6 +23,8 @@ const chk_new = document.querySelector("#chk_new");
 
 
 // 연령 범위선택 변수
+const textLeft_age = document.getElementById("min_left_age");
+const textRight_age = document.getElementById("max_right_age");
 const inputLeft_age = document.getElementById("input-left_age");
 const inputRight_age = document.getElementById("input-right_age");
 const thumbLeft_age = document.querySelector(".slider > .thumb_age.left_age");
@@ -37,12 +39,7 @@ const thumbRight = document.querySelector(".slider > .thumb.right");
 const range = document.querySelector(".slider > .range");
 
 
-// 셀럽모델료 범위선택 변수
-const inputLeft_cfee = document.getElementById("input-left_cfee");
-const inputRight_cfee = document.getElementById("input-right_cfee");
-const thumbLeft_cfee = document.querySelector(".slider > .thumb_cfee.left_cfee");
-const thumbRight_cfee = document.querySelector(".slider > .thumb_cfee.right_cfee");
-const range_cfee = document.querySelector(".slider > .range_cfee");
+
 
 
 function scriptQuery(){
@@ -348,13 +345,15 @@ chk_new.addEventListener("click", getChkRecSectionValue);
 
 function setLeftValue_age() {
 
-    var minAge = inputLeft_age;
-    var maxAge = inputRight_age;
-    var age = minAge.value + "%" + maxAge.value;
+   
+    var age = textLeft_age.innerText + "%" + textRight_age.innerText;
     
+    console.log(age, "LEFT1");
 
     
-    console.log(age);
+    console.log(textLeft_age.innerText, " :: TEXT LEFT");
+    console.log(textRight_age.innerText, " :: TEXT RIGHT");
+
     $('#age').val(age);
 
 
@@ -372,7 +371,6 @@ function setLeftValue_age() {
 
     let x = document.getElementsByClassName("min_value_age")[0];
     x.innerText=_this.value; 
-
     // $(".min_value").text(_this.value);
 
 };
@@ -382,12 +380,9 @@ function setRightValue_age() {
     const [min, max] = [parseInt(_this.min), parseInt(_this.max)];
     
 
-    var minAge = inputLeft_age;
-    var maxAge = inputRight_age;
+    var age = textLeft_age.innerText + "%" + textRight_age.innerText;
     
-    var age = minAge.value + "%" + maxAge.value;
-    
-    console.log(age);
+    console.log(age, 'RIGHT');
     $('#age').val(age);
 
 
@@ -401,7 +396,6 @@ function setRightValue_age() {
 
     let x = document.getElementsByClassName("max_value_age")[0];
     x.innerText=_this.value; 
-
     // console.log(_this.value)
 };
 

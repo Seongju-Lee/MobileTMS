@@ -342,6 +342,8 @@ h1, .h1 {
     h1, .h1 {
         font-size: 2.5rem;
     }
+
+    
 }
 
 h2, .h2 {
@@ -6241,12 +6243,12 @@ textarea.form-control-lg {
     outline: 0;
 }
 
-.modal-dialog {
+/* .modal-dialog {
     position: relative;
     width: auto;
-    margin: 0.1rem;
+    margin: 1.5rem 0.3rem;
     pointer-events: none;
-}
+} */
 
 .modal.fade .modal-dialog {
     transition: transform 0.3s ease-out;
@@ -6362,10 +6364,7 @@ textarea.form-control-lg {
 }
 
 @media (min-width: 576px) {
-    .modal-dialog {
-        max-width: 500px;
-        margin: 1.75rem auto;
-    }
+    
 
     .modal-dialog-scrollable {
         height: calc(100% - 3.5rem);
@@ -24164,9 +24163,79 @@ pre[class*=language-]:before {
     .pcoded-main-container {
         padding-top: 0;
     }
+
+
+    
+    
+   
 }
 
+@media only screen and (max-width: 575px){
+
+    .modal-dialog {
+        margin-left: 0.5rem;
+        margin-right: 0.5rem;
+    }
+}
+
+
+@media only screen and (min-width: 991px) and (max-width: 1200px){
+    .modal-dialog {
+        margin-left: 5.5rem;
+        margin-right: 1rem;
+    }
+
+}
+@media only screen and (min-width: 575px) and (max-width: 991px){
+
+    .modal-dialog {
+        margin-left: 1rem;
+        margin-right: 1rem;
+    }
+}
+
+@media only screen and  (min-width: 1200px){
+    
+    .full {
+        margin-left: 16rem;
+        margin-right: 1rem;
+    }
+
+    .full-dialog {
+        margin-left: 5.5rem;
+        margin-right: 1rem;
+    }
+
+    .modal-dialog {
+        margin-left: 15.5rem;
+        margin-right: 1rem;
+    }
+}
+
+@media only screen and (min-width: 991) {
+    .full {
+    
+        /* max-width: 500px; */
+        /* margin: 1.75rem auto; */
+        margin: 1.5rem 1rem;
+        margin-left: 15.8rem;
+        margin-right: 1rem;
+    }
+
+    .full-dialog {
+        margin-left: 5.5rem;
+        margin-right: 1rem;
+    }
+}
+
+
+
+
+
+
 @media only screen and (max-width: 575px) {
+
+
     .pcoded-header .main-search.open .input-group .search-close {
         display: none;
     }
@@ -29510,6 +29579,12 @@ transition: all 0.2s ease-in;
 /* ************* */
 
 
+
+
+
+
+
+/*  */
 
 
 .toggleSwitch_memo {

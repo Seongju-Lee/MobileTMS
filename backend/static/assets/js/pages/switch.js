@@ -64,16 +64,25 @@ telMemo = (clickedId) => {
   
     //배열 생성
     var telMemoarr = new Array(lenButton);
+
+
+    console.log(lenButton, typeof(lenButton))
     //배열에 값 주입
     for(var i=0; i<lenButton; i++){                          
         // telMemoarr[i] = $("input[name=telButton]").eq(i).val();
 
-        if($("input[name=telButton]").eq(i).val() == clickedId){
+        console.log(i);
+        console.log($("input[name=telButton]").eq(i).attr('id'));
+          // console.log(document.getElementsByName("telButton")[0].id)
+
+        if($("input[name=telButton]").eq(i).attr('id') == clickedId){
             document.getElementById("_" + clickedId).style.display = "block" ;
         }
         else{
-            document.getElementById("_" + $("input[name=telButton]").eq(i).val()).style.display = "none" ;
+            document.getElementById("_" + $("input[name=telButton]").eq(i).attr('id')).style.display = "none" ;
         }
+
+
     }
 
     

@@ -142,6 +142,16 @@ class Memo(Base):
     memo = Column(String(20))
 
 
+# 모델정보 열람이력
+class ReadModel(Base):
+    __tablename__ = "rtqmodel"
+
+    rno = Column(Integer,  primary_key=True)
+    edit_time = Column(TIMESTAMP)
+    rdate = Column(String(20))
+    mcode = Column(String(20), ForeignKey("yeon.codesys"))
+
+
 class People2(Base):
     no = Column(Integer,  primary_key=True)
     codesys = Column(String(20))
@@ -167,40 +177,8 @@ class Yeon(Base):
 
 
 
-class SunokStar(Base):
-    __tablename__ = "model_sunokstar"
-
-    rno = Column(Integer,  primary_key=True)
-    edit_time = Column(TIMESTAMP)
-    rcode = Column(String(20))
-    mcode = Column(String(20), ForeignKey("yeon.codesys"))
 
 
-class SunokStarChu(Base):
-    __tablename__ = "model_sunokstar_chu"
-
-    rno = Column(Integer,  primary_key=True)
-    edit_time = Column(TIMESTAMP)
-    frcode = Column(String(20), ForeignKey("model_sunokstar.rcode"))
-    jum1 = Column(Integer)  # 추천
-    jum2 = Column(Integer)  # 비추천
-
-
-class SCount(Base):
-    __tablename__ = "model_scelebida"
-
-    rno = Column(Integer,  primary_key=True)
-    edit_time = Column(TIMESTAMP)
-    mcode = Column(String(20), ForeignKey("yeon.codesys"))
-
-
-class Read(Base):
-    __tablename__ = "rtqmodel"
-
-    rno = Column(Integer,  primary_key=True)
-    edit_time = Column(TIMESTAMP)
-    rdate = Column(String(20))
-    mcode = Column(String(20), ForeignKey("yeon.codesys"))
 
 
 class Section(Base):

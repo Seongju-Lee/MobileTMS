@@ -95,6 +95,7 @@ class ProjectContract(Base):
     cdate = Column(String(30)) # 촬영일
     mname = Column(String(30)) # 모델명
     modelfee = Column(Integer) # 모델료
+    moutdate = Column(String(20)) # 지급일1
     chunggu = Column(Integer) # 청구액
     poom = Column(String(30)) # 프로젝트명
     rdate = Column(String(30)) # 입력일

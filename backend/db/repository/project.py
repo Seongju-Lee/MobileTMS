@@ -18,7 +18,7 @@ def get_kmodel_project(db: Session, mcode : str = ''):
     return jsonable_encoder(project_list[:])
 
 
-
+# 기본 프로젝트 리스트 : 최신 등록 순 
 def get_project(db: Session):
     
     a_project = db.query(ProjectTable).order_by(ProjectTable.date.desc()).limit(300)

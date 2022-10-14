@@ -365,8 +365,6 @@ input[type="range"]::-webkit-slider-thumb_age {
 
 @media only screen and (max-width: 575px)
 {
- 
-
 
 }
 
@@ -418,17 +416,18 @@ input[type="range"]::-webkit-slider-thumb_age {
               
             </div>
 
+
+
             <div class="card">
               <div class="card-body" style="padding: 0px">
 
                 <!-- --------------------------------------------------------------------------------- -->
             <!--  modal창  START -->
 
-            <form method="GET" action="/search">
+            <form method="GET" action="/projects">
               <div class="modal-dialog inactive" role="document">
-                <form method="GET" action="/search">
-                  <input type=hidden name=category value='sunok'>
-                  <div class="modal-content" style="overflow:auto; height:550px;">
+                <form method="GET" action="/projects">
+                  <div class="modal-content" style="overflow-x: hidden; height:550px;">
                     <div class="modal-header">
                       <h5 class="modal-title" id="exampleModalPopoversLabel">검색 필터</h5>
                     </div>
@@ -437,50 +436,52 @@ input[type="range"]::-webkit-slider-thumb_age {
                     <div class="modal-body">
 
                       <h6>담당팀</h6>
-                      <select id="period_" class="btn  btn-outline-primary dropdown-toggle" style="margin-bottom: 12px;"
+                      <select id="select_team" class="btn  btn-outline-primary dropdown-toggle" style="margin-bottom: 12px;"
                         type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                        <option value="a_3">전체</option>
-                        <option value="a_6">6개월</option>
-                        <option value="a_12">1년</option>
+                        {% for team in team_list %}
+                          <option value={{team}}>{{team}}</option>
+                        {% endfor %}
+                       
                       </select>
+
+                      <input type="hidden" id="team" name="team" value='All' />
 
                       <h6>프로젝트명</h6>
                       <div class="input-group mb-3">
-                        <input type="text" name="username" class="form-control" placeholder="프로젝트명" value=""
-                          required="">
+                        <input type="text" name="prname" class="form-control" placeholder="프로젝트명" value="">
                       </div>
 
                       <h6>광고인</h6>
                       <div class="input-group mb-3">
-                        <input type="text" name="username" class="form-control" placeholder="광고인명" value="" required="">
+                        <input type="text" name="cfowner" class="form-control" placeholder="광고인명" value="" >
                       </div>
 
                       <h6>거래처</h6>
                       <div class="input-group mb-3">
-                        <input type="text" name="username" class="form-control" placeholder="거래처명" value="" required="">
+                        <input type="text" name="cfco" class="form-control" placeholder="거래처명" value="" >
                       </div>
 
                       <!-- 진행 년도 Start -->
                       <h6>진행년도</h6>
 
-
-                      <input type="hidden" id="period_cfee" name="period" value="" />
-
-                      <input type="hidden" id="alpha" name="alpha" />
-
-                      <P><span style="margin-left: 10px" id="min_left_cfee" class="min_value_cfee">전체</span> </P>
-                      <div class="middle_cfee">
+                      <span style="margin-left: 10px" id="min_left_pryear" class="min_value_pryear">2000 ~ </span>
+                      <span id="max_left_pryear" class="max_value_pryear">2022</span><br><br>
+                      
+                      <div class="middle_pryear">
                         <div style="width: 100%;">
 
-                          <!-- 진짜 슬라이더 -->
-                          <input type="range" id="input-left_cfee" min="0" step="0.5" max="10" value="0" />
-                          <input type="hidden" id="cfee" name="cfee" value="0%10">
-                          <!-- 커스텀 슬라이더 -->
-                          <div class="slider">
-                            <div class="track_cfee"></div>
-                            <div class="range_cfee"></div>
-                            <div class="thumb_cfee left_cfee"></div>
-                          </div>
+                         <!-- 진짜 슬라이더 -->
+                         <input type="range" id="input-left_pryear" min="2000" step="1" max="2022" value="2000" />
+                         <input type="range" id="input-right_pryear" min="2000" step="1" max="2022" value="2022" />
+                         <input type="hidden" id="pryear" name="pryear" value="2000%2022" >
+
+                         <!-- 커스텀 슬라이더 -->
+                         <div class="slider">
+                           <div class="track_cfee"></div>
+                           <div class="range_cfee"></div>
+                           <div class="thumb_cfee left_cfee"></div>
+                           <div class="thumb_cfee right_cfee"></div>
+                         </div>
                         </div>
                       </div>
                       <!-- 진행년도 END-->
@@ -490,7 +491,7 @@ input[type="range"]::-webkit-slider-thumb_age {
 
                       <h6>레디 진행 소속사</h6>
                       <div class="input-group mb-3">
-                        <input type="text" name="username" class="form-control" placeholder="소속사명" value="" required="">
+                        <input type="text" name="entertainment" class="form-control" placeholder="소속사명" value="" >
                       </div>
 
 
@@ -512,10 +513,11 @@ input[type="range"]::-webkit-slider-thumb_age {
                 <div class="card-body p-0">
                   <div class="tab-content" id="pills-tabContent">
 
-           
+                    
                     
                     <div class="tab-pane fade show active" id="pills-all" role="tabpanel"
                       aria-labelledby="pills-all-tab">
+                      <div class="list-grid" >
                       <div class="table-responsive" >
                         <div class="customer-scroll">
 
@@ -526,34 +528,58 @@ input[type="range"]::-webkit-slider-thumb_age {
                                 <th ><span>프로젝트명</span></th>
                                 <th style="width: 100px;"><span>광고주</span></th>
                                 <th><span>광고회사</span></th>
-                                <th style="width: 100%;"><span>온에어</span></th>
+                                <th style="width: 100px;"><span>온에어</span></th>
                               </tr>
                             </thead>
                             <tbody>
                               {% for project in projects %}
-                              <tr>
-                                {% if project.seleb == 'V' %}
-                                  <td>{{project.date}}<br>{{project.teamtag}}<br><b style="color: red;">셀럽</b>
-                                  </td>
-                                {% else %}
-                                  <td>{{project.date}}<br>{{project.teamtag}}
-                                  </td>
-                                {% endif %}
-                                <td>{{project.prname}}</td>
-                                <td>{{project.cfowner}}</td>
-                                <td>{{project.cfco}}</td>
-                                <td>{{project.onairck}}</td>
+                              
+                                <tr>
+                                  
+                                  {% if project.seleb == 'V' %}
+                                    <td>
+                                      <a href="/projects/{{project.code}}" target="_blank" style="color: black;">
+                                        {{project.date}}<br>{{project.teamtag}}<br><b style="color: rgb(180, 135, 135);">셀럽</b>
+                                        {% if project.lastok == 'OK' %}
+                                          <br><b style="color: blue;">완료</b>
+                                        {% elif project.cancel == 'OK' %}
+                                          <br><b style="color: rgb(255, 0, 0);">캔슬</b>
+                                        {% elif project.holding == 'OK' %}
+                                          <br><b style="color: rgb(174, 0, 255);">홀딩</b>
+                                        {% endif %}
+                                      </a>
+                                    </td>
+                                  {% else %}
+                                    <td>
+                                      <a href="/projects/{{project.code}}" target="_blank" style="color: black;">
+                                        {{project.date}}<br>{{project.teamtag}}
+                                        {% if project.lastok == 'OK' %}
+                                          <br><b style="color: blue;">완료</b>
+                                        {% elif project.cancel == 'OK' %}
+                                          <br><b style="color: rgb(255, 0, 0);">캔슬</b>
+                                        {% elif project.holding == 'OK' %}
+                                          <br><b style="color: rgb(174, 0, 255);">홀딩</b>
+                                        {% endif %}
+                                      </a>
+                                    </td>
+                                  {% endif %}
+                                  
+                                  <td><a href="/projects/{{project.code}}" target="_blank" style="color: black;">{{project.prname}}</a></td>
+                                  <td><a href="/projects/{{project.code}}" target="_blank" style="color: black;">{{project.cfowner}}</a></td>
+                                  <td><a href="/projects/{{project.code}}" target="_blank" style="color: black;">{{project.cfco}}</a></td>
+                                  <td><a href="/projects/{{project.code}}" target="_blank" style="color: black;">{{project.onairck}}</a></td>
 
-                              </tr>
+                                </tr>
                               {% endfor %}
                             </tbody>
                           </table>
                         </div>
                       </div>
                     </div>
-
+                  </div>
 
                     <div class="tab-pane fade" id="pills-profile" role="tabpanel" aria-labelledby="pills-profile-tab">
+                      <div class="list-grid" >
                       <div class="table-responsive" style="margin: 0 5px;">
                         <div class="customer-scroll1">
                           <table class="table table-hover m-b-0">
@@ -569,15 +595,25 @@ input[type="range"]::-webkit-slider-thumb_age {
                             <tbody>
                               {% for project in projects %}
                                 {% if project.seleb == 'V' %}
-
+                                  
                                   <tr>
-                                    <td>{{project.date}}<br>{{project.teamtag}}<br><b style="color: red;">셀럽</b>
+                                    <td>
+                                      <a href="/projects/{{project.code}}" target="_blank" style="color: black;">
+                                        {{project.date}}<br>{{project.teamtag}}<br><b style="color: rgb(180, 135, 135);">셀럽</b>
+                                        {% if project.lastok == 'OK' %}
+                                          <br><b style="color: blue;">완료</b>
+                                        {% elif project.cancel == 'OK' %}
+                                          <br><b style="color: rgb(255, 0, 0);">캔슬</b>
+                                        {% elif project.holding == 'OK' %}
+                                          <br><b style="color: rgb(174, 0, 255);">홀딩</b>
+                                        {% endif %}
+                                      </a>
                                     </td>
                                     
-                                    <td>{{project.prname}}</td>
-                                    <td>{{project.cfowner}}</td>
-                                    <td>{{project.cfco}}</td>
-                                    <td>{{project.onairck}}</td>
+                                    <td><a href="/projects/{{project.code}}" target="_blank" style="color: black;">{{project.prname}}</a></td>
+                                    <td><a href="/projects/{{project.code}}" target="_blank" style="color: black;">{{project.cfowner}}</a></td>
+                                    <td><a href="/projects/{{project.code}}" target="_blank" style="color: black;">{{project.cfco}}</a></td>
+                                    <td><a href="/projects/{{project.code}}" target="_blank" style="color: black;">{{project.onairck}}</a></td>
 
                                   </tr>
                                 {% endif %}
@@ -588,7 +624,9 @@ input[type="range"]::-webkit-slider-thumb_age {
                         </div>
                       </div>
                     </div>
+                    </div>
                     <div class="tab-pane fade" id="pills-contact" role="tabpanel" aria-labelledby="pills-contact-tab">
+                      <div class="list-grid">
                       <div class="table-responsive" style="margin: 0 5px;">
                         <div class="customer-scroll2">
                           <table class="table table-hover m-b-0">
@@ -606,13 +644,23 @@ input[type="range"]::-webkit-slider-thumb_age {
                                 {% if project.seleb == '' %}
 
                                   <tr>
-                                    <td>{{project.date}}<br>{{project.teamtag}}<br>
+                                    <td>
+                                      <a href="/projects/{{project.code}}" target="_blank" style="color: black;">
+                                        {{project.date}}<br>{{project.teamtag}}<br>
+                                        {% if project.lastok == 'OK' %}
+                                          <br><b style="color: blue;">완료</b>
+                                        {% elif project.cancel == 'OK' %}
+                                          <br><b style="color: rgb(255, 0, 0);">캔슬</b>
+                                        {% elif project.holding == 'OK' %}
+                                          <br><b style="color: rgb(174, 0, 255);">홀딩</b>
+                                        {% endif %}
+                                      </a>
                                     </td>
                                     
-                                    <td>{{project.prname}}</td>
-                                    <td>{{project.cfowner}}</td>
-                                    <td>{{project.cfco}}</td>
-                                    <td>{{project.onairck}}</td>
+                                    <td><a href="/projects/{{project.code}}" target="_blank" style="color: black;">{{project.prname}}</a></td>
+                                    <td><a href="/projects/{{project.code}}" target="_blank" style="color: black;">{{project.cfowner}}</a></td>
+                                    <td><a href="/projects/{{project.code}}" target="_blank" style="color: black;">{{project.cfco}}</a></td>
+                                    <td><a href="/projects/{{project.code}}" target="_blank" style="color: black;">{{project.onairck}}</a></td>
 
                                   </tr>
                                 {% endif %}
@@ -621,6 +669,7 @@ input[type="range"]::-webkit-slider-thumb_age {
                             </tbody>
                           </table>
                         </div>
+                      </div>
                       </div>
                     </div>
                     
@@ -682,6 +731,9 @@ input[type="range"]::-webkit-slider-thumb_age {
 
 
 <script src="/static/assets/js/pages/dashboard-main.js"></script>
+    
+<script src="/static/assets/js/pages/modal-filter-project.js"></script>
+
 
 
 {% endblock javascripts %}

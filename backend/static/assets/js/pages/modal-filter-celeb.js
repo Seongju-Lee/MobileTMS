@@ -81,6 +81,7 @@ if (params.gender){
 function clickmodal(event){
 
 
+    if (event.cancelable) event.preventDefault();
     // window.scrollTo(0,0);
     event.preventDefault(); //페이지 새로고침 중지
     
@@ -245,6 +246,7 @@ function clickmodal(event){
 /////////////////////////////?
 // 모달창 -> 취소버튼
 function closemodal(event){
+    if (event.cancelable) event.preventDefault();
     event.preventDefault(); //페이지 새로고침 중지
     modal.classList.add("inactive");
 }// 취소버튼 클릭이벤트 시 inactive 클래스 추가

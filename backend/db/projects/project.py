@@ -1,4 +1,5 @@
 from datetime import date
+from re import L
 from numpy import integer
 from sqlalchemy import Column, Integer, String, ForeignKey, TIMESTAMP, Text
 from db.base_class import Base
@@ -38,6 +39,12 @@ class ProjectTable(Base):
     onairck = Column(String(100)) # 온에어 날짜 
 
 
+    artcom = Column(String(100)) # 아트컴퍼니
+    artcomtel = Column(String(100)) # 아트컴퍼니 TEL
+
+    stu = Column(String(100)) # 스튜디오
+    stutel = Column(String(100)) # 스튜디오 TEL
+
     pdcomppd1 = Column(String(100)) # PD컴퍼니 TEL
     pdcomppd1tel = Column(String(100)) # PD컴퍼니 TEL
     pdcomppd2 = Column(String(100)) # PD컴퍼니 TEL
@@ -76,6 +83,22 @@ class ProjectTable(Base):
     camdate4 = Column(String(100))
 
 
+    cancel = Column(String(100)) # 캔슬
+    holding = Column(String(100)) # 홀딩
+    lastok = Column(String(100)) # 완료
+
+
+
+#프로젝트 파일
+class ProjectFile(Base):
+    __tablename__ = "upfile"
+
+    no = Column(Integer,  primary_key=True)
+    mname = Column(String(20))
+    fname = Column(String(40))
+    dir = Column(String(40))
+    dir2 = Column(String(40))
+    rootdir = Column(String(40))
 
 
 class ProjectMemo(Base):

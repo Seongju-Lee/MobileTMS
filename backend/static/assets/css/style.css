@@ -28996,10 +28996,40 @@ body.box-layout .pcoded-navbar.theme-horizontal ~ .pcoded-header {
 /**  =====================
       Data Tables css start
 ==========================  **/
+
+/* PC table */
+
+@media (min-width: 670px) and (max-width: 770px){
+    .table {
+        table-layout: fixed;
+        width: 700px
+    }
+}
+
+
+@media (min-width: 550px) and (max-width: 670px){
+    .table {
+        table-layout: fixed;
+        width: 600px
+    }
+}
+
+/* MOBILE table */
+@media (max-width: 550px) {
+   
+    .table {
+        table-layout: fixed;
+        width: 500px
+    }
+
+}
+
+
+
 .table td,
 .table th {
     border-top: 1px solid #e2e5e8;
-    white-space: pre-wrap;
+    /* white-space: pre-wrap; */
     padding: 0.85rem 0.5rem;
     font-size: 0.8rem;
     text-align: center;
@@ -29629,8 +29659,58 @@ transition: all 0.2s ease-in;
 
 
 
+
+
+
+
+
+.toggleSwitch_tel {
+    width: 3rem;
+    height: 1.5rem;
+    display: block;
+    position: relative;
+    border-radius: 2rem;
+    background-color: #fff;
+    box-shadow: 0 0 1rem 3px rgba(0 0 0 / 15%);
+    cursor: pointer;
+  }
+  
+   /* 토글 버튼 */
+  .toggleSwitch_tel .toggleButton {
+    /* 버튼은 토글보다 작아야함  */
+    margin-top: 0px;
+    width: 1.5rem;
+    height: 1.5rem;
+    position: absolute;
+    top: 50%;
+    left: .2rem;
+    transform: translateY(-50%);
+    border-radius: 50%;
+    background: #4099ff;
+  }
+
+
+  /* 체크박스가 체크되면 변경 이벤트 */
+.toggleSwitch_tel.active {
+    background: #4099ff;
+  }
+  
+.toggleSwitch_tel.active .toggleButton {
+left: calc(100% - 1.5rem);
+background: #fff;
+}
+  
+.toggleSwitch_tel, .toggleButton {
+transition: all 0.2s ease-in;
+}
+
+
+
+
+/* ************* */
+
 /**====== Icon layouts css end ======**/
 
 
 
-
+html,body{ overflow-x: hidden; }

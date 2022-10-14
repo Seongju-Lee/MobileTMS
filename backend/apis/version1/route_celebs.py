@@ -120,7 +120,7 @@ def get_model_info(request: Request, codesys: str = '', db: Session = Depends(ge
            
         # 30일추천, 영상초이, 프로카운트 세가지로 나누어서 res 보냄.
         return templates.TemplateResponse(
-            "home/celeb_info.html", {"request": request,
+            "home/info-celeb.html", {"request": request,
                                     "model_detail_info": model,
                                     "host" : request.url.hostname + ":8000",
                                     }

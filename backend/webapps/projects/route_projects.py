@@ -7,7 +7,7 @@ from db.session import get_db
 from fastapi.encoders import jsonable_encoder
 from striprtf.striprtf import rtf_to_text
 from starlette.responses import RedirectResponse
-from db.repository.project import get_project, get_filter_project, get_project_info, get_project_memo, get_project_model, get_project_with, project_security
+from db.repository.project import get_project, get_filter_project, get_project_memo, get_project_model, get_project_with, project_security
 
 templates = Jinja2Templates(directory="templates")
 router = APIRouter()

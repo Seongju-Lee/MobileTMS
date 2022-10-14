@@ -88,6 +88,10 @@ class ProjectTable(Base):
     lastok = Column(String(100)) # 완료
 
 
+    minok = Column(String(10)) # 입금
+    moutok = Column(String(10)) # 지급
+    chungok = Column(String(10)) # 청구
+
 
 #프로젝트 파일
 class ProjectFile(Base):
@@ -99,6 +103,17 @@ class ProjectFile(Base):
     dir = Column(String(40))
     dir2 = Column(String(40))
     rootdir = Column(String(40))
+
+
+# 에이스 견적서 파일
+class EstimateFile(Base):
+    __tablename__ = "project_gj"
+
+    rno = Column(Integer, primary_key=True)
+
+    projcode = Column(String(20))
+    projname = Column(String(20))
+    fname = Column(String(20))
 
 
 class ProjectMemo(Base):

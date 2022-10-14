@@ -534,7 +534,7 @@ input[type="range"]::-webkit-slider-thumb_age {
                             <tbody>
                               {% for project in projects %}
                               
-                                <tr>
+                                <tr onclick="location.href='/projects/{{project.code}}'">
                                   
                                   {% if project.seleb == 'V' %}
                                     <td>

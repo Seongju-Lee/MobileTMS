@@ -3,7 +3,7 @@ from fastapi.encoders import jsonable_encoder
 from sqlalchemy import desc, not_
 
 from sqlalchemy.orm import Session
-from db.projects.project import ProjectTable, ProjectMemo, ProjectContract, ProjectFile
+from db.projects.project import ProjectTable, ProjectMemo, ProjectContract, ProjectFile, EstimateFile
 from db.models.kmodels import People
 from db.models.users import Users, Rusers
 from sqlalchemy.sql import func
@@ -47,6 +47,11 @@ def get_filter_project(db: Session, teamtag, prname, cfowner, cfcompany, pryear)
 # 프로젝트 상세 기본정보~연락처까지
 def get_project_information(db: Session, pcode):
     info = db.query(ProjectTable).filter(ProjectTable.code == pcode)
+
+    # # 입금일, 지급일 ==>  
+    # mout = db.query(
+                
+    #         )
     return info
 
 # 첨부파일
@@ -58,12 +63,27 @@ def get_project_file(db: Session, pcode):
             ).order_by(ProjectFile.dir.desc())
 
 
-    print(files)
 
-    return files
+    # 에이스 견적서
+    estimate_files = db.query(EstimateFile
+                    ).filter(EstimateFile.projcode.contains(pcode)
+                    ).order_by(EstimateFile.fname.desc())
+
+    
+    return files, estimate_files
 
 
+# 관련모델 
+def get_project_contract(db: Session, pcode):
+    contract_models = db.query(ProjectContract).filter(ProjectContract.projcode == pcode).order_by(desc(ProjectContract.cdate))
 
+    return contract_models
+
+
+# 프로젝트 통화메모
+def get_project_memo(db: Session, pcode):
+    memo = db.query(ProjectMemo).filter(ProjectMemo.code == pcode)
+    return memo
 
 
 
@@ -90,9 +110,6 @@ def query_filter_project(f_project, project_name, rd_team, cf_owner, cf_co, cf_r
 #     return f_project
 
 
-def get_project_memo(db: Session, pcode):
-    memo = db.query(ProjectMemo).filter(ProjectMemo.code == pcode)
-    return memo
 
 def get_project_model(db: Session, projcode):
     models = db.query(ProjectContract).filter(ProjectContract.projcode == projcode)

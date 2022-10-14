@@ -5,11 +5,13 @@ from fastapi import Request
 from fastapi.templating import Jinja2Templates
 from pandas import read_sql_table
 
-from db.repository.project import get_project, get_filter_project, get_project_information, get_project_file
+from db.repository.project import get_project, get_filter_project, get_project_information, get_project_file, get_project_contract, get_project_memo
 from db.session import get_db
 from sqlalchemy.orm import Session
 from starlette.responses import RedirectResponse
 from fastapi.encoders import jsonable_encoder
+from striprtf.striprtf import rtf_to_text
+
 templates = Jinja2Templates(directory="templates")
 router = APIRouter()
 
@@ -57,19 +59,40 @@ def get_project_info(request: Request, pcode: str, db: Session = Depends(get_db)
     # 연락처 등, 프로젝트 기본 정보
     project_info = get_project_information(db, pcode)
     #프로젝트 첨부파일
-    project_files = get_project_file(db, pcode)
+    project_files, estimate_file = get_project_file(db, pcode)
+    # 프로젝트 관련모델
+    contract_models = get_project_contract(db, pcode)
+    # 프로젝트 통화메모
+    project_memo = get_project_memo(db, pcode)
+
+
 
     project_info = jsonable_encoder(project_info[:])
     project_files = jsonable_encoder(project_files[:])
+    estimate_files = jsonable_encoder(estimate_file[:])
+    contract_models = jsonable_encoder(contract_models[:])
+    project_memo = jsonable_encoder(project_memo[:])
 
 
-
-    # print('프로젝트 상세 정보입니다 ::', project_info)
-    print('프로젝트 첨부파일 입니다. ::', project_files[:])
+    try:
     
+        project_memo[0]['memo'] = rtf_to_text(project_memo[0]['memo'])
+        
+    except:
+        pass
+
+    for model in contract_models[:]:
+        model['chunggu'] = format(model['chunggu'], ',')
+        model['modelfee'] = format(model['modelfee'], ',')
     
     return templates.TemplateResponse(
-            "home/info-project.html", {"request": request, "project_info": project_info[0], "project_files": project_files}
+            "home/info-project.html", {"request": request,
+                                        "host" : request.url.hostname + ":8000",
+                                        "project_info": project_info[0],
+                                        "project_files": project_files,
+                                        "estimate_files": estimate_files,
+                                        "contract_models": contract_models,
+                                        "project_memo": project_memo}
         )
 
 

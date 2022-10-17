@@ -22,8 +22,7 @@ import pandas as pd
 def viewd_models(db: Session, user_id):
 
 
-    print(user_id)
-    models = db.query(AccessLog, People, Yeon, Users
+    models = db.query(AccessLog, People, Yeon, Users 
             ).join(
                 People, AccessLog.action == People.codesys
             ).join(
@@ -32,17 +31,15 @@ def viewd_models(db: Session, user_id):
                 Yeon, People.codesys == Yeon.codesys
             ).filter(
                 (AccessLog.screen.contains('celeb-info') | AccessLog.screen.contains('model-info')) & (Users.id == user_id)
-            ).group_by(
-                AccessLog.action
+            ).filter(
+                AccessLog.access_time.in_(db.query(func.max(AccessLog.access_time)).group_by(AccessLog.action))
             ).order_by(
                 AccessLog.rno.desc()
             )
 
     
-
+    
     return jsonable_encoder(models[:])
-
-
 
 
 def viewd_projects(db: Session, user_id):
@@ -54,8 +51,8 @@ def viewd_projects(db: Session, user_id):
                 Users, Users.rno == AccessLog.mem_idx
             ).filter(
                 AccessLog.screen.contains('project-info') & (Users.id == user_id)
-            ).group_by(
-                AccessLog.action
+            ).filter(
+                AccessLog.access_time.in_(db.query(func.max(AccessLog.access_time)).group_by(AccessLog.action))
             ).order_by(
                 AccessLog.rno.desc()
             )

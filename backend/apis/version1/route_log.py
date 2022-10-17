@@ -24,8 +24,6 @@ router = APIRouter()
 def update_model_info_log(request: Request, code: str, isCeleb , db: Session = Depends(get_db)):
     user_id: str = request.cookies.get("usr")
 
-    print("POST /celeb/" + code)
-    print("user ID: " + user_id)
 
     if user_id:
 

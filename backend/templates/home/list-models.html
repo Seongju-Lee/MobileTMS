@@ -600,7 +600,7 @@ input[type="range"]::-webkit-slider-thumb_age {
                                           <div class="col-4 col-sm-3" style="text-align : center; padding: 3px; background-color: #ffffff;">
                                             <a href="/models/{{model.mcode}}" style="color: #000000;">
                                             
-                                            <h4 style="z-index: 2; position:absolute; color: #4099ff;">{{model.sum_jum}}</h4>
+                                            <h4 style="z-index: 2; position:absolute; color: #4099ff;">{{model.choi_count}}</h4>
                                               
                                             <div style="text-align: center; "> 
                                               <img src="http://pic2.readymodel.kr/mdpic/{{model.mcode[0:3]}}/{{model.mcode[0:4]}}/{{model.mcode}}/sys_photo/model.jpg" style="width:110px; height:110px;">
@@ -647,7 +647,7 @@ input[type="range"]::-webkit-slider-thumb_age {
                                           <div class="col-4 col-sm-3" style="text-align : center; padding: 3px; background-color: #ffffff;">
                                             <a href="/models/{{model.mcode}}" style="color: #000000;">
                                             
-                                            <h4 style="z-index: 2; position:absolute; color: #4099ff;">{{model.sum_jum}}</h4>
+                                            <h4 style="z-index: 2; position:absolute; color: #4099ff;">{{model.project_count}}</h4>
                                               
                                             <div style="text-align: center; "> 
                                               <img src="http://pic2.readymodel.kr/mdpic/{{model.mcode[0:3]}}/{{model.mcode[0:4]}}/{{model.mcode}}/sys_photo/model.jpg" style="width:110px; height:110px;">
@@ -719,5 +719,12 @@ input[type="range"]::-webkit-slider-thumb_age {
     
         <script src="/static/assets/js/pages/modal-filter.js?gender={{preSelectValue.gender}}&age={{preSelectValue.age}}&mfee={{preSelectValue.mfee}}&alpha={{preSelectValue.alpha}}&recommendation_section={{preSelectValue.recommendation_section}}"></script>
         
+
+        <script>
+          var tab = document.getElementById("tab-kmodel");
+          tab.style.fontWeight = "bold";
+        </script>
+
+
     {% endblock javascripts %}
     

@@ -218,8 +218,6 @@ function clickmodal(event){
 
 /////
 
-
-
     // 모달창 close
     if(!modal.classList.contains('inactive')){
         modal.classList.add("inactive");
@@ -310,7 +308,6 @@ function setLeftValue_age() {
     let x = document.getElementsByClassName("min_value_age")[0];
     x.innerText=_this.value; 
 
-    // $(".min_value").text(_this.value);
 
 };
 
@@ -502,6 +499,7 @@ if (window.scrollY >= 21) {
   }
 }
 }
+
 
 window.addEventListener('scroll', fixNav);
 

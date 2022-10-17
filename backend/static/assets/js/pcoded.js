@@ -266,6 +266,7 @@ function menuclick() {
                     }
                     targetElement.parentNode.classList.add("pcoded-trigger");
                     var tmp = targetElement.parentNode.children[1];
+                    console.log(tmp)
                     if (tmp) {
                         tmp.removeAttribute('style');
                         slideDown(tmp, 200);
@@ -325,6 +326,8 @@ var elem = document.querySelectorAll('.pcoded-navbar .pcoded-inner-navbar a');
 for (var l = 0; l < elem.length; l++) {
     var pageUrl = window.location.href.split(/[?#]/)[0];
     if (elem[l].href == pageUrl && elem[l].getAttribute('href') != "") {
+
+        
         elem[l].parentNode.classList.add("active");
         elem[l].parentNode.parentNode.parentNode.classList.add("active");
         elem[l].parentNode.parentNode.parentNode.classList.add("pcoded-trigger");

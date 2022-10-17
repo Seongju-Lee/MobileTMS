@@ -219,7 +219,7 @@ function clickmodal(event){
     if(!modal.classList.contains('inactive')){
         modal.classList.add("inactive");
 
-        content.style.cssText  = 'overflow: auto;';
+        content.style.cssText  = 'overflow: auto; padding-top:0px;';
         
     }
     // 모달창 open
@@ -232,7 +232,7 @@ function clickmodal(event){
         setLeftValue();
         setRightValue();
         getChkRecSectionValue();
-        content.style.cssText  = 'overflow: hidden;';
+        content.style.cssText  = 'overflow: hidden; padding-top:0px;';
         modal.classList.remove("inactive");
 
     }
@@ -494,27 +494,27 @@ const navTop = nav.offsetTop;
 
 function fixNav() {
 
-// console.log('grid 목록 :: ', grids)
-if (window.scrollY >= 21) {
-  filterBar.classList.add('fixed-nav');
-  nav.style.cssText  = 'padding-top: 0px;';
+    // console.log('grid 목록 :: ', grids)
+    if (window.scrollY >= 21) {
+        filterBar.classList.add('fixed-nav');
+        nav.style.cssText  = 'padding-top: 0px;';
 
-  for (var i = 0; i < grids.length; i++){
+        for (var i = 0; i < grids.length; i++){
 
-    grids[i].style.cssText = "padding-top: 165px;";
+            grids[i].style.cssText = "padding-top: 165px;";
 
-  }
-} else {
-  filterBar.classList.remove('fixed-nav');
-  nav.style.cssText  = 'padding-top: 15px;';
+        }
+    } else {
+        filterBar.classList.remove('fixed-nav');
+        nav.style.cssText  = 'padding-top: 15px;';
 
 
-  for (var i = 0; i < grids.length; i++){
+        for (var i = 0; i < grids.length; i++){
 
-    grids[i].style.cssText = "padding-top: 0px;";
+            grids[i].style.cssText = "padding-top: 0px;";
 
-  }
-}
+        }
+    }
 }
 
 window.addEventListener('scroll', fixNav);

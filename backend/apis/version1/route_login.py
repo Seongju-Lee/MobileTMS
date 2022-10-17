@@ -117,10 +117,6 @@ async def login(request: Request, db: Session = Depends(get_db)):
           
             user, user_auth = authenticate_user(form.username, form.password, db)
             
-
-            # print('user_auth :: ', user_auth)
-            # print('정보확인 :: ' , user[0])
-
             if user == False:
                 
                 form.__dict__.update(isNotAuth="로그인 실패: 다시 시도 해주세요")

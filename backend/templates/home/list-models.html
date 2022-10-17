@@ -599,27 +599,29 @@ input[type="range"]::-webkit-slider-thumb_age {
                                         {% for model in mov_choi[:] %}
                                           <div class="col-4 col-sm-3" style="text-align : center; padding: 3px; background-color: #ffffff;">
                                             <a href="/models/{{model.mcode}}" style="color: #000000;">
-
-                                            <h4 style="z-index: 2; position:absolute; color: #4099ff;">{{model.choi_count}}</h4>
-                                                
-                                              <div style="text-align: center; "> 
-                                                <img src="http://pic2.readymodel.kr/mdpic/{{model.mcode[0:3]}}/{{model.mcode[0:4]}}/{{model.mcode}}/sys_photo/model.jpg" style="width:110px; height:110px;">
-                                              </div>
+                                            
+                                            <h4 style="z-index: 2; position:absolute; color: #4099ff;">{{model.sum_jum}}</h4>
+                                              
+                                            <div style="text-align: center; "> 
+                                              <img src="http://pic2.readymodel.kr/mdpic/{{model.mcode[0:3]}}/{{model.mcode[0:4]}}/{{model.mcode}}/sys_photo/model.jpg" style="width:110px; height:110px;">
+                                            </div>
+                                            
                                               <div class="info_position" style="padding-left:5%">
-                                                <h6 class="card-text" style="margin-bottom:0px; color:rgb(0, 0, 0); display: inline;" >이름</h6> <h6 style="margin-bottom:3px; display: inline; font-size: small;">{{model.name}}</h6>
+
+                                                <h6 class="card-text" style="margin-bottom:0px; color:rgb(0, 0, 0); display: inline;" >이름</h6> <span style="margin-bottom:3px; display: inline; font-size: small;">{{model.name}}</span>
                                               
                                                 <h6 class="card-text" style="margin-bottom:0px; color:rgb(0, 0, 0)">정보</h6>
-                                                <h6 class="card-title" style="margin-bottom:3px; font-size: small;"> 나이 / 성별 / 키</h6>
+                                                <span class="card-title" style="margin-bottom:3px; font-size: small;"> {{model.age}} / {{model.height}} / {{model.sex}}</span>
                                               
-                                                <h6 class="card-text" style="margin-bottom:0px; color:rgb(0, 0, 0)">소속사</h6><h6 style="margin-bottom:2px; font-size: small;">33</h6>
+                                                <h6 class="card-text" style="margin-bottom:0px; color:rgb(0, 0, 0)">소속사</h6><span style="margin-bottom:2px; font-size: small;">{{model.coname}}</span>
                                                   
                                               
-                                                <h6 class="card-text" style="margin-bottom:0px; color:rgb(0, 0, 0); display: inline;">모델료</h6> <h6 style="margin-bottom:0px; display: inline; font-size: small;">{{model.mfee}}</h6>
+                                                <h6 class="card-text" style="margin-bottom:0px; color:rgb(0, 0, 0);">모델료</h6> <span style="margin-bottom:0px; display: inline; font-size: small;">{{model.mfee}}</span>
                                                       
                                               </div>
 
-                                            </a>
-                                          </div>
+                                              </a>
+                                            </div>
                                         {% endfor %}
                                           
                                       </div>
@@ -644,27 +646,29 @@ input[type="range"]::-webkit-slider-thumb_age {
                                         {% for model in procount[:] %}
                                           <div class="col-4 col-sm-3" style="text-align : center; padding: 3px; background-color: #ffffff;">
                                             <a href="/models/{{model.mcode}}" style="color: #000000;">
+                                            
+                                            <h4 style="z-index: 2; position:absolute; color: #4099ff;">{{model.sum_jum}}</h4>
+                                              
+                                            <div style="text-align: center; "> 
+                                              <img src="http://pic2.readymodel.kr/mdpic/{{model.mcode[0:3]}}/{{model.mcode[0:4]}}/{{model.mcode}}/sys_photo/model.jpg" style="width:110px; height:110px;">
+                                            </div>
+                                            
+                                              <div class="info_position" style="padding-left:5%">
 
-                                              <h4 style="z-index: 2; position:absolute; color: #4099ff;">{{model.project_count}}</h4>
+                                                <h6 class="card-text" style="margin-bottom:0px; color:rgb(0, 0, 0); display: inline;" >이름</h6> <span style="margin-bottom:3px; display: inline; font-size: small;">{{model.name}}</span>
+                                              
+                                                <h6 class="card-text" style="margin-bottom:0px; color:rgb(0, 0, 0)">정보</h6>
+                                                <span class="card-title" style="margin-bottom:3px; font-size: small;"> {{model.age}} / {{model.height}} / {{model.sex}}</span>
+                                              
+                                                <h6 class="card-text" style="margin-bottom:0px; color:rgb(0, 0, 0)">소속사</h6><span style="margin-bottom:2px; font-size: small;">{{model.coname}}</span>
                                                   
-                                                <div style="text-align: center; "> 
-                                                  <img src="http://pic2.readymodel.kr/mdpic/{{model.mcode[0:3]}}/{{model.mcode[0:4]}}/{{model.mcode}}/sys_photo/model.jpg" style="width:110px; height:110px;">
-                                                </div>
-                                                <div class="info_position" style="padding-left:5%">
-                                                  <h6 class="card-text" style="margin-bottom:0px; color:rgb(0, 0, 0); display: inline;" >이름</h6> <h6 style="margin-bottom:3px; display: inline; font-size: small;">{{model.name}}</h6>
-                                                
-                                                  <h6 class="card-text" style="margin-bottom:0px; color:rgb(0, 0, 0)">정보</h6>
-                                                  <h6 class="card-title" style="margin-bottom:3px; font-size: small;"> 나이 / 성별 / 키</h6>
-                                                
-                                                  <h6 class="card-text" style="margin-bottom:0px; color:rgb(0, 0, 0)">소속사</h6><h6 style="margin-bottom:2px; font-size: small;">33</h6>
-                                                    
-                                                
-                                                  <h6 class="card-text" style="margin-bottom:0px; color:rgb(0, 0, 0); display: inline;">모델료</h6> <h6 style="margin-bottom:0px; display: inline; font-size: small;">{{model.mfee}}</h6>
-                                                        
-                                                </div>
-  
+                                              
+                                                <h6 class="card-text" style="margin-bottom:0px; color:rgb(0, 0, 0);">모델료</h6> <span style="margin-bottom:0px; display: inline; font-size: small;">{{model.mfee}}</span>
+                                                      
+                                              </div>
+
                                               </a>
-                                          </div>
+                                            </div>
                                         {% endfor %}
                                           
                                       </div>

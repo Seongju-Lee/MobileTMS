@@ -27,15 +27,16 @@ templates = Jinja2Templates(directory="templates")
 def authenticate_user(username: str, password: str, db: Session):
     user, user_auth = get_users(username=username, db=db)
     user = jsonable_encoder(user[:])
-
+    print("USER aUTH :: " , user_auth)
 
     
     if not user:
         print('id error')
-        return False
+        return False, ''
     elif not Hasher.verify_password(password, user[0]['hashed_password']):
         print('password error')
-        return False
+        return False, ''
+    
     return user, user_auth
 
 def login_for_access_token(
@@ -117,8 +118,8 @@ async def login(request: Request, db: Session = Depends(get_db)):
             user, user_auth = authenticate_user(form.username, form.password, db)
             
 
-            print('user_auth :: ', user_auth)
-            print('정보확인 :: ' , user[0])
+            # print('user_auth :: ', user_auth)
+            # print('정보확인 :: ' , user[0])
 
             if user == False:
                 

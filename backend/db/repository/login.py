@@ -19,7 +19,8 @@ def get_users(username: str, db: Session):
             insert_user(jsonable_encoder(isRuser[:])[0]['uid'], jsonable_encoder(isRuser[:])[0]['upw'],  jsonable_encoder(isRuser[:])[0]['uname'], jsonable_encoder(isRuser[:])[0]['hp'], db)
         
 
-    user_auth = jsonable_encoder(db.query(Rusers).filter(Rusers.uid == username)[:])[0]['webpower']
+    if jsonable_encoder(db.query(Rusers).filter(Rusers.uid == username)[:]):
+        user_auth = jsonable_encoder(db.query(Rusers).filter(Rusers.uid == username)[:])[0]['webpower']
     
     return user, user_auth
 

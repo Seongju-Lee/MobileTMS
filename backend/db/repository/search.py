@@ -76,7 +76,6 @@ def common_filter(db, gender: list, age: list, mfee:list):
         list_model_fee = [x.split('~') for x in dict_model_fee['model_fee'].values()]
 
 
-    print('mfee ::: ', mfee)
     for i in range(len(list_model_fee)):
         try:
             # print('iiii -- :: ' ,  list_model_fee[i][0], list_model_fee[i][1])
@@ -93,7 +92,6 @@ def common_filter(db, gender: list, age: list, mfee:list):
         except:
             continue
 
-    print('key_alpha_fee ;::: ', key_alpha_fee)
     # 알파모델료에 해당하는 DB key값 추출
     # 범위지정
     if len(key_alpha_fee) == 2:
@@ -108,7 +106,7 @@ def common_filter(db, gender: list, age: list, mfee:list):
     if '0100' in mfee:
         key_alpha_fee.append('0100')
 
-    # print('key_alpha_fee++ :: ', key_alpha_fee)
+   
     # 연령 필터링
     models = db.filter(((People.age >= max_age_year) & (People.age <= min_age_year)))
     # 성별 필터링
@@ -126,15 +124,9 @@ def celeb_filter(db, gender: list, age: list, cfee: list, section: list, period:
     # 나이, 연령 필터
     models = common_filter_(db, gender, age, True)
 
-    # print('CFEE: ', cfee)
-    print('SECTION: ', section)
-    print('PERIOD: ', period)
-
-
     cfee = list(map(lambda x: float(x) if not x == '' else 0, cfee))
     
 
-    print('CFEE: ', cfee)
     # 셀럽 모델료 필터
     if period == 'a_3':
         models = models.filter(((Yeon.a_3 >= cfee[0]) & (Yeon.a_3 <= cfee[1])))
@@ -160,8 +152,6 @@ def celeb_filter(db, gender: list, age: list, cfee: list, section: list, period:
 def search_recommendation_month(db: Session, gender: list, age: list, mfee: list, recommendation_section: list):
 
 
-    print(recommendation_section)
-    print(str((datetime.today() - relativedelta(months=1)).date()))
 
     models = db.query(Recommendation_month.mcode, Recommendation_month.gubun, func.sum(Recommendation_month.jum).label('sum_jum') , Recommendation_month.edit_time, People.mfee, People.name, People.sex, People.coname,  People.height, People.age, People.isyeon, People.image
     ).join(
@@ -176,11 +166,8 @@ def search_recommendation_month(db: Session, gender: list, age: list, mfee: list
         desc(func.sum(Recommendation_month.jum))
     )
 
-    print(models)
-    for m in jsonable_encoder(models[:])[:20]:
-        print(m)
-
     models = common_filter(models, gender, age, mfee)
+    models = models.limit(300)
     res_model = jsonable_encoder(models[:])
 
     # for m in res_model[:20]:
@@ -207,7 +194,7 @@ def search_mov_choi(db: Session, gender: list, age: list, mfee:list):
         )
 
     models = common_filter(models, gender, age, mfee)
-    models = models.limit(500)
+    models = models.limit(300)
     
 
     return jsonable_encoder(models[:])
@@ -230,6 +217,7 @@ def search_procount(db:Session, gender: list, age: list, mfee: list):
 
 
     models = common_filter(models, gender, age, mfee)
+    models = models.limit(300)
 
     return jsonable_encoder(models[:])
 

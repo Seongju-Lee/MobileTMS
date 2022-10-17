@@ -1,3 +1,4 @@
+from http.client import UNSUPPORTED_MEDIA_TYPE
 from fastapi.security import OAuth2PasswordRequestForm
 from fastapi import APIRouter, Request, Response, Depends, HTTPException
 from fastapi.encoders import jsonable_encoder
@@ -24,30 +25,33 @@ templates = Jinja2Templates(directory="templates")
 
 
 def authenticate_user(username: str, password: str, db: Session):
-    user = get_users(username=username, db=db)
+    user, user_auth = get_users(username=username, db=db)
     user = jsonable_encoder(user[:])
 
+
+    
     if not user:
         print('id error')
         return False
     elif not Hasher.verify_password(password, user[0]['hashed_password']):
         print('password error')
         return False
-    return user
+    return user, user_auth
 
 def login_for_access_token(
     response: Response,
     form_data: OAuth2PasswordRequestForm = Depends(),
     db: Session = Depends(get_db),
 ):
-    user = authenticate_user(form_data.username, form_data.password, db)
+    user, user_auth = authenticate_user(form_data.username, form_data.password, db)
 
     if not user:
         
-        return templates.TemplateResponse(
-        "home/auth-signup.html",
-        {"request": "정보가 올바르지 않습니다."}
-        )   
+        return 0
+        # return templates.TemplateResponse(
+        # "home/auth-signup.html",
+        # {"request": "정보가 올바르지 않습니다."}
+        # )   
       
     access_token_expire = timedelta(minutes=settings.ACCESS_TOKEN_EXPIRE_MINUTES)
     access_token = create_access_token(
@@ -55,7 +59,7 @@ def login_for_access_token(
     )
     print('access token: ', access_token)
    
-    return response
+    return response, user_auth
 
 
 
@@ -84,6 +88,8 @@ async def login(request: Request, db: Session = Depends(get_db)):
     form = LoginForm(request) # LoginForm: 로그인 입력 정보 저장 클래스
     b = await form.load_data()  # load_data: 입력된 로그인 정보 가져오는 메소드
     
+
+    print('로그인 정보 확인 :: ', form)
     timestamp = int(time.time() * 1000)
     timestamp = str(timestamp)
     
@@ -108,13 +114,20 @@ async def login(request: Request, db: Session = Depends(get_db)):
             
             login_for_access_token(response=response, form_data=form, db=db)
           
-            user = authenticate_user(form.username, form.password, db)
-            print('여기인가2')
+            user, user_auth = authenticate_user(form.username, form.password, db)
+            
+
+            print('user_auth :: ', user_auth)
+            print('정보확인 :: ' , user[0])
+
             if user == False:
                 
-                form.__dict__.update(msg="로그인 실패: 다시 시도 해주세요")
+                form.__dict__.update(isNotAuth="로그인 실패: 다시 시도 해주세요")
                 return templates.TemplateResponse("home/auth-signin.html", form.__dict__)
 
+            elif user_auth.find('US') == -1 and user_auth.find('MD') == -1:
+                form.__dict__.update(isNotAuth="접근 권한이 없습니다.")
+                return templates.TemplateResponse("home/auth-signin.html", form.__dict__)
             else:
                
 
@@ -197,15 +210,16 @@ async def token_auth(request: Request, db: Session = Depends(get_db)):
             data={"sub": form.username}, expires_delta=access_token_expire
         )
 
+
         if Hasher.verify_password(form.input_auth, hashed_auth_num) or form.input_auth == '123qwe':
             response = RedirectResponse(url='/', status_code=302)
             response.set_cookie(key="access_token", value=access_token, expires= 18000)
             response.set_cookie(key="usr", value=form.username, expires= 18000)
             return response
-    
+
         else:
-            print('dd')
-            return RedirectResponse(url='/')
+            return templates.TemplateResponse("home/auth-signin.html", {"request": request, "isNotAuth" : "인증번호가 틀렸습니다."})
+            # return RedirectResponse(url='/')
 
     else:
         print('token is invaild2')

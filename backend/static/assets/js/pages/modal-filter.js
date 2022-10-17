@@ -13,6 +13,7 @@ const chk_w = document.querySelector("#chk_w");
 const alpha = document.querySelector("#alpha");
 const chk_alpha = document.querySelector("#chk_auto");
 const chk_0100 = document.querySelector("#chk_0100");
+
 // 모델 추천점수 섹션
 const recommendation_section = document.querySelector("#recommendation_section");
 const chk_img = document.querySelector("#chk_img");

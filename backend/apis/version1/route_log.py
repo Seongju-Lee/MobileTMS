@@ -15,7 +15,7 @@ from fastapi import Response
 from fastapi.encoders import jsonable_encoder
 from fastapi.templating import Jinja2Templates
 from datetime import datetime, timedelta
-
+from starlette.responses import RedirectResponse
 
 router = APIRouter() 
 
@@ -61,18 +61,36 @@ def update_project_info_log(request: Request, code: str , db: Session = Depends(
         
 
 
-@router.post("/main")
+
+
+# @router.post("/main")
+# def access_main(request: Request, db: Session = Depends(get_db)):
+
+
+
+@router.post("/")
 def access_main(request: Request, db: Session = Depends(get_db)):
 
-    user_id: str = request.cookies.get("usr")
+   
+    try:
+        
+        token: str = request.cookies.get("access_token")
 
-    if user_id:
+        print('token입니다. ', token)
 
-        now = datetime.now() + timedelta(hours=9)
 
-        update_logs(user_id, request.client.host, request.__dict__['_headers']['user-agent'],
-        now, 'main', db=db)
+        if token is None:
+            return RedirectResponse('/user', status_code=303)
+        
+        # else:
 
+        #     return templates.TemplateResponse(
+        #         "index.html", {"request": request,
+        #                     "years": years,  "now_year": now_year}
+        #     )
+
+    except:
+        print('?')
 
 
 # 셀럽 상세정보 열람

@@ -50,28 +50,28 @@ def home(request: Request, db: Session = Depends(get_db)):
     except:
         print('?')
 
-@router.post("/")
-def home(request: Request, db: Session = Depends(get_db)):
-    now_year = datetime.today().year
-    years = [i for i in range(now_year-1, 1930, -1)]
+# @router.post("/")
+# def home(request: Request, db: Session = Depends(get_db)):
+#     now_year = datetime.today().year
+#     years = [i for i in range(now_year-1, 1930, -1)]
 
-    try:
+#     try:
         
-        token: str = request.cookies.get("access_token")
+#         token: str = request.cookies.get("access_token")
 
-        print('token입니다. ', token)
-        if token is None:
-            return RedirectResponse('/login?msg=_adf$dfsj149BSEjfeo_$')
+#         print('token입니다. ', token)
+#         if token is None:
+#             return RedirectResponse('/login?msg=_adf$dfsj149BSEjfeo_$')
         
-        else:
+#         else:
 
-            return templates.TemplateResponse(
-                "index.html", {"request": request,
-                            "years": years,  "now_year": now_year}
-            )
+#             return templates.TemplateResponse(
+#                 "index.html", {"request": request,
+#                             "years": years,  "now_year": now_year}
+#             )
 
-    except:
-        print('?')
+#     except:
+#         print('?')
 
 
 ######################

@@ -44,9 +44,10 @@
 <!-- Specific Page JS goes HERE  -->
 {% block javascripts %}
 
-	{% if msg %}
+	{% if isNotAuth %}
 	<script type="text/javascript">
-		alert('{{msg}}');
+		alert('{{isNotAuth}}');
 	</script>
 	{% endif %}
+
 {% endblock javascripts %}

@@ -43,8 +43,9 @@ def login_for_access_token(
     user = authenticate_user(form_data.username, form_data.password, db)
 
     if not user:
+        
         return templates.TemplateResponse(
-        "login.html",
+        "home/auth-signup.html",
         {"request": "정보가 올바르지 않습니다."}
         )   
       
@@ -108,10 +109,11 @@ async def login(request: Request, db: Session = Depends(get_db)):
             login_for_access_token(response=response, form_data=form, db=db)
           
             user = authenticate_user(form.username, form.password, db)
+            print('여기인가2')
             if user == False:
                 
                 form.__dict__.update(msg="로그인 실패: 다시 시도 해주세요")
-                return templates.TemplateResponse("login.html", form.__dict__)
+                return templates.TemplateResponse("home/auth-signin.html", form.__dict__)
 
             else:
                
@@ -120,43 +122,43 @@ async def login(request: Request, db: Session = Depends(get_db)):
                ##################################################################################################
                 # try: # 로그인 성공
 
-                # auth_num = random.randint(100000,999999)
+                auth_num = random.randint(100000,999999)
 
 
-                # ### biz.ppurio 토큰 발급
-                # url = 'https://api.bizppurio.com/v1/token'
+                ### biz.ppurio 토큰 발급
+                url = 'https://api.bizppurio.com/v1/token'
 
-                # header = {
-                #         "Content-Type" : "application/json; charset=utf-8",
-                #         "Authorization" : 'Basic ' + base64.b64encode((api_id + ":" + api_pw).encode('UTF-8')).decode('UTF-8')
+                header = {
+                        "Content-Type" : "application/json; charset=utf-8",
+                        "Authorization" : 'Basic ' + base64.b64encode((api_id + ":" + api_pw).encode('UTF-8')).decode('UTF-8')
                     
-                #         }
+                        }
 
-                # res= requests.post(url=url,headers=header, verify=False)
-                # print(res.json())
+                res= requests.post(url=url,headers=header, verify=False)
+                print(res.json())
 
 
-                # ### biz.ppurio 토큰 발급
-                # url = 'https://api.bizppurio.com/v3/message'
-                # data = {
-                #     'account': 'musew_api', 'refkey': 'test', 'type': 'sms', 
-                #     'from': '0234453222', 'to': user[:][0]['phone'], 'content': {
-                #     'sms': {"message" : "[레디 모바일TMS] 인증번호 [{}]를 입력해주세요.".format(auth_num) } }
-                # }
+                ### biz.ppurio 토큰 발급
+                url = 'https://api.bizppurio.com/v3/message'
+                data = {
+                    'account': 'musew_api', 'refkey': 'test', 'type': 'sms', 
+                    'from': '0234453222', 'to': user[:][0]['phone'], 'content': {
+                    'sms': {"message" : "[레디 모바일TMS] 인증번호 [{}]를 입력해주세요.".format(auth_num) } }
+                }
                 
-                # session = requests.Session()
-                # session.verify = False
+                session = requests.Session()
+                session.verify = False
 
-                # header = {'Content-type': 'application/json; charset=utf-8',
-                # 'Authorization': res.json()['type'] + " " + res.json()['accesstoken']
-                # }
+                header = {'Content-type': 'application/json; charset=utf-8',
+                'Authorization': res.json()['type'] + " " + res.json()['accesstoken']
+                }
 
-                # hashed_auth_num = Hasher.get_hash_password(str(auth_num))
-                # update_sms((user[:])[0]['id'], hashed_auth_num, db=db)
-                # response = session.post(url, headers=header,  data=json.dumps(data))
+                hashed_auth_num = Hasher.get_hash_password(str(auth_num))
+                update_sms((user[:])[0]['id'], hashed_auth_num, db=db)
+                response = session.post(url, headers=header,  data=json.dumps(data))
 
-                # print('Status code: ', response.status_code)
-                # print('Status code: ',response.json())
+                print('Status code: ', response.status_code)
+                print('Status code: ',response.json())
 
                 ##################################################################################################
                 # 문자인증 페이지로 이동.
@@ -202,6 +204,7 @@ async def token_auth(request: Request, db: Session = Depends(get_db)):
             return response
     
         else:
+            print('dd')
             return RedirectResponse(url='/')
 
     else:

@@ -9,46 +9,31 @@
                 <!-- ========   change your logo hear   ============ -->
                 <span>Watson TMS</span>
                 <!-- <img src="/static/assets/images/logo.png" alt="" class="logo"> -->
-                <img src="/static/assets/images/logo-icon.png" alt="" class="logo-thumb">
             </a>
             <a class="mob-toggler">
                 <i class="feather icon-more-vertical"></i>
             </a>
         </div>
-        <div class="collapse navbar-collapse">
-            <ul class="navbar-nav me-auto">
-                <li class="nav-item">
-                    <a class="pop-search"><i class="feather icon-search"></i></a>
-                    <div class="search-bar">
-                        <input type="text" class="form-control border-0 shadow-none" placeholder="Search here">
-                        <button type="button" class="btn-close" aria-label="Close">
-                        </button>
-                    </div>
-                </li>
-            </ul>
-            <ul class="navbar-nav ms-auto">
-                <li>
-                    <div class="dropdown drp-user">
-                        <a class="dropdown-toggle" data-bs-toggle="dropdown">
-                            <img src="/static/assets/images/user/avatar-1.jpg" class="img-radius wid-40"
-                                alt="User-Profile-Image">
-                        </a>
-                        <div class="dropdown-menu dropdown-menu-end profile-notification">
-                            <div class="pro-head">
-                                <img src="/static/assets/images/user/avatar-1.jpg" class="img-radius"
-                                    alt="User-Profile-Image">
-                                <span>John Doe</span>
-                            </div>
-                            <ul class="pro-body">
-                                <li><a href="/auth-signin.html" class="dropdown-item"><i
-                                            class="feather icon-lock"></i> Logout</a></li>
-                            </ul>
-                        </div>
-                    </div>
-                </li>
-            </ul>
-        </div>
         
+        <div class="collapse navbar-collapse">
+            <form method="GET" action="/search">
+                <ul class="navbar-nav me-auto">
+                    <li class="nav-item">
+                        <a class="pop-search" style=" color: #fff;"><i class="feather icon-search"></i></a>
+                        <!-- <input type="text" class="form-control border-0 shadow-none" placeholder="Search here"> -->
+                        <!-- <div class="search-bar">
+                            <input type="text" class="form-control border-0 shadow-none" placeholder="Search here">
+                            <button type="button" class="btn-close" aria-label="Close">
+                            </button>
+                        </div> -->
+                    </li>
+                    <li style="padding-left: 0px;"><input type="text" name="query" style="width: 130%;" class="form-control border-0 shadow-none" placeholder="인스타 주소 등을 입력하세요."></li>
+                    <button style="background-color: #f6f7fb; border: 0;" class="pop-search" type="submit"><i class="feather icon-search"></i></button>
+                </ul>
+            </form>
+        </div>
+   
     
 </header>
+
 <!-- [ Header ] end -->

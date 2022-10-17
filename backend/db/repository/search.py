@@ -393,3 +393,31 @@ def search_recommend(db: Session, gender: list, age: list, cfee: list, section: 
     return models
 
     
+
+def search_(db: Session, name: str = '', coname: str = '', manager: str = '', tel: str = ''):
+
+    models = db.query(People.codesys.label('mcode'), People.name, People.age, People.sex.label('gender'), People.coname, People.mfee, People.rdate, People.rdcode, People.height, People.sex, People.isyeon, Yeon.a_3, Yeon.a_6, Yeon.a_12
+                    ).outerjoin(
+                        Yeon, Yeon.codesys == People.codesys
+                    ).filter(
+                        People.name.contains(name) & People.coname.contains(coname) & (People.dam.contains(manager) | People.dam2.contains(manager) | People.dam3.contains(manager)) & (People.tel1.contains(tel) | People.dam2tel.contains(tel) | People.dam3tel.contains(tel) | People.ptel.contains(tel))
+                    )
+
+
+    
+    return jsonable_encoder(models[:])
+
+
+
+def search_query(db: Session, query: str):
+    
+    models = db.query(People.codesys.label('mcode'), People.name, People.age, People.sex.label('gender'), People.coname, People.mfee, People.rdate, People.rdcode, People.height, People.sex, People.isyeon, Yeon.a_3, Yeon.a_6, Yeon.a_12
+                    ).outerjoin(
+                        Yeon, Yeon.codesys == People.codesys
+                    ).filter(
+                        People.name.contains(query) | People.coname.contains(query) | (People.dam.contains(query) | People.dam2.contains(query) | People.dam3.contains(query)) | (People.tel1.contains(query) | People.dam2tel.contains(query) | People.dam3tel.contains(query) | People.ptel.contains(query) |
+                        People.sns2.contains(query))
+                    )
+
+
+    return jsonable_encoder(models[:])

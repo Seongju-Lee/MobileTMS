@@ -32,6 +32,7 @@ def get_filter_project(db: Session, teamtag, prname, cfowner, cfcompany, pryear)
 
 
     
+    
     projects = db.query(ProjectTable
                 ).filter(
                     ([ProjectTable.teamtag.contains(teamtag), ProjectTable.teamtag.contains('')][teamtag=='All']) & ProjectTable.prname.contains(prname) & (ProjectTable.cfowner.contains(cfowner) | ProjectTable.dir.contains(cfowner) | ProjectTable.sdir1.contains(cfowner) | ProjectTable.pd.contains(cfowner) | ProjectTable.ae.contains(cfowner) | ProjectTable.ae2.contains(cfowner) | ProjectTable.cd.contains(cfowner) | ProjectTable.pdcomppd1.contains(cfowner) | ProjectTable.pdcomppd2.contains(cfowner) | ProjectTable.pdcomppd3.contains(cfowner) | ProjectTable.prodpd.contains(cfowner) | ProjectTable.sdir2.contains(cfowner))
@@ -41,6 +42,7 @@ def get_filter_project(db: Session, teamtag, prname, cfowner, cfcompany, pryear)
                     ProjectTable.date.desc()
                 ).limit(350)
 
+   
     return projects
 
 
@@ -84,6 +86,75 @@ def get_project_contract(db: Session, pcode):
 def get_project_memo(db: Session, pcode):
     memo = db.query(ProjectMemo).filter(ProjectMemo.code == pcode)
     return memo
+
+
+
+
+# 레디와 진행한 소속사의 프로젝트 목록
+def get_project_with(db: Session, entertainment):
+
+    ############## 소속 연예인 리스트 ############
+    codes = []
+    entertainment_models = db.query(People.codesys).filter(People.coname.contains(entertainment))
+
+    for code in jsonable_encoder(entertainment_models[:]):
+        codes.append(code['codesys'])
+    
+    ############################
+
+    ############# 소속 연예인들 레디 진행 이력 리스트 ##############
+
+    project_table = []
+
+    for model in codes:
+        projects = db.query(ProjectContract).filter(ProjectContract.code == model).filter(ProjectContract.cdate >= (datetime.today() - relativedelta(months=36)))
+        projects = jsonable_encoder(projects[:])
+
+        for project in projects:
+            if (project['modelfee']):
+                project['modelfee'] = format(project['modelfee'], ',')
+            
+            if project['susu']:  
+                project['susu'] = format(project['susu'], ',')
+            if project['chunggu']:
+                project['chunggu'] = format(project['chunggu'], ',')
+            project_table.append(project)
+
+    
+    return project_table
+
+
+
+
+## 보안 프로젝트 일 경우만 call
+def project_security(db: Session, user_id, pcode, team_scrty, admin_scrty):
+
+    user_auth = db.query(Rusers.team, Rusers.power8).filter(Rusers.uid == user_id)
+
+    try:
+        user_auth = jsonable_encoder(user_auth[:])[0]
+        print("USER: ", user_auth['team'])
+
+        if (user_auth['team'] in team_scrty) or (user_auth['team'] in admin_scrty) or ('PBO' in user_auth['power8']):
+            return False
+        else:
+            return True
+    except:
+        return True
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
@@ -148,18 +219,4 @@ def get_project_with(db: Session, entertainment):
     
     return project_table
 
-## 보안 프로젝트 일 경우만 call
-def project_security(db: Session, user_id, pcode, team_scrty, admin_scrty):
 
-    user_auth = db.query(RUsers.team, RUsers.power8).filter(RUsers.uid == user_id)
-
-    try:
-        user_auth = jsonable_encoder(user_auth[:])[0]
-
-
-        if (user_auth['team'] in team_scrty) or ('PBO' in user_auth['power8']):
-            return 1
-        else:
-            return 0
-    except:
-        return 'fail'

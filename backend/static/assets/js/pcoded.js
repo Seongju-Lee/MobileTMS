@@ -51,6 +51,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
 
     document.querySelector(".mob-toggler").addEventListener('click', function () {
+        console.log("FFF")
         document.querySelector('.pcoded-header > .collapse,.pcoded-header > .container > .collapse').classList.toggle('d-flex');
     });
 

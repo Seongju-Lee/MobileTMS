@@ -524,50 +524,30 @@ input[type="range"]::-webkit-slider-thumb_age {
                           <table class="table table-hover m-b-0">
                             <thead>
                               <tr>
-                                <th ><span>등록일</span></th>
+                                <th ><span>모델</span></th>
                                 <th ><span>프로젝트명</span></th>
-                                <th style="width: 100px;"><span>광고주</span></th>
-                                <th><span>광고회사</span></th>
-                                <th style="width: 100px;"><span>온에어</span></th>
+                                <th style="width: 100px;"><span>촬영일</span></th>
+                                <th><span>개월</span></th>
+                                <th style="width: 100px;"><span>비고</span></th>
                               </tr>
                             </thead>
                             <tbody>
                               {% for project in projects %}
                               
-                                <tr onclick="location.href='/projects/{{project.code}}'">
+                                <tr onclick="location.href='/projects/{{project.projcode}}'">
                                   
-                                  {% if project.seleb == 'V' %}
-                                    <td>
-                                      <a href="/projects/{{project.code}}" target="_blank" style="color: black;">
-                                        {{project.date}}<br>{{project.teamtag}}<br><b style="color: rgb(180, 135, 135);">셀럽</b>
-                                        {% if project.lastok == 'OK' %}
-                                          <br><b style="color: blue;">완료</b>
-                                        {% elif project.cancel == 'OK' %}
-                                          <br><b style="color: rgb(255, 0, 0);">캔슬</b>
-                                        {% elif project.holding == 'OK' %}
-                                          <br><b style="color: rgb(174, 0, 255);">홀딩</b>
-                                        {% endif %}
-                                      </a>
-                                    </td>
-                                  {% else %}
-                                    <td>
-                                      <a href="/projects/{{project.code}}" target="_blank" style="color: black;">
-                                        {{project.date}}<br>{{project.teamtag}}
-                                        {% if project.lastok == 'OK' %}
-                                          <br><b style="color: blue;">완료</b>
-                                        {% elif project.cancel == 'OK' %}
-                                          <br><b style="color: rgb(255, 0, 0);">캔슬</b>
-                                        {% elif project.holding == 'OK' %}
-                                          <br><b style="color: rgb(174, 0, 255);">홀딩</b>
-                                        {% endif %}
-                                      </a>
-                                    </td>
-                                  {% endif %}
+                                  <td>
+                                    <a href="/projects/{{project.projcode}}" target="_blank" style="color: black;">
+                                      {{project.mname}}
+                                      
+                                    </a>
+                                  </td>
+                                
                                   
-                                  <td><a href="/projects/{{project.code}}" target="_blank" style="color: black;">{{project.prname}}</a></td>
-                                  <td><a href="/projects/{{project.code}}" target="_blank" style="color: black;">{{project.cfowner}}</a></td>
-                                  <td><a href="/projects/{{project.code}}" target="_blank" style="color: black;">{{project.cfco}}</a></td>
-                                  <td><a href="/projects/{{project.code}}" target="_blank" style="color: black;">{{project.onairck}}</a></td>
+                                  <td><a href="/projects/{{project.code}}" target="_blank" style="color: black;">{{project.poom}}</a></td>
+                                  <td><a href="/projects/{{project.code}}" target="_blank" style="color: black;">{{project.cdate}}</a></td>
+                                  <td><a href="/projects/{{project.code}}" target="_blank" style="color: black;">{{project.geyakm}}</a></td>
+                                  <td><a href="/projects/{{project.code}}" target="_blank" style="color: black;">{{project.etc}}</a></td>
 
                                 </tr>
                               {% endfor %}
@@ -578,101 +558,7 @@ input[type="range"]::-webkit-slider-thumb_age {
                     </div>
                   </div>
 
-                    <div class="tab-pane fade" id="pills-profile" role="tabpanel" aria-labelledby="pills-profile-tab">
-                      <div class="list-grid" >
-                      <div class="table-responsive" style="margin: 0 5px;">
-                        <div class="customer-scroll1">
-                          <table class="table table-hover m-b-0">
-                            <thead>
-                              <tr>
-                                <th><span>등록일</span></th>
-                                <th><span>프로젝트명</span></th>
-                                <th><span>광고주</span></th>
-                                <th><span>광고회사</span></th>
-                                <th><span>온에어</span></th>
-                              </tr>
-                            </thead>
-                            <tbody>
-                              {% for project in projects %}
-                                {% if project.seleb == 'V' %}
-                                  
-                                  <tr>
-                                    <td>
-                                      <a href="/projects/{{project.code}}" target="_blank" style="color: black;">
-                                        {{project.date}}<br>{{project.teamtag}}<br><b style="color: rgb(180, 135, 135);">셀럽</b>
-                                        {% if project.lastok == 'OK' %}
-                                          <br><b style="color: blue;">완료</b>
-                                        {% elif project.cancel == 'OK' %}
-                                          <br><b style="color: rgb(255, 0, 0);">캔슬</b>
-                                        {% elif project.holding == 'OK' %}
-                                          <br><b style="color: rgb(174, 0, 255);">홀딩</b>
-                                        {% endif %}
-                                      </a>
-                                    </td>
-                                    
-                                    <td><a href="/projects/{{project.code}}" target="_blank" style="color: black;">{{project.prname}}</a></td>
-                                    <td><a href="/projects/{{project.code}}" target="_blank" style="color: black;">{{project.cfowner}}</a></td>
-                                    <td><a href="/projects/{{project.code}}" target="_blank" style="color: black;">{{project.cfco}}</a></td>
-                                    <td><a href="/projects/{{project.code}}" target="_blank" style="color: black;">{{project.onairck}}</a></td>
-
-                                  </tr>
-                                {% endif %}
-                              {% endfor %}
-
-                            </tbody>
-                          </table>
-                        </div>
-                      </div>
-                    </div>
-                    </div>
-                    <div class="tab-pane fade" id="pills-contact" role="tabpanel" aria-labelledby="pills-contact-tab">
-                      <div class="list-grid">
-                      <div class="table-responsive" style="margin: 0 5px;">
-                        <div class="customer-scroll2">
-                          <table class="table table-hover m-b-0">
-                            <thead>
-                              <tr>
-                                <th><span>등록일</span></th>
-                                <th><span>프로젝트명</span></th>
-                                <th><span>광고주</span></th>
-                                <th><span>광고회사</span></th>
-                                <th><span>온에어</span></th>
-                              </tr>
-                            </thead>
-                            <tbody>
-                              {% for project in projects %}
-                                {% if project.seleb == '' %}
-
-                                  <tr>
-                                    <td>
-                                      <a href="/projects/{{project.code}}" target="_blank" style="color: black;">
-                                        {{project.date}}<br>{{project.teamtag}}<br>
-                                        {% if project.lastok == 'OK' %}
-                                          <br><b style="color: blue;">완료</b>
-                                        {% elif project.cancel == 'OK' %}
-                                          <br><b style="color: rgb(255, 0, 0);">캔슬</b>
-                                        {% elif project.holding == 'OK' %}
-                                          <br><b style="color: rgb(174, 0, 255);">홀딩</b>
-                                        {% endif %}
-                                      </a>
-                                    </td>
-                                    
-                                    <td><a href="/projects/{{project.code}}" target="_blank" style="color: black;">{{project.prname}}</a></td>
-                                    <td><a href="/projects/{{project.code}}" target="_blank" style="color: black;">{{project.cfowner}}</a></td>
-                                    <td><a href="/projects/{{project.code}}" target="_blank" style="color: black;">{{project.cfco}}</a></td>
-                                    <td><a href="/projects/{{project.code}}" target="_blank" style="color: black;">{{project.onairck}}</a></td>
-
-                                  </tr>
-                                {% endif %}
-                              {% endfor %}
-
-                            </tbody>
-                          </table>
-                        </div>
-                      </div>
-                      </div>
-                    </div>
-                    
+                   
 
                   </div>
                 </div>

@@ -4,8 +4,9 @@ from fastapi import APIRouter, Depends
 from fastapi import Request
 from fastapi.templating import Jinja2Templates
 from pandas import read_sql_table
+from pydantic import JsonWrapper
 
-from db.repository.search import search_recommendation_month, search_mov_choi, search_procount, search_real_time, search_open_count, search_scount, search_recommend
+from db.repository.search import search_recommendation_month, search_mov_choi, search_procount, search_real_time, search_open_count, search_scount, search_recommend, search_, search_query
 from db.session import get_db
 from sqlalchemy.orm import Session
 from starlette.responses import RedirectResponse
@@ -32,8 +33,9 @@ def code_to_mfee(models):
 
 
 @router.get("")
-def get_search(request: Request, category: str, gender: str = 'm%w', age: str = '1%100', mfee: str = '150%4100', cfee: str = '0%10',alpha: str = '0100%auto', recommendation_section: str = 'img%fav%act%new', section: str = "singer%actor%idol%entertainment%broadcast%celeb%youtube%", period: str = "a_3",
-           db: Session = Depends(get_db)):
+def get_search(request: Request, category: str = '', gender: str = 'm%w', age: str = '1%100', mfee: str = '150%4100', cfee: str = '0%10',alpha: str = '0100%auto', recommendation_section: str = 'img%fav%act%new', section: str = "singer%actor%idol%entertainment%broadcast%celeb%youtube%", period: str = "a_3", 
+                name: str ='', coname: str='', manager: str='', tel: str='', query: str = '',
+                db: Session = Depends(get_db)):
 
 
     token: str = request.cookies.get("access_token")
@@ -46,20 +48,36 @@ def get_search(request: Request, category: str, gender: str = 'm%w', age: str = 
         return templates.TemplateResponse(
             "home/list-models.html", get_search_models(request, gender, age, mfee, alpha, recommendation_section, db)
         )
-
+    # 셀럽
     if category == 'celeb' and token:
         
         return templates.TemplateResponse(
             "home/list-celeb.html", get_search_celebs(request, gender, age, cfee, section,period ,db)
         )
-
+    # 순옥스타
     if category == 'sunok' and token:
         
         return templates.TemplateResponse(
             "home/list-sunokstar.html", get_search_sunok(request, gender, age, cfee, section,period ,db)
         )
 
+    # 단순검색
 
+    if (not category) and not (name or coname or manager or tel) and (not query) and token:
+        return templates.TemplateResponse(
+            "home/search-page.html",  {"request": request}
+        )
+    elif (name or coname or manager or tel) and token:
+        return templates.TemplateResponse(
+            "home/list-search.html",  (get_search_(request, name, coname, manager, tel, db))
+        )
+
+
+    if query:
+        
+        return templates.TemplateResponse(
+            "home/list-search.html",  (get_search_query(request,query, db))
+        )
 
 def get_search_models(request: Request, gender: str = 'm%w', age: str = '1%100', mfee: str = '150%4100', alpha: str = '0100%auto', recommendation_section: str = 'img%fav%act%new',
            db: Session = Depends(get_db)):
@@ -144,3 +162,29 @@ def get_search_sunok(request: Request, gender: str = 'm%w', age: str = '1%100', 
             "recommend_models" : recommend_models
             }
 
+
+
+def get_search_(request: Request, name: str = '', coname: str = '', manager: str = '', tel: str = '', db: Session = Depends(get_db)):
+    
+
+    models = search_(db=db, name=name, coname=coname, tel=tel, manager=manager)
+
+    
+
+    code_to_mfee(models)
+
+    for m in models:
+        print(m)
+    return {"request": request, "models" : models}
+
+
+def get_search_query(request: Request, query: str= '', db: Session = Depends(get_db)):
+
+    models = search_query(db, query)
+
+    
+
+    code_to_mfee(models)
+    for m in models:
+        print(m)
+    return {"request": request, "models" : models}

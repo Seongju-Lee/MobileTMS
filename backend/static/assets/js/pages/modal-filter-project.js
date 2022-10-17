@@ -199,3 +199,6 @@ window.addEventListener('scroll', fixNav);
 inputLeft.addEventListener("input", setLeftValue_);
 inputRight.addEventListener("input", setRightValue_);
 selectTeam.addEventListener("change", setTeam)
+
+
+

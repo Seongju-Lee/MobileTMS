@@ -51,15 +51,15 @@ def project(request: Request, db: Session = Depends(get_db), pcode:str=''):
 
         scrty = project_security(db, user, pcode, team_scrty, admin_scrty)
 
-        if not scrty:
-            return templates.TemplateResponse(
-                    "project_info.html", {"request": request, "info": '보안'}
-            )
+        # if not scrty:
+        #     return templates.TemplateResponse(
+        #             "project_info.html", {"request": request, "info": '보안'}
+        #     )
 
-        elif scrty == 'fail':
-                return templates.TemplateResponse(
-                        "project_info.html", {"request": request, "info": '로그아웃'}
-                )
+        # elif scrty == 'fail':
+        #         return templates.TemplateResponse(
+        #                 "project_info.html", {"request": request, "info": '로그아웃'}
+        #         )
 
     try:
         memo = rtf_to_text(pmemo[0]['memo']) # memo 없으면 except
@@ -71,7 +71,7 @@ def project(request: Request, db: Session = Depends(get_db), pcode:str=''):
             memo_.append(i.split('\n'))
         
         return templates.TemplateResponse(
-                "project_info.html", {"request": request, "info": info[0], "memos": memo_, "models": models}
+                "project_info.html", {"request": request, "info": info[0], "memos": memo_, "models": models, 'scrty': scrty}
         )
 
 

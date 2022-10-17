@@ -5,16 +5,17 @@ from db.base_class import Base
 
 
 class AccessLog(Base):
-    __tablename__ = "temp1"
+    __tablename__ = "temp2"
 
 
-    idx = Column(Integer,  primary_key=True)
-    MEM_IDX = Column(Integer) # 모델코드
-    DEVICE = Column(String(255)) # 프로젝트 코드
-    IP = Column(String(100)) # 촬영일
-    ACCESS_DATE = Column(TIMESTAMP) # 모델명
-    SCREEN = Column(String(100)) # 모델료
-    ACTION = Column(String(100)) # 모델료
+    rno = Column(Integer,  primary_key=True)
+    mem_idx = Column(Integer) # 사용자 ID
+    device = Column(String(255)) # 접속 장치
+    ip = Column(String(100)) # 접속 IP
+    access_time = Column(TIMESTAMP) # 접속 시간
+    action = Column(String(100)) # 접속 route
+    screen = Column(String(100)) # 접속 화면
+
 
 
 

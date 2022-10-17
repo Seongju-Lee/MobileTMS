@@ -1,0 +1,759 @@
+{% extends "layouts/base.html" %}
+
+{% block title %} Dashboard {% endblock %} 
+
+<!-- Specific Page CSS goes HERE  -->
+{% block stylesheets %}
+
+<style>
+
+.inactive{
+  display: none;
+}
+
+.modal-dialog{
+  position: fixed;
+  top:185px; 
+  left: 0; 
+  bottom: 0; 
+  right: 0;
+  /* background: rgba(0, 0, 0, 0.8); */
+  z-index: 998;
+}
+
+.modal-container{
+  width: 350px;
+  height: 410px;
+  margin: 150px auto;
+  border-radius: 10px;
+  background-color: #f8f8f8;
+  position: absolute;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  z-index: 999;
+}
+
+.modal-title{
+  text-align: left;
+  padding: 16px;
+}
+
+.modal-input{
+  text-align: center;
+  width: 100%;
+  margin-top: 30px;
+}
+form  input, textarea{
+  border: 1px solid #e5e5e5;
+}
+.modal-input input{
+  width: 250px;
+  height: 40px;
+}
+
+.modal-text{
+  text-align: center;
+  margin-top: 30px;
+  width: 100%;
+}
+
+.modal-text textarea{
+  width: 250px;
+}
+
+
+.modal-screen{
+  text-align: center;
+  width: 100%;
+  height: 100px;
+}
+
+.modal-screen p{
+  text-align: left;
+  padding: 16px;
+}
+.fileUploadSize{
+  width: 250px;
+  height: 40px;
+  border: 1px solid #e5e5e5;
+  margin: 0 auto;
+  line-height: 40px;
+}
+
+.fileUploadSize label{
+  justify-content: space-between;
+}
+
+.modal-bnt{
+  text-align: center;
+  margin-top: 20px;
+}
+
+.modal-send-bnt,
+.modal-close{
+  width: 80px;
+  height: 30px;
+}
+
+.modal-send-bnt{
+  background: black;
+  color: #fff;
+}
+
+
+
+#modal-filter{
+    	background-image : url('/static/assets/images/icon-filter.png');
+        background-repeat : no-repeat;
+        background-size : 25px;
+}
+
+
+
+
+label {
+display: inline-block;
+padding: 5px;
+position: relative;
+padding-left: 20px;
+}
+
+label input {
+display: none;
+}
+
+label span {
+border: 1px solid #ccc;
+width: 100%;
+height: 100%;
+
+line-height: 1;
+text-align: center;
+left: 0;
+top: 50%;
+margin-top: -7.5px;
+display: flex;
+justify-content: center;
+
+border: 1px solid rgb(223, 223, 223);
+border-radius: 30px;
+background-color: rgb(255, 255, 255);
+
+font-size: 14px;
+font-weight: 400;
+
+/* -webkit-box-align: center; */
+align-items: center;
+/* -webkit-box-pack: center; */
+user-select: none;
+
+}
+
+input:checked+span {
+background: rgb(50, 108, 249);
+border-color: rgb(50, 108, 249);
+color: rgb(255, 255, 255);
+}
+
+
+.hYNqrz {
+    width: 116px;
+    height: 38px;
+    margin-top: 8px;
+    margin-left: 8px;
+    position: relative;
+}
+
+/* .hYNqrz > input[type="checkbox"] {
+    width: 0px;
+    height: 0px;
+    opacity: 0;
+    position: absolute;
+    top: 0px;
+    left: 0px;
+} */
+
+
+.hYNqrz > p {
+    color: rgb(101, 101, 101);
+    font-size: 14px;
+    font-weight: 400;
+    display: flex;
+    -webkit-box-align: center;
+    align-items: center;
+    -webkit-box-pack: center;
+    justify-content: center;
+    width: 100%;
+    height: 100%;
+    border: 1px solid rgb(223, 223, 223);
+    border-radius: 3px;
+    background-color: rgb(255, 255, 255);
+    user-select: none;
+}
+
+input[type="checkbox" i] {
+    background-color: initial;
+    cursor: default;
+    appearance: auto;
+    box-sizing: border-box;
+    margin: 3px 3px 3px 4px;
+    padding: initial;
+    border: initial;
+}
+
+
+
+
+/* 99999999999990000000000000000 */
+
+
+.middle_cfee {
+  position: relative;
+  width: 100%;
+  max-width: 500px;
+}
+
+
+.slider {
+  position: relative;
+  z-index: 1;
+  height: 10px;
+  margin: 0 15px;
+}
+
+.slider > .track_cfee {
+  position: absolute;
+  z-index: 1;
+  left: 0;
+  right: 0;
+  top: 0;
+  bottom: 0;
+  border-radius: 5px;
+  background-color: #c6c6c6;
+}
+
+.slider > .range_cfee {
+  position: absolute;
+  z-index: 2;
+  left: 0%;
+  right: 0%;
+  top: 0;
+  bottom: 0;
+  border-radius: 5px;
+  background-color: rgb(50, 108, 249);
+}
+
+.slider > .thumb_cfee {
+  position: absolute;
+  z-index: 3;
+  width: 30px;
+  height: 30px;
+  background-color: #ffffff;
+  border-radius: 50%;
+  box-shadow: rgb(157 157 157 / 20%) 0px 2px 5px 0px;
+  border: 1px solid rgb(237, 237, 237);
+}
+
+.slider > .thumb_cfee.left_cfee {
+  left: 0%;
+  transform: translate(-5px, -10px);
+}
+.slider > .thumb_cfee.right_cfee {
+  right: 0%;
+  transform: translate(15px, -10px);
+}
+
+input[type="range"] {
+  position: absolute;
+  /* opacity로 가린 것을 이벤트도 비활성화하기 위해 */
+  pointer-events: none;
+  -webkit-appearance: none;
+  z-index: 2;
+  height: 10px;
+  width: 100%;
+  opacity: 0;
+}
+
+input[type="range"]::-webkit-slider-thumb {
+  /* 겹쳐진 두 thumb를 모두 활성화 */
+  pointer-events: all;
+  width: 30px;
+  height: 30px;
+  border-radius: 0;
+  border: 0 none;
+  background-color: red;
+  cursor: pointer;
+  /* appearance를 해야 위의 스타일들을 볼 수 있음 */
+  -webkit-appearance: none;
+}
+
+
+
+.middle_age {
+  position: relative;
+  width: 100%;
+  max-width: 500px;
+}
+
+.slider > .track_age {
+  position: absolute;
+  z-index: 1;
+  left: 0;
+  right: 0;
+  top: 0;
+  bottom: 0;
+  border-radius: 5px;
+  background-color: #c6c6c6;
+}
+
+.slider > .range_age {
+  position: absolute;
+  z-index: 2;
+  left: 0%;
+  right: 0%;
+  top: 0;
+  bottom: 0;
+  border-radius: 5px;
+  background-color: rgb(50, 108, 249);
+}
+
+.slider > .thumb_age {
+  position: absolute;
+  z-index: 3;
+  width: 30px;
+  height: 30px;
+  background-color: #ffffff;
+  border-radius: 50%;
+  box-shadow: rgb(157 157 157 / 20%) 0px 2px 5px 0px;
+  border: 1px solid rgb(237, 237, 237);
+}
+
+.slider > .thumb_age.left_age {
+  left: 0%;
+  transform: translate(-15px, -10px);
+}
+.slider > .thumb_age.right_age {
+  right: 0%;
+  transform: translate(15px, -10px);
+}
+
+input[type="range"]::-webkit-slider-thumb_age {
+  /* 겹쳐진 두 thumb를 모두 활성화 */
+  pointer-events: all;
+  width: 30px;
+  height: 30px;
+  border-radius: 0;
+  border: 0 none;
+  background-color: red;
+  cursor: pointer;
+  /* appearance를 해야 위의 스타일들을 볼 수 있음 */
+  -webkit-appearance: none;
+}
+
+
+
+.fixed-nav {
+    position: fixed;
+    z-index: 4;
+    width: 96.2%;
+    padding-top: 0px;
+    /* box-shadow: 0 5px rgba(0, 0, 0, 0.1); */
+  }
+
+
+@media only screen and (max-width: 575px)
+{
+ 
+
+
+}
+
+</style>
+
+{% endblock stylesheets %}
+
+{% block content %}
+
+
+    <!-- [ Main Content ] start -->
+    <div class="pcoded-main-container">
+        <div class="pcoded-content">
+           
+            <!-- [ Main Content ] start -->
+            <div class="row">
+                <!-- [ grid ] start -->
+                <div class="col-sm-12">
+                    
+                    
+                    
+                  <div id="filter-bar" class="card" >
+                    <label style="font-size: 15px;">
+                      <h5 class="mt-5">모델 정보</h5>
+                    
+                    </label>
+                  
+                    <!-- active show 이용해서 정렬값 정렬하기. ==> 30일추천, 영상초이, 프로카운트 -->
+                    <div class="card-header" style="padding: 0px; padding-left:10px; padding-right:10px; float: left;">
+                              
+                      <ul class="nav nav-pills nav-fill mt-3 border-bottom pb-3" id="pills-tab" role="tablist">
+                          
+                          <li class="nav-item">
+                              <a class="nav-link active" id="pills-home-tab" data-bs-toggle="pill" href="#pills-home" role="tab" aria-controls="pills-home" aria-selected="true"><i class="feather icon-film m-r-5"></i>S카운트순</a>
+                          </li>
+                          <li class="nav-item">
+                              <a class="nav-link" id="pills-profile-tab" data-bs-toggle="pill" href="#pills-profile" role="tab" aria-controls="pills-profile" aria-selected="false"><i class="feather icon-file-text m-r-5"></i>추천순</a>
+                          </li>
+                         
+                          <input type="button" style="margin-right: 20px; margin-left: 10px; margin-bottom:0.5rem; background-position: center; border-color: #000000;"  id="modal-filter" class="btn  btn-outline-primary" >
+                         
+                          <!-- <li class="nav-item">
+                          </li> -->
+                      </ul>
+                    </div>
+
+                    
+                  </div>
+
+                    
+                    <div class="card">
+
+                        <div class="card-body" style="padding: 2px">
+                            
+                            <!-- --------------------------------------------------------------------------------- -->
+                            <!--  modal창  START -->
+                            
+                            
+                            <form method="GET" action="/search">
+                            <div class="modal-dialog inactive"  role="document" >
+                              <form method="GET" action="/search">
+                                <input type=hidden name=category value='sunok'>
+                                <div class="modal-content" style="overflow:auto; height:550px;">
+                                    <div class="modal-header">
+                                        <h5 class="modal-title" id="exampleModalPopoversLabel">검색 필터</h5>
+                                    </div>
+
+                                    
+                                    <div class="modal-body">
+                                        <h5>성별</h5>
+                                        
+                                        
+                                        <label class="styled__Label-sc-1z0qnhc-1 hYNqrz"><input type="checkbox" class="chk_gender" id="chk_m" value="m"><span>남자</span></label>
+                                        <label class="styled__Label-sc-1z0qnhc-1 hYNqrz"><input type="checkbox" class="chk_gender" id="chk_w"  value="w"><span>여자</span></label>
+                                        
+                                        <input name='gender' id="gender" type="hidden" value="m%w%"/>
+                                        <!-- 연령 Start -->
+                                        <hr>
+                                        <h5>연령</h5>
+                                        <P><span id="min_left_age" class="min_value_age">1</span> - <span id="max_right_age"  class="max_value_age">100</span></P>
+                                        <div class="middle_age">
+                                          <div  style="width: 100%;">
+
+                                              
+                                            <!-- 진짜 슬라이더 -->
+                                            <input type="range" id="input-left_age" min="1" step="1" max="100" value="1" />
+                                            <input type="range" id="input-right_age" min="1" step="1" max="100" value="100" />
+                                            <input type="hidden" id="age" name="age"  />
+
+                                            <!-- 커스텀 슬라이더 -->
+                                            <div class="slider">
+                                              <div class="track_age"></div>
+                                              <div class="range_age"></div>
+                                              <div class="thumb_age left_age"></div>
+                                              <div class="thumb_age right_age"></div>
+                                            </div>
+                                          </div>
+                                        </div>
+                                        <!-- 연령 End -->
+
+
+                                        <!-- 셀럽 모델료 Start -->
+                                        <hr>
+                                        <h5 style="float: left;">셀럽 모델료</h5>
+
+                                        <select id="period_"  class="btn  btn-outline-primary dropdown-toggle" style="margin-left: 20px;" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                          <option value="a_3">3개월</option>
+                                          <option value="a_6">6개월</option>
+                                          <option value="a_12">1년</option>
+                                        </select>
+                                        <input type="hidden" id="period_cfee" name="period" value=""/>
+                                        
+                                        <input type="hidden" id="alpha" name="alpha" />
+                                        
+                                        <P><span id="min_left_cfee" class="min_value_cfee">0</span> <span id="max_right_cfee" class="max_value_cfee">10</span></P>
+                                        <div class="middle_cfee">
+                                          <div  style="width: 100%;">
+
+                                              
+                                            <!-- 진짜 슬라이더 -->
+                                            <input type="range" id="input-left_cfee" min="0" step="0.5" max="10" value="0" />
+                                            <input type="range" id="input-right_cfee" min="0" step="0.5" max="10" value="10" />
+                                            <input type="hidden" id="cfee" name="cfee" value="0%10" >
+                                            <!-- 커스텀 슬라이더 -->
+                                            <div class="slider">
+                                              <div class="track_cfee"></div>
+                                              <div class="range_cfee"></div>
+                                              <div class="thumb_cfee left_cfee"></div>
+                                              <div class="thumb_cfee right_cfee"></div>
+                                            </div>
+                                          </div>
+                                        </div>
+
+                                        <!-- 셀럽 모델료 End -->
+
+
+
+                                        <!-- 셀럽 섹션 Start -->
+                                        <hr>
+                                        <h5 style="float: left;">셀럽 섹션</h5>
+                                        <br><br>
+                                        <div class="middle_cfee">
+                                          <div  style="width: 100%;">
+                                            
+                                              <label class="styled__Label-sc-1z0qnhc-1 hYNqrz"><input type="checkbox" class="model_section" id="section_singer" value="singer"><span>가수</span></label>
+                                              <label class="styled__Label-sc-1z0qnhc-1 hYNqrz"><input type="checkbox" class="model_section" id="section_actor"  value="actor"><span>연기자</span></label>
+                                              <label class="styled__Label-sc-1z0qnhc-1 hYNqrz"><input type="checkbox" class="model_section" id="section_idol" value="idol"><span>아이돌</span></label>
+                                              <label class="styled__Label-sc-1z0qnhc-1 hYNqrz"><input type="checkbox" class="model_section" id="section_entertainment"  value="entertainment"><span>예능인</span></label>
+                                              <label class="styled__Label-sc-1z0qnhc-1 hYNqrz"><input type="checkbox" class="model_section" id="section_broadcast" value="broadcast"><span>방송인</span></label>
+                                              <label class="styled__Label-sc-1z0qnhc-1 hYNqrz"><input type="checkbox" class="model_section" id="section_celeb"  value="celeb"><span>유명인</span></label>
+                                              <label class="styled__Label-sc-1z0qnhc-1 hYNqrz"><input type="checkbox" class="model_section" id="section_youtube"  value="youtube"><span>셀럽유튜버</span></label>
+                                          </div>
+                                        </div>
+                                        <input type="hidden" id="section" name="section" />
+                                        <!-- 셀럽섹션 End -->
+
+                                        
+                                    </div>
+                                    
+                                    <div class="modal-footer" style="position: sticky; bottom: 0;  z-index: 20; background-color: white;">
+                                        <button type="button"  id = "modal-close" class="btn  btn-secondary" data-dismiss="modal">취소</button>
+                                        <button style="width: 80%;" type="submit" class="btn  btn-primary">적용하기</button>
+                                    </div>
+                                    
+                                </div>
+                              </form>
+                            </div>
+                          </form>
+                            <!-- modal 창 END -->
+                            <!-- --------------------------------------------------------------------------------- -->
+                          
+                            
+
+
+                            <!-- Content 창 START -->
+
+                            <div class="card-body p-0">
+
+                              <div class="tab-content" id="pills-tabContent">
+        
+        
+                                  <!-- ------------------------ -->
+                                  <!-- 30일추천 모델 탭 -->
+                                    <div  class="tab-pane fade show active" id="pills-home" role="tabpanel" aria-labelledby="pills-home-tab">
+                                      <div class="list-grid" >
+                                        <div class="row">
+                                          
+                                            <!-- Force next columns to break to new line -->
+                                          <div class="w-100"></div>
+                                          
+                                          <h6> {{ scount_models | length }} 명 </h6>
+                                          
+                                          {% for model in scount_models[:] %}
+                                            <div class="col-4 col-sm-3" style="text-align : center; padding: 3px; background-color: #ffffff;">
+                                              <a href="/celebs/{{model.codesys}}" style="color: #000000;">
+                                              
+                                              <!-- <h4 style="z-index: 2; position:absolute; color: #4099ff;">{{model.sum_jum}}</h4> -->
+                                                
+                                              <div style="text-align: center;"> 
+                                                 
+                                                {% if model.mea >= 2 %}
+                                                  {% for i in range(1,model.mea+1) %}
+                                                    {% if i == 1 %}
+                                                      {% set src_ = "http://pic2.readymodel.kr/mdpic/"+ model.mcode[0:3] + "/" + model.mcode[0:4] + "/" + model.mcode + "/sys_photo/model.jpg" %}
+                                                    {% elif i == 2 %}
+                                                      {% set src_ = "http://pic2.readymodel.kr/mdpic/"+ model.mcode2[0:3] + "/" + model.mcode2[0:4] + "/" + model.mcode2 + "/sys_photo/model.jpg" %}
+                                                    {% elif i == 3 %}
+                                                      {% set src_ = "http://pic2.readymodel.kr/mdpic/"+ model.mcode3[0:3] + "/" + model.mcode3[0:4] + "/" + model.mcode3 + "/sys_photo/model.jpg" %}
+                                                    {% elif i == 4 %}
+                                                      {% set src_ = "http://pic2.readymodel.kr/mdpic/"+ model.mcode3[0:3] + "/" + model.mcode3[0:4] + "/" + model.mcode3 + "/sys_photo/model.jpg" %}
+                                                    
+                                                    
+                                                    {% endif %}
+                                                    <div style="float:left;width:50%;height:50%;">
+                                                      <img src={{src_}} style="width:100%; height:110px;">
+                                                    </div>
+                                                  {% endfor %}
+
+                                                  {% if not (model.mea % 2 == 0) %}
+                                                  <div style="float:left;width:50%;height:50%;">
+                                                    <img  style="width:100%; height:110px;">
+                                                  </div>
+                                                  {%endif%}
+                                                    
+                                                {% else %}
+                                                  <img src="http://pic2.readymodel.kr/mdpic/{{model.codesys[0:3]}}/{{model.codesys[0:4]}}/{{model.codesys}}/sys_photo/model.jpg" style="width:110px; height:110px;">
+                                                {%endif%}
+                                              </div>
+                                              
+                                              <div class="info_position" style="padding-left:5%">
+                                                {% if model.mea >= 2 %}
+                                                  <h6 style="padding-top: 130px;">{{model.suntitle}}</h6>
+
+                                                {% else %}
+                                                  <h6 class="card-text" style="margin-bottom:0px; color:rgb(0, 0, 0); display: inline;" >이름</h6> <span style="margin-bottom:3px; display: inline; font-size: small;">{{model.name.split('(')[0]}}</span>
+                                                
+                                                  <h6 class="card-text" style="margin-bottom:0px; color:rgb(0, 0, 0)">정보</h6>
+                                                  <span class="card-title" style="margin-bottom:3px; font-size: small;"> {{model.age}} / {{model.height}} / {{model.sex}}</span>
+                                                
+                                                  <h6 class="card-text" style="margin-bottom:0px; color:rgb(0, 0, 0)">모델료</h6><span style="margin-bottom:2px; font-size: small;">{{model.a_3}} / {{model.a_6}} / {{model.a_12}}</span>
+                                                  <h6 class="card-text" style="margin-bottom:0px; color:rgb(0, 0, 0)">소속사</h6><span style="margin-bottom:2px; font-size: small;">{{model.coname}}</span>
+                                                {% endif %}
+                                              
+                                                <!-- <h6 class="card-text" style="margin-bottom:0px; color:rgb(0, 0, 0);">모델료</h6> <span style="margin-bottom:0px; display: inline; font-size: small;">{{model.mfee}}</span> -->
+                                                      
+                                              </div>
+
+                                                </a>
+                                              </div>
+
+                                          {% endfor %}
+
+
+                                            
+                                        </div>
+                                
+                                      </div>
+                                    </div>
+                                  <!-- ------------------------------------->
+                                  <!-- ------------------------------------->
+        
+                               
+                                  <!-- ------------------------ -->
+                                  <!-- 영상초이 모델 탭 -->
+                                  <div class="tab-pane fade" id="pills-profile" role="tabpanel" aria-labelledby="pills-profile-tab">
+        
+                                    <div class="list-grid" >
+                                      <div class="row">
+                                        
+                                          <!-- Force next columns to break to new line -->
+                                        <div class="w-100"></div>
+                                       
+                                        <h6> {{ recommend_models | length }} 명 </h6>
+                                          
+                                        {% for model in recommend_models[:] %}
+                                          <div class="col-4 col-sm-3" style="text-align : center; padding: 3px; background-color: #ffffff;">
+                                            <a href="/celebs/{{model.codesys}}" style="color: #000000;">
+                                            
+                                            <!-- <h4 style="z-index: 2; position:absolute; color: #4099ff;">{{model.sum_jum}}</h4> -->
+                                              
+                                            <div style="text-align: center; "> 
+                                              <img src="http://pic2.readymodel.kr/mdpic/{{model.codesys[0:3]}}/{{model.codesys[0:4]}}/{{model.codesys}}/sys_photo/model.jpg" style="width:110px; height:110px;">
+                                            </div>
+                                            
+                                              <div class="info_position" style="padding-left:5%">
+
+                                                <h6 class="card-text" style="margin-bottom:0px; color:rgb(0, 0, 0); display: inline;" >이름</h6> <span style="margin-bottom:3px; display: inline; font-size: small;">{{model.name.split('(')[0]}}</span>
+                                              
+                                                <h6 class="card-text" style="margin-bottom:0px; color:rgb(0, 0, 0)">정보</h6>
+                                                <span class="card-title" style="margin-bottom:3px; font-size: small;"> {{model.age}} / {{model.height}} / {{model.sex}}</span>
+                                              
+                                                <h6 class="card-text" style="margin-bottom:0px; color:rgb(0, 0, 0)">모델료</h6><span style="margin-bottom:2px; font-size: small;">{{model.a_3}} / {{model.a_6}} / {{model.a_12}}</span>
+                                                <h6 class="card-text" style="margin-bottom:0px; color:rgb(0, 0, 0)">소속사</h6><span style="margin-bottom:2px; font-size: small;">{{model.coname}}</span>
+                                                  
+                                              
+                                                <!-- <h6 class="card-text" style="margin-bottom:0px; color:rgb(0, 0, 0);">모델료</h6> <span style="margin-bottom:0px; display: inline; font-size: small;">{{model.mfee}}</span> -->
+                                                      
+                                              </div>
+
+                                              </a>
+                                            </div>
+
+                                        {% endfor %}
+
+
+
+                                      </div>
+                              
+                                    </div>
+                                    
+                                  </div>
+                                  <!-- ------------------------------------->
+                                  <!-- ------------------------------------->
+        
+
+                                  <!-- ------------------------ -->
+                                  <!-- 프로카운트 모델 탭 -->
+                                  <div class="tab-pane fade" id="pills-contact" role="tabpanel" aria-labelledby="pills-contact-tab">
+
+                                    <div class="list-grid" >
+                                      <div class="row">
+                                        
+                                          <!-- Force next columns to break to new line -->
+                                        <div class="w-100"></div>
+                                        
+                                          
+                                      </div>
+                              
+                                    </div>
+                                  </div>
+
+                                  <!-- ------------------------------------->
+                                  <!-- ------------------------------------->
+
+
+                              </div>
+                            </div>
+        
+                            <!-- Content 창 END -->
+                            
+                        </div>
+                    </div>
+                   
+
+                         
+                            
+                        </div>
+                    </div>
+                </div>
+                <!-- [ grid ] end -->
+            </div>
+            <!-- [ Main Content ] end -->
+        </div>
+    </div>
+    <!-- [ Main Content ] end -->
+
+
+
+
+    {% endblock content %}
+
+    <!-- Specific Page JS goes HERE  -->
+    {% block javascripts %}
+    
+        <!-- Apex Chart -->
+        <!-- <script src="/static/assets/js/plugins/apexcharts.min.js"></script> -->
+    
+        <!-- custom-chart js -->
+
+       
+        <script src="/static/assets/js/pages/dashboard-main.js"></script>
+    
+        <script src="/static/assets/js/pages/modal-filter-celeb.js?gender={{preSelectValue.gender}}&age={{preSelectValue.age}}&cfee={{preSelectValue.cfee}}&section={{preSelectValue.section}}&period={{preSelectValue.period}}"></script>
+        
+        <script>
+          $('select[id="period_"]' ).change(function(){
+            var month = $('select[id="period_"]').val();
+            console.log(month)
+            $("#period_cfee").val(month)
+
+          });
+        </script>
+
+
+        <script>
+          var tab = document.getElementById("tab-sunok");
+          tab.style.fontWeight = "bold";
+        </script>
+    {% endblock javascripts %}
+    

@@ -4,8 +4,8 @@ from fastapi import APIRouter, Depends
 from fastapi import Request, status, responses, Response, requests
 from fastapi.responses import HTMLResponse
 from fastapi.templating import Jinja2Templates
-from db.repository.search import search_job,  chu_30, movchoi, proc, order_register, order_recommend, order_s_count, order_read, search_celeb
-from db.repository.search import   order_realtime, models_info, proc_celeb, img_mov_info, cf_mov_info, act_mov_info, best_img, get_rd_contracts
+# from db.repository.search import search_job,  chu_30, movchoi, proc, order_register, order_recommend, order_s_count, order_read, search_celeb
+# from db.repository.search import   order_realtime, models_info, proc_celeb, img_mov_info, cf_mov_info, act_mov_info, best_img, get_rd_contracts
 from sqlalchemy.orm import Session
 from db.session import get_db
 from fastapi.encoders import jsonable_encoder
@@ -38,41 +38,40 @@ def home(request: Request, db: Session = Depends(get_db)):
 
 
         if token is None:
-            return RedirectResponse('/login')
+            return RedirectResponse('/user')
         
         else:
 
-
             return templates.TemplateResponse(
-                "index.html", {"request": request,
+                "home/index.html", {"request": request,
                             "years": years,  "now_year": now_year}
             )
 
     except:
         print('?')
 
-@router.post("/")
-def home(request: Request, db: Session = Depends(get_db)):
-    now_year = datetime.today().year
-    years = [i for i in range(now_year-1, 1930, -1)]
+# @router.post("/")
+# def home(request: Request, db: Session = Depends(get_db)):
+#     now_year = datetime.today().year
+#     years = [i for i in range(now_year-1, 1930, -1)]
 
-    try:
+#     try:
         
-        token: str = request.cookies.get("access_token")
+#         token: str = request.cookies.get("access_token")
 
-        print('token입니다. ', token)
-        if token is None:
-            return RedirectResponse('/login?msg=_adf$dfsj149BSEjfeo_$')
+#         print('token입니다. ', token)
+#         if token is None:
+#             return RedirectResponse('/login?msg=_adf$dfsj149BSEjfeo_$')
         
-        else:
+#         else:
 
-            return templates.TemplateResponse(
-                "index.html", {"request": request,
-                            "years": years,  "now_year": now_year}
-            )
+#             return templates.TemplateResponse(
+#                 "index.html", {"request": request,
+#                             "years": years,  "now_year": now_year}
+#             )
 
-    except:
-        print('?')
+#     except:
+#         print('?')
 
 
 ######################

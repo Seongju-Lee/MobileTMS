@@ -7,7 +7,7 @@ from db.session import get_db
 from fastapi.encoders import jsonable_encoder
 from striprtf.striprtf import rtf_to_text
 from starlette.responses import RedirectResponse
-from db.repository.project import get_project, get_filter_project, get_project_info, get_project_memo, get_project_model, get_project_with, project_security
+from db.repository.project import get_project, get_filter_project, get_project_memo, get_project_model, get_project_with, project_security
 
 templates = Jinja2Templates(directory="templates")
 router = APIRouter()
@@ -51,15 +51,15 @@ def project(request: Request, db: Session = Depends(get_db), pcode:str=''):
 
         scrty = project_security(db, user, pcode, team_scrty, admin_scrty)
 
-        if not scrty:
-            return templates.TemplateResponse(
-                    "project_info.html", {"request": request, "info": '보안'}
-            )
+        # if not scrty:
+        #     return templates.TemplateResponse(
+        #             "project_info.html", {"request": request, "info": '보안'}
+        #     )
 
-        elif scrty == 'fail':
-                return templates.TemplateResponse(
-                        "project_info.html", {"request": request, "info": '로그아웃'}
-                )
+        # elif scrty == 'fail':
+        #         return templates.TemplateResponse(
+        #                 "project_info.html", {"request": request, "info": '로그아웃'}
+        #         )
 
     try:
         memo = rtf_to_text(pmemo[0]['memo']) # memo 없으면 except
@@ -71,7 +71,7 @@ def project(request: Request, db: Session = Depends(get_db), pcode:str=''):
             memo_.append(i.split('\n'))
         
         return templates.TemplateResponse(
-                "project_info.html", {"request": request, "info": info[0], "memos": memo_, "models": models}
+                "project_info.html", {"request": request, "info": info[0], "memos": memo_, "models": models, 'scrty': scrty}
         )
 
 

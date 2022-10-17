@@ -5,7 +5,6 @@ from math import dist
 from os import access
 from fastapi.encoders import jsonable_encoder
 from numpy import product
-from psutil import users
 from sqlalchemy import between, desc, distinct, not_, true 
 from sqlalchemy.sql import func
 

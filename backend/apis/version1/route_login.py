@@ -122,7 +122,7 @@ async def login(request: Request, db: Session = Depends(get_db)):
                 form.__dict__.update(isNotAuth="로그인 실패: 다시 시도 해주세요")
                 return templates.TemplateResponse("home/auth-signin.html", form.__dict__)
 
-            elif user_auth.find('US') == -1 and user_auth.find('MD') == -1:
+            elif (user_auth.find('US') == -1 or user_auth.find('MD') == -1):
                 form.__dict__.update(isNotAuth="접근 권한이 없습니다.")
                 return templates.TemplateResponse("home/auth-signin.html", form.__dict__)
             else:

@@ -18,14 +18,10 @@ class Users(Base):
 
 
 
-class Rusers(Base):
+class RUsers(Base):
     __tablename__ = "ruser"
 
     uid = Column(Integer, primary_key=True)
-    upw = Column(String(40))
-    uname = Column(String(40))
-    hp = Column(String(40))
     team = Column(String(20), nullable=False)
-    webpower = Column(String(20))
     power8 = Column(String(Text), nullable=False)
    

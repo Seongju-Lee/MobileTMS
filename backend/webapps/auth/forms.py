@@ -11,9 +11,9 @@ class LoginForm:
         
     async def load_data(self):
         form = await self.request.form()
-        
         self.username = form.get("username")
         self.password = form.get("password")
+        # print('Login ID,PW ', self.username, self.password)
 
     async def is_valid(self):
         if not self.username:

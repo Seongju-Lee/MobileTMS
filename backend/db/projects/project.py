@@ -1,5 +1,4 @@
 from datetime import date
-from re import L
 from numpy import integer
 from sqlalchemy import Column, Integer, String, ForeignKey, TIMESTAMP, Text
 from db.base_class import Base
@@ -39,12 +38,6 @@ class ProjectTable(Base):
     onairck = Column(String(100)) # 온에어 날짜 
 
 
-    artcom = Column(String(100)) # 아트컴퍼니
-    artcomtel = Column(String(100)) # 아트컴퍼니 TEL
-
-    stu = Column(String(100)) # 스튜디오
-    stutel = Column(String(100)) # 스튜디오 TEL
-
     pdcomppd1 = Column(String(100)) # PD컴퍼니 TEL
     pdcomppd1tel = Column(String(100)) # PD컴퍼니 TEL
     pdcomppd2 = Column(String(100)) # PD컴퍼니 TEL
@@ -83,37 +76,6 @@ class ProjectTable(Base):
     camdate4 = Column(String(100))
 
 
-    cancel = Column(String(100)) # 캔슬
-    holding = Column(String(100)) # 홀딩
-    lastok = Column(String(100)) # 완료
-
-
-    minok = Column(String(10)) # 입금
-    moutok = Column(String(10)) # 지급
-    chungok = Column(String(10)) # 청구
-
-
-#프로젝트 파일
-class ProjectFile(Base):
-    __tablename__ = "upfile"
-
-    no = Column(Integer,  primary_key=True)
-    mname = Column(String(20))
-    fname = Column(String(40))
-    dir = Column(String(40))
-    dir2 = Column(String(40))
-    rootdir = Column(String(40))
-
-
-# 에이스 견적서 파일
-class EstimateFile(Base):
-    __tablename__ = "project_gj"
-
-    rno = Column(Integer, primary_key=True)
-
-    projcode = Column(String(20))
-    projname = Column(String(20))
-    fname = Column(String(20))
 
 
 class ProjectMemo(Base):
@@ -133,7 +95,6 @@ class ProjectContract(Base):
     cdate = Column(String(30)) # 촬영일
     mname = Column(String(30)) # 모델명
     modelfee = Column(Integer) # 모델료
-    moutdate = Column(String(20)) # 지급일1
     chunggu = Column(Integer) # 청구액
     poom = Column(String(30)) # 프로젝트명
     rdate = Column(String(30)) # 입력일

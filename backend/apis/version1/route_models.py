@@ -125,7 +125,7 @@ def get_model_info(request: Request, codesys: str = '', db: Session = Depends(ge
         return templates.TemplateResponse(
             "home/info-model.html", {"request": request,
                                     "model_detail_info": model,
-                                    "host" : request.url.hostname + ":8000",
+                                    "host" : request.url.hostname,
                                     "is_existed_img": is_existed_img,
                                     "is_existed_act": is_existed_act,
                                     "is_existed_cf": is_existed_cf,

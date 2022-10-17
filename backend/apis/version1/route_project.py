@@ -131,7 +131,7 @@ def get_project_info(request: Request, pcode: str, db: Session = Depends(get_db)
 
         return templates.TemplateResponse(
             "home/info-project.html", {"request": request,
-                                        "host" : request.url.hostname + ":8000",
+                                        "host" : request.url.hostname,
                                         "project_info": project_info[0],
                                         "project_files": project_files,
                                         "estimate_files": estimate_files,
@@ -142,7 +142,7 @@ def get_project_info(request: Request, pcode: str, db: Session = Depends(get_db)
         
     return templates.TemplateResponse(
             "home/info-project.html", {"request": request,
-                                        "host" : request.url.hostname + ":8000",
+                                        "host" : request.url.hostname,
                                         "project_info": project_info[0],
                                         "project_files": project_files,
                                         "estimate_files": estimate_files,

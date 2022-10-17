@@ -123,7 +123,7 @@ def get_model_info(request: Request, codesys: str = '', db: Session = Depends(ge
         return templates.TemplateResponse(
             "home/info-celeb.html", {"request": request,
                                     "model_detail_info": model,
-                                    "host" : request.url.hostname + ":8000",
+                                    "host" : request.url.hostname,
                                     }
         )
 

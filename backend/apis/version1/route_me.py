@@ -71,7 +71,7 @@ def get_viewd_models(request: Request, db: Session = Depends(get_db)):
         # 30일추천, 영상초이, 프로카운트 세가지로 나누어서 res 보냄.
         return templates.TemplateResponse(
             "home/list-viewed_models.html", {"request": request,
-                                    "host" : request.url.hostname + ":8000",
+                                    "host" : request.url.hostname,
                                     "models" : models
                                    }
         )
@@ -98,7 +98,7 @@ def get_viewd_projects(request: Request, db: Session = Depends(get_db)):
         # 30일추천, 영상초이, 프로카운트 세가지로 나누어서 res 보냄.
         return templates.TemplateResponse(
             "home/list-viewd_projects.html", {"request": request,
-                                    "host" : request.url.hostname + ":8000",
+                                    "host" : request.url.hostname,
                                     "projects" : projects
                                    }
         )

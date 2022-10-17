@@ -1,0 +1,85 @@
+{% extends "layouts/base.html" %}
+
+{% block title %} Dashboard {% endblock %} 
+
+<!-- Specific Page CSS goes HERE  -->
+{% block stylesheets %}{% endblock stylesheets %}
+
+{% block content %}
+
+    <!-- [ Main Content ] start -->
+    <div class="pcoded-main-container">
+        <div class="pcoded-content">
+            <!-- [ Main Content ] start -->
+            <div class="row">
+                <!-- order-card start -->
+                <div class="col-md-6 col-xl-3">
+                    <a href="/me/viewed-models">
+                        <div class="card bg-c-blue order-card">
+                            <div class="card-body">
+                                <h6 class="text-white">최근 본 모델</h6>
+                                <h2 class="text-end text-white"><span>최근 본 모델</span></h2>
+                                <p class="m-b-0">최근 열람한 모델들을 볼 수 있습니다.</p>
+                                
+                            </div>
+                        </div>
+                    </a>
+                </div>
+                
+                <div class="col-md-6 col-xl-3">
+                    <a href="/me/viewd-projects">
+                        <div class="card bg-c-green order-card">
+                            <div class="card-body">
+                                <h6 class="text-white">열람 프로젝트</h6>
+                                <h2 class="text-end text-white"><span>열람한 프로젝트</span></h2>
+                                <p class="m-b-0">최근 열람한 프로젝트를 확인할 수 있습니다.</p>
+                                
+                                <!-- <p class="m-b-0">This Month<span class="float-end">213</span></p> -->
+                            </div>
+                        </div>
+                    </a>
+                </div>
+                
+              
+            </div>
+            <!-- [ Main Content ] end -->
+        </div>
+    </div>
+    <!-- [ Main Content ] end -->
+
+{% endblock content %}
+
+<!-- Specific Page JS goes HERE  -->
+{% block javascripts %}
+
+    <!-- Apex Chart -->
+    <!-- <script src="/static/assets/js/plugins/apexcharts.min.js"></script> -->
+
+    <!-- custom-chart js -->
+    <script src="/static/assets/js/pages/dashboard-main.js"></script>
+
+
+    <script>
+
+        document.querySelector(".mob-toggler").addEventListener('click', function () {
+            console.log("FFF")
+            document.querySelector('.pcoded-header > .collapse,.pcoded-header > .container > .collapse').classList.toggle('d-flex');
+          });
+          
+          
+          
+          
+          // search-bar
+          document.querySelector(".pop-search").addEventListener('click', function () {
+            slideDown(document.querySelector(".search-bar"), 200);
+            document.querySelector(".search-bar input").focus();
+          });
+          document.querySelector(".search-bar .btn-close").addEventListener('click', function () {
+            slideUp(document.querySelector(".search-bar"), 200);
+          });
+          if (document.querySelector('.pcoded-navbar').classList.contains('theme-horizontal')) {
+            rmactive();
+            horizontalmenu();
+          }
+    </script>
+{% endblock javascripts %}

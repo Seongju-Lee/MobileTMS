@@ -21,9 +21,8 @@ def create_tables():
 
 
 description = """
-Hello World API
-## Heading
-**Return JSON format of Hello World **
+WatsonTMS
+## 레디엔터테인먼트 사내 정보 검색 플랫폼
 """
 
 
@@ -41,8 +40,8 @@ def start_application():
         title=settings.PROJECT_TITLE,
         version=settings.PROJECT_VERSION,
         description=description,
-        contact={"name": "Sumanshu Nankana",
-                 "email": "sumanshunankana@gmail.com"},
+        contact={"name": "ReadyEntertainment",
+                 "email": "musew@readyent.com"},
     )
     create_tables()
     include_router(app)

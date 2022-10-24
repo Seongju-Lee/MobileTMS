@@ -29001,7 +29001,7 @@ body.box-layout .pcoded-navbar.theme-horizontal ~ .pcoded-header {
 
 @media (min-width: 670px) and (max-width: 770px){
     .table {
-        table-layout: fixed;
+        /* table-layout: fixed; */
         width: 700px
     }
 }
@@ -29009,7 +29009,7 @@ body.box-layout .pcoded-navbar.theme-horizontal ~ .pcoded-header {
 
 @media (min-width: 550px) and (max-width: 670px){
     .table {
-        table-layout: fixed;
+        /* table-layout: fixed; */
         width: 600px
     }
 }
@@ -29018,7 +29018,7 @@ body.box-layout .pcoded-navbar.theme-horizontal ~ .pcoded-header {
 @media (max-width: 550px) {
    
     .table {
-        table-layout: fixed;
+        /* table-layout: fixed; */
         width: 500px
     }
 

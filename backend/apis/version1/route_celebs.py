@@ -80,10 +80,10 @@ def get_model_info(request: Request, codesys: str = '', db: Session = Depends(ge
     print('##############################\n')
 
    
-    for m in tel_memo_list:
+    # for m in tel_memo_list:
        
-        if m['memo']:
-            m['memo'] = m['memo'].split('\r\n\r\n20')
+    #     if m['memo']:
+    #         m['memo'] = m['memo'].split('\r\n\r\n20')
     # print('안녕 :: ', tel_memo_list)
     # for tel_memo in tel_memo_list:
     #     print(tel_memo['memo'])
@@ -91,9 +91,17 @@ def get_model_info(request: Request, codesys: str = '', db: Session = Depends(ge
     #     print('\n-----------------------------------\n')
     
 
-    # for m in model['tel_memo']:
-    #     print(m)
+    # for m in tel_memo_list:
+        
+    #     for memo in m['memo']:
+    #         print(memo)
+    #         print('tq')
+    #         m['memo'] = memo.split('\r\n')
 
+
+    # for m in tel_memo_list:
+    #     print(m['memo'])
+        
     for contract in project_list[:]:
         contract['modelfee'] = format(contract['modelfee'], ',')
         

@@ -781,19 +781,15 @@ input[type="range"]::-webkit-slider-thumb_age {
                               {% for i in range(model_detail_info.tel_memo | length) %}
                                 {% if model_detail_info.tel_memo[i].memo %}
                                   {% if i == 0 %}
-                                    <div id="_{{model_detail_info.tel_memo[i].rcode}}" style="overflow: auto; margin-top: 20px;  ">
-                                      {%for m in model_detail_info.tel_memo[i].memo%}
-                                        {{m}}
-                                        <br><br>
-                                      {%endfor%}
-                                    </div>
+                                  <div id="_{{model_detail_info.tel_memo[i].rcode}}" style="overflow: auto; margin-top: 20px;  ">
+                                    {{ model_detail_info.tel_memo[i].memo | replace('\r\n', '<br>')|safe }}
+                                    <br><br>
+                                  </div>
                                   {% else %}
-                                    <div id="_{{model_detail_info.tel_memo[i].rcode}}" style="overflow: auto; margin-top: 20px;  display: none;">
-                                      {%for m in model_detail_info.tel_memo[i].memo%}
-                                        {{m}}
-                                        <br><br>
-                                      {%endfor%}
-                                    </div>
+                                  <div id="_{{model_detail_info.tel_memo[i].rcode}}" style="overflow: auto; margin-top: 20px;  display: none;">
+                                    {{ model_detail_info.tel_memo[i].memo | replace('\r\n', '<br>')| safe }}
+                                    <br><br>
+                                  </div>
                                   {% endif %}
                                 {%endif%}
                               {% endfor %}

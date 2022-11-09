@@ -91,9 +91,7 @@ def get_model_info(request: Request, codesys: str = '', db: Session = Depends(ge
     code_to_mfee(model)
 
 
-    for m in tel_memo_list:
-        if m['memo']:
-            m['memo'] = m['memo'].split('\r\n\r\n20')
+
 
     for constract in project_list[:]:
         constract['modelfee'] = format(constract['modelfee'], ',')

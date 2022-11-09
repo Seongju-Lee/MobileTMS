@@ -39,6 +39,12 @@ def get_search(request: Request, category: str = '', gender: str = 'm%w', age: s
 
 
     token: str = request.cookies.get("access_token")
+
+    teamtag = ['All' , 'C1-1', 'C1-2', 'C2-1', 'C2-2', 'C3-1','C3-2', 'C3-3', 'C4-1', 'C4-2', 'C5-1', 'C5-2', 'C6-1', 'C6-2',
+                'G1', 'IP', 'INFL', 'PPL', 'DRAMA', '뮤즈A', '뮤즈B', '레디차이나', '',
+                '명유미', '이순옥', '조선아', '문인옥', '김다애', '서동혁', '',
+                '구기운', '최영상', 'KOO최']
+
     if token is None:
         return RedirectResponse('/user')
 
@@ -65,7 +71,7 @@ def get_search(request: Request, category: str = '', gender: str = 'm%w', age: s
 
     if (not category) and not (name or coname or manager or tel) and (not query) and token:
         return templates.TemplateResponse(
-            "home/search-page.html",  {"request": request}
+            "home/search-page.html",  {"request": request, "team_list" : teamtag}
         )
     elif (name or coname or manager or tel) and token:
         return templates.TemplateResponse(

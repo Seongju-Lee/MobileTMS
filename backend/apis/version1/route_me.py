@@ -43,8 +43,22 @@ def code_to_mfee(models):
                 model['People']['mfee'] = dict_model_fee['model_fee'][model['People']['mfee']]
 #######
 
+@router.get("")
+def my_page(request: Request, db: Session = Depends(get_db)):
 
+     # 유저 token 유효성
+    token: str = request.cookies.get("access_token")
+    if token is None:
+        return RedirectResponse('/user')
 
+    if token:
+        
+ 
+        return templates.TemplateResponse(
+            "home/index.html", {"request": request,
+                                    "host" : request.url.hostname
+                                   }
+        )
 
 
 @router.get("/viewed-models")

@@ -29,7 +29,11 @@ def home(request: Request, db: Session = Depends(get_db)):
     now_year = datetime.today().year
     years = [i for i in range(now_year-1, 1930, -1)]
  
-    
+    teamtag = ['All' , 'C1-1', 'C1-2', 'C2-1', 'C2-2', 'C3-1','C3-2', 'C3-3', 'C4-1', 'C4-2', 'C5-1', 'C5-2', 'C6-1', 'C6-2',
+                'G1', 'IP', 'INFL', 'PPL', 'DRAMA', '뮤즈A', '뮤즈B', '레디차이나', '',
+                '명유미', '이순옥', '조선아', '문인옥', '김다애', '서동혁', '',
+                '구기운', '최영상', 'KOO최']
+
     try:
         
         token: str = request.cookies.get("access_token")
@@ -41,10 +45,10 @@ def home(request: Request, db: Session = Depends(get_db)):
             return RedirectResponse('/user')
         
         else:
-
+            
             return templates.TemplateResponse(
-                "home/index.html", {"request": request,
-                            "years": years,  "now_year": now_year}
+                "home/search-page.html", {"request": request,
+                            "years": years,  "now_year": now_year, "team_list" : teamtag}
             )
 
     except:

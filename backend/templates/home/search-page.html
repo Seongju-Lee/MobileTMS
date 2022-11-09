@@ -363,17 +363,10 @@ input[type="range"]::-webkit-slider-thumb_age {
   }
 
 
-@media only screen and (max-width: 575px)
-{
-
-}
-
 </style>
 
 {% endblock stylesheets %}
 {% block content %}
-
-
 <!-- [ Main Content ] start -->
 <div class="pcoded-main-container">
   <div class="pcoded-content" style="overflow-x: hidden;">
@@ -383,153 +376,205 @@ input[type="range"]::-webkit-slider-thumb_age {
       <!-- [ grid ] start -->
       <div class="col-sm-12">
 
-            
-
-        <h5 style="font-size: 20px; margin-top: 0.8rem;">단순검색</h5>
-
-            <div class="card">
-              <div class="card-body" style="padding: 0px; margin-top: 3rem;">
-
-                <!-- --------------------------------------------------------------------------------- -->
-
-                <!-- --------------------------------------------------------------------------------- -->
-
-                <div class="card-body p-0">
-                  <div class="tab-content" id="pills-tabContent">
-
-                    
-                    
-                
-                      <div class="list-grid" >
 
 
-                        <form method="GET" action="/search" style="width : 100%;">
-                          <ul class="nav" style="width : 100%; ">
-            
-                            <li class="input-group mb-3" style="width:40%; float: left; margin: auto;">
-                              성명<br>
-                              <input class="form-control me-2" style="border-color: #ffffff; width: 100%" id="autocompletes" name="name" type="search" placeholder="성명"><br>
-                              </li>
-                              
-                            <li style="width:40%; float: left; margin: auto; margin-top: 0px;">
-                              회사명<br>
-                              <input class="form-control me-2" style="border-color: #ffffff" id="autocompletes_coname" name="coname" type="search" placeholder="회사명"><br>
-                            </li>
-            
-                            <li style="width:40%; float: left; margin: auto;">
-                              담당자<br>
-                              <input class="form-control me-2" style="border-color: #ffffff" id="autocompletes_manager" name="manager" type="search" placeholder="담당자"><br>
-                            </li>
-                            <li style="width:40%; float: left; margin: auto;">
-                              연락처<br>
-                              <input class="form-control me-2" style="border-color: #ffffff" id="autocompletes_tel" name="tel" type="search" placeholder="연락처"><br>
-                            </li>
-            
-                          </ul>
-                          
-                          <div class="modal-footer"
-                            style="position: sticky; bottom: 0;  z-index: 20; background-color: white;">
-                            <button style="width: 50%;" type="submit" class="btn  btn-primary">적용하기</button>
-                          </div>
-                          
-                        </form>
+        <h5 style="font-size: 20px; margin-top: 0.8rem;">모델 검색</h5>
+
+        <div class="card">
+          <div class="card-body" style="padding: 0px; margin-top: 3rem;">
+
+            <!-- --------------------------------------------------------------------------------- -->
+
+            <!-- --------------------------------------------------------------------------------- -->
+
+            <div class="card-body p-0">
+              <div class="tab-content" id="pills-tabContent">
 
 
-                          
-                          
-                    
 
-                    
 
-                  </div>
+                <div class="list-grid">
+
+
+                  <form method="GET" action="/search" style="width : 100%;">
+                    <ul class="nav" style="width : 100%; ">
+
+                      <li class="input-group mb-3" style="width:40%; float: left; margin: auto;">
+                        성명<br>
+                        <input class="form-control me-2" style="border-color: #ffffff; width: 100%" id="autocompletes"
+                          name="name" type="search" placeholder="성명"><br>
+                      </li>
+
+                      <li style="width:40%; float: left; margin: auto; margin-top: 0px;">
+                        회사명<br>
+                        <input class="form-control me-2" style="border-color: #ffffff" id="autocompletes_coname"
+                          name="coname" type="search" placeholder="회사명"><br>
+                      </li>
+
+                      <li style="width:40%; float: left; margin: auto;">
+                        담당자<br>
+                        <input class="form-control me-2" style="border-color: #ffffff" id="autocompletes_manager"
+                          name="manager" type="search" placeholder="담당자"><br>
+                      </li>
+                      <li style="width:40%; float: left; margin: auto;">
+                        연락처<br>
+                        <input class="form-control me-2" style="border-color: #ffffff" id="autocompletes_tel" name="tel"
+                          type="search" placeholder="연락처"><br>
+                      </li>
+
+                    </ul>
+
+                    <div class="modal-footer"
+                      style="position: sticky; bottom: 0;  z-index: 20; background-color: white;">
+                      <button style="width: 50%;" type="submit" class="btn  btn-primary">적용하기</button>
+                    </div>
+
+                  </form>
+
                 </div>
               </div>
             </div>
-            <!-- Customer overview end -->
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
           </div>
+          <!-- Customer overview end -->
         </div>
 
 
+        <h5 style="font-size: 20px; margin-top: 0.8rem;">프로젝트 검색</h5>
+        <div class="card">
+          <div class="card-body" style="padding: 0px; margin-top: 3rem;">
+
+            <!-- --------------------------------------------------------------------------------- -->
+
+            <!-- --------------------------------------------------------------------------------- -->
+
+            <div class="card-body p-0">
+              <div class="tab-content" id="pills-tabContent">
 
 
+                <div class="list-grid">
+
+
+                  <form method="GET" action="/projects" style="width : 100%;">
+                    <ul class="nav" style="width : 100%; ">
+
+                      <li class="input-group mb-3" style="width:40%; float: left; margin: auto;">
+                        담당팀<br>
+                        <select id="select_teams" class="btn  btn-outline-primary dropdown-toggle" 
+                          type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                          {% for team in team_list %}
+                            <option value={{team}}>{{team}}</option>
+                          {% endfor %}
+                        
+                        </select>
+                      </li>
+
+                      <input type="hidden" id="team" name="team" value='All' />
+                      
+
+                      <li style="width:40%; float: left; margin: auto; margin-top: 0px;">
+                        프로젝트<br>
+                        <input class="form-control me-2" style="border-color: #ffffff" id="autocompletes_coname"
+                          name="prname" type="text" placeholder="프로젝트명"><br>
+                      </li>
+
+                      <li style="width:40%; float: left; margin: auto;">
+                        광고인<br>
+                        <input class="form-control me-2" style="border-color: #ffffff" id="autocompletes_manager"
+                          name="cfowner" type="text" placeholder="광고인명"><br>
+                      </li>
+                      <li style="width:40%; float: left; margin: auto;">
+                        거래처<br>
+                        <input class="form-control me-2" style="border-color: #ffffff" id="autocompletes_tel" name="cfco"
+                          type="text" placeholder="거래처명"><br>
+                      </li>
+
+                    </ul>
+
+                    <div class="modal-footer"
+                      style="position: sticky; bottom: 0;  z-index: 20; background-color: white;">
+                      <button style="width: 50%;" type="submit" class="btn  btn-primary">적용하기</button>
+                    </div>
+
+                  </form>
+
+                </div>
+              </div>
+            </div>
+          </div>
+          <!-- Customer overview end -->
+        </div>
       </div>
+
     </div>
   </div>
-  <!-- [ grid ] end -->
+
+
+</div>
+<!-- [ grid ] end -->
+
 </div>
 <!-- [ Main Content ] end -->
 </div>
 </div>
 <!-- [ Main Content ] end -->
-
-
-
 
 {% endblock content %}
 
 <!-- Specific Page JS goes HERE  -->
 {% block javascripts %}
 
-<!-- Apex Chart -->
-<!-- <script src="/static/assets/js/plugins/apexcharts.min.js"></script> -->
+  <!-- Apex Chart -->
+  <!-- <script src="/static/assets/js/plugins/apexcharts.min.js"></script> -->
 
-<!-- custom-chart js -->
-
-
-<script src="/static/assets/js/pages/dashboard-main.js"></script>
-    
-<script src="/static/assets/js/pages/modal-filter-project.js"></script>
+  <!-- custom-chart js -->
+  <script>
+    const selectTeam = document.getElementById("select_teams");
+    const inputTeam = document.getElementById("team");
 
 
+    function setTeam() {
 
-<script>
+      console.log(selectTeam.value);
+      inputTeam.value = selectTeam.value;
 
-document.querySelector(".mob-toggler").addEventListener('click', function () {
-    console.log("FFF")
-    document.querySelector('.pcoded-header > .collapse,.pcoded-header > .container > .collapse').classList.toggle('d-flex');
-  });
-  
-  
-  
-  
-  // search-bar
-  document.querySelector(".pop-search").addEventListener('click', function () {
-    slideDown(document.querySelector(".search-bar"), 200);
-    document.querySelector(".search-bar input").focus();
-  });
-  document.querySelector(".search-bar .btn-close").addEventListener('click', function () {
-    slideUp(document.querySelector(".search-bar"), 200);
-  });
-  if (document.querySelector('.pcoded-navbar').classList.contains('theme-horizontal')) {
-    rmactive();
-    horizontalmenu();
-  }
-</script>
+    }
+
+    selectTeam.addEventListener("change", setTeam)
+  </script>
 
 
-<script>
-  var tab = document.getElementById("tab-search");
-  tab.style.fontWeight = "bold";
-</script>
+  <script src="/static/assets/js/pages/dashboard-main.js"></script>
+      
+
+
+
+  <script>
+    var tab = document.getElementById("tab-search");
+    tab.style.fontWeight = "bold";
+  </script>
+
+
+  <script>
+
+    document.querySelector(".mob-toggler").addEventListener('click', function () {
+        console.log("FFF")
+        document.querySelector('.pcoded-header > .collapse,.pcoded-header > .container > .collapse').classList.toggle('d-flex');
+      });
+      
+      
+      
+      
+      // search-bar
+      document.querySelector(".pop-search").addEventListener('click', function () {
+        slideDown(document.querySelector(".search-bar"), 200);
+        document.querySelector(".search-bar input").focus();
+      });
+      document.querySelector(".search-bar .btn-close").addEventListener('click', function () {
+        slideUp(document.querySelector(".search-bar"), 200);
+      });
+      if (document.querySelector('.pcoded-navbar').classList.contains('theme-horizontal')) {
+        rmactive();
+        horizontalmenu();
+      }
+  </script>
 {% endblock javascripts %}

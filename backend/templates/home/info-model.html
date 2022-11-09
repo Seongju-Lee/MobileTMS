@@ -606,17 +606,17 @@ input[type="range"]::-webkit-slider-thumb_age {
                               
                               <li class="active-feed">
                                 <h6>영상</h6>
-                                <a style="margin-top: 10px;" target="_blank" rel="noopener noreferrer"
+                                <a style="margin-top: 10px;"  rel="noopener noreferrer"
                                 href="http://{{host}}/models/{{model_detail_info.codesys}}/img"
                                 class="btn btn-{{is_existed_img}} btn-sm text-white">이미지영상</a>
                           
                                   
-                                <a style="margin-top: 10px;" target="_blank" rel="noopener noreferrer"
+                                <a style="margin-top: 10px;"  rel="noopener noreferrer"
                                 href="http://{{host}}/models/{{model_detail_info.codesys}}/act"
                                 class="btn btn-{{is_existed_act}} btn-sm text-white">연기영상</a>
                           
                                   
-                                <a style="margin-top: 10px;" target="_blank" rel="noopener noreferrer"
+                                <a style="margin-top: 10px;"  rel="noopener noreferrer"
                                 href="http://{{host}}/models/{{model_detail_info.codesys}}/cf"
                                 class="btn btn-{{is_existed_cf}} btn-sm text-white ">광고영상</a>
 
@@ -624,11 +624,11 @@ input[type="range"]::-webkit-slider-thumb_age {
 
                               <li class="active-feed">
                                 <h6>사진</h6>
-                                <a style="margin-top: 10px;" target="_blank" rel="noopener noreferrer"
+                                <a style="margin-top: 10px;"  rel="noopener noreferrer"
                                 href="http://{{host}}/models/{{model_detail_info.codesys}}/b"
                                 class="btn btn-{{is_existed_best}} btn-sm text-white m-0">베스트사진</a>
 
-                                <a style="margin-top: 10px;" target="_blank" rel="noopener noreferrer"
+                                <a style="margin-top: 10px;"  rel="noopener noreferrer"
                                 href="http://{{host}}/models/{{model_detail_info.codesys}}/r"
                                 class="btn btn-{{is_existed_refer}} btn-sm text-white m-0">참고사진</a>
                           
@@ -800,22 +800,18 @@ input[type="range"]::-webkit-slider-thumb_age {
                                 <input name="telButton" id="{{m.rcode}}" type="button" class="btn btn-outline-primary" style="margin: 0.2rem 0.1rem; padding: 6px 12px;" onclick="telMemo(this.id)" value="{{m.title[:].split('통화')[0]}}" />
                               {% endfor %}
 
-
+                              
                               {% for i in range(model_detail_info.tel_memo | length) %}
                                 {% if model_detail_info.tel_memo[i].memo %}
                                   {% if i == 0 %}
                                     <div id="_{{model_detail_info.tel_memo[i].rcode}}" style="overflow: auto; margin-top: 20px;  ">
-                                      {%for m in model_detail_info.tel_memo[i].memo%}
-                                        {{m}}
+                                        {{ model_detail_info.tel_memo[i].memo | replace('\r\n', '<br>')|safe }}
                                         <br><br>
-                                      {%endfor%}
                                     </div>
                                   {% else %}
                                     <div id="_{{model_detail_info.tel_memo[i].rcode}}" style="overflow: auto; margin-top: 20px;  display: none;">
-                                      {%for m in model_detail_info.tel_memo[i].memo%}
-                                        {{m}}
+                                        {{ model_detail_info.tel_memo[i].memo | replace('\r\n', '<br>')| safe }}
                                         <br><br>
-                                      {%endfor%}
                                     </div>
                                   {% endif %}
                                 {%endif%}

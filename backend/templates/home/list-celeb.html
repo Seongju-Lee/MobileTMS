@@ -549,7 +549,7 @@ input[type="range"]::-webkit-slider-thumb_age {
         
         
                                   <!-- ------------------------ -->
-                                  <!-- 30일추천 모델 탭 -->
+                                  <!-- 실베스타 모델 탭 -->
                                     <div  class="tab-pane fade show active" id="pills-home" role="tabpanel" aria-labelledby="pills-home-tab">
                                       <div class="list-grid" >
                                         <div class="row">
@@ -561,7 +561,7 @@ input[type="range"]::-webkit-slider-thumb_age {
                                           
                                           {% for model in real_time_models[:] %}
                                             <div class="col-4 col-sm-3" style="text-align : center; padding: 3px; background-color: #ffffff;">
-                                              <a href="/celebs/{{model.codesys}}" style="color: #000000;">
+                                              <a href="/celebs/{{model.codesys}}" style="color: #000000;" >
                                               
                                               <!-- <h4 style="z-index: 2; position:absolute; color: #4099ff;">{{model.sum_jum}}</h4> -->
                                                 
@@ -600,7 +600,7 @@ input[type="range"]::-webkit-slider-thumb_age {
         
                                
                                   <!-- ------------------------ -->
-                                  <!-- 영상초이 모델 탭 -->
+                                  <!-- 열람횟수 모델 탭 -->
                                   <div class="tab-pane fade" id="pills-profile" role="tabpanel" aria-labelledby="pills-profile-tab">
         
                                     <div class="list-grid" >
@@ -614,7 +614,7 @@ input[type="range"]::-webkit-slider-thumb_age {
                                           
                                           {% for model in read_count_models[:] %}
                                             <div class="col-4 col-sm-3" style="text-align : center; padding: 3px; background-color: #ffffff;">
-                                              <a href="/celebs/{{model.mcode}}" style="color: #000000;">
+                                              <a href="/celebs/{{model.mcode}}" style="color: #000000;" >
                                               
                                               <!-- <h4 style="z-index: 2; position:absolute; color: #4099ff;">{{model.sum_jum}}</h4> -->
                                                 

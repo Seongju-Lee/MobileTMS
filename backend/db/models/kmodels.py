@@ -173,14 +173,6 @@ class Yeon(Base):
     a_6 = Column(Integer)
     a_12 = Column(Integer)
 
-
-
-
-
-
-
-
-
 class Section(Base):
     __tablename__ = "tree"
 

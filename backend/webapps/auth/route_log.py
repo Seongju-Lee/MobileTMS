@@ -31,21 +31,6 @@ def access_main(request: Request, db: Session = Depends(get_db)):
         update_logs(user_id, request.client.host, request.__dict__['_headers']['user-agent'],
         now, 'main', db=db)
 
-    
-# @router.post("/model_search")
-# def access_model_search(request: Request, db: Session = Depends(get_db)):
-
-#     user_id: str = request.cookies.get("usr")
-#     # print(request.__dict__)
-
-
-#     if user_id:
-
-#         now = datetime.now() + timedelta(hours=9)
-
-#         update_logs(user_id, request.client.host, request.__dict__['_headers']['user-agent'],
-#         now, 'model_search',  db=db)
-
 
 
 @router.post("/model_info/{code}")
